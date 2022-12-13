@@ -1,0 +1,50 @@
+<%
+  const cc = ColorConverter('#'+locals.newsSub && newsSub.newsSubType && newsSub.newsSubType.color ? newsSub.newsSubType.color : '', 'hex');
+  const contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<div class="news-sub-item<%= locals.newsSub && newsSub.datePost && newsSub.datePost > new Date() ? ' future' : '' %><%= locals.timestamp ? ' timestamp' : '' %>" <%- locals.edit && locals.newsSub && newsSub.id ? 'data-newsSubId="' + newsSub.id + '" data-isNew="false" data-isDeleted="false"' : '' %>>
+  <div class="news-sub-item-icon" style="background: <%= cc.toHSL().toCSS() %>;">
+      <i class="far fa-fw <%= locals.newsSub && newsSub.newsSubType && newsSub.newsSubType.icon ? newsSub.newsSubType.icon : 'fa-clock' %>"></i>
+  </div>
+  <div class="news-sub-item-event" style="background:<%= cc.set('l', 95).toCSS() %>;">
+    <% if (locals.edit && !locals.timestamp) { %>
+        <label for="newsSubType-<%= newsSub.id %>">Update Type</label>
+        <select name="newsSubType" id="newsSubType-<%= newsSub.id %>" class='title-case news-sub-type'>
+        <% for (let subType of subTypes) { %>
+          <option class='title-case' value="<%= subType.id %>" data-color="<%= '#' + subType.color %>"
+          data-colorlight="<%= ColorConverter('#'+subType.color, 'hex').toHSL().set('l',95).toCSS() %>"
+          data-icon="<%= subType.icon %>" <%= locals.newsSub && newsSub.idNewsSubType == subType.id ? 'selected' : '' %>><%- subType.title %></option>
+        <% } %>
+        </select>
+        <label for="datePost-<%= newsSub.id %>">Posted</label>
+      <input type='datetime-local' id="datePost-<%= newsSub.id %>" class='news-sub-date-post' value="<%= newsSub.datePost ? moment(newsSub.datePost).format(moment.HTML5_FMT.DATETIME_LOCAL) : '' %>" name='datePost'>
+    <% } else { %>
+      <p class="news-sub-item-event-date"><%- locals.timestampType ? '<strong>'+timestampType+':</strong> ' : '' %><%= locals.newsSub && newsSub.datePost ? moment(newsSub.datePost).format('M/D/YYYY h:mma') : '' %></p>
+    <% } %>
+    <% if (locals.newsSub && newsSub.title && !locals.timestamp) { %>
+      <h3 class="news-sub-title" <%= contentEditable %> <%- locals.edit ? "placeholder='News update title'" : "" %>><%- newsSub.title %></h3>
+    <% } %>
+    <% if (!locals.timestamp) { %>
+      <p class='news-sub-description-short' <%= contentEditable %> <%- locals.edit ? "placeholder='News update description'" : "" %>><%- locals.newsSub && newsSub.descriptionShort ? newsSub.descriptionShort : '' %></p>
+    <% } %>
+    <% if ((locals.newsSub && newsSub.actions && newsSub.actions.length || locals.edit) && !locals.timestamp) { %>
+      <% if (locals.edit && !locals.timestamp) { %>
+        <a data-open="news-sub-add-action-modal" class="button-open-news-sub-add-action-modal button-news-update"><i class='far fa-link'></i> Link Action</a>
+      <% } %>
+      <ul class="news-sub-item-links">
+      <% if (locals.newsSub && newsSub.actions && newsSub.actions.length) { %>
+        <% for (const action of newsSub.actions) { %>
+          <li class="news-sub-action-item" data-actionid="<%= action.id %>"><a href="<%= action.link %>" target="<%= action.actionType && action.actionType.target ? action.actionType.target : '_blank' %>"><%- action.title %>
+            <% if (locals.edit && !locals.timestamp) { %>
+              <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button>
+            <% } %>
+          </a></li>
+        <% } %>
+      <% } %>
+      </ul>
+    <% } %>
+  </div>
+  <% if (locals.edit && !locals.timestamp) { %>
+    <button class='remove-news-sub-button'><i class='fas fa-times-circle'></i></button>
+  <% } %>
+</div>

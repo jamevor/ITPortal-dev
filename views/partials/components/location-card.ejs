@@ -1,0 +1,7 @@
+<li class="cell location-item" data-locationid="<%= location.id %>">
+  <a class="location-card" href="<%= locals.edit ? '#' : '/location/' + location.id %>">
+    <i class="location-card-icon fas <%= location.locationType && location.locationType.icon ? location.locationType.icon : 'fa-globe'%>"></i>
+    <h3 class="location-card-title"><%= location.title %></h3>
+    <p class="location-card-room"><%= location.room %></p>
+  </a>
+</li>

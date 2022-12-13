@@ -1,0 +1,181 @@
+<!-- Meta -->
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= locals.title %></title>
+<meta name="robots" content="<%= locals.robots %>">
+<meta name="description" content="IT Service & Support enables the effective use of technology for teaching, learning, research, and the administrative work of the University by providing technology and mobility solutions, support, IT content and communications.">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#c1272d">
+<meta name="apple-mobile-web-app-title" content="The WPI Hub">
+<meta name="application-name" content="The WPI Hub">
+<meta name="theme-color" content="#c1272d">
+<meta name="google-site-verification" content="zaW_K1-k8hmFB2Y7mlF1CnNtSnE3XpRpxz4oL0qBGUk">
+<meta name="format-detection" content="telephone=no">
+<link rel="author" href="/humans.txt">
+<link rel="dns-prefetch" href="//itscdn.wpi.edu">
+<link rel="dns-prefetch" href="//wpi.edu">
+<link rel="prerender" href="/Search">
+<!-- Facebook Open Graph -->
+<meta property="fb:app_id" content="2446505305614066">
+<meta property="og:url" content="<%= locals.$SERVER_ROOT ? $SERVER_ROOT : '' %>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="<%= locals.title %>">
+<meta property="og:image" content="<%= locals.$SERVER_ROOT ? $SERVER_ROOT : '' %>/android-chrome-512x512.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WPI Hub InTRo">
+<meta property="og:description" content="<%- locals.descriptionShort %>"> <%# TODO eventually make this the shortDescription of the page if it's available %>
+<meta property="og:site_name" content="The WPI Hub">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="The WPI Hub">
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@WPI_IT">
+<meta name="twitter:creator" content="@WPI_IT">
+<meta name="twitter:url" content="<%= locals.$SERVER_ROOT ? $SERVER_ROOT : '' %>">
+<meta name="twitter:title" content="<%= locals.title %>">
+<meta name="twitter:description" content="<%- locals.descriptionShort %>"> <%# TODO eventually make this the shortDescription of the page if it's available %>
+<meta name="twitter:image" content="<%= locals.$SERVER_ROOT ? $SERVER_ROOT : '' %>/android-chrome-512x512.png">
+<meta name="twitter:image:alt" content="The WPI Hub InTRo">
+<!-- Google Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Merriweather|Roboto:400,100,300,500,700,900" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather|Roboto:400,100,300,500,700,900">
+<!-- Foundation -->
+<link rel="stylesheet" type="text/css" href="/foundation/css/foundation.min.css">
+<!-- FontAwesome -->
+<link rel="preload" href="/font-awesome/css/all.min.css" as="style">
+<link rel="stylesheet" href="/font-awesome/css/all.min.css">
+<!-- SimpleBar -->
+<link rel="preload" href="/simplebar/simplebar.min.css" as="style">
+<link rel="stylesheet" href="/simplebar/simplebar.min.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="/css/app.css">
+<% if (locals.user && user.hue) { %>
+	<style>
+		:root {
+			--color-user: hsla(<%= user.userPreference && user.userPreference.hue ? user.userPreference.hue : user.hue %>, 100%, 40%, 1);
+		}
+	</style>
+<% } %>
+<% if (locals.edit) { %>
+	<link rel="stylesheet" type="text/css" href="/css/console.css">
+<% } %>
+<!-- jquery -->
+<script type="text/javascript" src="/jquery/jquery.min.js" defer></script>
+<!-- Foundation -->
+<script type="text/javascript" src="/foundation/js/foundation.min.js" defer></script>
+<!-- SimpleBar -->
+<script type="text/javascript" src="/simplebar/simplebar.min.js" defer></script>
+<%- include('./moment.ejs'); %>
+<%- include('./dragula.ejs'); %>
+<!-- Custom CSS -->
+<script type="text/javascript" src="/js/app.js" defer></script>
+<!-- Google Analytics -->
+<script src="https://www.googletagmanager.com/gtag/js?id=UA-82758516-2" type="text/javascript" async></script>
+<script type="text/javascript">
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	<% if (locals.user && typeof user.guidPublic === 'string') { %>
+		gtag('config', 'UA-82758516-2', {
+		  'user_id': '<%= user.guidPublic %>',
+		  cookie_flags: 'max-age=7200;secure;samesite=none'
+		});
+	<% } else { %>
+		gtag('config', 'UA-82758516-2',{
+			cookie_flags: 'max-age=7200;secure;samesite=none'
+		});
+	<% } %>
+	window.addEventListener('load', function() {
+		if (window.performance) {
+			gtag('event', 'timing_complete', {
+				'name': 'load',
+				'value': Math.round(performance.now())
+			});
+		}
+	});
+</script>
+<%#
+<script type="text/javascript">
+	window.addEventListener('load', function() {
+		if (typeof window.ga === 'undefined' || typeof window.google_tag_manager === 'undefined') {
+			console.log('google analytics is blocked :( how rude!');
+		}
+	});
+</script>
+%>
+<!-- Service Workers -->
+<script type="text/javascript">
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('/js/sw/app.js', { scope: '/' }).then(function(registration) {
+			}, function(err) {
+			});
+		});
+	}
+</script>
+<!-- grecaptcha -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LcW7ZYUAAAAAJqH2HgvLFroSHpBBv5xgNoP5MZD" async></script>
+<script>
+	window.addEventListener('load', function() {
+		grecaptcha.ready(function() {
+			$('.g-recaptcha-response').attr('aria-label', 'g-recaptcha-response');
+			grecaptcha.execute('<%= locals.grecaptcha_public_key %>', {action: 'pageload'}).then(function(token) {
+				window.pageload_grecaptchatoken = token;
+			});
+		});
+	});
+</script>
+<style>
+	.grecaptcha-badge {
+		display:none;
+	}
+</style>
+<% if (locals.edit) { %>
+	<script>
+		window.addEventListener('load', function() {
+			window.onbeforeunload = function() {
+				return $('.button-save').hasClass('disabled') ? null : false;
+			}
+			document.addEventListener('click', function(event) {
+				if (event.target && event.target.tagName === 'A' && 'href' in event.target && /.*#/.test(event.target.href)) {
+					event.preventDefault();
+					return false;
+				}
+				return;
+			});
+		});
+	</script>
+<% } %>
+<% if (locals.preferences && preferences.textDisplay === 'sarcasm' && locals.url.split("/")[1] != "io") { %>
+	<script type="text/javascript" src="/js/sarcasm.js" defer></script>
+<% } %>
+<% if (locals.snowEnabled && locals.preferences && preferences.seasonalTheme === 'winter') { %>
+	<style>
+		/* body.winter:not(.highContrast) {
+			--color-header-icons:#28b1d5;
+			--color-header-icons-h:#249EBD;
+			--color-pop: #28b1d5;
+			--color-pop-h: #249EBD;
+			--color-pop-light: #2BBEE3;
+		} */
+		body.winter:not(.highContrast) {
+			--color-header-icons: #F29F05;
+			--color-header-icons-h: #d48d09;
+			--color-pop: #F29F05;
+			--color-pop-h: #d48d09;
+			--color-pop-light: #fbb127;
+		}
+	</style>
+	<script type="text/javascript" src="/js/snow.js" defer></script>
+<% } %>
+
+<%# if (locals.user && user.userSiteTour && !user.userSiteTour.isComplete && !user.userSiteTour.isIgnored) { %>
+	<%#- include('./intro-js.ejs'); %>
+<%# } %>
+
+

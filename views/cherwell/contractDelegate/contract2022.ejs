@@ -1,0 +1,223 @@
+<% //check if there is an existing form recID provided: If no
+if(existing == false){%>
+    <input id="requestType" type="hidden" value="new">
+    <div class="grid-container fluid">
+        <div class="grid-container grid-x grid-margin-x formCard" style="margin:auto">
+            <div class="cell small-12 medium-12 grid-x grid-margin-x">
+                <div class='cell small-12 medium-12 large-12'>
+                    <h1>Delegation of Authority to Sign Contracts</h1>
+                    <p>As per the <a href="https://courselistings.wpi.edu/export-images/Interim_Policy_on_Delegation_of_SignatureAuthority_9.22.2022.pdf">Interm Policy Governing the Delegation of Authority to Sign Contracts</a> this form must be completed and signed by the officer or senior administrator listed in Appendix A to the policy who intends to delegate their Signature Authority to an individual in their department or unit (“Delegator”). This form must also be signed by the individual to whom the officer or senior administrator is delegating their Signature Authority (“Delegatee”). The delegation of Signature Authority shall not be effective until the WPI Controller receives a completed and signed Delegation of Authority Form. The delegation set forth on this form shall be reviewed on an annual basis.</p>
+                    <p>This form is incorporated by reference into the Interim Policy Governing the Delegation of Authority to Sign Contracts.  If you have any questions about this form please contact <a href = "mailto: its@wpi.edu.">its@wpi.edu.</a> If you have any questions about the policy, please contact <a href = "mailto: OGC@wpi.edu">OGC@wpi.edu</a>.</p>
+                </div>
+                <div class='cell small-12 medium-6 delegationBlock'>
+                    <h3>Delegator</h3>
+                    <div id="delegotor" class="delebox">
+                        <p id="delegatorName"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                        <p id="delegatorEmail"><%= userAttributes.emailaddress %></p>
+                        <p id="delegatorID"><%= userAttributes['user.employeeid'] %></p>
+                        <p id="delegatorRecID" style="display:none"><%= customer.busObRecId%></p>
+                    </div>
+                </div>
+                <div class='cell small-12 medium-6 delegationBlock'>
+                    <h3>Delegatee</h3>
+                    <div class='cell small-12 delebox'>
+                        <div class="data-loader" style="display:flex;align-items:center;justify-content:center;flex-direction: column;">
+                        <i class="far fa-spinner-third fa-spin fa-2x"></i>
+                            <p>Employee List is loading...</p>
+                        </div>
+                        <div class="data-loaded" style="display:none"> 
+                            <label for="employees" class="show-for-sr">Employee Lookup</label>
+                            <input name="employees" id="employees" placeholder="Search for an employee">
+                        </div>
+
+                    </div>
+                    <div id="delegatee" style="display:none" class="delebox">
+                    </div>
+                </div>
+                <div class='cell small-12 medium-12'>
+                    <label for="delgationPurpose">Purpose of Delegation</label>
+                    <textarea name="delgationPurpose" id="delgationPurpose" rows="4"></textarea>
+                </div>
+                <div class='cell small-12 medium-6'>
+                    <label for="delgationAmount">Amount of Delegation (up to)</label>
+                    <input type="text" name="delgationAmount" id="delgationAmount" required></input>
+                </div>
+                <div class='cell small-12 medium-6'>
+                    <label for="delgationType">Type of Delegation</label>
+                    <select name="delgationType" id="delgationType">
+                        <option value="OneTime">One Time Only</option>
+                        <option value="DateRange">Time Period</option>
+                    </select>
+                    <div style="display:none" id="delegationTypeDateBlock">
+                        <label for="delegationTypeDateStart">Start Date</label>
+                        <input type="datetime-local" name="delegationTypeDateStart" id="delegationTypeDateStart"></input>
+                        <label for="delegationTypeDateEnd">End Date</label>
+                        <input type="datetime-local" name="delegationTypeDateEnd" id="delegationTypeDateEnd"></input>
+                    </div>
+                </div>
+                <div class='cell small-12 medium-12'>
+                    <h3>Acknowledgement of Responsibility</h3>
+                    <p>Delegator and Delegatee acknowledge and understand that this delegation is subject to all requirements of the Policy Governing the Delegation of Authority to Sign Contracts. It is, therefore, the responsibility of the Delegator and Delegatee to ensure that no Contract may be signed until the signatory first ensures that (i) the amounts legally committed under the Contract are covered by identified revenues or reserves or an existing line of credit; and (ii) the signatory reviews and understands the terms and legal obligations set forth in the Contract. The delegation set forth on this form shall be reviewed on an annual basis.</p>
+                </div>
+                <div class='cell small-12 medium-6'>
+                    <div class='cell small-12 medium-6'>
+                        <label for="delegatorLegalName">Full Legal Name (as you would sign)</label>
+                        <textarea name="delegatorLegalName" id="delegatorLegalName" rows="1"></textarea>
+
+                        <label for="delegatorSignDate">Please Enter Today's Date (mm/dd/yyyy)</label>
+                        <textarea name="delegateeSignDate" id="delegateeSignDate" rows="1"></textarea>
+
+                        <p><input type="checkbox" id="complete" name="terms"> I accept the Terms and Conditions</p>
+                    </div>
+                    <button class="button" id="submitButton">Sign and Authorize</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<%}else{ //check if there is an existing form recID provided: If redID IS provided%>
+    <input id="requestType" type="hidden" value="updated" data-recid="<%=contractOut.RecID%>">
+    <div class="grid-container fluid">
+        <div class="grid-container grid-x grid-margin-x formCard" style="margin:auto">
+            <div class="cell small-12 medium-8 grid-x grid-margin-x">
+                <div class='cell small-12 medium-12 large-12'>
+                    <h1>Summary of Delegations of Authority to Sign Contracts</h1>
+                    <p>As per the “Policy Governing the Delegation of Authority to Sign Contracts,” this form must be completed and signed by the officer or senior administrator listed in Appendix A to the policy who intends to delegate their Signature Authority to an individual in their department or unit (“Delegator”). This form must also be signed by the individual to whom the officer or senior administrator is delegating their Signature Authority (“Delegatee”). The delegation of Signature Authority shall not be effective until the WPI Controller receives a completed and signed Delegation of Authority Form. The delegation set forth on this form shall be reviewed on an annual basis</p>
+                </div>
+                <div class='cell small-12 medium-6 delegationBlock'>
+                    <h3>Delegator</h3>
+                    <div id="delegotor" class="delebox">
+                        <p id="delegatorName"><%=contractOut.DelegatorName%></p>
+                        <p id="delegatorEmail"><%=contractOut.DelegatorEmail%></p>
+                        <p id="delegatorID"><%=contractOut.DelegatorWPIID%></p>
+                        <p id="delegatorRecID" style="display:none"><%=contractOut.DelegatorRecID%></p>
+                    </div>
+                </div>
+                <div class='cell small-12 medium-6 delegationBlock'>
+                    <h3>Delegatee</h3>
+                    <div id="delegatee" class="delebox">
+                        <p id="delegateeName"><%=contractOut.DelegateeName%></p>
+                        <p id="delegateeEmail"><%=contractOut.DelegateeEmail%></p>
+                        <p id="delegateeID"><%=contractOut.DelegateeWPIID%></p>
+                        <p id="delegateeRecID" style="display:none"><%=contractOut.DelegateeRecID%></p>
+                    </div>
+                </div>
+                <div class='cell small-12 medium-12'>
+                    <label for="delgationPurpose">Purpose of Delegation</label>
+                    <p class="outputField">
+                        <%=contractOut.Purpose%>
+                    </p>
+                </div>
+                <div class='cell small-12 medium-6'>
+                    <label for="delgationAmount">Amount of Delegation (up to)</label>
+                    <p class="outputField">
+                        <%=contractOut.Amount%>
+                    </p>
+                </div>
+                <div class='cell small-12 medium-6'>
+                    <label for="delgationType">Type of Delegation</label>
+                    <p class="outputField">
+                        <%=contractOut.DelegationType%>
+                    </p>
+                    <%if(contractOut.DelegationType =="DateRange"){%>
+                        <div id="delegationTypeDateBlock">
+                        <label for="delegationTypeDateStart">Start Date</label>
+                        <p class="outputField">
+                            <%=contractOut.PeriodStart%>
+                        </p>
+                        <label for="delegationTypeDateEnd">End Date</label>
+                        <p class="outputField">
+                            <%=contractOut.PeriodEnd%>
+                        </p>
+                    </div>
+                    <%}%>
+
+                </div>
+                <div class='cell small-12 medium-12'>
+                    <h3>Acknowledgement of Responsibility</h3>
+                    <p>Delegator and Delegatee acknowledge and understand that this delegation is subject to all requirements of the Policy Governing the Delegation of Authority to Sign Contracts. It is, therefore, the responsibility of the Delegator and Delegatee to ensure that no Contract may be signed until the signatory first ensures that (i) the amounts legally committed under the Contract are covered by identified revenues or reserves or an existing line of credit; and (ii) the signatory reviews and understands the terms and legal obligations set forth in the Contract. The delegation set forth on this form shall be reviewed on an annual basis.<br></p>
+                </div>
+
+    <% if (userAttributes['user.employeeid'] == contractOut.DelegateeWPIID){%>
+        <% if (contractOut.Status == "Active") {%> 
+                    <div class='cell small-12 medium-6'>
+                        <p> The Delegetee has completed the form</p>
+        
+                    </div> 
+        <%} else { %>  
+
+    
+                <div class='cell small-12 medium-6'>
+
+                    <div class='cell small-12 medium-6'>
+                        <label for="delegateeLegalName">Full Legal Name (as you would sign)</label>
+                        <textarea name="delegateeLegalName" id="delegateeLegalName" rows="1"></textarea>
+
+                        <label for="delegatorSignDate">Please Enter Today's Date (mm/dd/yyyy)</label>
+                        <textarea name="delegatorSignDate" id="delegatorSignDate" rows="1"></textarea>
+
+                        <p><input type="checkbox" id="complete" name="terms"> I accept the <u>Terms and Conditions</u></p>
+                    </div>
+        
+                    <button class="button" id="submitButton">Sign and Approve</button>
+                </div> 
+        <%}%> 
+                <%} else { %>  
+                    <div class='cell small-12 medium-6'>
+                        <p>You are not allowed to sign this form</p>
+        
+                    </div> 
+                <%}%> 
+
+
+            </div>
+            <div class="small-12 medium-4">
+                <div id="timeline">
+                    <h3>Process</h3>
+                    <% 
+                    var statusMap = {}
+
+                    statusMap.Created = contractOut.Status == "Created" ? 'completed' :'';
+                    statusMap.Awaiting = contractOut.Status == "Awaiting Delegatee" ? 'completed' :'';
+                    statusMap.Active = contractOut.Status == "Active" ? 'completed' :'';
+                    statusMap.Archived = contractOut.Status == "Archived" ? 'completed' :'';
+
+                    if(contractOut.Status == "Active" &&  contractOut.DelegateeSignDate){
+                        statusMap.AwaitingText = contractOut.DelegateeSignDate
+                    }else{
+                        statusMap.AwaitingText = "Awaiting Delegatee";
+                    }
+                    %>
+                    <div class="timeline-item <%=statusMap.Created%>">
+                        <div>
+                        <p class="timeline-label">Created</p> 
+                        <p class="timeline-detail"><%=contractOut.CreatedDateTime%></p> 
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="timeline-item <%=statusMap.Awaiting%>"> 
+                        <div>
+                        <p class="timeline-label">Delegatee Signed</p> 
+                        <p class="timeline-detail"><%=statusMap.AwaitingText%></p> 
+                        </div>
+                    </div>
+
+                    <div class="timeline-item <%=statusMap.Active%>"> 
+                        <div>
+                        <p class="timeline-label">Active</p> 
+                        <p class="timeline-detail"><%=contractOut.CreatedDateTime%></p> 
+                        </div>
+                    </div>
+
+                    <div class="timeline-item <%=statusMap.Archived%>"> 
+                        <div>
+                        <p class="timeline-label">Archived</p> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<%}%>

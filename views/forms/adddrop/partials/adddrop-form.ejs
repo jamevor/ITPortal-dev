@@ -1,0 +1,580 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-lane-subtler);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-between;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+
+  .note{
+    position:relative;
+  }
+  .cart-units span{
+    font-weight: 600;
+  }
+  .cart-units-part.over{
+    color:var(--color-bright-4);
+  }
+  .cart-units-total{
+    
+  }
+  .cart-bar{
+    margin: 1em;
+    display: flex;
+    justify-content: space-between;
+  }
+  .easy-autocomplete-container ul li div  .course-lookup-item{
+    display: flex;
+
+  }
+  .easy-autocomplete-container ul li div  .course-lookup-group{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:1em;  
+  }
+  .easy-autocomplete-container ul li div  .course-lookup-group.group-text{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .easy-autocomplete-container ul li div  .course-lookup-group.group-dept{
+    width:15%;
+  }
+  .easy-autocomplete-container ul li div .course-lookup-item-dept{
+    font-weight: 600;
+    font-size: 2em;
+    color:var(--color-pop)
+  }
+  .easy-autocomplete-container ul li div .course-lookup-item-title{
+    font-weight: 600;
+  }
+  .easy-autocomplete-container ul li div .course-lookup-item-crn{
+    color:var(--color-body-subtitle);
+  }
+    .easy-autocomplete{
+      width:100% !important
+    }
+
+    .easy-autocomplete input{
+      width: 100%;
+    }
+    .easy-autocomplete-container ul li.selected {
+      background-color:var(--color-lane);
+      cursor: pointer;
+  }
+  .easy-autocomplete-container ul li, .easy-autocomplete-container ul .eac-category {
+    background: var(--color-chrome);
+    color:var(--color-body-text);
+    transition:background-color .5s ease;
+  }
+  .course-item{
+    display:flex;
+    background:var(--color-chrome);
+  }
+  .course-label{
+  font-size:.875em;
+  color:var(--color-body-text);
+  font-weight:600;
+  }
+.course-item-text{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    display: flex;
+    width:50%;
+  }
+.course-item-cap{
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  display: flex;
+}
+.course-item-dept{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:1em;  
+    width:15%;
+    max-width:15%;
+    font-weight: 600;
+    font-size: 2em;
+    color:var(--color-pop)
+  }
+.course-item-title{
+    font-weight: 600;
+  }
+.course-item-crn{
+  color:var(--color-body-subtitle);
+}
+.course-item-actions{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+.course-item-remove{
+  width: 1.5em;
+  height: 1.5em;
+}
+.course-item-actions:hover a{
+  color: var(--color-pop);
+  background-color:var(--color-lane)
+}
+.course-item-actions a{
+  font-weight: 800;
+  color: var(--color-body-text);
+  padding: 1em;
+  transition:all .5s ease;
+  border-radius: 3px;
+  width: 15%;
+}
+h2{
+  font-weight: 600;
+  font-size: 1.5em;
+}
+#reg-add #courses{
+  width:100%;
+}
+#debug{
+  background-color:var(--color-bright-1);
+}
+.user-data{
+  position:relative;
+}
+.data-loader{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.data-loader i{
+color:var(--color-pop)
+}
+.data-loader p{
+ color:var(--color-body-subtitle)
+}
+.error-block{
+  background:hsl(8, 88%, 95%);
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  box-shadow: var(--shadow-standard-y);
+  border-radius: 3px;
+  border: 1px solid var(--color-lane);
+  margin-bottom:.5em;
+  transition: all .5s ease;
+}
+.error-block h3{
+  font-size: .875em;
+  text-transform: capitalize;
+  font-variant: small-caps;
+  font-weight: 600;
+}
+.error-block h3 i{
+  color:var(--color-bright-4);
+}
+.error-block label{
+  display:flex;
+}
+.error-block label input{
+  width:2em;
+  height:2em;
+}
+#course-approval-bools{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: var(--ui-header-h);
+  right: 0;
+  background: var(--color-lane);
+  padding: 1em;
+  margin: 1em;
+  box-shadow: var(--shadow-standard-x);
+  border: 1px solid var(--color-bright-1);
+}
+.approval-item{
+  background:var(--color-chrome);
+  display: flex;
+  padding: 1em;
+  box-shadow: var(--shadow-standard-y);
+  border-radius: 3px;
+  border: 1px solid var(--color-lane);
+  margin-bottom:.5em;
+  transition: all .5s ease;
+}
+
+.approval-item-approver-id,.approval-item-approver-pidm{
+  display:none;
+}
+.approval-item-approver-name{
+  font-weight: 600;
+}
+.approval-item-approver-email{
+  color:var(--color-body-subtitle)
+}
+.approval-item-type{
+  font-size:1em
+}
+.approval-item-relation{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  width: 15%;
+  max-width: 15%;
+  font-weight: 600;
+  color:var(--color-pop);
+}
+.approval-content{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.help-text{
+  font-size: .875em;
+  color:var(--color-body-subtitle);
+  margin-top:.25em;
+}
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request.',
+    show: false
+  },
+  {
+    id: 'toast-NoCourse',
+    type: 'error',
+    title: 'No Course Added',
+    message: 'You need to choose a course to add in order to submit this add / drop form.',
+    show: false
+  },
+  {
+    id: 'toast-details',
+    type: 'error',
+    title: 'Additional Information Required',
+    message: 'Please provide a Reason for this Request and any notes.',
+    show: false
+  },
+  {
+    id: 'toast-Overloaded',
+    type: 'error',
+    title: 'Over Hours',
+    message: 'You are currently over hours, please request overload approval or drop a course.',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<% 
+%>
+
+<div class="grid-container help-form">
+  <div class="grid-x grid-margin-x align-center">
+    <div class='cell small-12 medium-8 large-8'>
+      <div class='grid-x grid-margin-x'>
+
+        <div class='cell box user-data'>
+          <% if (locals.user && user.id && locals.userAttributes) { %>
+            <div class='grid-x grid-margin-x input-box'>
+              <div class='cell small-6 box-verified-profile'>
+                <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+              </div>
+
+              <div class='cell small-6 box-verified-info'>
+                <p id="full-name" class="content" style="margin:0;"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                <p id="wpi-id" class="content2"><%= userAttributes['user.employeeid'] %></p>
+                <p id="wpi-email" class="content2"><i class="fas fa-envelope-square"></i></i> <%= userAttributes.emailaddress %></p>
+              </div>
+            </div>
+
+          <% } %>
+
+        </div>
+          <div class='cell small=12 box' id="reg-add">
+            <div class="data-loader">
+              <i class="far fa-spinner-third fa-spin fa-2x"></i>
+              <p>Course data is loading...</p>
+            </div>
+            <div class="data-loaded" style="display:none"> 
+              <h2>Course to Add</h2>
+              <p>You can search by Course title, Department, Course Number. Please submit only one form per course. <strong>Please specify all component sections that you wish to register for in the additional information section.</strong></p>
+              <label for="courses" class="show-for-sr">Course Lookup Search</label>
+              <input name="courses" id="courses" placeholder="Search for a course to add">
+            </div>
+
+          </div>
+          <div class='cell' style="margin-top:1em;">
+            <div id="course-add-block" style="display: none;">
+              <h2>Course to Add</h2>
+              <div id="courseToAdd">
+    
+              </div>
+            </div>
+
+            <div id="course-drop-block" style="<%= locals.UserEnrollments && UserEnrollments.length >= 1 ? '' : 'display:none'%>">
+              <h2>Current Course Enrollments</h2>
+              <p class="help-text">Note that if you elect to drop courses through this form, the Registrar will only process course drops if your request is approved. If your request is denied, the Registrar will not process the request to drop courses. If you are looking to drop a course without adding, you can do so directlty through Workday</p>
+              <div id="overload-block" class="error-block" style="display:none">
+                <h3><i class="fad fa-exclamation-circle"></i> Overload Warning</h3>
+                <p>Adding this course would overload your course schedule.</p>
+                <p>You will need to <em>drop a course</em> from the list below, or <em>request an overload</em></p>
+                <label for="request-overload"><input name="request-overload" id="request-overload" type="checkbox" class="toggle-overload">Request Overload</label>
+              </div>
+              <div class='cell' id="courseToDrop">
+              </div>
+            </div>
+
+            <div id="approvalError" class="error-block"style="display:none">
+              <h3><i class="fad fa-exclamation-circle"></i> Approval Error</h3>
+              <p id="approval-error-line1"></p>
+              <p id="approval-error-line2"></p>
+            </div>
+
+            <div id="course-approvals-block" style="display:none">
+              <h2>Approvals Needed</h2>
+              <div class='cell' id="courseApprovals">
+
+              </div>
+            </div>
+
+            <div id="course-approval-bools"style="<%- query.debug == 'true' ? '' : 'display:none' %>"">
+              <button id="debug" class="button" data-open="userDebug">DebugInfo</button>
+              <h2>Approval Types</h2>
+              <label for="bool-isOverload"><input name="bool-isOverload" id="bool-isOverload" type="checkbox" class="toggle-bool">Overload</label>
+              <label for="bool-isTimeConflict"><input name="bool-isTimeConflict" id="bool-isTimeConflict" type="checkbox" class="toggle-bool">Time Conflict</label>
+              <label for="bool-isDeptRestricted"><input name="bool-isDeptRestricted" id="bool-isDeptRestricted" type="checkbox" class="toggle-bool">Department</label>
+              <label for="bool-isMajor"><input name="bool-isMajor" id="bool-isMajor" type="checkbox" class="toggle-bool">Major</label>
+              <label for="bool-isLevel"><input name="bool-isLevel" id="bool-isLevel" type="checkbox" class="toggle-bool">Level</label>
+              <label for="bool-isClosed"><input name="bool-isClosed" id="bool-isClosed" type="checkbox" class="toggle-bool">Closed Course</label>
+              <label for="bool-isSpecial"><input name="bool-isSpecial" id="bool-isSpecial" type="checkbox" class="toggle-bool">Special</label>
+              <h2>Approvals Needed</h2>
+              <label for="bool-instructor"><input name="bool-instructor" id="bool-instructor" type="checkbox" class="toggle-bool">Instructor</label>
+              <label for="bool-advisor"><input name="bool-advisor" id="bool-advisor" type="checkbox" class="toggle-bool">Advisor</label>
+            </div>
+            
+            <div id="course-extras-block">
+              <h2>Additional Information</h2>
+              <label for="additional-info">Additional Information for this Request <span style="color:var(--color-pop)">(Required)</span></label>
+              <p class="help-text">Please explain the reason for your request for the approver(s) to review. Also include any Workday errors you may have encountered when trying to register, and any additional information to help register this such as <strong>Additional Component Sections</strong> (labs, lectures, etc.) that you may need.</p>
+              <textarea id="additional-info" name="additional-info" rows="4"></textarea>
+            </div>
+
+            <button id="button-submit-help-form" class="button-submit disabled">Submit Add / Drop Request</button>
+            <p id="submitError" style="display:none; margin:1em 0;text-align:center;color:var(--color-pop)">Something went wrong when trying to submit this form, please refresh and try again.</p>
+            <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+  
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="reveal" id="userDebug" data-reveal>
+  <h1>User Info</h1>
+  <% if (locals.enroll && enroll){ %>
+    <pre><%- JSON.stringify(enroll,null,2) %></pre>
+  <% } %>
+  <% if (locals.courses && courses){ %>
+    <pre><%- JSON.stringify(courses,null,2) %></pre>
+  <% } %>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<style>
+  .button-block{
+    display:flex;
+    flex-direction:column;
+  } 
+  .helpMeButton{
+    padding:1em;
+    background:var(--color-pop);
+    color:var(--color-light);
+    transition:all .5s ease;
+    text-align: center;
+    font-weight: 600;
+    margin: .5em;
+  }
+  .helpMeButton:hover{
+    background:var(--color-pop-h);
+    color:var(--color-lane);x
+  }
+  #helper{
+    position: absolute;
+    top:1em;
+    right:1em;
+    color:var(--color-bright-5);
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,.2));
+    transition: all .5s ease;
+  }
+  #helper:hover{
+    filter: drop-shadow(4px 4px 2px rgba(0,0,0,.3));
+    transform:scale(1.1);
+  }
+</style>
+<a id="helper" href="#" data-open="helpMe" class="hide-for-small-only"><i class="fad fa-3x fa-info-circle"></i><span class="show-for-sr">About This Form</span></a>
+
+<div class="tiny reveal" id="helpMe" data-reveal>
+  <h2><i style="color:var(--color-bright-5)" class='fad fa-info-circle'></i> About This Form</h2>
+  <div class="button-block">
+    <a class="helpMeButton" href="/article/697/" target="_blank">Using This Form</a>
+    <a class="helpMeButton" href="/article/698/" target="_blank">The Approval Process</a>
+    <a class="helpMeButton" href="https://www.wpi.edu/offices/registrar" target="_blank">Registrar Website</a>
+  </div>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

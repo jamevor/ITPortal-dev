@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/flickity.ejs'); %>
+  <%- include('../../partials/header.ejs'); %>
+  <%- include('../../partials/datatables.ejs'); %>
+  <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap" rel="stylesheet">
+  <style>
+    .request-page {
+      margin-top:1.5em;
+    }
+    .request-page h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 2.875em;
+      text-transform: capitalize;
+      line-height: 1;
+      padding-bottom: .25em;
+    }
+    .note{
+    position:relative;
+  }
+  </style>
+  <script type="text/javascript" src="/js/pages/covid-campus-visitor.js" defer></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<div class="request-page">
+  <% if(true == false){ %>
+  <%- include('./partials/covid-campus-visitor.ejs'); %>
+  <% }else{%>
+    <div class="grid-container fluid">
+      <div class="grid-container grid-x grid-margin-x align-center" style="margin:auto;">
+        <div class='cell  small-12 medium-10 large-9'>
+          <h1>Campus Visitor and Guest Access Request</h1>
+          <p style="font-weight:600">Based on the current campus status this form is not active at this time. Please refer to the <a href="https://www.wpi.edu/we-are-wpi">We Are WPI Site</a> for more info.</p>
+        </div>
+      </div>
+    </div>
+  <%}%>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

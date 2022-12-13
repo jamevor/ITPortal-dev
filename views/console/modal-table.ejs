@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+  <script type="text/javascript">
+    window.modalTable_defaultSortOrder = "<%= locals.sortOrder || 'asc' %>";
+  </script>
+  <script defer type="text/javascript" src="/js/console/modal-table.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+
+  <input type="hidden" id="ajax-source" value="<%= locals.ajaxSource %>">
+
+  <h2><i class="far fa-filter"></i>Filters</h2>
+  <div class="console-section-content">
+    <div class="grid-x grid-margin-x section-filters">
+    </div>
+  </div>
+</div>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-file-alt"></i><%= locals.typePlural %></h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class='filter-find' type="text" placeholder="Find<%= locals.avsan %> <%= locals.type %>...">
+    </div>
+    <div class="cell medium-6">
+      <% if (locals.user && ((user.permissions && user.permissions[locals.type] && user.permissions[locals.type].level >= 2) || user.isAdmin || user.isSuperUser)) { %>
+        <a id="button-console-add" class="console-add" href="#"><i class="far fa-plus-circle"></i> New <%= locals.type %></a>
+      <% } %>
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <table id='modal-table' class="table" style="width:100%!important;">
+      <thead class="show-for-sr">
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Phase</th>
+          <th>Action Links</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+
+
+<%- include('./entity-modals/' + locals.type + '.ejs', {data}); %>
+
+<%
+
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: locals.type + ' has been successfully saved.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to save your ' + locals.type,
+    show: false
+  }
+];
+
+%>
+
+<%- include('../partials/components/toaster.ejs', {toasts}) %>
+
+
+</html>

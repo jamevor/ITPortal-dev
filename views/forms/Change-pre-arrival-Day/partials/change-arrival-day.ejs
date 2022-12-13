@@ -1,0 +1,324 @@
+<style>
+    .help-form label {
+      /* font-weight: 600; */
+    }
+    .help-form .box {
+      background: var(--color-lane);
+      padding: 0.5em 1em;
+    }
+    .help-form textarea {
+      min-width:100%;
+    }
+    .help-form input, .help-form textarea {
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    .night .help-form input:focus, .night .help-form textarea:focus {
+      background: var(--color-lane-subtler);
+    }
+    .help-form .button-submit {
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    .help-form .button-submit:hover {
+      background: var(--color-pop-h);
+    }
+    .help-form .button-submit.disabled {
+      cursor: not-allowed;
+      background: var(--color-lane);
+      color: var(--color-lane-subtler)
+    }
+    .help-form .impact-boxes .cell input {
+      display: none;
+    }
+    .help-form .impact-boxes .cell label {
+      border: 1px solid var(--color-lane);
+      padding: .5em;
+      text-align: center;
+      margin: 0;
+      width: 100%;
+      transition: all .5s ease;
+    }
+    .help-form .impact-boxes .cell input:checked + label {
+      background-color: var(--color-pop);
+      color: var(--color-light);
+      border-color: var(--color-pop-h);
+    }
+    .help-form .impact-boxes .cell label:hover {
+      background: var(--color-lane);
+    }
+    .input-box .content-label{
+      font-size: 1rem;
+      margin: 0;
+      line-height:1;
+    }
+    .input-box .content{
+      font-weight: 800;
+      margin: 0;
+      margin-bottom: 0.5em;
+    }
+    .box-verified-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-img-square {
+      background: var(--color-user);
+      width: 2em;
+      height: 2em;
+      font-size: 3em;
+    }
+    .box.card h3{
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .note{
+    position:relative;
+  }
+  .testDays{
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testDay{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background: var(--color-lane-subtler);
+      color: var(--color-body-subtitle);
+      flex-grow: 1;
+      padding:.5em;
+      flex-basis: 0;
+      flex-shrink: 1;
+      margin: 1em 1em 2.5em 1em;
+      position: relative;
+      border-radius: 3px;
+    }
+    .testDay.active{
+      background: var(--color-pop);
+      color:var(--color-light)
+    }
+    .testDay.active:after{
+      content: "\f058 ";
+      margin-right: .25em;
+      font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
+      color: var(--color-bright-2);
+      position: absolute;
+      top: 100%;
+      font-size: 1.5em;
+      font-weight: 600;
+      }
+    .testDay span:first-of-type{
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .testDay span:nth-of-type(2){
+      font-size: .75em;
+      font-weight: 400;
+    }
+    .chooseDay{
+      display: none;
+    }
+    .chooseDay.active{
+      display: block;
+    }
+    #chooseDay.single{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 1px;
+      text-overflow: '';
+    }
+    #switchDay,#chooseDay.multiple{
+      height: fit-content;
+      height:12em;
+      padding: .5em 0 1.5em;
+      overflow: hidden;
+    }
+    #switchDay option,#chooseDay.multiple option{
+      text-align: center;
+      padding: .5em;
+    }
+    .agreer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em 0 .875em 0;
+}
+#agree{
+    width: 2em;
+    height: 2em;
+    margin: 0;
+}
+.moveInCard{
+  background: var(--color-lane);
+  border-radius: 6px;
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-body-text);
+  transition: all .5s ease;
+  margin: .5em;
+}
+
+.moveInIcon {
+    color: var(--color-pop);
+    font-size: 3em;
+    margin-right: .5em;
+}
+.moveInDate {
+    font-size: 1.25em;
+    font-weight: 800;
+    color: var(--color-body-headers);
+}
+.help-form input, .help-form textarea {
+    background: var(--color-chrome);
+    color: var(--color-body-text);
+}
+  </style>
+  <%
+  const toasts = [
+    {
+      id: 'toast-save-success',
+      type: 'success',
+      title: 'Success',
+      message: 'Your Answer has been submitted. Look to your email for a ticket confirmation!',
+      show: false
+    },
+    {
+      id: 'toast-save-error',
+      type: 'error',
+      title: 'Whoops',
+      message: 'Something went wrong trying to submit, try again!',
+      show: false
+    }
+  ];
+  %>
+  <%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+  <div class="grid-container help-form">
+    <div class="grid-x grid-margin-x align-center">
+      <div class='cell small-12 medium-12 large-8'>
+        <div class='grid-x grid-margin-x'>
+          <h1 class="text-center">Request for Change of C-Term / Spring Semester Move-in Day</h1>
+          <div class='cell box'>
+            <% if (locals.user && user.id && locals.userAttributes) { %>
+              <div class='grid-x grid-margin-x input-box'>
+                <div class='cell small-6 box-verified-profile'>
+                  <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                  <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+                </div>
+                <div class='cell small-6 box-verified-info'>
+                  <h3 class="content-label">Full Name</h3>
+                  <p id="full-name" class="content"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                  <h3 class="content-label">WPI email</h3>
+                  <p id="wpi-email" class="content"><%= userAttributes.emailaddress %></p>
+                  <h3 class="content-label">WPI ID #</h3>
+                  <p id="wpi-id" class="content"><%= userAttributes['user.employeeid'] %></p>
+                </div>
+              </div>
+            <% }%>
+          </div>
+          <div class="cell" style="margin-top:1em;"">
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-exclamation-triangle color-bright-1"></i> Move-in Days are Frozen
+              </div>
+              <div class="note-message">  
+                <p>Move-in and pre-arrival testing is underway, at this time we are no longer accepting requests for change of move-in</p>
+              </div>
+            </div>
+          </div>
+
+          <div class='cell' style="margin-top:1em;display:none">
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-exclamation-triangle color-bright-1"></i> About Changing Move-In Days
+              </div>
+              <div class="note-message">  
+                <p>This form enables you to submit a request for changing your C-Term / Spring semester move-in day. Please note that <strong>requests are not guarenteed</strong> and that this form should only be used for students with extenuating circumstances that absolutely prevent them from moving in on their currently assigned day. Also note that any changes to move-in day will impact your pre-arrival and onboarding tests dates.</p>
+              </div>
+            </div>
+            <p></p>
+
+            <% if (intent && intent.length){
+            const currentTerm = "202102";
+            const currentPTerm = "C";
+              for (let intentItem of intent){ 
+                var CurrentIntent ="";
+                
+                if(intentItem.fields.find(f => f.name === 'Term')['value'] == currentTerm && intentItem.fields.find(f => f.name === 'PTerm')['value'] == currentPTerm){
+                  CurrentIntent = intentItem;
+                }else{
+                  CurrentIntent = false;
+                }
+
+              }if(CurrentIntent){
+              const moveInTemp = CurrentIntent.fields.find(f => f.name === 'MoveInDateStart')['value'];
+              
+              const moveIn = (moveInTemp != "" && moveInTemp != "1/1/1900 12:00:00 AM") ? moment(moveInTemp).format('dddd, MMMM D, YYYY') : "No Date Found";
+              // const pretest = CurrentIntent.fields.find(f => f.name === 'PreArrivalTestDate')['value'];
+              // const onboard1 = CurrentIntent.fields.find(f => f.name === 'OnboardingTest1')['value'];
+              // const onboard2 = CurrentIntent.fields.find(f => f.name === 'OnboardingTest2')['value'];
+            %>
+            <div class="box card" style="background-color: var(--color-chrome);padding: 1em;">
+              
+              <input id="current" name="current" type="hidden" value="<%-moveIn%>">
+              <h3>Current Assigned Move In Day</h3>
+              <div class="moveInCard">
+                <div class="moveInIcon">
+                  <i class="fad fa-calendar"></i>
+                </div>
+                <div class="moveInDate">
+                  <%=moveIn%>
+                </div>
+              </div>
+
+            </div>
+            <fieldset>
+              <legend>Request Change of C-Term / Spring Semester Move-in Day</legend>
+              <label class="form-label"  for="dayChoice">Which day(s) would you prefer</label>
+                <select id="dayChoice" name="dayChoice" multiple>
+                  <option value="2021-1-21">Thursday, January 21</option>
+                  <option value="2021-1-23">Saturday, January 23</option>
+                  <option value="2021-1-24">Sunday, January 24</option>
+                  <option value="2021-1-25">Monday, January 25</option>
+                </select>
+
+              <div class='cell small-12'>
+                <label for="changeReason" style="margin:0 1em;">Why do you need this change?</label>
+                <textarea rows="4" id="changeReason" name="changeReason"></textarea>
+              </div>
+
+
+              <p style="font-weight: 800;" id="consent-text">I understand that a request of a change of Move-in Day is not to be done liberally, and is a serious request based upon an absolute need, or inability to make my current day work.</p>
+              <div class="agreer">
+                <input id="agree" name="agree" type="checkbox">
+                <label for="agree">I Agree</label>
+              </div>
+            </fieldset>
+            <button id="button-submit-feedback-form" class="button-submit disabled">Submit Request for Change of Move-In</button>
+            
+            <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+            <% } %>
+            <% } %>
+            
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>

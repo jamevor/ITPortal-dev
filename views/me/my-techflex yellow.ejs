@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <style>
+    .survey-card{
+      background: var(--color-chrome);
+      border-radius: 6px;
+      margin: 0.5em;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-standard-y);
+      color: var(--color-body-text);
+      border: 2px solid var(--color-pop);
+      transition:all .5s ease;
+    }
+    .survey-card:hover,.survey-card:active,.survey-card:focus{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      box-shadow: var(--shadow-standard-y-h);
+    }
+    .survey-card-det{
+      display: flex;
+      flex-direction: column;
+    }
+    .survey-card-status{
+      display: flex;
+    }
+    .survey-card-title{
+      font-size: 1.25em;
+      font-weight: 600;
+      color:var(--color-pop)
+    }
+    .survey-card-update{
+      color:var(--color-bright-3);
+    }
+    .designation{
+      background: var(--color-lane);
+      border-radius: 6px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-body-text);
+      transition: all .5s ease;
+      margin: .5em;
+    }
+    .designation-details{
+      display:flex;
+      flex-direction: column;
+    }
+    .designation-label{
+      font-size: 1.25em;
+      font-weight: 800;
+      color: var(--color-body-headers);
+    }
+    .designation-icon {
+      color: var(--color-pop);
+      font-size: 3em;
+      margin-right: .5em;
+    }
+    .designation-frequency{
+      font-weight: 600;
+      color: var(--color-body-subtitle);
+    }
+    .testDays{
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testDay{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background: var(--color-lane-subtler);
+      color: var(--color-body-subtitle);
+      flex-grow: 1;
+      padding:1em;
+      flex-basis: 0;
+      flex-shrink: 1;
+      margin: 1em 1em 2em 1em;
+      position: relative;
+      border-radius: 3px;
+    }
+    .testDay.active{
+      background: var(--color-pop);
+      color:var(--color-light)
+    }
+    .testDay.active:after{
+      content: "\f058 ";
+      margin-right: .25em;
+      font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
+      color: var(--color-bright-2);
+      position: absolute;
+      top: 100%;
+      font-size: 1.5em;
+      font-weight: 600;
+      }
+    .testDay span:first-of-type{
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .testDay span:nth-of-type(2){
+      font-size: .75em;
+      font-weight: 400;
+    }
+    .quick-links{
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+    .quick-links a{
+      display: flex;
+      background: var(--color-pop)!important;
+      color: var(--color-light)!important;
+      box-shadow: var(--shadow-standard-y);
+      text-align: center;
+      border-radius: 3px;
+      padding: 1em;
+      transition: all .5s ease;;
+    }
+    .quick-links a:hover,.quick-links a:active,.quick-links a:focus{
+      background: var(--color-pop-h)!important;
+      color: var(--color-lane)!important;
+      box-shadow: var(--shadow-standard--h);
+    }
+    .profile-section-content h3 + p{
+      margin-top:-1em;
+    }
+    .designation-badges{
+      display: flex;
+    }
+
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-around;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+    overflow: hidden;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+  .course-label{
+  font-size:.875em;
+  color:var(--color-body-text);
+  font-weight:600;
+  }
+.course-item-text{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    display: flex;
+    width:50%;
+  }
+.course-item-cap{
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  display: flex;
+}
+.course-item-dept{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:1em;  
+    width:15%;
+    max-width:15%;
+    font-weight: 600;
+    font-size: 2em;
+    color:var(--color-pop)
+  }
+.course-item-title{
+    font-weight: 600;
+  }
+.course-item-crn{
+  color:var(--color-body-subtitle);
+}
+.course-item-actions{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+.course-item-remove{
+  width: 1.5em;
+  height: 1.5em;
+}
+.course-item-actions:hover a{
+  color: var(--color-pop);
+  background-color:var(--color-lane)
+}
+.course-item-instructor-email{
+  color:var(--color-body-subtitle);
+  font-size:.875em;
+}
+.course-item-instructor-email:before{
+  content:'(';
+}
+.course-item-instructor-email:after{
+  content:')';
+}
+.course-item-actions a{
+  font-weight: 800;
+  color: var(--color-body-text);
+  padding: 1em;
+  transition:all .5s ease;
+  border-radius: 3px;
+  width: 15%;
+}
+.empty-note{
+  width:100%;
+}
+.empty-note p {
+    background: var(--color-body);
+    color:var(--color-body-text);
+    padding: .5em;
+    text-align: center;
+    border: 1px dashed var(--color-lane-subtler);
+    transition:all .5s ease;
+}
+.empty-note p:hover {
+    background: var(--color-lane);
+}
+.profile-section h4 {
+  font-size: .875em;
+  font-weight: 600;
+  color: var(--color-pop);
+}
+.title-lane-buttons{
+  align-items: center;
+ display: flex;
+  justify-content: flex-end;
+}
+.testingBlock{
+  padding: 1em;
+}
+    @media screen and (max-width: 39.9375em) {
+      .quick-links{
+        flex-wrap: wrap;
+      }
+      .quick-links a{
+        width: 100%;
+        margin: .5em 0;
+        text-align: center;
+        padding: 1.5em 1em;
+        justify-content: center;
+      }
+    }
+    
+  </style>
+  <script src="https://embed.acuityscheduling.com/embed/bar/20814532.js" async></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+<% if(locals.intent && intent.length > 0){ %>
+  <% let output = "";
+  let statusIcon = "";
+  let dueDate = "";
+
+  if(intent.length > 0){
+    
+    for (let intentItem of intent){
+      let status = intentItem.fields.find(f => f.name === 'Status')['value'];
+
+        let fromCherwellStart = moment(new Date(intentItem.fields.find(f => f.name === 'ActiveDate')['value']));
+        // let fromCherwellEnd = moment(new Date(intentItem.fields.find(f => f.name === 'Deadline')['value']));
+        let fromCherwellEnd = moment('2020-11-25 09:00:00-05:00')
+        let validDate = moment().isBetween(fromCherwellStart,fromCherwellEnd);
+        if(intentItem.fields.find(f => f.name === 'Status')['value'] != "Withdrawn" && validDate == true){
+          if(status =="Waiting"){
+            statusIcon = `<i class="fas fa-clock" style="color:var(--color-bright-1)"></i>`
+          }else if(status =="Completed"){
+            statusIcon = `<i class="fas fa-check-circle" style="color:var(--color-bright-2)"></i>`
+          }
+          // Temp status icons for Special BTerm process
+          if(intentItem.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "" || intentItem.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == null){
+            statusIcon = `<i class="fad fa-exclamation-triangle" style="color:var(--color-bright-3);font-size:3em"></i>`;
+            dueDate = `<div class="survey-card-due"><strong>Response Due ASAP</strong></div>`
+          }else{
+            statusIcon = `<i class="fad fa-check-circle" style="color:var(--color-bright-2);font-size:3em"></i>`;
+            dueDate = "";
+          }
+          // <div class="survey-card-title">${intentItem.fields.find(f => f.name === 'TermName')['value']} Intent Survey</div>
+          // <div class="survey-card-due"><strong>Responses Due</strong> ${fromCherwellEnd.format('MMM Do YYYY, h:mm:ss a')}</div>
+          // <div>${statusIcon} ${intentItem.fields.find(f => f.name === 'Status')['value']}</div>
+          output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                          <div class="survey-card-det">
+                            <div class="survey-card-title">Alert Status Yellow - Stay-in-Place Survey</div>
+                            <div class="survey-card-update"><i class="fad fa-exclamation-triangle"></i> Important Update About Campus Alert Status</div>
+                            ${dueDate}
+                          </div>
+                          <div class="survey-card-status">
+                            <div>${statusIcon}</div>
+                          </div>
+                        </a>`
+        }
+
+    }
+  } %>
+  <div class="grid-x grid-margin-x">
+
+    <div class="cell medium-12 box card profile-section">
+      <h2><i class="custom-icon"><%- include('../partials/components/tech-flex-svg.ejs'); %></i> <span>My TechFlex</span></h2>
+      <div class="profile-section-content">
+        <div class="cell medium-12 empty-note">
+          <!-- <p><i class="fad fa-turkey"></i> <strong>Changing & Updating Thanksgiving Status Responses is now closed</strong>.<br> Responses may no longer be changed or updated. If you have an <strong>emergency</strong> regarding your plans please contact the <a href="mailto:dean-of-students@wpi.edu" target="_blank">Dean of Students</a> office.</p> -->
+          <p><i class="fad fa-exclamation-triangle"></i> <strong>New Questions Added</strong>.<br> Given the change in Campus Alert Status, please let us know your plans for the remainder of B-Term / Fall semester including the Thanksgiving Holiday, even if you have already told us your Thanksgiving Plans.</p>
+
+        </div>
+        <% if(intent.length > 0 && output != ""){ %>
+        <div class="cell small-6">
+          <h3>Student Intent Survey</h3>
+          <p>You have the following intent survey assigned to you. You can submit, and update your answers any time until the listed deadline</p>
+        </div>
+        <div>
+          <%-output%>
+        </div>
+      <% }else{ %>
+        <div class="cell medium-12 empty-note">
+          <p>You do not currently have any assigned Intent Surveys at this time</p>
+
+        </div>
+      <% } %>
+      </div>
+    </div>
+    <!-- <div class="cell medium-12 box card profile-section">
+      <h2><i class="far fa-band-aid"></i> <span>Flu Vaccine</span></h2>
+      <div class="profile-section-content">
+        <div class="cell small-6">
+          <h3>Flu Vaccine required for All WPI Students</h3>
+          <p>Per the Massachusetts State Mandate, WPI is requiring students to get a flu vaccination by Dec. 1. Verification of flu vaccination must be uploaded to the health portal by <strong>December 1st or a hold will be placed on your WPI account.</strong></p>
+          <h3>Where can I get a flu shot?</h3>
+          <p>You can get your flu shot at your primary healthcare provider's office or at a local pharmacy such as <a href="https://www.cvs.com/minuteclinic/services/flu-shots" target="_blank" rel="noreferrer noopener">CVS</a> and <a href="https://www.walgreens.com/locator/walgreens-320+park+ave-worcester-ma-01610/" target="_blank" rel="noreferrer noopener">Walgreens</a>.</p>          
+          <div class="cell small-12 quick-links">
+            <a target="_blank" rel="noopener noreferrer" href="https://wpi.medicatconnect.com/" target="_blank">Upload Verification to WPI Health Portal</a>
+          </div>
+        </div>
+
+      </div>
+    </div> -->
+    
+    <% 
+    var CurrentIntent = "";
+    const currentTerm = "202001";
+    const currentPTerm = "B";
+    for (let intentItem of intent){ 
+        
+        if(intentItem.fields.find(f => f.name === 'Term')['value'] == currentTerm && intentItem.fields.find(f => f.name === 'PTerm')['value'] == currentPTerm){
+          CurrentIntent = intentItem;
+        }else{
+          
+        }
+
+      }
+
+    %>
+    <% if(intent.length > 0 && CurrentIntent != false && CurrentIntent.fields.find(f => f.name === 'Status')['value'] == "Completed" && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "On-Campus"){ %>
+      <% const isSunday = CurrentIntent.fields.find(f => f.name === 'TestSunday')['value'] == "True" ? "active" : "";
+      const isMonday = CurrentIntent.fields.find(f => f.name === 'TestMonday')['value'] == "True" ? "active" : "";
+      const isTuesday = CurrentIntent.fields.find(f => f.name === 'TestTuesday')['value'] == "True" ? "active" : "";
+      const isWednesday = CurrentIntent.fields.find(f => f.name === 'TestWednesday')['value'] == "True" ? "active" : "";
+      const isThursday = CurrentIntent.fields.find(f => f.name === 'TestThursday')['value'] == "True" ? "active" : "";
+      const isFriday = CurrentIntent.fields.find(f => f.name === 'TestFriday')['value'] == "True" ? "active" : "";
+      const isSaturday = CurrentIntent.fields.find(f => f.name === 'TestSaturday')['value'] == "True" ? "active" : "";
+      const plural = CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] > 1 ? "s" : "";
+      %>
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="far fa-hourglass"></i><span> Testing</span></h2>
+        <div class="profile-section-content">
+          <h3>Current Designation</h3>
+          <p>Your current designation indicates your current participation in the WPI Testing program as determined by your answers to the Intent Survey.</p>
+          <div class="designation-badges grid-x grid-margin-x">
+          <div class="cell small-12 medium-12 large-6 designation">
+            <div class="designation-icon"><i class="fad fa-shield-virus"></i></div>
+            <div class="designation-details">
+              <div class="designation-label">In Testing Program</div>
+              <div class="designation-frequency"><%= CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] %>x/weekly</div>
+            </div>
+          </div>
+
+          <% if(CurrentIntent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Departing"){ %>
+          <div class="cell small-12 medium-12 large-6 designation">
+            <div class="designation-icon"><i class="fad fa-turkey"></i></div>
+            <div class="designation-details">
+              <div class="designation-label">Departing</div>
+              <div class="designation-frequency">Campus for Thanksgiving and the last 2 weeks of B-Term / Fall semester</div>
+            </div>
+          </div>
+          <% } %>
+          <% if(CurrentIntent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Remaining"){%>
+          <div class="cell small-12 medium-12 large-6 designation">
+            <div class="designation-icon"><i class="fad fa-turkey"></i></div>
+            <div class="designation-details">
+              <div class="designation-label">Remaining</div>
+              <div class="designation-frequency">On Campus for Thanksgiving and the last 2 weeks of B-Term / Fall semester</div>
+            </div>
+          </div>
+          <% } %>
+          </div>
+          <div class="grid-x" style="margin-top:.5em">
+            <div class="cell small-6">
+              <h3>Assigned Testing Day<%-plural%></h3>
+            </div>
+            
+            <div class="cell small-6 text-right title-lane-buttons">
+              <a target="_blank" href="https://hub.wpi.edu/article/757/request-change-to-covid-testing-day" class="title-lane-button">Request Change of Test Day</a>
+            </div>
+          </div>
+          <p>Each day you are assigned to participate in testing will be indicated here, make sure to book your weekly test<%-plural%> using the provided link below.</p>
+          <div class='testingBlock'>
+          <h4>Test Schedule - Nov 15 -21</h4>
+          <div class="cell small-12 testDays">
+            <div class="testDay <%-isSunday%>"><span>S</span><span>Sunday</span></div>
+            <div class="testDay <%-isMonday%>"><span>M</span><span>Monday</span></div>
+            <div class="testDay <%-isTuesday%>"><span>T</span><span>Tuesday</span></div>
+            <div class="testDay <%-isWednesday%>"><span>W</span><span>Wednesday</span></div>
+            <div class="testDay <%-isThursday%>"><span>R</span><span>Thursday</span></div>
+          </div>
+          <h4>Test Schedule - Nov 22 -28</h4>
+          <% if(CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] <= 1){%>
+          
+            <div class="cell medium-12 empty-note">
+            <p><i class="fad fa-turkey"></i> For the week of Thanksgiving (Nov 22 - 28) please make an appointment for testing on <strong>Sunday, Monday, or Tuesday</strong> as testing facilities will be closed Wed through Sat for the holiday.</p>
+          </div>
+          <% } %>
+
+          <% if(CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] >= 2){%>
+            <div class="cell medium-12 empty-note">
+              <p><i class="fad fa-turkey"></i> As a person with <strong><%= CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] %>x tests per week</strong>, for the week of Thanksgiving (Nov 22 - 28) please make an appointment for testing on <strong>Sunday and Tuesday</strong> as testing facilities will be closed Wed through Sat for the holiday.</p>
+            </div>
+          <% } %>
+          <% if(CurrentIntent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Remaining"){%>
+          <h4>Test Schedule - Nov 29 - End of B Term</h4>
+          <div class="cell small-12 testDays">
+            <div class="testDay <%-isMonday%> <%-isSunday%>"><span>M</span><span>Monday</span></div>
+            <div class="testDay <%-isWednesday%>"><span>W</span><span>Wednesday</span></div>
+            <div class="testDay <%-isThursday%> <%-isTuesday%>"><span>R</span><span>Thursday</span></div>
+          </div>
+          <% } %>
+          </div>
+          <h3>Quick Links</h3>
+          <div class="cell small-12 quick-links">
+            <% if(CurrentIntent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Remaining"){%>
+            <a href="#"  data-open="testingHours">Testing Hours</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=<%- locals.userAttributes.givenname%>&lastName=<%- locals.userAttributes.surname%>&email=<%- locals.userAttributes.emailaddress%>&phone=<%-CurrentIntent.fields.find(f => f.name === 'Phone')['value']%>" target="_blank" class="acuity-embed-button">Schedule Your Tests</a>
+            <% } %>
+            <a target="_blank" rel="noopener noreferrer" href="https://crsp.careevolve.com/Patient/Profile/Login">Access Results Portal</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://apps.powerapps.com/play/e985cef5-c57c-4e21-9a1f-36190e13a239?tenantId=589c76f5-ca15-41f9-884b-55ec15a0672a">Use Symptom Tracker</a>
+          </div>
+        </div>
+      </div>
+    <% }if(intent.length > 0 && CurrentIntent != false && CurrentIntent.fields.find(f => f.name === 'Status')['value'] == "Completed" && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "Remote Learner"){ %>
+    
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="far fa-hourglass"></i><span> Testing</span></h2>
+        <div class="profile-section-content">
+          <h3>Current Designation</h3>
+          <p>Your current designation indicates your current participation in the WPI Testing program as determined by your answers to the Intent Survey.</p>
+          <div class="cell small-12 designation">
+            <div class="designation-icon"><i class="fad fa-laptop-house"></i></div>
+            <div class="designation-details">
+              <div class="designation-label">Remote Learner</div>
+              <div class="designation-frequency"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+<% }else{ %>
+  <div class="grid-x grid-margin-x">
+    <div class="cell medium-12 box card profile-section">
+      <h2><i class="custom-icon"><%- include('../partials/components/tech-flex-svg.ejs'); %></i> <span>My TechFlex</span></h2>
+      <div class="profile-section-content">
+
+        <div class="cell medium-12 empty-note">
+          <p>You do not appear to have an active intent survey, or assigned designation at this time</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<div class="cell medium-12 box card profile-section">
+  <h2><i class="far fa-books"></i> <span>My Courses</span></h2>
+  <div class="profile-section-content">
+    <h3>Fall 2020 & B Term Courses</h3>
+    <p>Based upon information provided by WPI Faculty, your courses have the following delivery methods specified. Please note that this information can change as new information is submitted.</p>
+    <div class="cell small-6 grid-x grid-margin-x">
+      <% if(onlineCourses.length){ %>
+        <h4 class="cell small-12">Online Courses</h4>
+        <% for (courseOut of onlineCourses){
+          if(courseOut != null){
+          let instructor = courseOut.PRIMARY_INSTRUCTOR.match(/PRIMARY:(.*)/i);
+              instructor = instructor[1].split("\\")%>
+
+          <div id="Course-<%=courseOut.CRN%>" class="course-item cell small-12 medium-12 large-6" data-crn="<%=courseOut.CRN%>">
+            <div class="course-item-dept">
+              <%=courseOut.DEPT%>
+            </div>
+            <div class="course-item-text">
+              <div class="course-item-title"><%=courseOut.LONG_TITLE%></div>
+              <div class="course-item-instructor"><%=instructor[2]%> <a class="course-item-instructor-email"href="mailto:<%=instructor[3]%>"><%=instructor[3]%></a></div>
+              <div class="course-item-list"><span class="course-item-crn"><%=courseOut.CRN%></span> - <span class="course-item-course"><%=courseOut.COURSE%></span></div>
+              <div class="course-item-credit-block"><span class="course-item-credit"><%=courseOut.CREDIT%></span> Credit Hours</div>
+            </div>
+          </div>
+        <% }} %>
+      <% } %>
+      <% if(offlineCourses.length){ %>
+        <h4 class="cell small-12">In Person / Hybrid</h4>
+        <% for (courseOut of offlineCourses){
+          if(courseOut != null){
+          let instructor = courseOut.PRIMARY_INSTRUCTOR.match(/PRIMARY:(.*)/i);
+              instructor = instructor[1].split("\\") %>
+
+          <div id="Course-<%=courseOut.CRN%>" class="course-item cell small-12 medium-12 large-6" data-crn="<%=courseOut.CRN%>">
+            <div class="course-item-dept">
+              <%=courseOut.DEPT%>
+            </div>
+            <div class="course-item-text">
+              <div class="course-item-title"><%=courseOut.LONG_TITLE%></div>
+              <div class="course-item-instructor"><%=instructor[2]%> <a class="course-item-instructor-email"href="mailto:<%=instructor[3]%>"><%=instructor[3]%></a></div>
+              <div class="course-item-list"><span class="course-item-crn"><%=courseOut.CRN%></span> - <span class="course-item-course"><%=courseOut.COURSE%></span></div>
+              <div class="course-item-credit-block"><span class="course-item-credit"><%=courseOut.CREDIT%></span> Credit Hours</div>
+            </div>
+          </div>
+       <%}} %>
+      <% } %>
+      <% if(allCourses.length){ %>
+        <% if(!offlineCourses.length && !onlineCourses.length) { %>
+          <h4 class="cell small-12">Special Courses & Projects</h4>
+        <% }else{ %>
+          <h4 class="cell small-12">Other Courses & Projects</h4>
+        <% } %>
+        <p class="cell small-12">Delivery Method for these items is determined through coordination of the assigned faculty member and student.</p>
+        <% for (courseOut of allCourses){  
+          if(courseOut != null){ %>
+
+          <div id="Course-<%=courseOut.CRN%>" class="course-item cell small-12 medium-12 large-6" data-crn="<%=courseOut.CRN%>">
+            <div class="course-item-dept">
+              <i class="fas fa-backpack"></i>
+            </div>
+            <div class="course-item-text">
+              <div class="course-item-title"><%=courseOut.COURSE%></div>
+              <div class="course-item-list"><span class="course-item-crn"><%=courseOut.CRN%></span> - <span class="course-item-course"><%=courseOut.COURSE%></span></div>
+              </div>
+          </div>
+        <% }} %>
+      <% } %>
+      <% if(!offlineCourses.length && onlineCourses.length){ %>
+        <div class="cell medium-12 empty-note">
+          <p><i class="fad fa-info-circle"></i> You do not currently have any <strong>In Person / Hybrid Courses</strong> listed at this time.</p>
+        </div>
+      <% } %>
+      <% if(!onlineCourses.length && offlineCourses.length){ %>
+        <div class="cell medium-12 empty-note">
+          <p><i class="fad fa-info-circle"></i> You do not currently have any <strong>Online Courses</strong> listed at this time.</p>
+        </div>
+      <% } %>
+      <% if(!onlineCourses.length && !offlineCourses.length){ %>
+        <div class="cell medium-12 empty-note">
+          <p><i class="fad fa-info-circle"></i> You do not currently have any <strong>In Person / Hybrid Courses</strong> or <strong>Online Courses</strong> listed at this time.</p>
+        </div>
+      <% } %>
+    </div>
+    <div>
+    </div>
+    <div class="reveal" id="testingHours" data-reveal>
+      <h1>Testing Hours of Operation</h1>
+      <p class="lead">If you are experiencing symptoms at any time, do not get tested at Harrington.</p>
+      <p>Students: Please call Health Services at 508-831-5520 to arrange a symptomatic test and fill out your symptom tracker</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Appointment Only</th>
+              <th>Make Up</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sunday</td>
+              <td>10am-1:30pm, 2:30pm-5pm</td>
+              <td>5-6pm</td>
+            </tr>
+            <tr>
+              <td>Monday</td>
+              <td>10am-1:30pm, 2:30pm-5pm</td>
+              <td>5-6pm</td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td>5:50am-10am, 11am- 1pm</td>
+              <td>1-2pm</td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>10am-1:30pm, 2:30pm-5pm</td>
+              <td>5-6pm</td>
+            </tr>
+            <tr>
+              <td>Thursday </td>
+              <td>10am-1:30pm, 2:30pm-5pm</td>
+              <td>5-6pm</td>
+            </tr>
+          </tbody>
+        </table>
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

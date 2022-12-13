@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/hub-lever.js'></script>
+  <style>
+
+    .hub-greeting{
+      text-align: center;
+      padding: 1em;
+      color: var(--color-pop);
+    }
+
+    #happy{
+        background-size: contain;
+        height: 40vh;
+        background-repeat: no-repeat;
+        transition: background 1s linear;
+        display: none;
+        background-position: center;
+    }
+    #button{
+        display: flex;
+        justify-content: center;
+        margin: 1em;
+    }
+    #button a{
+        padding: 1em 2em;
+        font-size:1.5em;
+        border-radius: 3px;
+        font-weight: 600;
+        color:var(--color-light);
+        background:var(--color-pop);
+        box-shadow: var(--shadow-standard-y);
+        transition:all .5s ease
+    }
+    #button a:hover{
+        color:var(--color-light);
+        background:var(--color-pop-h);
+        box-shadow: var(--shadow-standard-y-h);
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div id="">
+
+
+    <div class="grid-container fluid">
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+          <div class="cell small-12 hub-greeting">
+            <h2 style="font-weight: 800;">The Lever</h2>
+          </div>
+          
+          <div class="cell small-12" id="happy">
+
+          </div>
+          <div class="cell small-12" id="button">
+            <a href="#">Push for Serotonin</a>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,91 @@
+<% if (locals.toasts && toasts.length) { %>
+  <!-- Toaster component -->
+  <style>
+    .toaster {
+      position: fixed;
+      right: 10px;
+      top: 100px;
+      z-index: 98;
+    }
+    .toast {
+      position: relative;
+      border-radius: 3px;
+      display: none;
+      width: 300px;
+      padding: 0.5em 1em;
+      color: var(--color-chrome);
+      box-shadow: var(--shadow-double-y);
+      margin-bottom: 1em;
+    }
+    .toast.show {
+      display: block;
+    }
+    .toast h3 {
+      font-family: "Roboto", sans-serif;
+      border-bottom: 1px solid var(--color-light);
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--color-chrome);
+      margin: 0 -1em;
+      padding: 0 1em;
+    }
+    .toast p {
+      font-family: "Roboto", sans-serif;
+    }
+    .toast button.toast-close {
+      outline: none;
+      padding: 0.25em;
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: var(--color-chrome);
+      cursor: pointer;
+    }
+    .toast.info {
+      background: var(--color-bright-1);
+    }
+    .toast.success {
+      background: var(--color-bright-2);
+    }
+    .toast.warning {
+      background: var(--color-bright-3);
+    }
+    .toast.error {
+      background: var(--color-bright-4);
+    }
+    .toast h3::before {
+      font-family: "Font Awesome 5 Pro";
+    }
+    .toast.info h3::before {
+      content: '\f05a';
+    }
+    .toast.success h3::before {
+      content: '\f058';
+    }
+    .toast.warning h3::before {
+      content: '\f071';
+    }
+    .toast.error h3::before {
+      content: '\f5ec';
+    }
+  </style>
+  <div class="toaster">
+    <% for (let toast of toasts) { %>
+      <div id="<%= toast.id %>" class="toast <%= toast.type %><%= toast.show ? ' show' : '' %>">
+        <h3> <%= toast.title %></h3>
+        <p class='toast-message'><%= toast.message %></p>
+        <button class='toast-close'><i class='fas fa-fw fa-times'></i><span class="sr-only">Close Message</span></button>
+      </div>
+    <% } %>
+  </div>
+  <script>
+    window.addEventListener('load', function() {
+      var toastClosers = document.getElementsByClassName('toast-close');
+      for (var toastCloserIndex = 0; toastCloserIndex < toastClosers.length; toastCloserIndex++) {
+        toastClosers[toastCloserIndex].addEventListener('click', function(event) {
+          event.currentTarget.closest('.toast').classList.remove('show');
+        });
+      }
+    });
+  </script>
+<% } %>

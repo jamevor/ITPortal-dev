@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type="text/javascript" src="/js/console/permissions.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-user-lock"></i>Permissions</h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class="filter-find" type="text" placeholder="Find a user...">
+    </div>
+    <div class="cell medium-6">
+      <button class="console-add"><i class="far fa-plus-circle"></i> New User Permission</button>
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <%- include('../partials/api/permissions-checker.ejs'); %>
+
+    <table class='table' id='permissions-table'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const userPermissionLevel of locals.userPermissionLevels) { %>
+          <tr>
+            <td><%= userPermissionLevel.user.id %></td>
+            <td><%= userPermissionLevel.user.givenname + ' ' + userPermissionLevel.user.surname %></td>
+            <td><%= userPermissionLevel.user.username %></td>
+            <td class="action-links">
+              <a href="/console/user-permissions/edit/<%= userPermissionLevel.user.guidPublic %>"><i class="far fa-fw fa-edit"></i> </a>
+            </td>
+          </tr>
+        <% } %>
+
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

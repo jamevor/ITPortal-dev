@@ -1,0 +1,228 @@
+<% let quickAppsEnabled = false; %>
+<% if (!(locals.userApps && userApps.length) && (locals.quickApps && Array.isArray(quickApps) && quickApps.length)) {
+  quickAppsEnabled = true;
+} %>
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('./partials/flickity.ejs'); %>
+  <%- include('./partials/header.ejs'); %>
+  <%- include('./partials/moment.ejs'); %>
+  <script async type='text/javascript' src='/modules/ColorConverter.js'></script>
+  <script async type='text/javascript' src='/js/components/CarouselCell.js'></script>
+  <script async type='text/javascript' src='/js/components/NewsCard.js'></script>
+  <script defer type='text/javascript' src='/js/pages/index.js'></script>
+  <% if (quickAppsEnabled) { %>
+    <script defer type='text/javascript' src='/js/pages/quick-apps.js'></script>
+  <% } %>
+  <link rel="stylesheet" href="/css/my-apps.css">
+  <link rel="stylesheet" href="/css/ticket.css">
+</head>
+<%- include('./partials/layout/top.ejs'); %>
+<h1 class="show-for-sr">WPI ITS Home</h1>
+<%- include('./partials/components/alert.ejs'); %>
+
+<% if (locals.twelveDaysOfITSCampaignIsActive) { %>
+  <%- include('./partials/components/twelveDaysOfITSCampaignStatus.ejs', {user, twelveDaysOfITSCampaignStatus}); %>
+<% } %>
+
+<div class="grid-container fluid swim-lane" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container", "preference":true, "preference-storage":"featured"}'>
+  <div class="grid-container fluid">
+    <div class="grid-x grid-margin-x featured-content">
+    </div>
+  </div>
+</div>
+<% if (locals.user && ((locals.userApps && userApps.length) || (locals.quickApps && Array.isArray(quickApps) && quickApps.length))) { %>
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x title-lane align-bottom">
+        <h2 class="cell small-6">My Apps</h2>
+        <div class="cell small-6 text-right">
+          <a href="/Me/My-Apps" class="title-lane-button">View My Apps</a>
+        </div>
+      </div>
+
+      <% if (quickAppsEnabled) { %>
+        <div class="grid-x grid-margin-x">
+          <div class="cell medium-12 my-apps empty">
+            <div class="grid-x grid-margin-x">
+              <div class="cell large-6 medium-12">
+                  <div class="ticket-sub-item outgoing">
+                    <div class="ticket-sub-item-icon hide-for-small-only"></div>
+                    <div class="ticket-sub-item-event-group">
+                      <p class="ticket-sub-item-event-author hide-for-small-only"> InTRo</p>
+                      <div class="ticket-sub-item-event">
+                        <p>Hey there <strong><%- locals.userAttributes.givenname %></strong>,</P>
+                        <p>It looks like you don't currently have any favorite Apps!</p>
+                        <p>Adding apps as favorites will add them for quick-access.</p>
+                        <p>Click on the <i class="fas fa-heart" style="color:var(--color-bright-4)"><span class="show-for-sr">Heart</span></i> to quick-favorite some apps!</p>
+                      </div>
+                      <div class="sub-text hide-for-small-only">
+                        <p><strong>Looking for something Else?</strong> <br> The WPI App Marketplace has dozens more to browse!</p>
+                        <a href="/Me/My-Apps" class="button"><i class="far fa-plus-circle"></i> Customize My Apps</a>
+                      </div>
+                    </div>
+                </div>
+                  
+              </div>
+                <div class="cell large-6 medium-12">
+                  <h3 style="font-size: 1em;font-weight: 800;">Suggested Apps</h3>
+                  <div class="grid-x grid-padding-x quickTray small-up-3 medium-up-4 large-up-4">
+
+                    <% for (const myApp of locals.quickApps) { %>
+                      <div class="cell quickapp" data-appid="<%= myApp.id %>">
+                        <div class="img" style="background-image:url('<%= myApp.imageSrc || "/img/ico-intro.svg" %>')"></div>
+                        <div class="title"><%- myApp.title %></div>
+                        <div class="favoriteMe">
+                          <input class="toggle-heart checkable" id="toggle-heart-<%= myApp.guid %>" type="checkbox">
+                          <label class="toggle-heart-label" for="toggle-heart-<%= myApp.guid %>" aria-label="like"><i class="fas fa-heart"></i></label>
+                        </div>
+                      </div>
+                    <% } %>
+
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="cell medium-12 my-apps">
+          <div class="grid-x grid-padding-x">
+            <% for (let myApp of userApps) { %>
+              <a href="<%= myApp.link %>" target="_blank" class="cell small-6 medium-auto box card app">
+                
+                  <div class="img" style="background-image:url('<%= myApp.imageSrc || "/img/ico-intro.svg" %>')"></div>
+                  <div class="title"><%- myApp.title %></div>
+                
+              </a>
+            <% } %>
+          </div>
+        </div>
+      <% } %>
+
+    </div>
+  </div>
+<% } %>
+
+<div class="grid-container fluid swim-lane dark" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container", "preference":true, "preference-storage":"featured"}'>
+  <div class="grid-container">
+
+    <div class="grid-x grid-margin-x">
+
+      <div class="cell small-12 medium-6 large-6 news-block">
+        <div class="grid-x grid-margin-x title-lane align-bottom">
+          <h2 class="cell small-6">Latest WPI News</h2>
+          <div class="cell small-6 text-right">
+            <a href="https://www.wpi.edu/news/latest/"  target="_blank" class="title-lane-button">View Latest WPI News</a>
+          </div>
+        </div>
+        <div class="grid-y wpinews-cards-wrapper">
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-6 large-6 news-block">
+        <div class="grid-x grid-margin-x title-lane align-bottom">
+          <h2 class="cell small-6">Hub News &amp; Events</h2>
+          <div class="cell small-6 text-right">
+            <a href="/News-and-Events" class="title-lane-button">View All Hub News</a>
+          </div>
+        </div>
+        <div class="grid-y news-cards-wrapper">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<% if (locals.subsites) { %>
+
+<% if (subsites.length) { %>
+  <style>
+    .all-sites .featured .site-item {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: var(--color-pop);
+      color: var(--color-light);
+      min-height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      position:relative;
+      margin-bottom:1em;
+      margin-top:1em;
+    }
+    .all-sites .featured .site-title {
+      color: var(--color-light);
+      font-weight: 600;
+      background:linear-gradient(to top, rgba(0,0,0,0.7) 25%,rgba(0,0,0,0) 100%);
+      width: 100%;
+      display: block;
+      padding: 1em;
+      position: absolute;
+      bottom: 0;
+      height: 33.333%;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+<div class="all-sites grid-container fluid swim-lane">
+  <div class="grid-container">
+
+    <div class="grid-x grid-margin-x title-lane align-bottom">
+      <h2 class="cell small-6">Featured Hub Sites</h2>
+      <div class="cell small-6 text-right">
+        <a href="/Sites" class="title-lane-button">View All Hub Sites</a>
+      </div>
+    </div>
+    <div class="grid-x grid-margin-x featured">
+      <% for (const subsite of subsites) { %>
+        <a class="cell small-12 medium-auto site-item" href="/s/<%- subsite.id %>" style="background-image:url('<%- subsite.image && subsite.image.src ? subsite.image.src : '' %>');">
+          <div class="site-title"><%- subsite.title %></div>
+        </a>
+      <% } %>
+    </div>
+  </div>
+</div>
+<% }%>
+<% }%>
+
+<div class="grid-container fluid swim-lane dark" data-size-control='{"display": true, "compactor":true, "thiccener":true, "compactor-item": "illustration-card", "thiccener-item":"grid-container"}'>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x text-center">
+
+      <a href="/Knowledge-Base" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/knowledge.svg')"></div>
+          <div class="title">Knowledge Base</div>
+      </a>
+      <a href="/Service-Catalog" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/service.svg')"></div>
+          <div class="title">Service Catalog</div>
+      </a>
+      <a href="/Software-Library" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/software.svg')"></div>
+          <div class="title">Software Library</div>
+      </a>
+      <a href="/Locations-and-Servers" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/locationwserver.svg')"></div>
+          <div class="title">Locations &amp; Servers</div>
+      </a>
+      <a href="/App-Marketplace" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/apps.svg')"></div>
+          <div class="title">App Marketplace</div>
+      </a>
+      <a href="/Sites" target="_blank" class="cell small-6 medium-auto box card app">
+          <div class="img" style="background-image:url('/img/hubsites.svg')"></div>
+          <div class="title">Hub Sites</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+
+<%- include('./partials/layout/bottom.ejs'); %>

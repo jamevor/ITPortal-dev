@@ -1,0 +1,581 @@
+<%- include('../partials/api/editorjsToHTML.ejs'); %>
+
+<%
+const endpoint = locals.article ? '/api/v1/article/update/one/' + article.id : '/api/v1/article/create/one';
+const method = locals.article ? 'PUT' : 'POST';
+
+let tabInternal,tabAlt,tab,ariaInternal,ariaAlt,aria = "";
+if (locals.article && article.useLegacy) {
+  if (locals.article && article.contentInternalLegacy && !article.contentLegacy && !article.contentAltLegacy) {
+    tabInternal = "is-active";
+    ariaInternal = "aria-selected='true'";
+  } else if (locals.article && !article.contentInternalLegacy && !article.contentLegacy && article.contentAltLegacy) {
+    tabAlt = "is-active";
+    ariaAlt = "aria-selected='true'";
+  } else {
+    tab = "is-active";
+    aria = "aria-selected='true'";
+  }
+} else {
+  if (locals.article && article.contentInternal && !article.content && !article.contentAlt) {
+    tabInternal = "is-active";
+    ariaInternal = "aria-selected='true'";
+  } else if (locals.article && !article.contentInternal && !article.content && article.contentAlt) {
+    tabAlt = "is-active";
+    ariaAlt = "aria-selected='true'";
+  } else {
+    tab = "is-active";
+    aria = "aria-selected='true'";
+  }
+}
+
+let contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/flickity.ejs'); %>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <%- include('../partials/editorjs.ejs'); %>
+    <%- include('../partials/dragula.ejs'); %>
+    <script type="text/javascript">
+      window.editorjs_initialize_data = {};
+      <% if (locals.article && article.content && article.content.length) { %>
+        window.editorjs_initialize_data.articleMain = <%- article.content %>;
+      <% } else { %>
+        window.editorjs_initialize_data.articleMain = {};
+      <% } %>
+      <% if (locals.article && article.contentAlt && article.contentAlt.length) { %>
+        window.editorjs_initialize_data.articleAlternate = <%- article.contentAlt %>;
+      <% } else { %>
+        window.editorjs_initialize_data.articleAlternate = {};
+      <% } %>
+      <% if (locals.article && article.contentInternal && article.contentInternal.length) { %>
+        window.editorjs_initialize_data.articleInternal = <%- article.contentInternal %>;
+      <% } else { %>
+        window.editorjs_initialize_data.articleInternal = {};
+      <% } %>
+    </script>
+    <script type='text/javascript' src='/js/console/EntityGroupsUtility.js' defer></script>
+    <script type='text/javascript' src='/js/console/article/edit.js' defer></script>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<% if (locals.edit) { %>
+  <% if (locals.article) { %>
+    <input type='hidden' id='article-id' name='articleID' value='<%= article.id %>'>
+  <% } %>
+  <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+  <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+<% } %>
+
+<% if (locals.article && article.image || locals.edit) { %>
+  <div class="grid-container fluid section-img" style="background-image:url('<%= locals.article && article.image ? article.image.src : "" %>');">
+    <% if (locals.edit) { %>
+      <div class="grid-container">
+        <div class="grid-y grid-margin-y">
+          <div class="cell small-12">
+            <input id="file" type="file" accept="image/*" hidden>
+            <input id="img-changed" value="false" hidden>
+            <input id="img-removed" value="false" hidden>
+            <label for="file">
+              <div class="edit-img-button"><i class="far fa-image"></i> Change Image</div>
+            </label>
+          </div>
+          <div class="cell small-12">
+            <button id="button-remove-image" class="edit-img-button"<%- locals.article && article.image ? '' : " style='display: none;'" %>><i class="far fa-minus-circle"></i> Remove Image</button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+<% } %>
+
+<div class="grid-container fluid swim-lane article<%= locals.edit ? ' edit' : ''%>" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x align-justify">
+
+
+      <div class="cell small-12 medium-8 large-7 two-col-content">
+
+
+        <nav aria-label="You are here:" role="navigation">
+          <ul class="breadcrumbs">
+            <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+            <li><a href="/Knowledge-Base"><span class="show-for-sr">Knowledge Base</span>Knowledge Base</a></li>
+            <li><a href='#'>
+                <span class="show-for-sr">Current: </span> <%- locals.article ? article.title : '' %>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <% if (locals.article
+            && (
+                  (!article.useLegacy && Object.keys(article).filter(o => o == 'content' || o == 'contentInternal' || o == 'contentAlt').length > 1)
+              ||  (article.useLegacy && Object.keys(article).filter(o => o == 'contentLegacy' || o == 'contentInternalLegacy' || o == 'contentAltLegacy').length > 1)
+            )
+            || locals.edit
+            ) { %>
+          <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge-delay="500" data-tabs id="ArticleSubType">
+            <% if(locals.article && ((!article.useLegacy && article.content) || (article.useLegacy && article.contentLegacy)) || locals.edit) { %>
+              <li class="tabs-title <%- tab %>"><a href="#articleMain" <%- aria %>>Main Article</a></li>
+            <% } %>
+
+            <% if(locals.article && ((!article.useLegacy && article.contentAlt) || (article.useLegacy && article.contentAltLegacy)) || locals.edit) { %>
+              <li class="tabs-title <%- tabAlt %>"><a href="#articleAdvanced" <%- ariaAlt %>>Advanced</a></li>
+            <% } %>
+
+            <% if(locals.article && ((!article.useLegacy && article.contentInternal) || (article.useLegacy && article.contentInternalLegacy)) || locals.edit) { %>
+              <li class="tabs-title <%- tabInternal %>"><a href="#articleInternal" <%- ariaInternal %>>Internal</a></li>
+            <% } %>
+          </ul>
+        <% } %>
+
+        <h1 id='article-title' class="article-heading" <%= contentEditable %> <%- locals.edit ? 'placeholder="Article Title"' : '' %>><%- locals.article ? article.title : '' %></h1>
+        <% if (locals.article && article.descriptionShort || locals.edit) { %>
+          <p id='article-summary' class="article-summary" <%= contentEditable %> <%- locals.edit ? 'placeholder="Article Summary"' : '' %>><%- locals.article && article.descriptionShort ? article.descriptionShort : '' %></p>
+        <% } %>
+        
+
+        <div class="article-body" data-tabs-content="ArticleSubType">
+          <% if(locals.article && (article.content || article.contentLegacy || (Array.isArray(article.articleContents) && article.articleContents.length)) || locals.edit) { %>
+            <%
+              let articleMainDiv = ``;
+              if (locals.article && article.useLegacy && article.contentLegacy && article.contentLegacy.length) {
+                articleMainDiv = article.contentLegacy;
+              } else if (locals.article && !article.useLegacy && article.content && article.content.length && !locals.edit  && JSON.parse(article.content).blocks) {
+                articleMainDiv += editorjsToHTML(article.content);
+              }
+            %>
+            <div id="articleMain" class="tabs-panel <%- tab %>">
+              <% if (locals.edit) { %>
+                <div class="grid-container fluid swim-lane dark" style="border-radius:3px">
+                    <div class="grid-x grid-margin-x">
+                      <div class="cell auto">
+                        <div class="grid-container">
+                          <h2 style="font-size: 1.25em;text-transform: capitalize;font-weight: 600;">Layout Options</h2>
+                          <h3 style="font-size: .875em;font-weight: 600;">Article Sections</h3>
+                          <div class="grid-x grid-margin-x">
+                            <a class="cell small-6 medium-4 large-auto layout-option<%- (!locals.article) || (locals.article && article.displayMode === 'inline') ? ' chosen' : '' %>" data-displaymode="inline">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs><style>.svg-color-norm{fill:var(--color-body-headers);}.svg-color-pop{fill:var(--color-pop);}</style></defs><rect class="svg-color-norm" x="67.11" y="60.37" width="80.71" height="14.59"/><rect class="svg-color-norm" x="67.11" y="84.07" width="195.48" height="7.29"/><rect class="svg-color-norm" x="67.11" y="96.04" width="185.97" height="7.29"/><rect class="svg-color-norm" x="67.11" y="108" width="191.02" height="7.29"/><rect class="svg-color-norm" x="67.11" y="119.97" width="160.73" height="7.29"/><rect class="svg-color-norm" x="67.11" y="131.93" width="72.52" height="7.29"/><rect class="svg-color-pop" x="203.64" y="167.87" width="0.3" height="0.3"/><rect class="svg-color-norm" x="67.69" y="160.77" width="80.71" height="14.59"/><rect class="svg-color-norm" x="67.69" y="184.48" width="170.09" height="7.29"/><rect class="svg-color-norm" x="67.69" y="196.44" width="185.97" height="7.29"/><rect class="svg-color-norm" x="67.69" y="208.41" width="148.75" height="7.29"/><rect class="svg-color-norm" x="67.69" y="220.37" width="185.97" height="7.29"/><rect class="svg-color-norm" x="67.69" y="232.34" width="155.42" height="7.29"/><rect class="svg-color-pop" x="37.5" y="60.37" width="19.83" height="78.86"/><rect class="svg-color-pop" x="37.5" y="160.66" width="19.83" height="78.86"/></svg>
+                              <p>Inline</p>
+                            </a>
+                            <a class="cell small-6 medium-4 large-auto layout-option<%- locals.article && article.displayMode === 'collapse' ? ' chosen' : '' %>" data-displaymode="collapse">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs><style>.svg-color-pop{fill:var(--color-pop);}.svg-color-norm{fill:var(--color-body-headers);}</style></defs><rect class="svg-color-pop" x="203.26" y="183" width="0.3" height="0.3"/><rect class="svg-color-norm" x="66.73" y="59.62" width="80.71" height="14.59"/><rect class="svg-color-norm" x="66.73" y="83.32" width="195.48" height="7.29"/><rect class="svg-color-norm" x="66.73" y="95.29" width="185.97" height="7.29"/><rect class="svg-color-norm" x="66.73" y="107.25" width="191.02" height="7.29"/><rect class="svg-color-norm" x="66.73" y="119.22" width="160.73" height="7.29"/><rect class="svg-color-norm" x="66.73" y="131.18" width="72.52" height="7.29"/><rect class="svg-color-norm" x="67.31" y="175.91" width="80.71" height="14.59"/><rect class="svg-color-norm" x="67.31" y="199.61" width="170.09" height="7.29"/><rect class="svg-color-norm" x="67.31" y="211.57" width="185.97" height="7.29"/><rect class="svg-color-norm" x="67.31" y="223.54" width="148.75" height="7.29"/><rect class="svg-color-norm" x="67.31" y="235.5" width="185.97" height="7.29"/><rect class="svg-color-norm" x="67.31" y="247.47" width="155.42" height="7.29"/><path class="svg-color-pop" d="M37.12,35.79V55.62H262.17V35.79ZM247.93,49.62l-7.82-7.83h15.65Z"/><path class="svg-color-pop" d="M37.12,151.21v19.84H262.17V151.21Zm210.81,14.31-7.82-7.82h15.65Z"/></svg>
+                              <p>Collapse</p>
+                            </a>
+                            <a class="cell small-6 medium-4 large-auto layout-option<%- locals.article && article.displayMode === 'slide' ? ' chosen' : '' %>" data-displaymode="slide">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs><style>.svg-color-norm{fill:var(--color-body-headers);}.svg-color-pop{fill:var(--color-pop);}.svg-color-opq{opacity:0.5;}</style></defs><rect class="svg-color-norm" x="38.17" y="93.36" width="92.35" height="16.69"/><rect class="svg-color-norm" x="38.17" y="120.48" width="223.67" height="8.34"/><rect class="svg-color-norm" x="38.17" y="134.17" width="212.79" height="8.34"/><rect class="svg-color-norm" x="38.17" y="147.87" width="218.57" height="8.34"/><rect class="svg-color-norm" x="38.17" y="161.56" width="183.91" height="8.34"/><rect class="svg-color-norm" x="38.17" y="175.25" width="82.97" height="8.34"/><circle class="svg-color-pop" cx="132.79" cy="197.1" r="2.73"/><circle class="svg-color-opq  svg-color-pop" cx="140.26" cy="197.1" r="2.73"/><circle class="svg-color-opq  svg-color-pop" cx="147.74" cy="197.1" r="2.73"/><circle class="svg-color-opq  svg-color-pop" cx="155.21" cy="197.1" r="2.73"/><circle class="svg-color-opq  svg-color-pop" cx="162.68" cy="197.1" r="2.73"/><path class="svg-color-pop" d="M59,188.12a9,9,0,1,0,9,9A9,9,0,0,0,59,188.12Zm1.58,14.14L55.4,197.1,60.56,192Z"/><path class="svg-color-pop" d="M241,188.12a9,9,0,1,0,9,9A9,9,0,0,0,241,188.12Zm-.58,14.14V192l5.16,5.15Z"/></svg>
+                              <p>Slides</p>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              <% } %>
+              <section<%- locals.edit ? ' id="articleMainEditor"' : '' %>>
+                <%- !locals.edit ? articleMainDiv : '' %>
+              </section>
+              <% if (locals.edit) { %>
+                <div id="drag-container">
+                  <% if (locals.article) { %>
+                    <% for (const articleContent of article.articleContents) { %>
+                      <section class="article-article-contents" <%-`id="article-content-${articleContent.guid}" data-content="${encodeURIComponent(articleContent.content)}" data-id='${articleContent.id}' data-guid='${articleContent.guid}'` %>>
+                        <% if (locals.edit) { %>
+                          <div class="article-content-drag"><i class="fas fa-grip-lines article-content-drag-handle"></i><div class="article-content-drag-x"><i class="fas fa-times article-content-drag-x-icon"></i></div></div>
+                          <h2 <%= contentEditable %> placeholder="Section Title" class="article-article-contents-title"><%- articleContent.title %></h2>
+                        <% } %>
+                      </section>
+                    <% } %>
+                  <% } %>
+                </div>
+                <button id="button-add-article-content"><i class="far fa-plus-circle fa-fw"></i> Add Article Section</button>
+              <% } else {
+                if (locals.article) {
+                  switch (article.displayMode) {
+                    case 'inline':
+                      for (const articleContent of article.articleContents) { %>
+                        <section id="<%= articleContent.guid %>" class="article-content-inline">
+                          <h2><%- articleContent.title %></h2>
+                          <%- editorjsToHTML(articleContent.content); %>
+                        </section>
+                      <% }
+                      break;
+                    case 'collapse':
+                      for (const articleContent of article.articleContents) { %>
+                        <section id="<%= articleContent.guid %>" class="article-content-collapsable">
+                          <ul class="accordion" data-accordion data-allow-all-closed="true" data-slide-speed="500">
+                            <li class="accordion-item" data-accordion-item>
+                              <a href="#" class="accordion-title"><h2><%- articleContent.title %></h2></a>
+                              <div class="accordion-content" data-tab-content>
+                                <%- editorjsToHTML(articleContent.content); %>
+                              </div>
+                            </li>
+                          </ul>
+                        </section>
+                      <% }
+                      break;
+                    case 'slide': %>
+                      <div data-flickity='{ "adaptiveHeight": true, "draggable": false, "fullscreen": true }' class="article-content-slide-wrapper">
+                        <% for (const articleContent of article.articleContents) { %>
+                          <section id="<%= articleContent.guid %>" class="article-content-slide">
+                            <div class="article-content-slide-contents" data-simplebar>
+                              <h2><%- articleContent.title %></h2>
+                              <%- editorjsToHTML(articleContent.content); %>
+                            </div>
+                          </section>
+                        <% } %>
+                      </div>
+                      <%
+                    break;
+                  }
+                }
+              } %>
+            </div>
+          <% } %>
+          <% if (locals.article && (article.contentAlt || article.contentAltLegacy) || locals.edit) { %>
+            <%
+              let articleAdvancedDiv = '';
+              if (locals.article && article.useLegacy && article.contentAltLegacy && article.contentAltLegacy.length) {
+                articleAdvancedDiv = article.contentAltLegacy;
+              } else if (locals.article && !article.useLegacy && article.contentAlt && article.contentAlt.length && !locals.edit && JSON.parse(article.contentAlt).blocks) {
+                articleAdvancedDiv += editorjsToHTML(article.contentAlt);
+              }
+            %>
+            <div id="articleAdvanced" class="tabs-panel <%- tabAlt %>"><%- !locals.edit ? articleAdvancedDiv : '' %></div>
+          <% } %>
+          <% if(locals.article && (article.contentInternal || article.contentInternalLegacy) || locals.edit) { %>
+            <%
+              let articleInternalDiv = '';
+              if (locals.article && article.useLegacy && article.contentInternalLegacy && article.contentInternalLegacy.length) {
+                articleInternalDiv = article.contentInternalLegacy;
+              } else if (locals.article && !article.useLegacy && article.contentInternal && article.contentInternal.length && !locals.edit && JSON.parse(article.contentInternal).blocks) {
+                articleInternalDiv += editorjsToHTML(article.contentInternal);
+              }
+            %>
+            <div id="articleInternal" class="tabs-panel <%- tabInternal %>"><%- !locals.edit ? articleInternalDiv : '' %></div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4 two-col-sidebar">
+        
+      <% if (locals.edit) { %>
+        <input type="hidden" id='is-access-restricted' value="<%- locals.article && article.accessRestricted ? 'true' : 'false' %>">
+        <input type="hidden" id='can-remove-groups' value="<%- locals.canRemoveGroups %>">
+        <div class="box card" id="egu"></div>
+      <% } %>
+      
+      <% if(locals.article && article.actions.length || locals.edit) { %>
+      <div class="box">
+          <h2>Actions</h2>
+          <% if (locals.edit) { %>
+            <div id="add-action-box" class="link-cards">
+              <input type="hidden" id="action" name="action">
+              <label for="actionTitle">Action Title</label>
+              <div class="input-group">
+                <input type="text" id="actionTitle" name="actionTitle" class="add-action-input input-group-field ez-input">
+                <div class="input-group-button">
+                  <button id="add-action-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                </div>
+              </div>
+            </div>
+          <% } %>
+          <ul class="link-cards" id="link-cards-action">
+          <% if (locals.article && article.actions.length) { %>
+            <% for (let action of article.actions) { %>
+              <li data-actionid="<%= action.id %>"><a class="<%= action.actionType.title %>" target="<%= locals.edit ? '_self' : action.actionType.target %>" href="<%= locals.edit ? '#' : `${action.actionType.URIscheme}${action.link}` %>" title="<%- action.title %>"><%- action.title %><% if (locals.edit) { %> <button class='remove-action-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+            <% } %>
+          <% } %>
+          </ul>
+      </div>
+      <% } %>
+
+      <% if (locals.article && (article.services.length || article.components.length || article.software.length || article.siblingArticles.length) || locals.edit) { %>
+        <div class="box card">
+          <h2>Related Items</h2>
+          <ul class="link-cards related catalog-items">
+            <% if (locals.article && (article.services.length || article.components.length) || locals.edit) { %>
+              <li><h3>Service Catalog</h3></li>
+              <% if (locals.edit) { %>
+                <li data-serviceid="">
+                  <div class="input-group">
+                    <input class='ez-input input-group-field ' type='text' id='add-service-input'>
+                    <div class="input-group-button">
+                      <button id="add-service-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+                </li>
+              <% } %>
+              <% if (locals.article && article.services.length) { %>
+                <% for (let service of article.services) { %>
+                  <li data-serviceid="<%= service.id %>" class="service-item"><a class="catalog" href="<%= locals.edit ? '#' : '/service/' + service.id %>" title="<%- service.title %>"><%- service.title %><% if (locals.edit) { %> <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                <% } %>
+              <% } %>
+              <% if (locals.edit) { %>
+                <li data-componentid="">
+                  <div class="input-group">
+                    <input class='ez-input input-group-field ' type='text' id='add-component-input'>
+                    <div class="input-group-button">
+                      <button id="add-component-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+                </li>
+              <% } %>
+              <% if (locals.article && article.components.length) { %>
+                <% for (let component of article.components) { %>
+                  <li data-componentid="<%= component.id %>" class="component-item"><a class="catalog" href="<%= locals.edit ? '#' : '/component/' + component.id %>" title="<%- component.title %>"><%- component.title %><% if (locals.edit) { %> <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                <% } %>
+              <% } %>
+            <% } %>
+            <% if (locals.article && article.software.length || locals.edit) { %>
+              <li><h3>Software</h3></li>
+              <% if (locals.edit) { %>
+                <li data-softwareid="">
+                  <div class="input-group">
+                    <input class='ez-input input-group-field' type='text' id='add-software-input'>
+                    <div class="input-group-button">
+                      <button id="add-software-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+                </li>
+              <% } %>
+              <% if (locals.article && article.software.length) { %>
+                <%  for (let software of article.software) { %>
+                  <li data-softwareid="<%= software.id %>" class="software-item"><a class="software" href="<%= locals.edit ? '#' : '/software/' + software.id %>" title="<%-software.title%>"><%- software.title %><% if (locals.edit) { %> <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                <% } %>
+              <% } %>
+            <% } %>
+            <% if (locals.article && article.siblingArticles.length || locals.edit) { %>
+              <li><h3>Articles</h3></li>
+              <% if (locals.edit) { %>
+                <li data-articleid="">
+                  <div class="input-group">
+                    <input class='ez-input input-group-field' type='text' id='add-article-input'>
+                    <div class="input-group-button">
+                      <button id="add-article-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+                </li>
+              <% } %>
+              <% if (locals.article && article.siblingArticles.length) { %>
+                <%  for (let articleItem of article.siblingArticles) { %>
+                  <li data-articleid="<%= articleItem.id %>" class="article-item"><a class="article" href="<%= locals.edit ? '#' : '/article/' + articleItem.id %>"title="<%- articleItem.title %>"><%- articleItem.title %><% if (locals.edit) { %> <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                <% } %>
+              <% } %>
+            <% } %>
+          </ul>
+          <% if (locals.edit) { %>
+            <input type='hidden' id='service' name='service'>
+            <input type='hidden' id='component' name='component'>
+            <input type='hidden' id='software' name='software'>
+            <input type='hidden' id='article' name='article'>
+          <% } %>
+        </div>
+      <% } %>
+
+      <% if(locals.article && (article.createdAt || article.updatedAt) || locals.edit) { %>
+      <div class="box card">
+        <h2>Details</h2>
+        <p><strong>Created:</strong> <%= locals.article && article.createdAt ? moment(article.createdAt).format('ll') : '' %></p>
+        <p><strong>Modified:</strong> <%= locals.article && article.updatedAt ? moment(article.updatedAt).format('ll') : '' %></p>
+      </div>
+      <% } %>
+      
+      <% if (locals.article && (article.tags.length || article.audiences.length) || locals.edit) { %>
+      <div class="box card">
+        <h2>Metadata</h2>
+        <% if(locals.article && article.tags.length || locals.edit) { %>
+        <h3>Tags</h3>
+        <ul class="tags">
+          <% if (locals.article && article.tags.length) { %>
+            <% article.tags.forEach(function(tag){ %>
+              <li data-tagid="<%= tag.id %>" class='tag'><a href="<%= locals.edit ? '#' : '/tag/' + tag.id %>"><%- tag.title %><% if (locals.edit) { %> <button class='remove-tag-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+            <% }); %>
+          <% } %>
+          <% if (locals.edit) { %>
+              <li data-tagid=""><input type='text' id='add-tag-input'></li>
+          <% } %>
+        </ul>
+        <% if (locals.edit) { %>
+          <input type="hidden" id="tag" name="tag">
+        <% } %>
+        <% } %>
+        <% if (locals.article && article.audiences.length || locals.edit) { %>
+        <h3>Audience</h3>
+        <ul class="audience">
+          <% if (locals.article && article.audiences.length) { %>
+            <% article.audiences.forEach(function(audience){ %>
+              <li data-audienceid="<%= audience.id %>" class="audience-item"><a href="<%= locals.edit ? '#' : '/audience/' + audience.id %>"><%- audience.title %><% if (locals.edit) { %> <button class='remove-audience-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+            <% }); %>
+          <% } %>
+          <% if (locals.edit) { %>
+            <li data-audienceid=""><input type='text' id='add-audience-input'></li>
+          <% } %>
+        </ul>
+        <% if (locals.edit) { %>
+          <input type="hidden" id="audience" name="audience">
+        <% } %>
+        <% } %>
+      </div>
+      <% } %>
+
+      <% if (locals.canEdit) { %>
+        <div class="box card">
+          <h2>Admin</h2>
+          <ul class="link-cards no-icon">
+            <% if (!locals.edit && locals.article && article.articlePhase) { %>
+              <li><span class='text'>Current Phase: <%= article.articlePhase.title %></span></li>
+            <% } %>
+            <% if (!locals.edit) { %>
+              <li><a href="/console/article/edit/<%= article.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+            <% } %>
+            <% if (locals.article && locals.edit) { %>
+              <li><a href="/article/<%= article.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Article</a></li>
+              <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+            <% } %>
+            <% if (locals.edit) { %>
+              <li><a href="#" data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+            <% } %>
+            <% if (locals.edit && locals.article && article.articlePhase && !locals.canPublish) { %>
+              <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+              <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+                <h2>Are you sure?</h2>
+                <p>You will not be able to edit this article while it is being reviewed.</p>
+                <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+                <a href="#" class="button-confirm bright-4" data-close>No</a>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                  <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+                </button>
+              </div>
+            <% } %>
+            <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+          </ul>
+        </div>
+      <% } %>
+
+
+      <%- include('../partials/components/request-help.ejs'); %>
+
+      <%- include('../partials/components/print-share.ejs'); %>
+  
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% if (locals.edit) { %>
+  <%- include('../partials/components/edit.ejs', {
+    entityTitle: 'Article',
+    entityID: locals.article && article.id ? article.id : 'New'
+  }); %>
+
+  <%
+
+    const toasts = [
+      {
+        id: 'toast-save-success',
+        type: 'success',
+        title: 'Success',
+        message: 'Article has been saved. The page will now refresh.',
+        show: false
+      },
+      {
+        id: 'toast-save-error',
+        type: 'error',
+        title: 'Whoops',
+        message: 'Something went wrong trying to save your article',
+        show: false
+      }
+    ];
+
+    if (locals.article && article.useLegacy) {
+      toasts.push(
+        {
+          id: 'toast-legacy-info',
+          type: 'info',
+          title: 'Legacy Content',
+          message: 'This article still uses legacy content. Please update the article to use the new block-style editor.',
+          show: true
+        }
+      )
+    }
+
+  %>
+  <%- include('../partials/components/toaster.ejs', { toasts }); %>
+<% } %>
+
+
+<% if (locals.edit && locals.article) { %>
+  <%- include('../partials/components/preview-modal.ejs'); %>
+<% } %>
+
+
+<% if (locals.edit) { %>
+  <div class="reveal console-modal" id="advanced-settings-modal" data-reveal data-options="closeOnClick:false;" data-simplebar>
+    <ul class="tabs" data-tabs id="advancedSettingsTabs">
+      <li class="tabs-title is-active"><a href="#phaseTab" aria-selected="true"><i class='far fa-satellite-dish'></i> State</a></li>
+      <li class="tabs-title"><a href="#legacyTab"><i class='far fa-scroll-old'></i> Legacy</a></li>
+      <li class="tabs-title"><a href="#auditTab"><i class='far fa-history'></i> Audit</a></li>
+    </ul>
+    <div data-tabs-content="advancedSettingsTabs">
+      <div id="phaseTab" class="tabs-panel is-active">
+        <% if (locals.canPublish) { %>
+          <label for="phase">Phase</label>
+          <select name="phase" id="phase" class='title-case'>
+          <% for (let phase of phases) { %>
+            <option class='title-case' value="<%= phase.id %>" <%= locals.article && article.idArticlePhase == phase.id ? 'selected' : '' %>><%= phase.title %></option>
+          <% } %>
+          </select>
+        <% } else { %>
+          <input type="hidden" id="phase" value="1">
+        <% } %>
+        <p>Require Login</p>
+        <div class="switch">
+          <input class="switch-input" id="requireAuth" type="checkbox" name="requireAuth" <%- locals.article && article.requireAuth ? 'checked' : '' %>>
+          <label class="switch-paddle" for="requireAuth">
+            <span class='show-for-sr'>Require Login</span>
+            <span class='switch-active'>Yes</span>
+            <span class='switch-inactive'>No</span>
+          </label>
+        </div>
+      </div>
+      <div id="legacyTab" class="tabs-panel">
+        <p>Use Legacy Content</p>
+        <div class="switch">
+          <input class="switch-input" id="useLegacy" type="checkbox" name="useLegacy" <%- locals.article && article.useLegacy ? 'checked' : '' %>>
+          <label class="switch-paddle" for="useLegacy">
+            <span class='show-for-sr'>Use Legacy Content</span>
+            <span class='switch-active'>Yes</span>
+            <span class='switch-inactive'>No</span>
+          </label>
+        </div>
+        <label for='contentLegacy'>Main Article</label>
+        <textarea id='contentLegacy' class='legacy-codeblock'><%= locals.article ? article.contentLegacy : '' %></textarea>
+        <label for='contentAltLegacy'>Advanced</label>
+        <textarea id='contentAltLegacy' class='legacy-codeblock'><%= locals.article ? article.contentAltLegacy : '' %></textarea>
+        <label for='contentInternalLegacy'>Internal</label>
+        <textarea id='contentInternalLegacy' class='legacy-codeblock'><%= locals.article ? article.contentInternalLegacy : '' %></textarea>
+      </div>
+      <div id="auditTab" class="tabs-panel">
+        <h2>Details</h2>
+        <p><strong>Date Review By: </strong><%= locals.article && article.dateReviewBy ? moment(article.dateReviewBy).format('ll') : '' %></p>
+        <p><strong>Created On: </strong><%= locals.article && article.createdAt ? moment(article.createdAt).format('ll') : '' %></p>
+        <p><strong>Created By: </strong><%= locals.article && article.userCreatedBy && article.userCreatedBy.username ? article.userCreatedBy.username : '' %></p>
+        <p><strong>Modified On: </strong><%= locals.article && article.updatedAt ? moment(article.updatedAt).format('ll') : '' %></p>
+        <p><strong>Last Modified By: </strong><%= locals.article && article.userModifiedBy && article.userModifiedBy.username ? article.userModifiedBy.username : '' %></p>
+      </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true"><i class='far fa-times'></i></span>
+    </button>
+  </div>
+<% } %>
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

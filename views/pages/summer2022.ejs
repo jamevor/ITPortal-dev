@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/isotope.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/summer2022.js'></script>
+  <style>
+    .course-item{
+      display: flex;
+      flex-direction: column;
+      width:100%;
+      background:var(--color-chrome);
+      border-radius: 3px;
+      box-shadow: var(--shadow-standard-y);
+      margin: 1em auto;
+      padding: .5em;
+    }
+    .course-item-top,.course-item-top-wrap{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .course-item-bottom{
+      display: flex;
+      justify-content: space-between;
+      background: var(--color-lane-subtless);
+      margin: 0 -0.5em -0.5em -0.5em;
+      padding: 0.25em 1em .5em 1em;
+      border-top: 1px solid var(--color-lane);
+
+    }
+    .course-item-section{
+      color: var(--color-body-subtitle);
+      font-size: .6875em;
+      text-transform: uppercase;
+      opacity: .8;
+      margin-bottom: 0;
+    }
+    .course-item-data {
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        min-height: 5em;
+    }
+    .course-item-title{
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--color-body-text);
+      margin: 0;
+    }
+    .course-item-instructor,.course-item-meeting,.course-item-format{
+      font-size: 1em;
+      font-weight: 400;
+      color: var(--color-body-subtitle);
+      margin: 0;
+    }
+    .course-item-component{
+      font-size: 1em;
+      font-weight: 400;
+      color: var(--color-body-subtitle);
+      margin: 0;
+    }
+    .course-item-dept{
+      width: 10%;
+      min-width: 6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: var(--color-pop);
+    }
+    .course-item-tags-tag {
+      color: var(--color-body-subtitle);
+      font-size: .6875em;
+      text-transform: uppercase;
+      margin-bottom: 0;
+      background: var(--color-lane);
+      padding: 0.25em 0.5em;
+      border-radius: 3em;
+      margin-right: 0.5em;
+    }
+    .course-item-cap{
+      font-size: 1em;
+      font-weight: 400;
+      color: var(--color-body-subtitle);
+    }
+    .course-item-action-link{
+      border-radius: 50%;
+      padding: 1em;
+      color: var(--color-pop);
+      background: var(--color-body);
+      border: 1px solid var(--color-pop);
+      display: flex;
+      font-size: .875em;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5em;
+      transition: all .5s ease;
+    }
+    .course-item-action-link:hover,.course-item-action-link:active,.course-item-action-link:focus{
+      color: var(--color-light);
+      background: var(--color-pop);
+      border: 1px solid var(--color-pop-h);
+    }
+    .course-item-actions{
+      display: flex;
+      
+    }
+    .course-item-offering{
+      font-size: .875em;
+      font-weight: 400;
+      color: var(--color-body-subtitle);
+      margin:0;
+    }
+    .course-item-offering-period{
+      font-size: .875em;
+    }
+    .course-item-offering-period::after {
+    content: ': :';
+    padding: 0 0.5em;
+    font-weight: 800;
+    color: var(--color-lane-subtle);
+  }
+  .filter-btn{
+    background:var(--color-pop);
+    color:var(--color-light)
+  }
+
+  .filter-btn:hover,.filter-btn:focus,.filter-btn:active{
+    background:var(--color-pop-h);
+  }
+  .filter-btn.active{
+    background:var(--color-pop-h);
+    box-shadow: var(--shadow-standard-y-h);
+  }
+  .filter-button-group button:first-of-type{
+    border-radius: 4em 0 0 4em;
+  }
+  .filter-button-group button:last-of-type{
+    border-radius: 0 4em 4em 0;
+  }
+
+  .filter-button-group.button-group-large button{
+    border-radius: 4em;
+    font-size: .75em;
+  }
+  .filter-label {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--color-pop);
+    margin: 0;
+  }
+  #filters{
+    display: none;
+  }
+  #toggleFilters{
+    text-align: center;
+    display: block;
+    padding: 1em;
+    margin: 0 auto;
+    background: var(--color-lane);
+    border-radius: 3px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .5s ease;
+  }
+  #toggleFilters:hover,#toggleFilters:focus,#toggleFilters:active{
+    background: var(--color-lane-subtle);
+  }
+  .course-item-components span:not(:last-of-type)::after{
+    content:','
+  }
+  .course-item-components.button{
+    background: transparent;
+    color: var(--color-bright-5);
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+  }
+@media print, screen and (max-width: 40em){
+  .course-item-bottom{
+    flex-direction: column;
+    align-items: center;
+  }
+  .course-item-offering-period::after {
+    content: unset;
+  }
+  .course-item-offering{
+    display: flex;
+    justify-content: center;
+  }
+  .course-item-tags{
+    text-align: center;
+  }
+  .course-item-top{
+    flex-direction: column;
+  }
+  .course-item-data{
+    text-align: center;
+  }
+}
+
+  </style>
+
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+<div class="all-summer">
+  <% if (locals.courses) { %>
+    <% let courseSubjects = courses
+    .map(({ Course_Subjects }) => Course_Subjects)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    var cleanSubjects = []
+
+      for(dirtySubject of courseSubjects){
+        if (dirtySubject.indexOf('; ') > -1){
+          let newArr = dirtySubject.split(';')
+          cleanSubjects.push(newArr)
+        }else{
+          cleanSubjects.push(dirtySubject);
+        }
+      }
+      
+      courseSubjects = cleanSubjects
+      .flat()
+      .map(element => {
+        return element.trim();
+      })
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
+    %>
+    <div class="grid-container fluid swim-lane pop">
+      <div class="grid-container">
+        <h1 class="text-center">Summer 2022 Course Offerings</h1>
+        <button id="toggleFilters">View Course Filters</button>
+      </div>
+    </div>
+
+    <div class="grid-container fluid swim-lane dark" id="filters" style="transition:unset">
+      <div class="grid-container">
+          <div class="grid-x grid-margin-x"> 
+            <div class="cell small-12 medium-6 large-6">
+              <h2 class="filter-label">Term</h2>
+              <div class="button-group filter-button-group" data-filter-group="term">
+                <button data-filter="" class="filter-btn button active">Any</button>
+                <button data-filter=".term-2022SummerSessionI"  class="filter-btn button">Summer Session I</button>
+                <button data-filter=".term-2022SummerSessionII"  class="filter-btn button">Summer Session II</button>
+              </div>
+            </div>
+  
+            <div class="cell small-12 medium-6 large-6">
+              <h2 class="filter-label">Delivery Mode</h2>
+              <div class="button-group filter-button-group" data-filter-group="dMode">
+                <button data-filter="" class="filter-btn button active">Any</button>
+                <button data-filter=".dMode-In-Person"  class="filter-btn button">In-Person</button>
+                <button data-filter=".dMode-Online"  class="filter-btn button">Online</button>
+                <button data-filter=".dMode-Hybrid"  class="filter-btn button">Hybrid</button>
+              </div>
+            </div>
+  
+            <div class="cell small-12 medium-12 large-12">
+              <h2 class="filter-label">Subject</h2>
+              <div class="button-group filter-button-group button-group-large" data-filter-group="subject">
+                <button data-filter="" class="filter-btn button active">Any</button>
+                <%for(subject of courseSubjects){%>
+                  <button data-filter=".subject-<%=subject.replace(/\s+/g, '')%>"  class="filter-btn button"><%=subject%></button>
+                <%}%>
+                
+              </div>
+            </div>
+
+            <div class="cell small-12 medium-6 large-6" id="courDefFilters" style="display:none">
+              <h2 class="filter-label">Course Component</h2>
+              <div class="button-group filter-button-group button-group-large" data-filter-group="courDef">
+                <button id="componentHide" data-filter="" class="filter-btn button">Clear Component View</button>
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+  
+        <p style="font-size:.75em">Showing <span id="courseCount"><%=courses.length%></span> courses</p>
+          <% 
+            courses.sort((a, b) => (a.cour_sec_def_Title > b.cour_sec_def_Title) ? 1 : -1)
+          %>
+          <div class="courseGrid" style="overflow:hidden">
+          <% for (const course of courses) { 
+              if(course.Hidden_Course != 1 && course.Instructional_Format != "Internship" && course.Section_Status != "Canceled" && course.Academic_Level != "Graduate"){
+          %>
+          <% var filterSubjectClass = '';
+
+            if (course.Course_Subjects.indexOf('; ') > -1){
+              let subjAsArray = course.Course_Subjects.split(';')
+              for(subjItem of subjAsArray){
+                filterSubjectClass += ' subject-' + subjItem.replace(/\s+/g, '');
+              }
+            }else{
+              filterSubjectClass = 'subject-' + course.Course_Subjects.replace(/\s+/g, '');
+            }
+          %>
+              
+            <div data-period="<%=course.Offering_Period%>" class="course-item term-<%=course.Offering_Period.replace(/\s+/g, '')%> dMode-<%=course.Delivery_Mode.replace(/\s+/g, '')%> <%=filterSubjectClass%> courDef-<%=course.cour_def_referenceID+course.Academic_Period_Type.replace(/\s+/g, '')%>">
+              <div class="course-item-top">
+                <div class="course-item-top-wrap">
+                  <div class="course-item-dept hide-for-small-only">
+                    <%=course.Section_Listings.split(' ')[0]%>
+                  </div>
+                  <div class="course-item-data">
+                    <p class="course-item-section"><%=course.Section_Listings%></p>
+                    <h2 class="course-item-title"><%=course.cour_sec_def_Title%></h2>
+                    <p class="course-item-instructor"><strong>Instructor:</strong> <%=course.All_Instructors || "Instructor TBD"%></p>
+                    <% if(course.Meeting_Patterns){%>
+                      <p class="course-item-meeting"><strong>Meeting:</strong> <%=course.Meeting_Patterns%></p>
+                    <%}%>
+                    <p class="course-item-format"><strong>Format:</strong> <%=course.Instructional_Format%></p>
+                    <%
+                    var courseComps = course.Course_Components.split("; ");
+                    if(courseComps.length > 1){%>
+                    
+                    <div class="button-group" data-filter-group="courDef">
+                      <a class="course-item-components button" title="Click to view all components of this course" data-filter=".courDef-<%=course.cour_def_referenceID+course.Academic_Period_Type.replace(/\s+/g, '')%>"><strong><i class="fad fa-info-circle"></i> This course has multiple components:</strong>
+                      <%for(component of courseComps){%>
+                        <span><%=component%></span>
+                      <%}%>
+                     </a>
+                    </div>
+                   <%}%>
+                   <div class="course-item-description" style="display:none"><%-course.cour_sec_def_Description%></div>
+                  </div>
+                </div>
+                <div class="course-item-actions">
+
+                  <a class="course-item-action-link course-info-modal" href="#" title="More Info" data-open="CourseInfo"><i class="fas fa-info-circle"></i></a>
+                  <%if(course.Section_Status == "Open"){%>
+                    <a class="course-item-action-link" href="https://wpicpe.tfaforms.net/613?CourseID=<%=course.cour_sec_def_referenceID%>" title="Register" target="_blank"><i class="fas fa-arrow-right"></i></a>
+                  <%}%>
+                </div>
+              </div>
+              <div class="course-item-bottom">
+                <div class="course-item-tags">
+                  <span class="course-item-offering"><%=course.Offering_Period%> <span class="course-item-offering-period">(<%=moment(course.Start_Date).format('MMM Do')%> - <%=moment(course.End_Date).format('MMM Do')%>)</span></span>
+                  <%if(false && course.Course_Tags){%>
+                    <% for (courseTag of course.Course_Tags.split('::')) { %>
+                        <span class="course-item-tags-tag hide-for-small-only"><%=courseTag%></span>
+                    <%}%>
+                  <%}%>
+                  <%if(course.Delivery_Mode == 'In-Person'){%>
+                    <span class="course-item-tags-tag"><i class="fas fa-user"></i> In-Person</span>
+                  <%}else if(course.Delivery_Mode == 'Online'){%>
+                    <span class="course-item-tags-tag"><i class="fas fa-laptop-house"></i> Online</span>
+                  <%}else if(course.Delivery_Mode == 'Hybrid'){%>
+                    <span class="course-item-tags-tag"><i class="fas fa-blender"></i> Hybrid</span>
+                  <%}%>
+                    <span class="course-item-tags-tag"><%=course.Academic_Level%></span>
+
+                </div>
+                <div class="course-item-cap">
+                  <span class="course-item-cap-current"><%=course.Section_Status%></span> | 
+                  <span class="course-item-cap-current"><%=course.Enrollment_Count%></span> /
+                  <span class="course-item-cap-total"><%=course.Section_Capacity%></span>
+                </div>
+              </div>
+            </div>
+
+          <%} 
+          } %>
+        </div> 
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+<div class="reveal" id="CourseInfo" data-reveal>
+  <p class="course-item-section"></p>
+  <h1 class="course-item-title">CourseInfo</h1>
+  <p class="course-item-description"></p>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,782 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled, .help-form .button-submit.disabled:hover{
+    cursor: not-allowed;
+    background: var(--color-lane);
+    color: var(--color-lane-subtler);
+  }
+
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 1.1;
+
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-pop);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  .pasteExcel:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel:focus,
+  .pasteExcel:active{
+    background:var(--color-pop-h);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .help-form {
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:1em 2em;
+    margin-bottom:1em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+  .box-links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin:1em 0;
+  }
+  .box-links a{
+    padding: 1em;
+    text-decoration: none;
+    transition: all .5s ease;
+    margin: 1em;
+    text-align: center;
+    border: 2px solid var(--color-pop);
+    background: var(--color-light);
+    color: var(--color-pop);
+    border-radius: 3px;
+  }
+  .box-links a:hover{
+    background-color: var(--color-pop);
+    color:var(--color-light);
+  }
+  .tos-content h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 800;
+      font-Size: 2.5em;
+      text-transform: capitalize;
+      line-height: 1.2;
+      padding-bottom: .25em;
+      color:var(--color-pop);
+    }
+    .tos-head{
+      background-color: var(--color-pop);
+      height:300px;
+    }
+    .tos-content{
+      background: var(--color-body);
+      margin-top: -250px;
+      padding: 2em;
+      box-shadow: 0px 0px 15px rgba(0,0,0,.1);
+    }
+    .tos-section p{
+      background: var(--color-chrome);
+      padding: 2em;
+      margin: 1em 0;
+      box-shadow: 0px 0px 0px rgba(0,0,0,.1);
+      border-radius:3px;
+      transition:all 1s ease;
+    }
+    .tos-section p:hover,.tos-section p:focus{
+      box-shadow: 0px 0px 8px rgba(0,0,0,.1);
+    }
+    .tos-section{
+      margin-bottom: 1em;
+    }
+    .site-wrapper{
+      background:var(--color-lane)
+    }
+    .tos-section h2{
+      font-family: 'Roboto', Sans-Serif;
+    font-weight: 600;
+    font-Size: 1.5em;
+    text-transform: capitalize;
+    line-height: 1;
+    color: var(--color-body-text);
+    }
+    .tos-lead{
+      font-weight: 600;
+      position: relative;
+      padding: 2em 0;
+    }
+    .tos-lead:before{
+      height: 2px;
+      content: '';
+      background: var(--color-pop);
+      position: absolute;
+      width: 10%;
+      top:0;
+    }
+    .signed{
+      font-family: 'Homemade Apple', cursive;
+      font-size: 1.8em;
+      text-decoration: underline;
+      text-align: center;
+      margin: 0;
+    }
+    .dated{
+      text-align: center;
+      font-weight: 600;
+      font-size: .875em;
+    }
+    .name-drop{
+      color:var(--color-pop);
+      transition: all .5s ease;
+    }
+    .name-drop:hover{
+      color:var(--color-pop-h)
+    }
+
+    #nameSetter:focus{
+      outline:none;
+    }
+    #button-submit:disabled{
+      background-color:var(--color-lane);
+      cursor:not-allowed;
+      box-shadow:none;
+      color:var(--color-body-subtitle);
+      outline:none;
+    }
+    #nameSetter #setName, #button-submit{
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    #nameSetter #setName:hover{
+      background: var(--color-pop-h);
+    }
+    #nameSetter input{
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    #nameSetter label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    #nameSetter p{
+      font-weight: 600;
+      position: relative;
+      padding: .5em 0;
+    }
+    #nameSetter h2{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 1.5em;
+      text-transform: capitalize;
+      line-height: 1;
+      color: var(--color-body-text);
+    }
+    #readySign{
+        background: var(--color-chrome);
+        padding: 1em;
+        border-radius: 3px;
+        border: 1px dashed var(--color-pop);
+      }
+    .recaptcha{
+      font-size: 0.75rem;
+      margin-top: 1em;
+      color: var(--color-body-subtitle);
+      text-align: right;
+    }
+    .agreer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1em 0 .875em 0;
+    }
+    .agreer label{
+      font-weight: 800;
+    }
+    #agree,#GuardianAgree,#employeeAccess{
+      width:2em;
+      height:2em;
+      margin:0;
+    }
+    #agree:disabled + label{
+      color: var(--color-body-subtitle);
+    }
+    #sigBlock{
+        display:none;
+    }
+    #sigBlock label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    .name-error{
+      color:var(--color-bright-4);
+      text-align: center;
+      display:none;
+    }
+    .error-text{
+      color:var(--color-bright-4);
+      text-align: center;
+      display:none;
+    }
+    .reveal{
+      border: none;
+      border-radius: 3px;
+    }
+    .sublabel{
+      font-size: .875em;
+      font-style: italic;
+      color: var(--color-body-subtitle);
+    }
+    #age{
+      display:none;
+    }
+    #age + label{
+      text-align: center;
+      color: var(--color-pop);
+      margin: .5em auto;
+      position: relative;
+      width: 100%;
+    }
+    #age + label:hover{
+      color:var(--color-pop-h);
+      text-decoration: underline;
+    }
+    #age:disabled + label{
+      color: var(--color-body-subtitle);
+      cursor: not-allowed;
+    }
+    #age:disabled + label:hover{
+      color: var(--color-body-subtitle);
+      text-decoration: none;
+    }
+    #age:checked + label:before {
+      content: "\f2f7";
+      color: var(--color-bright-2);
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 900;
+      margin-right: .5em;
+    } 
+    fieldset{
+      border-top: 1px solid var(--color-lane);
+      margin: 1em 0;
+    }
+    legend{
+      font-size: 1.25em;
+      font-weight: 600;
+      text-align: center;
+      color: var(--color-pop);
+    }
+    @media print, screen and (min-width: 64em){
+      .tos-terms-column{
+        max-height: 65vh;
+        overflow: auto;
+        margin-top: -15em;
+        position: relative;
+      }
+      .tos-terms-column::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        height: 20px;
+        transition: all .5s ease;
+        animation: shadow 3s ease-in-out infinite;
+      }
+      .tos-terms-column.scrolled::after {
+        animation:none;
+        box-shadow: inset 0 0 0 0 rgba(0,0,0,.3);
+      }
+
+      #readySign{
+        display:none;
+      }
+      
+      .tos-ready{
+        order:2
+      }
+      .tos-terms-column{
+        order:3
+      }
+      .simplebar-scrollbar:before {
+        opacity:.2;
+      }
+      .simplebar-scrollbar.waiting:before{
+        animation: barwait 5s ease-in-out infinite;
+      }
+    }
+    @keyframes shadow {
+    0%   { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+    50%  { box-shadow: inset 0 -8px 10px -8px rgba(0,0,0,.3);}
+    100% { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+  }
+    @keyframes barwait {
+      0%   {opacity:.1;transform:translateY(0)}
+      50%  {opacity:.3;transform:translateY(20px)}
+      100% {opacity:.1;transform:translateY(0)}
+    }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your Log has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your log',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x align-center" style="margin:auto;">
+    <div class='cell  small-12 medium-10 large-9'>
+      <h1>Campus Visitor and Guest Access Request</h1>
+      <p style="font-weight:600">This form is for use by potential WPI Guests to request guest access to campus.</p>
+      
+      <div class="help-form" id="visitorQ">
+        <fieldset>
+
+          <h3 style="margin-bottom:0;font-weight: 800;font-size: .875rem;">In which capacity will you be visiting Campus?*</h3>
+          <div class='grid-x grid-margin-x impact-boxes'>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="type-visitor" name="type" value="Visitor">
+              <label for="type-visitor"><i class='fas fa-user-friends'></i> Visitor</label>
+            </div>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="type-vendor" name="type" value="Vendor">
+              <label for="type-vendor"><i class='fas fa-clipboard-user'></i> Vendor</label>
+            </div>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="type-employee" name="type" value="Employee">
+              <label for="type-employee"><i class='fas fa-university'></i> WPI Employee</label>
+            </div>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="type-humanSubject" name="type" value="Human Subject">
+              <label for="type-humanSubject"><i class='fas fa-flask'></i> Human Subject</label>
+            </div>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="type-external" name="type" value="External Partner">
+              <label for="type-external"><i class='fas fa-people-arrows'></i> Research Partner</label>
+            </div>
+          </div>
+
+          <legend>About you</legend>
+          
+          <label class="form-label"  for="visitor-first">First Name*</label>
+          <input type="text" id="visitor-first" name="visitor-first">
+
+          <label class="form-label"  for="visitor-middle">Middle</label>
+          <input type="text" id="visitor-middle" name="visitor-middle">
+
+          <label class="form-label"  for="visitor-last">Last Name*</label>
+          <input type="text" id="visitor-last" name="visitor-last">
+
+          <label for="visitor-phone">Phone Number*</label>
+          <input id="visitor-phone" name="visitor-phone" type="tel" placeholder="Visitor Phone Number">
+          
+          <label for="visitor-email">Email*</label>
+          <input id="visitor-email" name="visitor-email" type="email" placeholder="Visitor Email Address">
+
+          <div id="company-group" style="display: none;">
+            <label class="form-label"  for="visitor-company">Company Name <span style="font-weight: 400;">(If Applicable)</span></label>
+            <input type="text" id="visitor-company" name="visitor-company">
+          </div>
+
+          <div class="age-block">
+            <input id="age" name="age" type="checkbox">
+            <label for="age">I Am Under 18 Years of Age</label>
+          </div>
+
+          <div id="guardianBlock" style="display:none">
+            <fieldset>
+              <legend>Guardian Information</legend>
+              <p style="font-weight: 800;">Please have a parent/guardian fill out the remainer of this form</p>
+
+              <label for="guardName">Guardian Full  Name*</label>
+              <input id="guardName" name="guardName" type="tel" placeholder="Guardian Full Legal Name">
+              
+              <label for="guardPhone">Guardian Phone Number*</label>
+              <input id="guardPhone" name="guardPhone" type="tel" placeholder="Guardian Phone Number">
+              
+              <label for="guardEmail">Guardian Email*</label>
+              <input id="guardEmail" name="guardEmail" type="email" placeholder="Guardian Email Address">
+
+
+            </fieldset>
+
+          </div>
+          <button id="button-unlock" class="button-submit disabled">Begin Request</button>
+          <p class="name-error">Please make sure to fill out your Name, Email, and Phone!</p>
+          
+
+        
+
+        </fieldset>
+      </div>
+      <div class="help-form" id="aboutVisit" style="display:none">
+          
+        <fieldset>
+          <legend>About the Visit</legend>
+          <div class="grid-x grid-margin-x">
+            <div class="cell small-12 medium-6">
+              <label class="form-label"  for="visit-start">Start Date & Time*</label>
+              <input type="datetime-local" id="visit-start" name="visit-start">
+            </div>
+            <div class="cell small-12 medium-6">
+              <label class="form-label"  for="visit-end">End Date & Time*</label>
+              <input type="datetime-local" id="visit-end" name="visit-end">
+            </div>
+            <div class="cell small-12">
+              <p id="date-error" class="error-text"></p>
+            </div>
+          </div>
+
+          <div id="detailed-questions">
+            <p style="font-weight: 800;" id="employeeFlavor">Employees visiting campus should contact their supervisor or department contact for access.</p>
+
+            <label class="form-label"  for="visit-department">Department Visiting*</label>
+            <select id="visit-department" name="visit-department">
+              <option value="Default" selected="">--Choose a Department--</option>
+              <% departments = departments.sort() %>
+              <% for(department of departments) { %>
+                <option><%= department %></option>
+              <% } %>
+            </select> 
+
+            <label class="form-label"  for="visit-contact">Department Contact Name*</label>
+            <p class="form-label-help"> Please provide the full name name of the contact within the department you will be visiting</p>
+            <input type="text" id="visit-contact" name="visit-contact" value="">
+
+            <label class="form-label"  for="visit-email">Department Contact Email*</label>
+            <p class="form-label-help"> Please provide the email of the individual contact within the department you will be visiting</p>
+            <p class="form-label-help"></p>
+            <input type="text" id="visit-email" name="visit-email" value="">
+
+            <label class="form-label"  for="visit-building">Building Visiting*</label>
+            <input type="text" id="visit-building" name="visit-building">
+
+            <label class="form-label"  for="visit-room">Room Visiting*</label>
+            <input type="text" id="visit-room" name="visit-room">
+
+            <div id="employeeAccess-block" style="display: none;">
+              <p style="font-weight: 800;">Employees visiting campus should contact their supervisor for access. If your supervisor is unable to grant access, please request that Campus Police provide you access below.</p>
+              
+              <div class="agreer">
+                <input id="employeeAccess" name="employeeAccess" type="checkbox">
+                <label for="employeeAccess">I will need campus police to provide access for this visit</label>
+              </div>
+              <div id="employeeAccess-info" style="display: none;">
+                <p style="font-weight: 600;color:var(--color-bright-3)"><i class="fas fa-info-circle"></i> When you arrive to campus for your visit please contact the WPI Police using the non emergency number(<a href="tel:508-831-5433">508-831-5433</a>).</p>
+              </div>
+            </div>
+
+            <label class="form-label" for="visit-note">Notes</label>
+            <p class="form-label-help">Please provide any notes or special details about this visit</p>
+            <textarea id="visit-note" name="visit-note" rows="4"></textarea>
+          </div>
+          <div id="subjects-questions">
+            <label class="form-label"  for="visit-code">Study Code*</label>
+            <p class="form-label-help">The WPI Researcher you are working with should have provided you a 4 digit study code, please put that here.</p>
+            <input type="text" id="visit-code" name="visit-code">
+          </div>
+        </fieldset>
+
+
+      </div>
+
+      <div class="help-form" id="release" style="display:none">
+          
+        <fieldset style="background:var(--color-body)" id="termsBox">
+          <legend>Terms & Conditions</legend>
+          <p class="tos-lead">I <a href="#" class="name-drop"></a> acknowledge and agree to the following terms as a condition of being allowed on the WPI campus:</p>
+
+          <div id="terms">
+
+          </div>
+          <div id="consent-block">
+            <p style="font-weight: 800;" id="consent-text"></p>
+            
+            <div class="agreer">
+              <input id="agree" name="agree" type="checkbox">
+              <label for="agree">I Agree</label>
+            </div>
+          </div>
+
+          <div id="sigBlock">
+            <label>Visitor Legal Name</label>
+            <p><a href="#" class="name-drop"></a></p>
+            <div id="signage" class="signedSealedDelivered">
+              <p class="signed"></p>
+              <p class="dated"></p>
+            </div>
+          </div>
+            
+        
+        </fieldset>
+
+        <button id="button-submit-help-form" class="button-submit disabled">Submit Guest Access Request</button>
+        <p class="error-text" id="final-error">Please Choose a Visiting Department from the list</p>
+        <p class="error-text" id="required-error"></p>
+        <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+      
+      </div>
+
+    </div>
+  </div>
+</div>

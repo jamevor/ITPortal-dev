@@ -1,0 +1,424 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-pop);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  .pasteExcel:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel:focus,
+  .pasteExcel:active{
+    background:var(--color-pop-h);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .help-form {
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:2em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+  .box-links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin:1em 0;
+  }
+  .box-links a{
+    padding: 1em;
+    text-decoration: none;
+    transition: all .5s ease;
+    margin: 1em;
+    text-align: center;
+    border: 2px solid var(--color-pop);
+    background: var(--color-light);
+    color: var(--color-pop);
+    border-radius: 3px;
+  }
+  .box-links a:hover{
+    background-color: var(--color-pop);
+    color:var(--color-light);
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your Log has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your log',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+    <div class='cell small-12 medium-4 large-3'>
+      <% if (locals.user && user.id && locals.userAttributes) { %>
+        <div class="user-info">
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p id="verified"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+          <p id="full-name"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-department"><%= userAttributes['user.department'] %></p>
+          <p id="wpi-id"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email"><i class="fas fa-envelope-square"></i> <%= userAttributes.emailaddress %></p>
+          <p id="wpi-phone"><i class="fas fa-phone-square"></i> <%= userAttributes['user.telephonenumber'] %></p>
+        </div>
+      <% } %>
+
+    </div>
+    <div class='cell  small-12 medium-8 large-9'>
+      <h1>Department Vendor & Visitor Log</h1>
+      <div class="help-form">
+
+        <!-- Department Info -->
+        <div class="form-page">
+          <p style="font-weight:600">This form is for use by WPI Departments to log any and all visitors, vendors, and guests that have been to campus.</p>
+          <p class="form-label-help"> Please note that all visitors and vendors are required to fill out an acknowledgement form prior to coming to campus</p>
+          <div class="box-links">
+            <a target="_blank" href="/io/Visitor"><i class="fal fa-user-friends"></i> Visitor Acknowledgement Form</a>
+            <a target="_blank" href="/io/Vendor"> <i class="fal fa-clipboard-user"></i> Vendor Acknowledgement Form</a>
+          </div>
+
+          <fieldset id="visitor-questions">
+
+            <h3 style="margin-bottom:0; font-size:.875rem;">What Type of Guest are you logging?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-visitor" name="type" value="Visitor">
+                <label for="type-visitor"><i class='fas fa-user-friends'></i> Visitor</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-vendor" name="type" value="Vendor">
+                <label for="type-vendor"><i class='fas fa-clipboard-user'></i> Vendor</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-employee" name="type" value="Employee">
+                <label for="type-employee"><i class='fas fa-university'></i> WPI Employee</label>
+              </div>
+            </div>
+
+            <legend>Visitor Information</legend>
+
+            <label class="form-label"  for="visitor-first">First Name</label>
+            <input type="text" id="visitor-first" name="visitor-first">
+
+            <label class="form-label"  for="visitor-last">Last Name</label>
+            <input type="text" id="visitor-last" name="visitor-last">
+
+            <div id="company-group" style="display: none;">
+              <label class="form-label"  for="visitor-company">Company Name <span style="font-weight: 400;">(If Applicable)</span></label>
+              <input type="text" id="visitor-company" name="visitor-company">
+            </div>
+
+          </fieldset>
+          
+          
+          <fieldset id="Visit-questions">
+            <legend>About the Visit</legend>
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <label class="form-label"  for="visit-start">Start Date & Time</label>
+                <input type="datetime-local" id="visit-start" name="visit-start">
+              </div>
+              <div class="cell small-12 medium-6">
+                <label class="form-label"  for="visit-end">End Date & Time</label>
+                <input type="datetime-local" id="visit-end" name="visit-end">
+              </div>
+            </div>
+
+            <label class="form-label"  for="visit-department">Department Visiting</label>
+            <input type="text" id="visit-department" name="visit-department" value="<%= userAttributes['user.department'] %>">
+
+            <label class="form-label"  for="visit-contact">Department Contact Name</label>
+            <p class="form-label-help"> Please provide the full name name of the contact within the department</p>
+            <input type="text" id="visit-contact" name="visit-contact" value="<%= userAttributes.givenname + ' ' + userAttributes.surname %>">
+
+            <label class="form-label"  for="visit-email">Department Contact Email</label>
+            <p class="form-label-help"></p>
+            <input type="text" id="visit-email" name="visit-email" value="<%= userAttributes.emailaddress %>">
+
+            <label class="form-label"  for="visit-building">Building Visiting</label>
+            <input type="text" id="visit-building" name="visit-building">
+
+            <label class="form-label"  for="visit-room">Room Visiting</label>
+            <input type="text" id="visit-room" name="visit-room">
+
+            <label class="form-label" for="visit-note">Notes</label>
+            <p class="form-label-help">Please provide any notes or special details about this visit</p>
+            <textarea id="visit-note" name="visit-note" rows="4"></textarea>
+
+          </fieldset>
+
+          <button id="button-submit-help-form" class="button-submit">Submit Log</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

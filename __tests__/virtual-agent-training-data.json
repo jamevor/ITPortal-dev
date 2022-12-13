@@ -1,0 +1,86 @@
+{
+  "NLPData": [
+    {
+      "lang": "en",
+      "phrase": "goodbye for now",
+      "intent": "greetings.bye"
+    },
+    {
+      "lang": "en",
+      "phrase": "bye bye take care",
+      "intent": "greetings.bye"
+    },
+    {
+      "lang": "en",
+      "phrase": "okay see you later",
+      "intent": "greetings.bye"
+    },
+    {
+      "lang": "en",
+      "phrase": "bye for now",
+      "intent": "greetings.bye"
+    },
+    {
+      "lang": "en",
+      "phrase": "i must go",
+      "intent": "greetings.bye"
+    },
+    {
+      "lang": "en",
+      "phrase": "hello",
+      "intent": "greetings.hello"
+    },
+    {
+      "lang": "en",
+      "phrase": "hi",
+      "intent": "greetings.hello"
+    },
+    {
+      "lang": "en",
+      "phrase": "howdy",
+      "intent": "greetings.hello"
+    },
+    {
+      "lang": "en",
+      "phrase": "help me with wifi windows 10",
+      "intent": "help.wireless"
+    },
+    {
+      "lang": "en",
+      "phrase": "windows 10 wireless setup",
+      "intent": "help.wireless"
+    },
+    {
+      "lang": "en",
+      "phrase": "how to install wifi on windows",
+      "intent": "help.wireless"
+    }
+  ],
+  "NLGData": [
+    {
+      "lang": "en",
+      "intent": "greetings.bye",
+      "response": "Till next time"
+    },
+    {
+      "lang": "en",
+      "intent": "greetings.bye",
+      "response": "see you soon!"
+    },
+    {
+      "lang": "en",
+      "intent": "greetings.hello",
+      "response": "Hey there!"
+    },
+    {
+      "lang": "en",
+      "intent": "greetings.hello",
+      "response": "Greetings!"
+    },
+    {
+      "lang": "en",
+      "intent": "help.wireless",
+      "response": "Boy do I have the article for you! :)"
+    }
+  ]
+}

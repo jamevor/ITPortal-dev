@@ -1,0 +1,38 @@
+<%
+
+checkPermissions = function(entity, level) {
+  if (typeof level === 'string') {
+    switch(level) {
+      case 'read':
+        level = 1;
+        break;
+      case 'create':
+        level = 2;
+        break;
+      case 'edit':
+      case 'update':
+        level = 3;
+        break;
+      case 'delete':
+        level = 4;
+        break;
+    }
+  }
+
+  if (!locals.user) {
+    return false;
+  }
+
+  const userMaxPermissions = {};
+  for (let group of user.groups) {
+    for (let permission in group.permissions) {
+      userMaxPermissions[permission] = Math.max(group.permissions[permission].level, userMaxPermissions[permission] || 0);
+    }
+  }
+  for (let permission in user.permissions) {
+    userMaxPermissions[permission] = Math.max(user.permissions[permission].level, userMaxPermissions[permission] || 0);
+  }
+  return (userMaxPermissions[entity] && userMaxPermissions[entity] >= level) || user.isAdmin || user.isSuperUser;
+}
+
+%>

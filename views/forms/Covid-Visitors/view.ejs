@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap" rel="stylesheet">
+  <style>
+    .tos-content h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 800;
+      font-Size: 2.5em;
+      text-transform: capitalize;
+      line-height: 1.2;
+      padding-bottom: .25em;
+      color:var(--color-pop);
+    }
+    .tos-head{
+      background-color: var(--color-pop);
+      height:300px;
+    }
+    .tos-content{
+      background: var(--color-body);
+      margin-top: -250px;
+      padding: 2em;
+      box-shadow: 0px 0px 15px rgba(0,0,0,.1);
+    }
+    .tos-section p{
+      background: var(--color-chrome);
+      padding: 2em;
+      margin: 1em 0;
+      box-shadow: 0px 0px 0px rgba(0,0,0,.1);
+      border-radius:3px;
+      transition:all 1s ease;
+    }
+    .tos-section p:hover,.tos-section p:focus{
+      box-shadow: 0px 0px 8px rgba(0,0,0,.1);
+    }
+    .tos-section{
+      margin-bottom: 1em;
+    }
+    .site-wrapper{
+      background:var(--color-lane)
+    }
+    .tos-section h2{
+      font-family: 'Roboto', Sans-Serif;
+    font-weight: 600;
+    font-Size: 1.5em;
+    text-transform: capitalize;
+    line-height: 1;
+    color: var(--color-body-text);
+    }
+    .tos-lead{
+      font-weight: 600;
+      position: relative;
+      padding: 2em 0;
+    }
+    .tos-lead:before{
+      height: 2px;
+      content: '';
+      background: var(--color-pop);
+      position: absolute;
+      width: 10%;
+      top:0;
+    }
+    .signed{
+      font-family: 'Homemade Apple', cursive;
+      font-size: 1.8em;
+      text-decoration: underline;
+      text-align: center;
+      margin: 0;
+    }
+    .dated{
+      text-align: center;
+      font-weight: 600;
+      font-size: .875em;
+    }
+    .name-drop{
+      color:var(--color-pop);
+      transition: all .5s ease;
+    }
+    .name-drop:hover{
+      color:var(--color-pop-h)
+    }
+
+    #nameSetter:focus{
+      outline:none;
+    }
+    #button-submit:disabled{
+      background-color:var(--color-lane);
+      cursor:not-allowed;
+      box-shadow:none;
+      color:var(--color-body-subtitle);
+      outline:none;
+    }
+    #nameSetter #setName, #button-submit{
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    #nameSetter #setName:hover{
+      background: var(--color-pop-h);
+    }
+    #nameSetter input{
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    #nameSetter label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    #nameSetter p{
+      font-weight: 600;
+      position: relative;
+      padding: .5em 0;
+    }
+    #nameSetter h2{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 1.5em;
+      text-transform: capitalize;
+      line-height: 1;
+      color: var(--color-body-text);
+    }
+    #readySign{
+        background: var(--color-chrome);
+        padding: 1em;
+        border-radius: 3px;
+        border: 1px dashed var(--color-pop);
+      }
+    .recaptcha{
+      font-size: 0.75rem;
+      margin-top: 1em;
+      color: var(--color-body-subtitle);
+      text-align: right;
+    }
+    .agreer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1em 0 .875em 0;
+    }
+    .agreer label{
+      font-weight: 800;
+    }
+    #agree,#GuardianAgree{
+      width:2em;
+      height:2em;
+      margin:0;
+    }
+    #agree:disabled + label{
+      color: var(--color-body-subtitle);
+    }
+    #sigBlock{
+        display:none;
+    }
+    #sigBlock label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    .name-error{
+      color:var(--color-bright-4);
+      text-align: center;
+      display:none;
+    }
+    .reveal{
+      border: none;
+      border-radius: 3px;
+    }
+    .sublabel{
+      font-size: .875em;
+      font-style: italic;
+      color: var(--color-body-subtitle);
+    }
+    #age{
+      display:none;
+    }
+    #age + label{
+      text-align: center;
+      color: var(--color-pop);
+      margin: .5em auto;
+      position: relative;
+      width: 100%;
+    }
+    #age + label:hover{
+      color:var(--color-pop-h);
+      text-decoration: underline;
+    }
+    #age:disabled + label{
+      color: var(--color-body-subtitle);
+      cursor: not-allowed;
+    }
+    #age:disabled + label:hover{
+      color: var(--color-body-subtitle);
+      text-decoration: none;
+    }
+    #age:checked + label:before {
+      content: "\f2f7";
+      color: var(--color-bright-2);
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 900;
+      margin-right: .5em;
+    } 
+    fieldset{
+      border-top: 1px solid var(--color-lane);
+      margin: 1em 0;
+    }
+    legend{
+      font-size: 1.25em;
+      font-weight: 600;
+      text-align: center;
+      color: var(--color-pop);
+    }
+    @media print, screen and (min-width: 64em){
+      .tos-terms-column{
+        max-height: 65vh;
+        overflow: auto;
+        margin-top: -15em;
+        position: relative;
+      }
+      .tos-terms-column::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        height: 20px;
+        transition: all .5s ease;
+        animation: shadow 3s ease-in-out infinite;
+      }
+      .tos-terms-column.scrolled::after {
+        animation:none;
+        box-shadow: inset 0 0 0 0 rgba(0,0,0,.3);
+      }
+
+      #readySign{
+        display:none;
+      }
+      
+      .tos-ready{
+        order:2
+      }
+      .tos-terms-column{
+        order:3
+      }
+      .simplebar-scrollbar:before {
+        opacity:.2;
+      }
+      .simplebar-scrollbar.waiting:before{
+        animation: barwait 5s ease-in-out infinite;
+      }
+    }
+    @keyframes shadow {
+    0%   { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+    50%  { box-shadow: inset 0 -8px 10px -8px rgba(0,0,0,.3);}
+    100% { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+  }
+    @keyframes barwait {
+      0%   {opacity:.1;transform:translateY(0)}
+      50%  {opacity:.3;transform:translateY(20px)}
+      100% {opacity:.1;transform:translateY(0)}
+    }
+  </style>
+  <script type="text/javascript" src="/js/pages/covid-visitors.js" defer></script>
+  <%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your Acknolwedgement has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your Acknolwedgement',
+    show: false
+  }
+];
+%>
+<%- include('../../partials/components/toaster.ejs', { toasts }); %>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+
+<div class="request-page">
+
+  <div class="grid-container fluid tos-head">
+    <div class="grid-container">
+
+    </div>
+  </div>
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container tos-content" data-animate="fade-in slide-in-up" >
+      <div class="grid-x grid-margin-x">
+        <div class="cell medium-12 large-12">
+          <div class="grid-x grid-margin-x">
+            <div class="cell medium-12 large-5">
+              <h1>COVID-19 Acknowledgement and Release Form For Visitors</h1>
+              <p class="tos-lead">I <a href="#" class="name-drop"></a> acknowledge and agree to the following terms as a condition of being allowed on the WPI campus:</p>
+    
+            </div>
+          </div>
+        </div>
+
+        <div class="cell medium-12 large-6 large-offset-1 tos-terms-column">
+          <div class="grid-x">
+            <div class="cell medium-12 tos-section">
+              <h2>Term 1</h2>
+              <p>The novel coronavirus, COVID-19, is a highly infectious, life-threatening disease declared by the World Health Organization to be a global pandemic. There is no current vaccine for COVID-19. COVID-19’s highly contagious nature means that contact with others, or contact with surfaces that have been exposed to the virus, may lead to infection. Because of its highly contagious and sometimes “hidden” nature, it is currently very difficult to control the spread of COVID19 or to determine whether, where, or how a specific individual may have been exposed to the disease.  I understand and acknowledge that given the unknown nature of COVID-19, it is not possible to list each and every individual risk of contracting COVID-19.</p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 2</h2>
+              <p>Within the past fourteen (14) days, I have not tested positive for COVID-19, nor am I aware of being in close contact with someone, including any member of my household, who has tested positive for COVID-19, is being tested for COVID-19, or has COVID-19-like symptoms.</p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 3</h2>
+              <p>I agree that I will not come to campus if I have a fever or other COVID-19-like symptoms; if I am advised to self-isolate or get tested for COVID-19; if I test positive for COVID-19; or if I have been in close contact with someone, including any member of my household, who I know has tested positive for COVID-19, is being tested for COVID-19, or has COVID-19-like symptoms. For purposes of contact tracing, I will immediately report any positive COVID-19 test, for myself or a close contact, to WPI on <a href="https://wpi.qualtrics.com/jfe/form/SV_dhF4H8uRISSCmUd" target="_blank" rel="noopener noreferrer">this form</a>.</p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 4</h2>
+              <p>I understand and acknowledge <a href="https://www.wpi.edu/news/coronavirus" target="_blank" rel="noopener noreferrer">WPI’s Coronavirus (COVID-19) Resources and Updates website</a> related to mitigating the spread of COVID-19, including the requirement of performing a daily self-check for symptoms; staying home if I am sick; wearing a cloth face covering; maintaining physical distance and staying at least six feet from others; washing my hands frequently with soap and water for at least 20 seconds or using alcohol-based hand sanitizers with at least 60% alcohol; avoiding touching my face, eyes, nose, and mouth; covering my coughs and sneezes; throwing out used tissues and washing my hands; and avoiding shaking hands, hugging, or touching when greeting another person on campus. </p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 5</h2>
+              <p>I agree to comply with instructions concerning access to buildings and spaces on campus, including occupancy limits and building and office-specific signage, including elevator limits, one-way hallways and stairwells, restroom limits, and designated entrances and exits.</p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 6</h2>
+              <p>I understand and agree that WPI has the discretion to determine whether I am permitted to be on campus, or in a particular building, and at any time may require me to leave and not return to campus if it is determined that I have not complied with WPI or public health policies or guidelines, or if my presence on campus poses a health risk to others.</p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 7</h2>
+              <p>I voluntarily assume the risk that I may be exposed or infected by COVID-19 by visiting the campus of WPI and that such exposure or infection may result in personal injury, illness, permanent disability, and/or even death.  I understand that the risk of becoming exposed to or infected by COVID-19 at WPI may result from the actions, omissions, or negligence of myself and others, including WPI and its affiliates, subsidiaries, trustees, officers, students, employees and agents (collectively, “WPI”).  </p>
+            </div>
+            <div class="cell medium-12 tos-section">
+              <h2>Term 8</h2>
+              <p><strong>I VOLUNTARILY ASSUME FULL RESPONSIBILITY FOR ANY RISKS OF ILLNESS OR INJURY</strong> that may be sustained by me due to any potential exposure to COVID-19 while visiting campus.  I hereby <strong>RELEASE WAIVE, DISCHARGE, AND COVENANT NOT TO SUE WPI</strong>, its affiliates, subsidiaries, trustees, officers, students, employees and agents, and their respective successors, heirs, and assigns (the “Related Parties”) from any and all liability, claims, demands, actions, and causes of action whatsoever arising out or related to any illness or injury, that may be sustained by me due to any potential exposure to COVID-19 while visiting campus, whether caused by the negligent act or omission of WPI, or otherwise, while visiting campus or in transportation to and from campus.  It is my express intent that this Acknowledgement Form shall bind the members of my family, my heirs, assigns and personal representatives, and shall be deemed as a <strong>RELEASE, WAIVER, DISCHARGE, and COVENANT NOT TO SUE WPI</strong> and the Related Parties.</p>
+            </div>
+          </div>
+        </div>
+        <div class="cell medium-12 large-5 tos-ready">
+          <div id="readySign">
+            
+            <div id="consent-block">
+              <p style="font-weight: 800;">I have read this Acknowledgement Form, fully understand its terms, understand and acknowledge that I have given up substantial rights by signing it, and sign it freely and voluntarily without any inducement.  In executing this Acknowledgment Form, I assert that I am 18 years of age or older and make this decision informed of its implications and entirely of my own free will.</p>
+              
+              <div class="agreer">
+                <input id="agree" name="agree" type="checkbox">
+                <label for="agree">I Agree</label>
+              </div>
+            </div>
+            <div class="age-block">
+              <input id="age" name="age" type="checkbox">
+              <label for="age">I Am Under 18 Years of Age</label>
+            </div>
+
+            <div id=sigBlock>
+              <div id="signage" class="signedSealedDelivered">
+                <p class="signed"></p>
+                <p class="dated"></p>
+              </div>
+
+              <div id="guardianBlock">
+                <fieldset>
+                  <legend>Guardian Information</legend>
+                  <p style="font-weight: 800;">To be filled out by a parent/guardian of the visitor</p>
+
+                  <label for="guardName">Guardian Full  Name</label>
+                  <input id="guardName" name="guardName" type="tel" placeholder="Guardian Full Legal Name">
+                  
+                  <label for="guardPhone">Guardian Phone Number</label>
+                  <input id="guardPhone" name="guardPhone" type="tel" placeholder="Guardian Phone Number">
+                  
+                  <label for="guardEmail">Guardian Email</label>
+                  <input id="guardEmail" name="guardEmail" type="email" placeholder="Guardian Email Address">
+
+                  <p style="font-weight: 800;">This is to certify that I, as parent/guardian with legal responsibility for the visitor, do consent and agree to all of the provisions of this Acknowledgement Form, and for myself, my heirs, assigns, and next of kin, I release and hold harmless WPI and the Related Parties from any and all liabilities related to my minor child’s visit to campus.</p>
+
+                  <div class="agreer">
+
+                    <input id="GuardianAgree" name="GuardianAgree" type="checkbox" disabled>
+                    <label for="GuardianAgree">I Agree</label>
+                  </div>
+                    <div class="signedSealedDelivered">
+                      <p class="signed"></p>
+                      <p class="dated"></p>
+                    </div>
+                </fieldset>
+
+              </div>
+
+              <fieldset>
+                <legend>Visitor Information</legend>
+                <label>Visitor Legal Name</label>
+                <p><a href="#" class="name-drop"></a></p>
+                
+                <label for="phone">Visitor Phone Number</label>
+                <input id="phone" name="phone" type="tel" placeholder="Visitor Phone Number">
+                
+                <label for="email">Visitor Email</label>
+                <input id="email" name="email" type="email" placeholder="Visitor Email Address">
+
+                <label for="details">Who are you visiting?</label>
+                <p class="sublabel">Which person(s), group(s), or Department(s) are you visiting on-campus?</p>
+                <textarea rows="4" id="details" name="details"></textarea>
+              </fieldset>
+            </div>
+
+            <button id="button-submit" class="button-submit" disabled>Submit Acknowledgement</button>
+            
+                  
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="grid-container ">
+        <div class="grid-x grid-margin-x">
+          <div class="cell medium-12 large-12">
+            <p class="recaptcha">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+
+<div class="reveal" id="nameSetter" data-reveal data-close-on-esc="false" data-close-on-click="false">
+  <h2>Welcome,</h2>
+  <p>Please tell us about yourself</p>
+
+  <label for="">Given Name*</label>
+  <input id="name-first" name="name-first" type="text" placeholder="First Name">
+
+  <label for="">Middle Initial (optional)</label>
+  <input id="name-middle" name="name-middle" type="text" placeholder="Middle Initial" maxlength="2">
+
+  <label for="">Surname*</label>
+  <input id="name-last" name="name-last" type="text" placeholder="Last Name">
+
+  <p class="name-error">Please make sure to fill out your name!</p>
+  <button id="setName">Get Started</button>
+
+</div>
+</html>

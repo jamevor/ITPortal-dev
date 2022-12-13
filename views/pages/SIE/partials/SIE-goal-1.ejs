@@ -1,0 +1,146 @@
+<div class="cell small-12 medium-12 large-12 goal-box border-sie-1">
+    <div class="goal-wrapper">
+        <div class="goal-number hide-for-small-only">
+            <div class="sie-logo sie-1">
+                <%- include('sielogo.ejs'); %>
+            </div>
+            <div class="text">
+                1
+            </div>
+        </div>
+        <div class="goal-data">
+            <h3>Inclusive Campus Culture in Service of Students</h3>
+            <p>Increase WPI’s institutional capacity and social responsibility toward an inclusive campus culture through equitable practices, policies, and social interactions in service of students.   </p>
+            <!-- <ul class="goal-objectives">
+                <li class="goal-objective-item"><span>Objective 1:</span>
+                    Build WPI’s lateral diversity infrastructure through sustainable department, division, and leadership implementation plans and priorities.  
+                </li>
+                <li class="goal-objective-item"><span>Objective 2:</span>
+                    Infuse and embed an institution-wide commitment to DEI through WPI’s mission and values statement, strategic planning process, and a culture of accountability.
+                </li>
+                <li class="goal-objective-item"><span>Objective 3:</span>
+                    Promote and enhance DEI agency and social responsibility through campus-wide DEI co-curricular engagement and multimodal learning opportunities. 
+                </li>
+            </ul> -->
+        </div>
+    </div>
+    <% if(featured == true){%>
+    <% var counterGrid = 0;
+       var goalID="1"
+       var sieClass = 'sie-1';
+    %>
+
+    <div class="featured-box <%=sieClass%>">
+        <h4>Action Spotlight</h4>
+      <div class="grid-x grid-margin-x small-up-1 medium-up-1 large-up-2"style="justify-content: center">
+        <% for(mockDatum of goals){
+            var icon = "";
+            var iconColor = ""; 
+            if(mockDatum.status =="Launched"){
+              icon = "fa-rocket-launch";
+              iconColor = "var(--color-bright-5)";
+            }if(mockDatum.status =="In-Progress"){
+              icon = "fa-spinner-third";
+              iconColor = "var(--color-bright-3)";
+            }if(mockDatum.status =="Complete"){
+              icon = "fa-check-circle";
+              iconColor = "var(--color-bright-2)";
+            }
+            if(mockDatum.status =="Pre-Launch"){
+              icon = "fa-rocket";
+              iconColor = "var(--color-pop)";
+            }
+            let showCard = false;
+        
+            if(goalID && goalID !== null && mockDatum.Objective.includes(goalID)){
+                if(mockDatum.Featured === "True"){
+                  showCard = true;
+                }else{
+                  showCard = false;
+                }
+            }else if(!goalID || (goalID && goalID == null)){
+            }else{
+                showCard = false;
+            }
+            if(counterGrid >=2){
+              showCard = false;
+            }
+          
+        %>
+      
+          
+          <%if(showCard == true){%>
+            <% ++counterGrid%>
+              <a href="/IE/Action/<%=mockDatum.id%>" class="goal-card featured cell" data-category="<%= mockDatum.DepartmentID%>" data-sort="<%=mockDatum.Title%>">
+                  <div style="display: none;" class="goal-card-objective sie-logo <%= mockDatum.Goal1 == "True" ? "sie-1" : null%> <%= mockDatum.Goal2 == "True" ? "sie-2" : null%> <%= mockDatum.Goal3 == "True" ? "sie-3" : null%> <%= mockDatum.Goal4 == "True" ? "sie-4" : null%>">
+                      <%- include('sielogo.ejs'); %>
+                  </div>
+                  <div class="goal-card-data">
+                      <p class="goal-card-dept"><%= mockDatum.Department%></p>
+                      <h3 class="goal-card-goal"><%= mockDatum.Title%></h3>
+                      <p class="goal-card-desc"><%= mockDatum.Description%></p>
+                      <div class="goal-card-status"><i class="fad <%=icon%>" style="color:<%=iconColor%>"></i> <%= mockDatum.status%></div>
+                  </div>
+                  <i class="featured-star fas fa-star"></i>
+              </a>
+          <%}%>
+        <%}%>
+
+      </div>
+    </div>
+    <%}%>
+    <div class="goal-actions">
+        <% if(locals.goalCounts && goalCounts.goal1){%>
+
+            <%
+            let iconColor="";
+            var Output = `<div class="meter-stack"><h4>Progress by Status</h4>`;
+            var total = goalCounts.goal1.total;
+            if(goalCounts.goal1["Pre-Launch"] && goalCounts.goal1["Pre-Launch"] > 0 ){
+
+                iconColor = "var(--color-pop)";
+                let part = goalCounts.goal1["Pre-Launch"]
+
+                let ratio = part/total* 100;
+
+                Output += `<div data-tooltip data-allow-html="true" data-tooltip-class="tooltip preLaunch" data-position="top" data-alignment="center" data-tip-text="Pre-Launch \<br\> ${part}" class="meter-item" style="width: ${ratio}%;background-color:${iconColor}">${part}</div>`
+
+            }
+            if(goalCounts.goal1["Launched"] && goalCounts.goal1["Launched"] > 0 ){
+
+                iconColor = "var(--color-bright-5)";
+                let part = goalCounts.goal1["Launched"]
+                let ratio = part/total* 100;
+
+                Output += `<div data-tooltip data-allow-html="true" data-position="top" data-tooltip-class="tooltip Launched" data-alignment="center" data-tip-text="Launched \<br\> ${part}" class="meter-item" style="width: ${ratio}%;background-color:${iconColor}">${part}</div>`
+
+            }if(goalCounts.goal1["In-Progress"] && goalCounts.goal1["In-Progress"] > 0){
+
+                iconColor = "var(--color-bright-3)";
+                let part = goalCounts.goal1["In-Progress"]
+                let ratio = part/total* 100;
+
+                Output += `<div data-tooltip data-allow-html="true" data-position="top" data-alignment="center" data-tooltip-class="tooltip inProgress" data-tip-text="In-Progress \<br\> ${part}" class="meter-item" style="width: ${ratio}%;background-color:${iconColor}">${part}</div>`
+
+            }if(goalCounts.goal1["Complete"] && goalCounts.goal1["Complete"] > 0){
+
+                iconColor = "var(--color-bright-2)";
+                let part = goalCounts.goal1["Complete"]
+                let ratio = part/total * 100;
+
+                Output += `<div data-tooltip data-allow-html="true" data-position="top" data-alignment="center"  data-tooltip-class="tooltip Complete" data-tip-text="Complete \<br\> ${part}" class="meter-item" style="width: ${ratio}%;background-color:${iconColor}">${part}</div>`
+
+            }
+            Output += `</div>`
+            %>
+
+            <%-Output%>
+        <%}%>
+        
+        <% if(button == true){%>
+        <div class="goal-button">
+            <a class="color-button" href="/IE/Goals/1">View Goal 1 Actions</a>
+        </div>
+        <%}%>
+    </div>
+</div>

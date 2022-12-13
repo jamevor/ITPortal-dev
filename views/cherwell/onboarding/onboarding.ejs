@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <%- include('../../partials/datatables.ejs'); %>
+  <style>
+.help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-lane-subtler);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+
+  .reveal label {
+    font-weight: 600;
+  }
+  .reveal .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .reveal textarea {
+    min-width:100%;
+  }
+  .reveal input, .reveal textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .reveal input:focus, .night .reveal textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .reveal .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .reveal .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .reveal .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-lane-subtler);
+  }
+  .reveal .impact-boxes .cell input {
+    display: none;
+  }
+  .reveal .impact-boxes .cell{
+    display:flex;
+  }
+  .reveal .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
+  .reveal label i{
+    font-size:2em;
+  }
+  .reveal label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .reveal .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .reveal .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .reveal .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .request-item{
+    background: var(--color-chrome);
+    color:var(--color-body-text);
+    cursor: pointer;
+    box-shadow: var(--shadow-standard-y);
+    margin-bottom: 1em;
+    padding: 1em;
+    border-radius: 3px;
+    transform: all .5s ease;
+  }
+  .request-item:hover,.request-item:focus,.request-item:active{
+    outline: 1px solid var(--color-pop);
+    box-shadow: var(--shadow-standard-y-h);
+  }
+  .request-item i{
+    font-size: 3em;
+    margin-bottom: .25em;
+    color: var(--color-pop);
+  }
+  .request-item h3{
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+  }
+  .request-item p{
+    font-size: .875em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+  }
+  .help-form h2{
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+  .person-section{
+    background: var(--color-chrome);
+    padding: 1em;
+    text-align: center;
+    margin-top: 1em;
+    border-radius: 3px;
+  }
+  </style>
+  <script type="text/javascript" src="/js/pages/onboarding.js" defer></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<div class="request-page">
+    <div id="outputTest">
+
+    </div>
+    <div class="grid-container help-form">
+        <div class="grid-x grid-margin-x align-center">
+            <div class="cell small-12 medium-12 person-section">
+                <p class="onboardingPersonName"><strong>Onboarding Person</strong>: <span><%=onboardingTicketOut.Employee%></span></p>
+                <p class="onboardingPersonID"><strong>Onboarding Person ID</strong>: <span><%=onboardingTicketOut.EmployeeWPIID%></span></p>
+                <p class="onboardingRep"><strong>Onboarding Representative</strong>: <span><%=locals.userAttributes.givenname + ' '+ locals.userAttributes.surname%></span></p>
+                <p class="onboardingRecID" style="display: none;"><span><%=onboardingTicketOut.RecID%></p>
+                  <p class="onboardingPublic" style="display: none;"><span><%=onboardingTicketOut.OnboardingID%></p>
+            </div>
+        </div>
+
+        <%if(onboardingTasksOut != null && onboardingTasksOut.length >=1){%>
+        <div class="grid-x grid-margin-x align-center">
+            <div class="cell small-12 medium-12">
+                <h2>Active Requests</h2>
+                <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Task</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <%for(onboardingTask of onboardingTasksOut){%>
+                        <tr>
+                            <td><%=onboardingTask.TaskID%></td>
+                            <td><%=onboardingTask.Title%></td>
+                            <td><%=onboardingTask.Status%></td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <%}%>
+        <div class="grid-x grid-margin-x align-center">
+            <div class="cell small-12 medium-12">
+                <h2>Add Requests</h2>
+
+                <div class="grid-x grid-margin-x request-list">
+                    <% serviceRequestsOut = serviceRequestsOut.sort((a, b) => a.Title.toLowerCase().localeCompare(b.Title.toLowerCase()));
+                        for(serviceRequest of serviceRequestsOut){%>
+                        <button class="cell small-6 medium-4 large-4 request-item" data-sri="<%=serviceRequest.RecID%>" data-open="<%=serviceRequest.RecID%>">
+                            <i class="fad <%=serviceRequest.FontAwesomeIcon%>"></i>
+                            <h3><%=serviceRequest.Title%></h3>
+                            <p><%=serviceRequest.ShortDescription%></p>
+    
+                        </button>
+                        <div class="reveal" id="<%=serviceRequest.RecID%>" data-reveal data-destination="<%=serviceRequest.OwnedByTeam%>" data-title="<%=serviceRequest.Title%>" data-recid="<%=serviceRequest.RecID%> data-publicid="<%=serviceRequest.PublicID%>">
+                            <h3><%=serviceRequest.Title%></h3>
+                          <div id="<%=serviceRequest.RecID%>-fields" class="fieldChunk">
+                            <%for(serviceRequestFields of serviceRequestFieldsOut){%>
+                              <%if(serviceRequestFields.ParentRecID == serviceRequest.RecID){%>
+                                <div class="fieldChunkItem">
+                                    <input type="hidden" class="fieldChunkData" data-type="<%=serviceRequestFields.FieldType%>" data-label="<%=serviceRequestFields.Label%>">
+                                    <label><%=serviceRequestFields.Label%></label>
+                                    <p class="helptext"><%=serviceRequestFields.HelpText%></p>
+                                    <%if(serviceRequestFields.FieldType == 'Date'){%>
+                                        <input type="Date">
+                                    <%}%>
+                                    <%if(serviceRequestFields.FieldType == 'Multiline Text'){%>
+                                        <textarea></textarea>
+                                    <%}%>
+                                    <%if(serviceRequestFields.FieldType == 'Number'){%>
+                                        <input type="number">
+                                    <%}%>
+                                    <%if(serviceRequestFields.FieldType == 'Select'){%>
+                                        <%var outputOptions = serviceRequestFields.Values%>
+                                        <select>
+                                            <%if(false){for(outputOption of outputOptions){%>
+                                                <option value="<%=outputOption%>"><%=outputOption%></option>
+                                            <%}}%>
+                                        </select>
+                                    <%}%>
+                                    <%if(serviceRequestFields.FieldType == 'Text'){%>
+                                        <input type="Text">
+                                    <%}%>
+                                    <%if(serviceRequestFields.FieldType == 'Yes/No'){%>
+                                        <div class="grid-x grid-margin-x impact-boxes" data-namer="<%=serviceRequestFields.RecID%>">
+                                            <div class="cell small-12 medium-6">
+                                                <input type="radio" id="<%=serviceRequestFields.RecID%>-yes" name="<%=serviceRequestFields.RecID%>" value="Yes">
+                                                <label for="<%=serviceRequestFields.RecID%>-yes"><i class="fas fa-check-circle"></i> Yes</label>
+                                            </div>
+                                            <div class="cell small-12 medium-6">
+                                                <input type="radio" id="<%=serviceRequestFields.RecID%>-no" name="<%=serviceRequestFields.RecID%>" value="No">
+                                                <label for="<%=serviceRequestFields.RecID%>-no"><i class="fas fa-times-circle"></i> No</label>
+                                            </div>
+              
+                                        </div>
+                                    <%}%>
+                                    
+                                    </div>
+                                <%}%>
+                            <%}%>
+                            <button class="button-submit" style="margin-top:1em">Add Request</button>
+                        </div>
+                            <button class="close-button" data-close aria-label="Close modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="loader" style="display: none;text-align: center;margin:0 auto;padding: 1em;">
+                              <i class="fa-4x fas fa-spinner fa-pulse"></i>
+                            </div>
+
+                        </div>
+                    <%}%>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

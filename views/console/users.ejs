@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type="text/javascript" src="/js/console/users.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-user"></i>Users</h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class="filter-find" type="text" placeholder="Find a user...">
+    </div>
+    <div class="cell medium-6">
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <%- include('../partials/api/permissions-checker.ejs'); %>
+
+    <table class='table' id='users-table'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const user of locals.users) { %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.givenname + ' ' + user.surname %></td>
+            <td><%= user.username %></td>
+            <td class="action-links">
+              <a href="/console/user-permissions/edit/<%= user.guidPublic %>"><i class="far fa-fw fa-edit"></i> </a>
+              <%# <a href="#"><i class="far fa-fw fa-trash"></i> </a> %>
+            </td>
+          </tr>
+        <% } %>
+
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

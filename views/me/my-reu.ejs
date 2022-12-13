@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <style>
+    .survey-card{
+      background: var(--color-chrome);
+      border-radius: 6px;
+      margin: 0.5em;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-standard-y);
+      color: var(--color-body-text);
+      border: 2px solid var(--color-pop);
+      transition:all .5s ease;
+    }
+    .survey-card:hover,.survey-card:active,.survey-card:focus{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      box-shadow: var(--shadow-standard-y-h);
+    }
+    .survey-card-det{
+      display: flex;
+      flex-direction: column;
+    }
+    .survey-card-status{
+      display: flex;
+    }
+    .survey-card-title{
+      font-size: 1.25em;
+      font-weight: 600;
+      color:var(--color-pop)
+    }
+    .survey-card-update{
+      color:var(--color-bright-3);
+    }
+
+    .survey-card.soon{
+      background: var(--color-chrome);
+      box-shadow: none;
+      color: var(--color-body-subtitle);
+      border: 2px solid var(--color-lane-subtler);
+      cursor: default;
+    }
+    .survey-cardsoon:hover,.survey-cardsoon:active,.survey-cardsoon:focus{
+      background: var(--color-chrome);
+      color: var(--color-body-subtitle);
+      box-shadow: none;
+      cursor: default;
+    }
+    .survey-card.soon .survey-card-title{
+      font-size: 1.25em;
+      font-weight: 600;
+      color:var(--color-body-subtitle);
+    }
+
+    .survey-card.soon .survey-card-update{
+      color:var(--color-body-subtitle);
+    }
+    .designation{
+      background: var(--color-lane);
+      border-radius: 6px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-body-text);
+      transition: all .5s ease;
+      margin: .5em;
+    }
+    .designation-details{
+      display:flex;
+      flex-direction: column;
+    }
+    .designation-label{
+      font-size: 1.25em;
+      font-weight: 800;
+      color: var(--color-body-headers);
+    }
+    .designation-icon {
+      color: var(--color-pop);
+      font-size: 3em;
+      margin-right: .5em;
+    }
+    .designation-frequency{
+      font-weight: 600;
+      color: var(--color-body-subtitle);
+    }
+    .testDays{
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testDay{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background: var(--color-lane-subtler);
+      color: var(--color-body-subtitle);
+      flex-grow: 1;
+      padding:1em;
+      flex-basis: 0;
+      flex-shrink: 1;
+      margin: 1em 1em 2em 1em;
+      position: relative;
+      border-radius: 3px;
+    }
+    .testDay.active{
+      background: var(--color-pop);
+      color:var(--color-light)
+    }
+    .testDay.active:after{
+      content: "\f058 ";
+      margin-right: .25em;
+      font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
+      color: var(--color-bright-2);
+      position: absolute;
+      top: 100%;
+      font-size: 1.5em;
+      font-weight: 600;
+      }
+    .testDay span:first-of-type{
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .testDay span:nth-of-type(2){
+      font-size: .75em;
+      font-weight: 400;
+    }
+    .quick-links{
+      display: flex;
+    }
+    .quick-links a{
+      display: flex;
+      background: var(--color-pop)!important;
+      color: var(--color-light)!important;
+      box-shadow: var(--shadow-standard-y);
+      text-align: center;
+      border-radius: 3px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .5s ease;;
+    }
+    .quick-links a:hover,.quick-links a:active,.quick-links a:focus{
+      background: var(--color-pop-h)!important;
+      color: var(--color-lane)!important;
+      box-shadow: var(--shadow-standard--h);
+    }
+    .profile-section-content h3 + p{
+      margin-top:-1em;
+    }
+    .designation-badges{
+      display: flex;
+      justify-content: center;
+    }
+
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-around;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+    overflow: hidden;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+  .course-label{
+  font-size:.875em;
+  color:var(--color-body-text);
+  font-weight:600;
+  }
+.course-item-text{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    display: flex;
+    width:50%;
+  }
+.course-item-cap{
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  display: flex;
+}
+.course-item-dept{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:1em;  
+    width:15%;
+    max-width:15%;
+    font-weight: 600;
+    font-size: 2em;
+    color:var(--color-pop)
+  }
+.course-item-title{
+    font-weight: 600;
+  }
+.course-item-crn{
+  color:var(--color-body-subtitle);
+}
+.course-item-actions{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+.course-item-remove{
+  width: 1.5em;
+  height: 1.5em;
+}
+.course-item-actions:hover a{
+  color: var(--color-pop);
+  background-color:var(--color-lane)
+}
+.course-item-instructor-email{
+  color:var(--color-body-subtitle);
+  font-size:.875em;
+}
+.course-item-instructor-email:before{
+  content:'(';
+}
+.course-item-instructor-email:after{
+  content:')';
+}
+.course-item-actions a{
+  font-weight: 800;
+  color: var(--color-body-text);
+  padding: 1em;
+  transition:all .5s ease;
+  border-radius: 3px;
+  width: 15%;
+}
+.empty-note{
+  width:100%;
+}
+.empty-note p {
+    background: var(--color-body);
+    color:var(--color-body-text);
+    padding: .5em;
+    text-align: center;
+    border: 1px dashed var(--color-lane-subtler);
+    transition:all .5s ease;
+}
+.empty-note p:hover {
+    background: var(--color-lane);
+}
+.profile-section h4 {
+  font-size: .875em;
+  font-weight: 600;
+  color: var(--color-pop);
+}
+.title-lane-buttons{
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  text-align: center;
+}
+.testingBlock{
+  padding: 1em;
+}
+.pagination .current {
+    background: var(--color-pop);
+    color: var(--color-chrome);
+}
+.pagination .current:hover {
+    background: var(--color-pop-h);
+}
+.profile-section-content tbody td{
+    padding: .25rem .25rem;
+}
+.dataTables_length select{
+  height:2em;
+  border: 1px solid var(--color-lane-subtle);
+  background: var(--color-chrome);
+  color: var(--color-body-text);
+  line-height: 2em;
+}
+.dt-buttons a{
+  background: var(--color-pop);
+    border-radius: 3px;
+    color: var(--color-light);
+    box-shadow: var(--shadow-standard-y);
+    transition: all .5s ease;
+}
+.dt-buttons a:hover,.dt-buttons a:active,.dt-buttons a:focus{
+  background: var(--color-pop-h);
+  box-shadow: var(--shadow-standard-y-h);
+}
+.dt-buttons a:focus{
+  outline: 1px solid var(--color-pop);
+}
+
+h4.instructor-title{
+  color: var(--color-body-text);
+  margin: 1em 0;
+}
+.dataTables_wrapper > .row.grid-x:first-of-type{
+  padding: 0 1em .5em 1em;
+}
+.dataTables_wrapper > .row.grid-x:last-of-type{
+  margin-top:.5em;
+}
+.profile-section-content table.dataTable {
+    margin: 0 0 !important;
+}
+.course-table{
+  background: var(--color-body);
+  border: 1px solid var(--color-lane-subtle);
+  padding: 1em;
+  border-radius: 3px;
+  margin-bottom: 1em;
+}
+.course-table .dataTables_info{
+  font-size: .875em
+}
+.course-table table tbody tr{
+  border: none;
+  background-color: var(--color-chrome);
+  color: var(--color-body-text);
+  transition: all .5s ease;
+}
+.course-table table tbody tr.odd:hover,.course-table table tbody tr.even:hover{
+  background-color: var(--color-lane);
+}
+.course-table table tbody tr.even{
+  background-color: var(--color-body);
+}
+.techTimeline{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    font-size: .875em;
+}
+.techTimeline-head{
+  background-color: var(--color-pop);
+  color: var(--color-light);
+  border-radius: 2em;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.techTimeline-marker{
+  background-color: var(--color-pop);
+  color: var(--color-light);
+  border-radius: 5em;
+  text-align: center;
+  width:70%;
+  padding:1em
+}
+.techTimeline-title{
+  font-size:1.5em;
+  font-weight: 600;
+  line-height: 1;
+}
+.techTimeline-date{
+  font-size:.875em;
+  font-weight: 400;
+}
+.techTimeline-location{
+  font-size:1em;
+  font-weight: 600;
+}
+.techTimeline-item{
+  background-color: var(--color-lane);
+  border-radius: 9px;
+  width:90%;
+  display: flex;
+  height: 6em;
+  box-shadow: 0;
+  transition:all .5s ease;
+}
+.techTimeline-item:hover{
+  box-shadow: var(--shadow-standard-y);
+}
+
+.techTimeline-item-sub.techTimeline-liner:before{
+  content: '';
+  width: 2em;
+  height: 100%;
+  position: absolute;
+  top: -75%;
+  z-index: -1;
+  left: calc(44% - 1em);
+  background: var(--color-lane-subtler);
+  border: 10px solid var(--color-lane-subtless);
+}
+.techTimeline-item-sub{
+  width:80%;
+  height:auto;
+  margin-left:10%;
+}
+.techTimeline-item-sub .techTimeline-title{
+  font-size:1.25em
+}
+
+.techTimeline-item-sub .techTimeline-time{
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: .5em;
+  writing-mode: vertical-rl;
+  border-radius: 3px 0 0 3px;
+  line-height: 2;
+  min-width: 3em;
+}
+
+.techTimeline-item-sub .techTimeline-time.single{
+  writing-mode:lr;
+}
+
+.techTimeline-item-sub .techTimeline-location{
+  margin-bottom:.5em;
+}
+
+.techTimeline-item-sub .techTimeline-details{
+  padding:.5em
+}
+.techTimeline-item-sub .techTimeline-details p{
+  margin:0;
+}
+.techTimeline-item:hover .techTimeline-icon{
+  width: 7em;
+  height: 7em;
+  margin-top: -.5em;
+  margin-right: .5em;
+  box-shadow: var(--shadow-standard-y-h);
+}
+
+.techTimeline-item:hover .techTimeline-icon i{
+  font-size: 2.5em;
+}
+.techTimeline-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.techTimeline-liner{
+  position:relative;
+  margin-top:2em;
+}
+.techTimeline-liner:before{
+  content: '';
+  width: 2em;
+  height: 100%;
+  position: absolute;
+  top: -75%;
+  z-index: -1;
+  left: calc(50% - 1em);
+  background: var(--color-lane-subtler);
+  border: 10px solid var(--color-lane-subtless);
+}
+
+.techTimeline-liner.past{
+
+}
+.techTimeline-liner.past:before{
+  content: '';
+  background: var(--color-pop);
+}
+
+
+.techTimeline-icon{
+  width: 6.5em;
+  height: 6.5em;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-lane);
+  position: relative;
+  border: 7px solid var(--color-lane-subtler);
+  color: var(--color-lane-subtler);
+  margin-left: -3em;
+  margin-right: 1em;
+  margin-top: -.25em;
+  transition: all 1s ease;
+}
+
+.techTimeline-item:last-of-type {
+    margin-bottom: 2em;
+}
+
+.techTimeline-icon i{
+  font-size:2em;
+  transition: all 1s ease;
+}
+
+.techTimeline-item.color1 .techTimeline-icon{
+  border-color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-icon{
+  border-color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-icon{
+  border-color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-icon{
+  border-color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-icon{
+  border-color: var(--color-bright-1)
+}
+
+.techTimeline-item.color1{
+  background-color: #fddacb;
+}
+.techTimeline-item.color2{
+  background-color: #ffe5cc;
+}
+.techTimeline-item.color3{
+  background-color: #dceed7;
+}
+.techTimeline-item.color4{
+  background-color: #d7eaf3;
+}
+.techTimeline-item.color5{
+  background-color: #e2e2f1;
+}
+.techTimeline-item.color6{
+  background-color:#f7d4d6;
+}
+
+.techTimeline-item.color1 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color2 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color3 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color4 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color5 .techTimeline-details{
+  color: var(--color-dark);
+}
+
+.techTimeline-item.past .techTimeline-icon{
+  color:var(--color-light);
+}
+.techTimeline-item.past{
+  background:var(--color-lane);
+}
+.techTimeline-item.past.color1 .techTimeline-icon{
+  background-color: var(--color-bright-4)
+}
+.techTimeline-item.past.color2 .techTimeline-icon{
+  background-color: var(--color-bright-3)
+}
+.techTimeline-item.past.color3 .techTimeline-icon{
+  background-color: var(--color-bright-2)
+}
+.techTimeline-item.past.color4 .techTimeline-icon{
+  background-color: var(--color-bright-5)
+}
+.techTimeline-item.past.color5 .techTimeline-icon{
+  background-color: var(--color-bright-1)
+}
+
+.techTimeline-item.past.color6 .techTimeline-icon{
+  background-color: var(--color-pop)
+}
+
+.techTimeline-item.color1 .techTimeline-time{
+  background-color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-time{
+  background-color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-time{
+  background-color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-time{
+  background-color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-time{
+  background-color: var(--color-bright-1)
+}
+
+.techTimeline-item.color6 .techTimeline-time{
+  background-color: var(--color-pop)
+}
+.techTimeline-item .techTimeline-location a{
+  transition: all .5s ease;
+}
+
+.techTimeline-item.color1 .techTimeline-location a{
+  color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-location a{
+ color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-location a{
+  color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-location a{
+  color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-location a{
+  color: var(--color-bright-1)
+}
+.techTimeline-item.color6 .techTimeline-location a{
+  color: var(--color-pop)
+}
+.techTimeline-item .techTimeline-location a{
+  filter: brightness(90%);
+}
+
+.techTimeline-item .techTimeline-location a:hover{
+  filter: brightness(50%);
+}
+
+.has-tip{
+  font-weight: inherit;
+}
+.tech-link{
+  display: flex;
+  align-self: center;
+  flex-grow: 1;
+  text-align: center;
+  justify-content: center;
+}
+.tech-link a{
+  background: var(--color-lane);
+    padding: .5em 1em;
+    border-radius: 9px;
+    color: var(--color-body-text);
+    font-weight: 600;
+  transition: all .5s ease;
+}
+.tech-link a:hover{
+  background: var(--color-lane-subtler);
+  color: var(--color-body-text);
+}
+.reveal{
+  background-color: var(--color-body);
+}
+.reveal tbody{
+  background-color: var(--color-body);
+}
+@keyframes wiggle {
+  0% {transform: rotate(10deg);}
+  25% {transform: rotate(-10deg);}
+  50% {transform: rotate(20deg);}
+  75% {transform: rotate(-5deg);}
+  100% {transform: rotate(0deg);}
+}
+
+.snowman:hover {
+  animation-name: wiggle;
+  animation-duration: 1000ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+}
+@media screen and (max-width: 39.9375em) {
+  .quick-links{
+    flex-wrap: wrap;
+  }
+  .quick-links a{
+    width: 100%;
+    margin: .5em 0;
+    text-align: center;
+    padding: 1.5em 1em;
+    justify-content: center;
+  }
+  .techTimeline-title{
+    font-size:1em;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .techTimeline{
+    font-size: .8em;
+  }
+  .techTimeline-icon{
+    margin-left:0;
+  }
+}
+@media screen and (max-width: 64em)  {
+  .techTimeline-title{
+    font-size:1.25em;
+    line-height: 1;
+  }
+  .quick-links a{
+    margin: .5em 0;
+
+  }
+}
+
+  </style>
+  <script src="https://embed.acuityscheduling.com/embed/bar/20814532.js" async></script>
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+  <% if(locals.reuStudents && reuStudents.length > 0){ %>
+
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="far fa-users-class"></i> <span>My REU Students</span></h2>
+        <div class="profile-section-content">
+
+            <div class="course-table">
+                <table class="table dataTable no-footer" data-export-title="REU Students" data-export-file="REU-Export">
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Project</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>ID</th>
+                      <th class="hide-for-print show-for-sr">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(student of reuStudents){%>
+                      <tr>
+                        <td><%= student.fields.find(f => f.name === 'Status')['value']%></td>
+                        <td><%= student.fields.find(f => f.name === 'Department')['value']%></td>
+                        <td><%= student.fields.find(f => f.name === 'FirstName')['value']%></td>
+                        <td><%= student.fields.find(f => f.name === 'LastName')['value']%></td>
+                        <td><%= student.fields.find(f => f.name === 'WPIID')['value']%></td>
+                        <td><a href="/io/REU/<%=student.fields.find(f => f.name === 'RecID')['value']%>" target="_blank"><i class="fad fa-edit"></i></a> </td>
+                      </tr>
+                    <%}%>
+                  </tbody>
+                </table>
+                </div>
+        </div>
+      </div>
+    <% }else{%>
+
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="far fa-users-class"></i> <span>My REU Students</span></h2>
+        <div class="profile-section-content">
+          <p>There do not appear to be any REU Students for this department yet.</p>
+
+        </div>
+      </div>
+   <% } %>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>
+

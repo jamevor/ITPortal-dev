@@ -1,0 +1,238 @@
+<%
+const endpoint = locals.user_ ? '/api/v1/user-permissions/update/one/' + user_.id : '';
+const method = locals.user_ ? 'PUT' : '';
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <% if (locals.canViewPermissions) { %>
+    <%- include('../partials/datatables.ejs'); %>
+  <% } %>
+  <% if (locals.edit) { %>
+    <script type='text/javascript' src='/js/console/user/edit.js' defer></script>
+  <% } %>
+  <style>
+      .user-avatar {
+        padding: 1em;
+        background: hsla(<%= user_.hue %>, 100%, 40%, 1);
+        width: 3em;
+        height: 3em;
+        line-height: 1;
+        text-align: center;
+        font-size: 3em;
+        /* margin: 0 auto; */
+        font-weight: 800;
+        border-radius: 50%;
+        color: var(--color-chrome);
+      }
+    
+      .user-name {
+        margin-bottom: 0;
+        margin-top: .5em;
+        line-height: 1;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+    
+      .user-title {
+        font-size: 1em;
+        font-family: 'Merriweather', Serif;
+        color: var(--color-body-subtitle);
+      }
+    
+      @media screen and (max-width: 39.9375em) {
+        .profile-box {
+          text-align: center;
+        }
+    
+        .user-avatar {
+          margin: 0 auto;
+        }
+      }
+      select.permission-level, select.permission-level.none {
+        background-color:var(--color-body);
+        color:var(--color-body-subtitle);
+      }
+      select.permission-level.read {
+        color:var(--color-bright-1);
+      }
+      select.permission-level.create {
+        color:var(--color-bright-2);
+      }
+      select.permission-level.author {
+        color:var(--color-bright-5);
+      }
+      select.permission-level.publish {
+        color:var(--color-bright-3);
+      }
+      select.permission-level.delete {
+        color:var(--color-bright-4);
+      }
+      select.permission-level > option {
+        background-color: var(--color-body);
+        color:var(--color-body-text);
+      }
+    </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <% if (locals.edit) { %>
+    <% if (locals.user_) { %>
+      <input type='hidden' id='user-id' name='userID' value='<%= user_.id %>'>
+    <% } %>
+    <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+    <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+  <% } %>
+  
+  <div class="grid-container fluid swim-lane user" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x align-justify">
+  
+  
+        <div class="cell small-12 medium-8 large-7 two-col-content">
+          <div class="profile-box">
+            <div class="grid-x grid-margin-x align-justify">
+              <div class="cell small-12 medium-4 large-3">
+                <div class="user-avatar" style="background-image:url('/img/ico-intro.svg')"></div>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <h1 class="user-name"><%= locals.user ? user_.givenname + ' ' + user_.surname : '' %></h1>
+                <% if (locals.user_ && user_.jobTitle) { %>
+                  <div class="user-title"><%= user_.jobTitle %></div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+
+          <% if (locals.canEditPermissions) { %>
+            <div class="swim-lane">
+
+              <% if (user.isSuperUser) { %>
+                <h3>Admin</h3>
+                <div class="switch">
+                  <input class="switch-input" id="isAdmin" type="checkbox" name="isAdmin" <%- locals.user_ && user_.isAdmin ? 'checked' : '' %>>
+                  <label class="switch-paddle" for="isAdmin">
+                    <span class='show-for-sr'>Admin</span>
+                    <span class='switch-active'>Yes</span>
+                    <span class='switch-inactive'>No</span>
+                  </label>
+                </div>
+              <% } %>
+
+              <h3>User Permissions</h3>
+    
+              <table class="table" id="permissions-table">
+                <thead>
+                  <tr>
+                    <th>Permission</th>
+                    <th>Level</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (locals.permissions) { %>
+                    <% for (const permission of locals.permissions) { %>
+                      <tr>
+                        <td><%= permission.title %></td>
+                        <td>
+                          <select class="permission-level <%= user_.userPermissionLevels.filter(upl => upl.permission.id === permission.id).length ? user_.userPermissionLevels.filter(upl => upl.permission.id === permission.id)[0].permissionLevel.title : 'none' %>" data-permissionid="<%= permission.id %>">
+                            <option data-permissionlevelclass="none" <%= locals.user_ && user_.userPermissionLevels && user_.userPermissionLevels.length && user_.userPermissionLevels.filter(upl => upl.permission.id === permission.id).length ? '' : 'selected' %> value="0">0 - none</option>
+                            <% for (const permissionLevel of locals.permissionLevels) { %>
+                              <option data-permissionlevelclass="<%= permissionLevel.title %>" value="<%= permissionLevel.id %>" <%= user_.userPermissionLevels.filter(upl => upl.permission.id === permission.id).length && user_.userPermissionLevels.filter(upl => upl.permission.id === permission.id)[0].permissionLevel.id === permissionLevel.id ? 'selected' : '' %>><%= permissionLevel.id + ' - ' + permissionLevel.title %></option>
+                            <% } %>
+                          </select>
+                        </td>
+                      </tr>
+                    <% } %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+
+        </div>
+
+        <div class="cell small-12 medium-4 two-col-sidebar">
+
+          <div class="box card">
+            <h2>About</h2>
+  
+            <h3>ID</h3>
+            <p><%= locals.user_ && user_.id ? user_.id : '' %></p>
+            <h3>Public GUID</h3>
+            <p><%= locals.user_ && user_.guidPublic ? user_.guidPublic : '' %></p>
+            <h3>WPI ID</h3>
+            <p><%= locals.user_ && user_.employeeID ? user_.employeeID : '' %></p>
+            <h3>Username</h3>
+            <p><%= locals.user_ && user_.username ? user_.username : '' %></p>
+            <h3>Email</h3>
+            <p><%= locals.user_ && user_.username ? user_.username : '' %></p>
+  
+  
+          </div>
+          <div class="box card">
+            <h2>Attr</h2>
+            <pre><%= locals.user_ ? JSON.stringify(user_,null,2) : '' %></pre>
+  
+  
+          </div>
+
+
+          <% if(locals.user_ && (user_.createdAt || user_.updatedAt) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+              <p><strong>Created:</strong> <%= locals.user_ && user_.createdAt ? moment(user_.createdAt).format('ll') : '' %></p>
+              <p><strong>Modified:</strong> <%= locals.user_ && user_.updatedAt ? moment(user_.updatedAt).format('ll') : '' %></p>
+            </div>
+          <% } %>
+
+
+
+
+          <% if (locals.canEditPermissions) { %>
+            <div class="box card">
+              <h2>Admin</h2>
+              <ul class="link-cards no-icon">
+                <% if (!locals.edit) { %>
+                  <li><a href="/console/user-permissions/edit/<%= user_.id %>"><i class='fal fa-edit'></i> Edit</a></li>
+                <% } %>
+                <li><a href="/console"><i class='fal fa-terminal'></i> Control Panel</a></li>
+              </ul>
+            </div>
+          <% } %>
+  
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if (locals.edit) { %>
+    <%- include('../partials/components/edit.ejs', {
+      entityTitle: 'User',
+      entityID: locals.user_ && user_.id ? user_.id : 'New'
+    }); %>
+        <%
+
+        const toasts = [
+          {
+            id: 'toast-save-success',
+            type: 'success',
+            title: 'Success',
+            message: 'User has been saved',
+            show: false
+          },
+          {
+            id: 'toast-save-error',
+            type: 'error',
+            title: 'Whoops',
+            message: 'Something went wrong trying to save the user',
+            show: false
+          }
+        ];
+        %>
+        <%- include('../partials/components/toaster.ejs', { toasts }); %>
+  <% } %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+  <script defer src="/js/me/history.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+<div class="grid-container me-section" style="padding:0">
+  <div class="grid-x grid-margin-x">
+
+    <div class="cell medium-12 box card profile-section">
+      <h2> <i class="far fa-history"></i> History</h2>
+      <div class="profile-section-content">
+        <div class="grid-x">
+          <div class="cell small-6">
+            <h3>Recently Viewed</h3>
+          </div>
+          <div class="cell small-6 text-right">
+            <a href="#" id="button-clear-history" class="title-lane-button">Clear History</a>
+          </div>
+          <% for (const item of locals.userViewHistory) { %>
+            <a class="cell box card small-12 results-card" style="border-left:6px solid #<%= item.color %>" href="<%= item.href %>">
+              <div class="grid-x">
+                <div class="cell small-3 medium-2 large-2 results-card-icon">
+                  <i class="fal fa-2x <%= item.icon %>" style="color:#<%= item.color %>"></i>
+                </div>
+                <div class="cell small-7 medium-7 large-7 results-card-details">
+                  <p class="results-card-details-type"><%= item.entity %></p>
+                  <h3><%= item.entityTitle %></h3>
+                </div>
+                <div class="cell small-12 medium-3 large-3 results-card-details">
+                  <p class="results-card-date"><%= moment(item.createdAt).format('lll') %></p>
+                </div>
+              </div>
+            </a>
+          <% } %>
+    
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<%- include('./partials/bottom.ejs'); %>
+<%
+
+const toasts = [
+  {
+    id: 'toast-clear-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your viewing history has been cleared',
+    show: false
+  },
+  {
+    id: 'toast-clear-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong when trying to clear your viewing history',
+    show: false
+  }
+];
+
+
+%>
+<%- include('../partials/components/toaster.ejs', { toasts }); %>
+
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

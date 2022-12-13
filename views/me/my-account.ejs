@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+<div class="grid-x grid-margin-x">
+
+  <div class="cell medium-12 box card profile-section">
+    <h2><i class="far fa-user-shield"></i> WPI Account</h2>
+    <div class="profile-section-content">
+      <div class="grid-x grid-margin-x align-justify">
+        <a class="cell small-12 box profile-button" href="https://passwordreset.microsoftonline.com/" target="_blank">
+          <i class="far fa-user"></i>
+          <h3>Self Service Password Reset</h3>
+          <p>Change your WPI Password or Unlock your WPI Account</p>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="cell medium-12 box card profile-section">
+    <h2><i class="far fa-terminal"></i> Unix Account</h2>
+    <div class="profile-section-content">
+      <div class="grid-x grid-margin-x align-justify">
+        <a class="cell small-12 medium-4 box profile-button" href="https://web.wpi.edu/cgi-bin/UnAuth/acc-password" target="_blank">
+          <i class="far fa-terminal"></i>
+          <h3>Reset Unix Password</h3>
+        </a>
+        <a class="cell small-12 medium-4 box profile-button" href="https://www.wpi.edu/cgi-bin/Pubcookie/gred" target="_blank">
+          <i class="far fa-users-class"></i>
+          <h3>Manage Web Groups</h3>
+        </a>
+        <a class="cell small-12 medium-4 box profile-button" href="https://www.wpi.edu/cgi-bin/Pubcookie/acc-group" target="_blank">
+          <i class="far fa-users-cog"></i>
+          <h3>Manage Group logins</h3>
+        </a>
+      </div>
+  
+    </div>
+  </div>
+
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

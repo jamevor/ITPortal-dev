@@ -1,0 +1,1 @@
+"use strict";$(document).ready(function(){var a=$("#users-table").DataTable({dom:"tipr",pageLength:25,searching:!0});$(".filter-find").keyup(function(){a.search($(this).val()).draw()})});

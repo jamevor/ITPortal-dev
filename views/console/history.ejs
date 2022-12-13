@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <%- include('../partials/moment.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+  <script type="text/javascript">
+    window.entityTable_defaultSortOrder = "<%= locals.sortOrder || 'asc' %>";
+  </script>
+  <script defer type="text/javascript" src="/js/console/history.js"></script>
+  <style>
+    table.dataTable tbody a.disabled {
+      cursor: not-allowed;
+      color: var(--color-pop-h);
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-history"></i> My Recents</h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class='filter-find' type="text" placeholder="Find an item...">
+    </div>
+    <div class="cell medium-6">
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <table id='history-table' class="table" style="width:100%!important;">
+      <thead class="show-for-sr">
+        <tr>
+          <th data-name='datetime'>Last Edited At</th>
+          <th>Type</th>
+          <th data-name='id'>ID</th>
+          <th>Title</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+
+</html>

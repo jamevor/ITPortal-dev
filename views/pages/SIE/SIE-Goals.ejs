@@ -1,0 +1,86 @@
+<div class="cell small-12 medium-12 large-12 lead-text">
+
+  <% if(goalID && goalID !== null){%>
+    <% var sieClass = ''%>
+    <% if(goalID == 1){  %>
+        <%- include('partials/SIE-goal-1.ejs',{"button":false,"featured":false}) %>
+        <% sieClass = 'sie-1'%>
+    <% }else if(goalID == 2){  %>
+        <%- include('partials/SIE-goal-2.ejs',{"button":false,"featured":false}) %>
+        <% sieClass = 'sie-2'%>
+    <% }else if(goalID == 3){  %>
+        <%- include('partials/SIE-goal-3.ejs',{"button":false,"featured":false}) %>
+        <% sieClass = 'sie-3'%>
+    <% }else if(goalID == 4){  %>
+        <%- include('partials/SIE-goal-4.ejs',{"button":false,"featured":false}) %>
+        <% sieClass = 'sie-4'%>
+    <% }%>
+  </div>
+</div>
+</div>
+
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x grid-margin-y">
+<%}else{%>
+
+  <div class="grid-x grid-margin-x">
+      <a class="cell small-6 medium-6 large-2 division-item solid-color active" data-multifilter="all">
+          All Divisions
+      </a>
+      
+      <% for (const division of divisions){%>
+        <a class="cell small-6 medium-6 large-2 division-item solid-color" data-entity="<%=division.id%>" data-multifilter="<%=division.id%>">
+            <%=division.name%>
+        </a>
+        <%}%>
+    <div class="cell small-12 medium-12 large-12 sie-filter"> 
+      <input type="text" name="filtr-search" value="" placeholder="Search Actions" data-search="">
+    </div>
+  </div>
+</div>
+<%}%>
+
+<div class="filtr-container">
+  <% for(mockDatum of goals){
+    var icon = "";
+    var iconColor = ""; 
+    if(mockDatum.status =="Launched"){
+      icon = "fa-rocket-launch";
+      iconColor = "var(--color-bright-5)";
+    }if(mockDatum.status =="In-Progress"){
+      icon = "fa-spinner-third";
+      iconColor = "var(--color-bright-3)";
+    }if(mockDatum.status =="Complete"){
+      icon = "fa-check-circle";
+      iconColor = "var(--color-bright-2)";
+    }
+    if(mockDatum.status =="Pre-Launch"){
+      icon = "fa-rocket";
+      iconColor = "var(--color-pop)";
+    }
+    let showCard = false;
+
+    if(goalID && goalID !== null && mockDatum.Objective.includes(goalID)){
+        showCard = true;
+    }else if(!goalID || (goalID && goalID == null)){
+        showCard = true;
+    }else{
+        showCard = false;
+    }
+    %>
+
+    
+    <%if(showCard == true){%>
+        <a href="/IE/Action/<%=mockDatum.id%>" class="filtr-item goal-card" data-category="<%= mockDatum.DepartmentID%>" data-sort="<%=mockDatum.Title%>">
+            <div class="goal-card-objective sie-logo <%= mockDatum.Goal1 == "True" ? "sie-1" : null%> <%= mockDatum.Goal2 == "True" ? "sie-2" : null%> <%= mockDatum.Goal3 == "True" ? "sie-3" : null%> <%= mockDatum.Goal4 == "True" ? "sie-4" : null%>">
+                <%- include('partials/sielogo.ejs'); %>
+            </div>
+            <div class="goal-card-data">
+                <p class="goal-card-dept"><%= mockDatum.Department%></p>
+                <h3 class="goal-card-goal"><%= mockDatum.Title%></h3>
+                <div class="goal-card-status"><i class="fad <%=icon%>" style="color:<%=iconColor%>"></i> <%= mockDatum.status%></div>
+            </div>
+        </a>
+    <%}%>
+  <%}%>
+</div>

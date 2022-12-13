@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+
+
+  <script>
+    <%if( typeof query.feature == 'string'){
+      query.feature = [query.feature]
+    }%>
+    const gfeatures=<%-query.feature ? JSON.stringify(query.feature) : "[]"%>;
+    const gcontext="<%-query.context ? query.context : ''%>";
+  </script>
+
+
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+
+  <script defer type='text/javascript' src='/js/pages/locations.js'></script>
+
+  <style>
+    #locationsTable, #serversTable {
+      width: 100%!important;
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div class="locations">
+  <div class="grid-container fluid swim-lane bright-4 about">
+    <div class="grid-container">
+      <h1>Locations & Servers</h1>
+    </div>
+    <%- include('../partials/components/tech-svg.ejs'); %>
+  </div>
+
+  <div class="grid-container fluid swim-lane dark" data-size-control='{"display": true, "compactor":true, "thiccener":true, "compactor-item": "illustration-card", "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+      <h2> What would you like to search?</h2>
+      <div class="grid-x grid-margin-x text-center">
+        <a class="cell small-6 medium-6 large-auto active" href="#" id="toggle-locations">
+          <div class="illustration-card location">
+            <img alt="" class="illustration-card-img" src="/img/location.svg">
+            <div class="illustration-card-title">Locations & Spaces</div>
+          </div>
+        </a>
+        <a class="cell small-6 medium-6 large-auto" href="#" id="toggle-servers">
+          <div class="illustration-card location">
+            <img alt="" class="illustration-card-img" src="/img/server.svg">
+            <div class="illustration-card-title">Servers & Remote Desktops</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toggle-locations" style="display: none;">
+    <div class="grid-container fluid swim-lane bright-4 about">
+      <div class="grid-container">
+        <h2><i class="fas fa-search"></i> Find a Location</h2>
+        <label for="filter-locations" class="show-for-sr">Filter Locations</label>
+        <input id="filter-locations" class="filter-find" placeholder="Find locations...">
+        <p><a class="filter-button show-more">Advanced Filters</a></p>
+      </div>
+      <%- include('../partials/components/tech-svg.ejs'); %>
+    </div>
+
+    <div class="grid-container fluid swim-lane dark advanced-filter">
+      <div class="grid-container">
+  
+        <div class="grid-x grid-margin-x">
+          <% if (locals.buildings && buildings.length) { %>
+            <div class="medium-6 cell">
+              <label> Building
+                <select id="building">
+                  <option value="">- Filter by Building -</option>
+                  <% for (let building of buildings) { %>
+                    <option value="<%= building.title %>"><%= building.title %></option>
+                  <% } %>
+                </select>
+              </label>
+            </div>
+          <% } %>
+          <% if (locals.locationTypes && locationTypes.length) { %>
+            <div class="medium-6 cell">
+              <label> Location Type
+                <select id="locationType" class="text-capitalize">
+                  <option value="">- Filter by Location Type -</option>
+                  <% for (let locationType of locationTypes) { %>
+                    <option value="<%= locationType.title %>" class="text-capitalize"><%= locationType.title %></option>
+                  <% } %>
+                </select>
+              </label>
+            </div>
+          <% } %>
+          <div class="medium-12 cell">
+            <label> Features</label>
+          </div>
+        </div>
+        
+        <div class="grid-x grid-margin-x small-up-2 medium-up-4 filter-options">
+          <label class="cell" for="hasPrinter">
+            <input id="hasPrinter" name="hasPrinter" type="checkbox"><span>Printer</span>
+          </label>
+          <label class="cell" for="hasColorPrinter">
+            <input id="hasColorPrinter" name="hasColorPrinter" type="checkbox"><span>Color Printer</span>
+          </label>
+          <label class="cell" for="hasPharos">
+            <input id="hasPharos" name="hasPharos" type="checkbox"><span>Pay For Print Station</span>
+          </label>
+          <label class="cell" for="hasProjection">
+            <input id="hasProjection" name="hasProjection" type="checkbox"><span>Projection</span>
+          </label>
+          <label class="cell" for="hasDualProjection">
+            <input id="hasDualProjection" name="hasDualProjection" type="checkbox"><span>Dual Projection</span>
+          </label>
+          <label class="cell" for="hasDocCamera">
+            <input id="hasDocCamera" name="hasDocCamera" type="checkbox"><span>Document Camera</span>
+          </label>
+          <label class="cell" for="hasLectureCap">
+            <input id="hasLectureCap" name="hasLectureCap" type="checkbox"><span>Lecture Capture</span>
+          </label>
+          <label class="cell" for="hasVoiceAmp">
+            <input id="hasVoiceAmp" name="hasVoiceAmp" type="checkbox"><span>Voice Amp</span>
+          </label>
+          <label class="cell" for="hasWirelessVoiceAmp">
+            <input id="hasWirelessVoiceAmp" name="hasWirelessVoiceAmp" type="checkbox"><span>Wireless Voice Amp</span>
+          </label>
+          <label class="cell" for="hasPOD">
+            <input id="hasPOD" name="hasPOD" type="checkbox"><span>Wireless Projection (POD)</span>
+          </label>
+          <label class="cell" for="hasDisplay">
+            <input id="hasDisplay" name="hasDisplay" type="checkbox"><span>Display</span>
+          </label>
+          <label class="cell" for="hasHostPC">
+            <input id="hasHostPC" name="hasHostPC" type="checkbox"><span>Host PC</span>
+          </label>
+          <label class="cell" for="hasWacomTouchscreen">
+            <input id="hasWacomTouchscreen" name="hasWacomTouchscreen" type="checkbox"><span>Wacom Touchscreen</span>
+          </label>
+          <label class="cell" for="hasHDMILaptopCable">
+            <input id="hasHDMILaptopCable" name="hasHDMILaptopCable" type="checkbox"><span>HDMI Laptop Cable</span>
+          </label>
+          <label class="cell" for="hasUSBCLaptopCable">
+            <input id="hasUSBCLaptopCable" name="hasUSBCLaptopCable" type="checkbox"><span>USB-C Laptop Cable</span>
+          </label>
+          <label class="cell" for="hasBlurayPlayer">
+            <input id="hasBlurayPlayer" name="hasBlurayPlayer" type="checkbox"><span>Bluray Player</span>
+          </label>
+          <label class="cell" for="hasZoomCapable">
+            <input id="hasZoomCapable" name="hasZoomCapable" type="checkbox"><span>Zoom Capable</span>
+          </label>
+        </div>
+  
+      </div>
+    </div>
+
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <table id='locationsTable' class="bright-4">
+          <thead>
+            <tr>
+              <th>Building</th>
+              <th>Location</th>
+              <th>Type</th>
+              <th>Room</th>
+              <th>Seats</th>
+              <th>Computers</th>
+              <th class='table-hidden'>printer</th>
+              <th class='table-hidden'>colorprinter</th>
+              <th class='table-hidden'>pharos</th>
+              <th class='table-hidden'>projection</th>
+              <th class='table-hidden'>dualprojection</th>
+              <th class='table-hidden'>documentcamera</th>
+              <th class='table-hidden'>lecturecap</th>
+              <th class='table-hidden'>voiceamp</th>
+              <th class='table-hidden'>wirelessamp</th>
+              <th class='table-hidden'>pod</th>
+              <th class='table-hidden'>display</th>
+              <th class='table-hidden'>hostpc</th>
+              <th class='table-hidden'>wacomtouchscreen</th>
+              <th class='table-hidden'>hdmi</th>
+              <th class='table-hidden'>usbc</th>
+              <th class='table-hidden'>bluraydvd</th>
+              <th class='table-hidden'>zoomcapable</th>
+              <th class='table-hidden'>descriptionshort</th>
+              <th class='table-hidden'>aliases</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="toggle-servers" style="display: none;">
+    <div class="grid-container fluid swim-lane bright-4 about">
+      <div class="grid-container">
+        <h2><i class="fas fa-search"></i> Find a Server</h2>
+        <label for="filter-servers" class="show-for-sr">Filter Servers</label>
+        <input id="filter-servers" class="filter-find" placeholder="Find servers...">
+      </div>
+      <%- include('../partials/components/tech-svg.ejs'); %>
+    </div>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <table id='serversTable' class="bright-4">
+          <thead>
+            <tr>
+              <th>Server</th>
+              <th>Hostname</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/cc.ejs'); %>
+  <%- include('../partials/chart-js.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script type="text/javascript">
+    window.counts = <%- JSON.stringify(counts) %>;
+    window.reviewCounts = <%- JSON.stringify(reviewCounts) %>;
+    window.usersLoggingIn = <%- JSON.stringify(usersLoggingIn) %>;
+    window.themePreferences = <%- JSON.stringify(themePreferences) %>;
+    window.mostInstalledApps = <%- JSON.stringify(mostInstalledApps) %>;
+  </script>
+  <script defer src="/js/console/dashboard.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2> <i class="far fa-tachometer"></i>Dashboard</h2>
+  <div class="console-section-content">
+    <h3>Database Overview</h3>
+    <canvas id="db-overview"></canvas>
+  </div>
+  <div class="console-section-content">
+    <h3>Up for Review</h3>
+    <canvas id="up-for-review"></canvas>
+  </div>
+  <div class="console-section-content">
+    <h3>Users Logging In</h3>
+    <canvas id="users-logging-in"></canvas>
+  </div>
+  <div class="console-section-content">
+    <h3>Users' Theme Preferences</h3>
+    <canvas id="theme-preferences"></canvas>
+  </div>
+  <div class="console-section-content">
+    <h3>Most Installed Apps</h3>
+    <canvas id="most-installed-apps"></canvas>
+  </div>
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

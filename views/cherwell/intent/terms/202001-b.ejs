@@ -1,0 +1,287 @@
+<%  const defInternational = (BannerUser.INTL_IND == "Y");
+    const defResident = (BannerUser.STARREZ == "TRUE");
+    const defFirstYear = (BannerUser.STUDENT_LEVEL == "01" && BannerUser.STYP_CODE == "N" && (BannerUser.COLLEGE_CODE == "24" || BannerUser.COLLEGE_CODE == "TR"));
+    const defGrad = (BannerUser.STUDENT_LEVEL == "05");
+    const defAthlete = (BannerUser.SPORTS.match(/\(([0-9]+)\)/)[1] > 0);
+    const currentTerm = "202001";
+    const currentPTerm = "B";
+    // const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment(new Date(intent.fields.find(f => f.name === 'Deadline')['value'])))
+    const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment('2020-12-13 09:00:00-05:00'))
+    const queryTerm = intent.fields.find(f => f.name === 'Term')['value'];
+    const queryPTerm = intent.fields.find(f => f.name === 'PTerm')['value'];
+    const termLabel = intent.fields.find(f => f.name === 'TermName')['value'];
+    const status = intent.fields.find(f => f.name === 'Status')['value'];
+    const states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","AS","DC","FM","GU","MH","MP","PW","PR","VI","AE","AA","AE","AE","AE","AP"]
+     function stateOptionGenerator(stateArray,selected){
+      selected = selected || "";
+      let output = "<option value='' style='display:none'></option>";
+      for (let state of stateArray){
+          let isSelected = state == selected ? "selected" : "";
+          output+= `<option value="${state}" ${isSelected}>${state}</option>`
+     }
+     return output;
+    }
+%>
+<div class="grid-container fluid">
+    <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+      <div class='cell small-12 medium-12 large-12'>
+        <h1>End of Term / Semester Student Intent Survey</h1>
+        <p style="font-weight:600"><%- locals.userAttributes.givenname%>, please use this form to tell us about your plans for the remainder of B-Term / Fall semester</p>
+        <div class="help-form" id="IntentBlock">
+          <fieldset style="display:none">
+            <legend>Intent for <%=termLabel%></legend>
+            <h3 style="margin-bottom:0;">Do you plan to take <strong style="text-decoration: underline;font-weight: 800;">all</strong> your courses online in <%=termLabel%>?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="onlineOnly-yes" name="onlineOnly" value="Yes" <%= intent.fields.find(f => f.name === 'AllCoursesOnline')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="onlineOnly-yes"><i class='fas fa-laptop-house'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="onlineOnly-no" name="onlineOnly" value="No" <%= intent.fields.find(f => f.name === 'AllCoursesOnline')['value'] == "No" ? "Checked" : ""%>>
+                <label for="onlineOnly-no"><i class='fas fa-university'></i> No, I will come to campus to complete coursework</label>
+              </div>
+            </div>
+  
+            <h3 style="margin-bottom:0;">Will you come to campus for any other reason in <%=termLabel%>?</h3>
+            <p class="form-label-help">(studying, group projects, sports, research, a job, eating, library, working out, etc.)</p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="comeToCampus-yes" name="comeToCampus" value="Yes" <%= intent.fields.find(f => f.name === 'ComeToCampus')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="comeToCampus-yes"><i class='fas fa-check-circle'></i> Yes, I will come to campus for activities outside of coursework</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="comeToCampus-no" name="comeToCampus" value="No" <%= intent.fields.find(f => f.name === 'ComeToCampus')['value'] == "No" ? "Checked" : ""%>>
+                <label for="comeToCampus-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+            <h3 style="margin-bottom:0;">Are you employed by WPI</h3>
+            <p class="form-label-help">(work study, hourly employment, research assistant, teaching assistant, peer learning assistant, etc.)</p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employedWPI-yes" name="employedWPI" value="Yes" <%= intent.fields.find(f => f.name === 'EmployedByWPI')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="employedWPI-yes"><i class='fas fa-check-circle'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employedWPI-no" name="employedWPI" value="No" <%= intent.fields.find(f => f.name === 'EmployedByWPI')['value'] == "No" ? "Checked" : ""%>>
+                <label for="employedWPI-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+            </fieldset>
+            <fieldset style="display:none">
+              <legend>Additional Details</legend>
+            <%if(!defResident){ %>
+              <h3 style="margin-bottom:0;">Where do you plan to live during <%=termLabel%>? </h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-greek" name="planToLive" value="Fraternity or Sorority House" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Fraternity or Sorority House" ? "Checked" : ""%>>
+                  <label for="planToLive-greek">Fraternity or Sorority House</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-offCampus-near" name="planToLive" value="Off-Campus Within 0.5 Miles in the US" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US" ? "Checked" : ""%>>
+                  <label for="planToLive-offCampus-near">Off-Campus<br>Within 0.5 Miles in the US</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-offCampus-far" name="planToLive" value="Off-Campus More Than 0.5 Miles Away in the US" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" ? "Checked" : ""%>>
+                  <label for="planToLive-offCampus-far">Off-Campus<br>More Than 0.5 Miles Away in the US</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-international" name="planToLive" value="At An International Location" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "At An International Location" ? "Checked" : ""%>>
+                  <label for="planToLive-international">At An International Location</label>
+                </div>
+  
+              </div>
+            <% } %>
+            
+            <div id="offCampusBlock" style="<%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" ? "" : "display:none" %>">
+              <h3 style="margin-bottom:0;">Is this out of state?</h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="anotherState-yes" name="anotherState" value="Yes" <%= intent.fields.find(f => f.name === 'IsOutOfState')['value'] == "Yes" ? "Checked" : ""%>>
+                  <label for="anotherState-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="anotherState-no" name="anotherState" value="No" <%= intent.fields.find(f => f.name === 'IsOutOfState')['value'] == "No" ? "Checked" : ""%>>
+                  <label for="anotherState-no"><i class='fas fa-times-circle'></i> No</label>
+                </div>
+              </div>
+  
+              <div id="offCampusStateBlock" style="<%= intent.fields.find(f => f.name === 'IsOutOfState')['value'] == "Yes" ? "" : "display:none"%>">
+                <label class="form-label"  for="outOfStateState">Which State?</label>
+                <select id="outOfStateState" name="outOfStateState">
+                  <%- stateOptionGenerator(states,intent.fields.find(f => f.name === 'OutOfStateState')['value']) %>  
+                </select>
+              </div>
+  
+            </div>
+            
+            <div id="address-block" class="cell small-12 grid-x grid-margin-x" style="<%= (intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Fraternity or Sorority House" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US") ? "" : "display:none"%>">
+              <p style="font-size: .875rem;font-weight:600;margin-left:1em">Please provide your <em>local</em> Address:</p>
+              <div class="cell small-12">
+                <label class="form-label" for="address1">Address Line 1</label>
+                <input type="text" id="address1" name="address1" value="<%= intent.fields.find(f => f.name === 'Address1')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="address2">Address Line 2</label>
+                <input type="text" id="address2" name="address2" value="<%= intent.fields.find(f => f.name === 'Address2')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="city">City</label>
+                <input type="text" id="city" name="city" value="<%= intent.fields.find(f => f.name === 'City')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="state">State</label>
+                <select id="state" name="state">
+                  <%- stateOptionGenerator(states,intent.fields.find(f => f.name === 'State')['value']) %>  
+                </select>
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="zip">Zip</label>
+                <input type="text" id="zip" name="zip" value="<%= intent.fields.find(f => f.name === 'Zip')['value']%>">
+              </div>
+            </div>
+  
+            <div id="permAddress-block" style="<%= (intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "At An International Location") ? "" : "display:none"%>">
+              <h3 style="margin-bottom:0;">Is this location at your permanent home?</h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="permAddress-yes" name="permAddress" value="Yes" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "Yes" ? "Checked" : ""%>>
+                  <label for="permAddress-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="permAddress-no" name="permAddress" value="No" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "No" ? "Checked" : ""%>>
+                  <label for="permAddress-no"><i class='fas fa-times-circle'></i> No</label>
+                </div>
+              </div>
+          </div>
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12">
+                <p style="font-size: .875rem;font-weight:600;margin: 1em 0 0 0;">If you have one, please provide your local Mobile Phone Number</p>
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-area-code">Area Code</label>
+                <input type="text" id="telephone-area-code" name="telephone-area-code" value="<%= intent.fields.find(f => f.name === 'PhoneAreaCode')['value']%>" maxlength="6">
+              </div>
+              <div class="cell small-12 medium-6">
+                <label class="form-label" for="telephone-number">Number</label>
+                <input type="text" id="telephone-number" name="telephone-number" value="<%= intent.fields.find(f => f.name === 'PhoneNumber')['value']%>" maxlength="12">
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-extension">Extension</label>
+                <input type="text" id="telephone-extension" name="telephone-extension" value="<%= intent.fields.find(f => f.name === 'PhoneExtension')['value']%>" maxlength="10">
+              </div>
+            </div>
+  
+  
+          </fieldset>
+          <fieldset style="display:none">
+            <legend><i class="fad fa-turkey"></i> Thanksgiving 2020 Plans</legend>
+            <p>WPI needs to know your plans for Thanksgiving Break and the final two weeks of B-Term / Fall semester. This applies to all students; those living on campus, off campus and in fraternity and sorority housing. <strong>WPI campus card access will be deactivated at 9am on November 25th</strong> unless you indicate you intend to remain on campus for the Thanksgiving Break and final two weeks of B-Term. Students who choose to remain will be expected to participate in the COVID-19 testing program for the remainder of B-Term. </p>
+            
+            <h3 style="margin-bottom:0;">What are your plans for Thanksgiving Break and the final two weeks of B-Term / Fall semester</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="thanksgivingStatus-departing" name="thanksgivingStatus" value="Departing" <%= intent.fields.find(f => f.name === 'ThanksgivingStatus')['value'] == "Departing" ? "Checked" : ""%>>
+                <label for="thanksgivingStatus-departing">I am <strong>DEPARTING</strong> campus for Thanksgiving Break and the final two weeks of B-Term / Fall semester </label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="thanksgivingStatus-remaining" name="thanksgivingStatus" value="Remaining" <%= intent.fields.find(f => f.name === 'ThanksgivingStatus')['value'] == "Remaining" ? "Checked" : ""%>>
+                <label for="thanksgivingStatus-remaining">I am <strong>REMAINING</strong> on campus for Thanksgiving Break and the final two weeks ofB-Term / Fall semester </label>
+              </div>
+            </div>
+  
+            <p>After November 12th WPI will send a message to those students choosing to remain on campus for Thanksgiving Break and the final two weeks of B-Term/ Fall semester. This message will include how to sign up for you COVID-19 testing appointments for that remaining time period. </p>
+  
+            <div id="turkey-block" style="display: none;">
+              <p>WPI will be offering Thanksgiving Day meals for any students remaining for the Thanksgiving Break and final two weeks of B-Term / Fall semester. This will be available utilizing your student meal plan or for a nominal cost. Dining locations and meal plan offerings will be available throughout the Thanksgiving Break weekend and final two weeks of B-Term as well.</p>
+              <h3 style="margin-bottom:0;">Are you interested in learning more about the Thanksgiving Day meals? </h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="thanksgivingMeal-yes" name="thanksgivingMeal" value="Yes" <%= intent.fields.find(f => f.name === 'ThanksgivingMeal')['value'] == "Yes" ? "Checked" : ""%>>
+                  <label for="thanksgivingMeal-yes">Yes, I am interested in learning more about this offering</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="thanksgivingMeal-no" name="thanksgivingMeal" value="No" <%= intent.fields.find(f => f.name === 'ThanksgivingMeal')['value'] == "No" ? "Checked" : ""%>>
+                  <label for="thanksgivingMeal-no">No, I have a plan for my own Thanksgiving Day meals</label>
+                </div>
+              </div>
+  
+            </div>
+  
+          </fieldset>
+          <% 
+            var today = moment().zone('-0500');
+            
+            let DepartureDate = intent.fields.find(f => f.name === 'PhaseYellowDepartureDate')['value'];
+            let outputDeparture = "";
+            var isDateAfterToday = "";
+            if(DepartureDate && DepartureDate != "" && DepartureDate != null){
+              outputDeparture= moment(DepartureDate).format("YYYY-MM-DD");
+              isDateAfterToday = today.isAfter(moment(DepartureDate),'day');
+            }else{
+              outputDeparture = "";
+            }
+          %>
+          <fieldset>
+            <legend><i class="fad fa-calendar"></i> NEW End of Term / Semester Survey (updated 11/17/20)</legend>
+            <p>Please let us know your plans for the final weeks of the term/semester, including the Thanksgiving Break.</p>
+            <p>ALL PhD, Graduate and Undergraduate students; those living on campus, off campus and in fraternity and sorority
+            housing, that are part of the COVID testing program, must indicate their plans for the remainder of the semester. Should you depart campus, you will not be permitted
+            to return until C-Term/ Spring Semester</p>
+            <p>On-campus residential students should follow the posted departure instructions.</p>
+            
+            <% if(isDateAfterToday == true && intent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Departing"){%>
+              <div class="dateWarningNote">
+                <p>The current date is after your specified departure date. No further changes may be made to this survey.</p>
+              </div>
+            <%}else{%>
+            <h3 style="margin-bottom:0;">What are your plans for the remainder of B-Term / Fall semester? This includes Thanksgiving Break.</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="PhaseYellowStatus-departing" name="PhaseYellowStatus" value="Departing" <%= intent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Departing" ? "Checked" : ""%>>
+                <label for="PhaseYellowStatus-departing">I am <strong>DEPARTING</strong> campus for the remainder of B-Term / Fall semester and the Thanksgiving Break</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="PhaseYellowStatus-remaining" name="PhaseYellowStatus" value="Remaining" <%= intent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Remaining" ? "Checked" : ""%>>
+                <label for="PhaseYellowStatus-remaining">I am <strong>REMAINING</strong> on campus for the remainder of B-Term / Fall semester and the Thanksgiving Break</label>
+              </div>
+            </div>
+            <% const showdepart = intent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Departing" ? "" : `style="display:none;"`;%>
+            <div id="departure-block" <%-showdepart%>>
+              <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-6">
+                  <label class="form-label"  for="departure-date">Date of Departure</label>
+                  <p class="form-label-help">What date will you be leaving WPI's Campus for the remainder of the B-Term / Fall semester? The last day for departure is <strong>12/12/2020</strong>.</p>
+  
+                  <input type="date" id="departure-date" name="departure-date" max="2020-12-12" value="<%=outputDeparture%>">
+                  <p id="dateOut" class="error-text">The entered date must be before 12/12/2020.</p>
+                </div>
+                <% const showdepartNote = intent.fields.find(f => f.name === 'PhaseYellowDepartureDate')['value'] == "" || intent.fields.find(f => f.name === 'PhaseYellowDepartureDate')['value'] == null ? `style="display:none;"` : "" ;%>
+                <div class="cell small-12 medium-6" id="dateWarning" <%-showdepartNote%>>
+                  <div class="dateWarningNote">
+                    <p>You have indicated you are departing WPI on <strong id="deptDate"><%=outputDeparture%></strong>.</p>
+                    <p>You will be able to make self-service changes to your answers on this survey until the end of your departure day at 11:59 PM EST, after which you will no longer have access to make changes and are required to follow the <a href="https://www.wpi.edu/student-experience/housing-dining/living-on-campus/current-students/closing-and-moving-out" targt="_blank" rel="noopener noreferrer">moving out procedures</a.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p id="error1" class="error-text">Please select an answer to this question!</p>
+            <p id="error2" class="error-text">Please provide a valid date of departure!</p>
+            <%}%>
+          </fieldset>
+  
+          <% let submitLang = status == "Waiting" ? "Submit Intent Form" : "Update Intent Form"; %>
+          <% if(isDateAfterToday == true && intent.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "Departing"){%>
+            <p>If this is an emergency, please email the <a href="mailto:dean-of-students@wpi.edu">Dean of Students</a></p>
+          <%}else{%>
+            <button id="button-submit-help-form" class="button-submit">Submit Response</button>
+            
+          <%}%>
+          <p style="font-size: 0.75rem;margin-top: 2em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+  
+        </div>
+  
+            
+  
+      </div>
+    </div>
+  </div>

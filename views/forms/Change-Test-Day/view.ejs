@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <style>
+    .request-page {
+      display: flex;
+    }
+    .request-page h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 2.875em;
+      text-transform: capitalize;
+      line-height: 1;
+      padding-bottom: .25em;
+    }
+  </style>
+  <script type="text/javascript" src="/js/pages/change-test-day.js" defer></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+
+<div class="request-page">
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <div class="cell medium-12">
+        <h1 class="text-center">Request for Change of Testing Day</h1>
+      </div>
+      <div class="grid-x grid-margin-x">
+        <%- include('./partials/change-test-day.ejs'); %>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <style>
+    .survey-card{
+      background: var(--color-chrome);
+      border-radius: 6px;
+      margin: 0.5em;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-standard-y);
+      color: var(--color-body-text);
+      border: 2px solid var(--color-pop);
+      transition:all .5s ease;
+    }
+    .survey-card:hover,.survey-card:active,.survey-card:focus{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      box-shadow: var(--shadow-standard-y-h);
+    }
+    .survey-card.no-link:hover,.survey-card.no-link:active{
+      background: var(--color-chrome);
+      color: var(--color-body-text);
+      box-shadow: var(--shadow-standard-y);
+    }
+    .survey-card-det{
+      display: flex;
+      flex-direction: column;
+    }
+    .survey-card-status{
+      display: flex;
+    }
+    .survey-card-title{
+      font-size: 1.25em;
+      font-weight: 600;
+      color:var(--color-pop)
+    }
+    .survey-card-update{
+      color:var(--color-bright-3);
+    }
+
+    .survey-card.soon{
+      background: var(--color-chrome);
+      box-shadow: none;
+      color: var(--color-body-subtitle);
+      border: 2px solid var(--color-lane-subtler);
+      cursor: default;
+    }
+    .survey-cardsoon:hover,.survey-cardsoon:active,.survey-cardsoon:focus{
+      background: var(--color-chrome);
+      color: var(--color-body-subtitle);
+      box-shadow: none;
+      cursor: default;
+    }
+    .survey-card.soon .survey-card-title{
+      font-size: 1.25em;
+      font-weight: 600;
+      color:var(--color-body-subtitle);
+    }
+
+    .survey-card.soon .survey-card-update{
+      color:var(--color-body-subtitle);
+    }
+    .designation{
+      background: var(--color-lane);
+      border-radius: 6px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-body-text);
+      transition: all .5s ease;
+      margin: .5em;
+    }
+    .designation-details{
+      display:flex;
+      flex-direction: column;
+    }
+    .designation-label{
+      font-size: 1.25em;
+      font-weight: 800;
+      color: var(--color-body-headers);
+    }
+    .designation-icon {
+      color: var(--color-pop);
+      font-size: 3em;
+      margin-right: .5em;
+    }
+    .designation-frequency{
+      font-weight: 600;
+      color: var(--color-body-subtitle);
+    }
+    .testDays{
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testDay{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background: var(--color-lane-subtler);
+      color: var(--color-body-subtitle);
+      flex-grow: 1;
+      padding:1em;
+      flex-basis: 0;
+      flex-shrink: 1;
+      margin: 1em 1em 2em 1em;
+      position: relative;
+      border-radius: 3px;
+    }
+    .testDay.active{
+      background: var(--color-pop);
+      color:var(--color-light)
+    }
+    .testDay.active:after{
+      content: "\f058 ";
+      margin-right: .25em;
+      font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
+      color: var(--color-bright-2);
+      position: absolute;
+      top: 100%;
+      font-size: 1.5em;
+      font-weight: 600;
+      }
+    .testDay span:first-of-type{
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .testDay span:nth-of-type(2){
+      font-size: .75em;
+      font-weight: 400;
+    }
+    .quick-links{
+      display: flex;
+    }
+    .quick-links a{
+      display: flex;
+      background: var(--color-pop)!important;
+      color: var(--color-light)!important;
+      box-shadow: var(--shadow-standard-y);
+      text-align: center;
+      border-radius: 3px;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .5s ease;;
+    }
+    .quick-links a:hover,.quick-links a:active,.quick-links a:focus{
+      background: var(--color-pop-h)!important;
+      color: var(--color-lane)!important;
+      box-shadow: var(--shadow-standard--h);
+    }
+    .profile-section-content h3 + p{
+      margin-top:-1em;
+    }
+    .designation-badges{
+      display: flex;
+      justify-content: center;
+    }
+
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-around;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+    overflow: hidden;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+  .course-label{
+  font-size:.875em;
+  color:var(--color-body-text);
+  font-weight:600;
+  }
+.course-item-text{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    display: flex;
+    width:50%;
+  }
+.course-item-cap{
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  display: flex;
+}
+.course-item-dept{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:1em;  
+    width:15%;
+    max-width:15%;
+    font-weight: 600;
+    font-size: 2em;
+    color:var(--color-pop)
+  }
+.course-item-title{
+    font-weight: 600;
+  }
+.course-item-crn{
+  color:var(--color-body-subtitle);
+}
+.course-item-actions{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+.course-item-remove{
+  width: 1.5em;
+  height: 1.5em;
+}
+.course-item-actions:hover a{
+  color: var(--color-pop);
+  background-color:var(--color-lane)
+}
+.course-item-instructor-email{
+  color:var(--color-body-subtitle);
+  font-size:.875em;
+}
+.course-item-instructor-email:before{
+  content:'(';
+}
+.course-item-instructor-email:after{
+  content:')';
+}
+.course-item-actions a{
+  font-weight: 800;
+  color: var(--color-body-text);
+  padding: 1em;
+  transition:all .5s ease;
+  border-radius: 3px;
+  width: 15%;
+}
+.empty-note{
+  width:100%;
+}
+.empty-note p {
+    background: var(--color-body);
+    color:var(--color-body-text);
+    padding: .5em;
+    text-align: center;
+    border: 1px dashed var(--color-lane-subtler);
+    transition:all .5s ease;
+}
+.empty-note p:hover {
+    background: var(--color-lane);
+}
+.profile-section h4 {
+  font-size: .875em;
+  font-weight: 600;
+  color: var(--color-pop);
+}
+.title-lane-buttons{
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  text-align: center;
+}
+.testingBlock{
+  padding: 1em;
+}
+.pagination .current {
+    background: var(--color-pop);
+    color: var(--color-chrome);
+}
+.pagination .current:hover {
+    background: var(--color-pop-h);
+}
+.profile-section-content tbody td{
+    padding: .25rem .25rem;
+}
+.dataTables_length select{
+  height:2em;
+  border: 1px solid var(--color-lane-subtle);
+  background: var(--color-chrome);
+  color: var(--color-body-text);
+  line-height: 2em;
+}
+.dt-buttons a{
+  background: var(--color-pop);
+    border-radius: 3px;
+    color: var(--color-light);
+    box-shadow: var(--shadow-standard-y);
+    transition: all .5s ease;
+}
+.dt-buttons a:hover,.dt-buttons a:active,.dt-buttons a:focus{
+  background: var(--color-pop-h);
+  box-shadow: var(--shadow-standard-y-h);
+}
+.dt-buttons a:focus{
+  outline: 1px solid var(--color-pop);
+}
+
+h4.instructor-title{
+  color: var(--color-body-text);
+  margin: 1em 0;
+}
+.dataTables_wrapper > .row.grid-x:first-of-type{
+  padding: 0 1em .5em 1em;
+}
+.dataTables_wrapper > .row.grid-x:last-of-type{
+  margin-top:.5em;
+}
+.profile-section-content table.dataTable {
+    margin: 0 0 !important;
+}
+.course-table{
+  background: var(--color-body);
+  border: 1px solid var(--color-lane-subtle);
+  padding: 1em;
+  border-radius: 3px;
+  margin-bottom: 1em;
+}
+.course-table .dataTables_info{
+  font-size: .875em
+}
+.course-table table tbody tr{
+  border: none;
+  background-color: var(--color-chrome);
+  color: var(--color-body-text);
+  transition: all .5s ease;
+}
+.course-table table tbody tr.odd:hover,.course-table table tbody tr.even:hover{
+  background-color: var(--color-lane);
+}
+.course-table table tbody tr.even{
+  background-color: var(--color-body);
+}
+.techTimeline{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    font-size: .875em;
+}
+.techTimeline-head{
+  background-color: var(--color-pop);
+  color: var(--color-light);
+  border-radius: 2em;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.techTimeline-marker{
+  background-color: var(--color-pop);
+  color: var(--color-light);
+  border-radius: 5em;
+  text-align: center;
+  width:70%;
+  padding:1em
+}
+.techTimeline-title{
+  font-size:1.5em;
+  font-weight: 600;
+  line-height: 1;
+}
+.techTimeline-date{
+  font-size:.875em;
+  font-weight: 400;
+}
+.techTimeline-location{
+  font-size:1em;
+  font-weight: 600;
+}
+.techTimeline-item{
+  background-color: var(--color-lane);
+  border-radius: 9px;
+  width:90%;
+  display: flex;
+  height: 6em;
+  box-shadow: 0;
+  transition:all .5s ease;
+}
+.techTimeline-item:hover{
+  box-shadow: var(--shadow-standard-y);
+}
+
+.techTimeline-item-sub.techTimeline-liner:before{
+  content: '';
+  width: 2em;
+  height: 100%;
+  position: absolute;
+  top: -75%;
+  z-index: -1;
+  left: calc(44% - 1em);
+  background: var(--color-lane-subtler);
+  border: 10px solid var(--color-lane-subtless);
+}
+.techTimeline-item-sub{
+  width:80%;
+  height:auto;
+  margin-left:10%;
+}
+.techTimeline-item-sub .techTimeline-title{
+  font-size:1.25em
+}
+
+.techTimeline-item-sub .techTimeline-time{
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: .5em;
+  writing-mode: vertical-rl;
+  border-radius: 3px 0 0 3px;
+  line-height: 2;
+  min-width: 3em;
+}
+
+.techTimeline-item-sub .techTimeline-time.single{
+  writing-mode:lr;
+}
+
+.techTimeline-item-sub .techTimeline-location{
+  margin-bottom:.5em;
+}
+
+.techTimeline-item-sub .techTimeline-details{
+  padding:.5em
+}
+.techTimeline-item-sub .techTimeline-details p{
+  margin:0;
+}
+.techTimeline-item:hover .techTimeline-icon{
+  width: 7em;
+  height: 7em;
+  margin-top: -.5em;
+  margin-right: .5em;
+  box-shadow: var(--shadow-standard-y-h);
+}
+
+.techTimeline-item:hover .techTimeline-icon i{
+  font-size: 2.5em;
+}
+.techTimeline-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.techTimeline-liner{
+  position:relative;
+  margin-top:2em;
+}
+.techTimeline-liner:before{
+  content: '';
+  width: 2em;
+  height: 100%;
+  position: absolute;
+  top: -75%;
+  z-index: -1;
+  left: calc(50% - 1em);
+  background: var(--color-lane-subtler);
+  border: 10px solid var(--color-lane-subtless);
+}
+
+.techTimeline-liner.past{
+
+}
+.techTimeline-liner.past:before{
+  content: '';
+  background: var(--color-pop);
+}
+
+
+.techTimeline-icon{
+  width: 6.5em;
+  height: 6.5em;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-lane);
+  position: relative;
+  border: 7px solid var(--color-lane-subtler);
+  color: var(--color-lane-subtler);
+  margin-left: -3em;
+  margin-right: 1em;
+  margin-top: -.25em;
+  transition: all 1s ease;
+}
+
+.techTimeline-item:last-of-type {
+    margin-bottom: 2em;
+}
+
+.techTimeline-icon i{
+  font-size:2em;
+  transition: all 1s ease;
+}
+
+.techTimeline-item.color1 .techTimeline-icon{
+  border-color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-icon{
+  border-color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-icon{
+  border-color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-icon{
+  border-color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-icon{
+  border-color: var(--color-bright-1)
+}
+
+.techTimeline-item.color1{
+  background-color: #fddacb;
+}
+.techTimeline-item.color2{
+  background-color: #ffe5cc;
+}
+.techTimeline-item.color3{
+  background-color: #dceed7;
+}
+.techTimeline-item.color4{
+  background-color: #d7eaf3;
+}
+.techTimeline-item.color5{
+  background-color: #e2e2f1;
+}
+.techTimeline-item.color6{
+  background-color:#f7d4d6;
+}
+
+.techTimeline-item.color1 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color2 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color3 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color4 .techTimeline-details{
+  color: var(--color-dark);
+}
+.techTimeline-item.color5 .techTimeline-details{
+  color: var(--color-dark);
+}
+
+.techTimeline-item.past .techTimeline-icon{
+  color:var(--color-light);
+}
+.techTimeline-item.past{
+  background:var(--color-lane);
+}
+.techTimeline-item.past.color1 .techTimeline-icon{
+  background-color: var(--color-bright-4)
+}
+.techTimeline-item.past.color2 .techTimeline-icon{
+  background-color: var(--color-bright-3)
+}
+.techTimeline-item.past.color3 .techTimeline-icon{
+  background-color: var(--color-bright-2)
+}
+.techTimeline-item.past.color4 .techTimeline-icon{
+  background-color: var(--color-bright-5)
+}
+.techTimeline-item.past.color5 .techTimeline-icon{
+  background-color: var(--color-bright-1)
+}
+
+.techTimeline-item.past.color6 .techTimeline-icon{
+  background-color: var(--color-pop)
+}
+
+.techTimeline-item.color1 .techTimeline-time{
+  background-color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-time{
+  background-color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-time{
+  background-color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-time{
+  background-color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-time{
+  background-color: var(--color-bright-1)
+}
+
+.techTimeline-item.color6 .techTimeline-time{
+  background-color: var(--color-pop)
+}
+.techTimeline-item .techTimeline-location a{
+  transition: all .5s ease;
+}
+
+.techTimeline-item.color1 .techTimeline-location a{
+  color: var(--color-bright-4)
+}
+.techTimeline-item.color2 .techTimeline-location a{
+ color: var(--color-bright-3)
+}
+.techTimeline-item.color3 .techTimeline-location a{
+  color: var(--color-bright-2)
+}
+.techTimeline-item.color4 .techTimeline-location a{
+  color: var(--color-bright-5)
+}
+.techTimeline-item.color5 .techTimeline-location a{
+  color: var(--color-bright-1)
+}
+.techTimeline-item.color6 .techTimeline-location a{
+  color: var(--color-pop)
+}
+.techTimeline-item .techTimeline-location a{
+  filter: brightness(90%);
+}
+
+.techTimeline-item .techTimeline-location a:hover{
+  filter: brightness(50%);
+}
+
+.has-tip{
+  font-weight: inherit;
+}
+.tech-link{
+  display: flex;
+  align-self: center;
+  flex-grow: 1;
+  text-align: center;
+  justify-content: center;
+}
+.tech-link a{
+  background: var(--color-lane);
+    padding: .5em 1em;
+    border-radius: 9px;
+    color: var(--color-body-text);
+    font-weight: 600;
+  transition: all .5s ease;
+}
+.tech-link a:hover{
+  background: var(--color-lane-subtler);
+  color: var(--color-body-text);
+}
+.reveal{
+  background-color: var(--color-body);
+}
+.reveal tbody{
+  background-color: var(--color-body);
+}
+@keyframes wiggle {
+  0% {transform: rotate(10deg);}
+  25% {transform: rotate(-10deg);}
+  50% {transform: rotate(20deg);}
+  75% {transform: rotate(-5deg);}
+  100% {transform: rotate(0deg);}
+}
+
+.snowman:hover {
+  animation-name: wiggle;
+  animation-duration: 1000ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+}
+@media screen and (max-width: 39.9375em) {
+  .quick-links{
+    flex-wrap: wrap;
+  }
+  .quick-links a{
+    width: 100%;
+    margin: .5em 0;
+    text-align: center;
+    padding: 1.5em 1em;
+    justify-content: center;
+  }
+  .techTimeline-title{
+    font-size:1em;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .techTimeline{
+    font-size: .8em;
+  }
+  .techTimeline-icon{
+    margin-left:0;
+  }
+}
+@media screen and (max-width: 64em)  {
+  .techTimeline-title{
+    font-size:1.25em;
+    line-height: 1;
+  }
+  .quick-links a{
+    margin: .5em 0;
+
+  }
+}
+
+  </style>
+  <script src="https://embed.acuityscheduling.com/embed/bar/20814532.js" async></script>
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+<% if(locals.intent && intent.length == 0){ %>
+
+<% }else{%>
+  <% if(locals.intent && intent.length > 0){ %>
+    <% let output = "";
+    let statusIcon = "";
+    let dueDate = "";
+
+    if(intent.length > 0){
+      
+      for (let intentItem of intent){
+
+        const outTerm = intentItem.fields.find(f => f.name === 'Term')['value'];
+        const outPTerm = intentItem.fields.find(f => f.name === 'PTerm')['value'];
+        
+        const status = intentItem.fields.find(f => f.name === 'Status')['value'];
+
+          let fromCherwellStart = moment(new Date(intentItem.fields.find(f => f.name === 'ActiveDate')['value']));
+          let fromCherwellEnd ="";
+          if(outTerm == "202001" && outPTerm == "B"){
+            fromCherwellEnd = moment('2020-12-13 09:00:00-05:00')
+          }else{
+            fromCherwellEnd = moment(new Date(intentItem.fields.find(f => f.name === 'Deadline')['value']));
+          }
+          
+          let validDate = moment().isBetween(fromCherwellStart,fromCherwellEnd);
+
+          if(intentItem.fields.find(f => f.name === 'Status')['value'] != "Withdrawn" && validDate == true){
+            if(status =="Waiting"){
+              statusIcon = `<i class="fas fa-clock" style="color:var(--color-bright-1)"></i>`
+            }else if(status =="Completed"){
+              statusIcon = `<i class="fas fa-check-circle" style="color:var(--color-bright-2)"></i>`
+            }
+
+            // survey title
+            let surveyCardTitle = "";
+            if(outTerm == "202001" && outPTerm == "A"){
+              surveyCardTitle = "A Term / Fall Semester Survey";
+            }
+            if(outTerm == "202001" && outPTerm == "B"){
+              if(intentItem.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == "" || intentItem.fields.find(f => f.name === 'PhaseYellowStatus')['value'] == null){
+                statusIcon = `<i class="fad fa-exclamation-triangle" style="color:var(--color-bright-3);"></i>`;
+                dueDate = `<div class="survey-card-due"><strong>Response Due ASAP</strong></div>`
+              }else{
+                statusIcon = `<i class="fad fa-check-circle" style="color:var(--color-bright-2);"></i>`;
+                dueDate = "";
+              }
+              surveyCardTitle = "B Term / Fall Semester Survey";
+
+              output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                            <div class="survey-card-det">
+                              <div class="survey-card-title">${surveyCardTitle}</div>
+                              ${dueDate}
+                            </div>
+                            <div class="survey-card-status">
+                              <div>${statusIcon} ${intentItem.fields.find(f => f.name === 'Status')['value']}</div>
+                            </div>
+                          </a>`
+            }
+            if(outTerm == "202102" && outPTerm == "C"){
+              surveyCardTitle = "C Term / Spring Semester Survey";
+              let subLine = '';
+             
+                subLine = ``
+                dueDate = `<div class="survey-card-due"><strong>Response Due ASAP</strong></div>`
+              
+
+              output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                            <div class="survey-card-det">
+                              <div class="survey-card-title">${surveyCardTitle}</div>
+                              ${subLine}
+                              ${dueDate}
+
+                            </div>
+                            <div class="survey-card-status">
+                              <div>${statusIcon} ${intentItem.fields.find(f => f.name === 'Status')['value']}</div>
+                            </div>
+                          </a>`
+            }
+
+            if(outTerm == "202102" && outPTerm == "D"){
+              surveyCardTitle = "D Term / Spring Semester Survey";
+              let subLine = '';
+             
+                subLine = ``
+                dueDate = `<div class="survey-card-due"><strong>Response Due by 3/11/2021 11:59PM EST</strong></div>`
+              
+              if(intentItem.fields.find(f => f.name === 'Designation')['value'] == "Remote Learner" || intentItem.fields.find(f => f.name === 'Designation')['value'] == "Remote - In Testing"){
+                output += `<div class="cell medium-12 empty-note">
+                            <p style="text-align: left;">Changing of responses from Remote to On-Campus for D-Term and the second half of the Spring Semester 2021 is no longer available at this time. If you are a remote student looking to change your status to on campus please get in touch with the following:
+                                <br>
+                                Undergraduate Students:<a href="mailto:dean-of-students@wpi.edu">Dean of Students Office</a><br>
+                                Graduate Students:<a href="mailto:rjflinn@wpi.edu">Rory Flinn</a>
+                            </p>
+
+                          </div>`
+              }else{
+              output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                            <div class="survey-card-det">
+                              <div class="survey-card-title">${surveyCardTitle}</div>
+                              ${subLine}
+                              ${dueDate}
+
+                            </div>
+                            <div class="survey-card-status">
+                              <div>${statusIcon} ${intentItem.fields.find(f => f.name === 'Status')['value']}</div>
+                            </div>
+                          </a>`
+              }
+            }
+
+            if(false == true && outTerm == "202103" && outPTerm == "E"){
+              surveyCardTitle = "E Term / Summer Survey";
+              let subLine = '';
+             
+                subLine = ``
+                dueDate = `<div class="survey-card-due"><strong>Response Due by 5/16/2021 11:59PM EST</strong></div>`
+              
+
+              output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                            <div class="survey-card-det">
+                              <div class="survey-card-title">${surveyCardTitle}</div>
+                              ${subLine}
+                              ${dueDate}
+
+                            </div>
+                            <div class="survey-card-status">
+                              <div>${statusIcon} ${intentItem.fields.find(f => f.name === 'Status')['value']}</div>
+                            </div>
+                          </a>`
+              
+            }
+
+            if(outTerm == "202201" && outPTerm == "A"){
+              var miniStatus = "Waiting";
+              var hyperlink = `/io/waiver/${intentItem.busObRecId}`
+              if(intentItem.fields.find(f => f.name === 'TestingConsent')['value'] == "" || intentItem.fields.find(f => f.name === 'TestingConsent')['value'] == "False" ){
+                miniStatus = "Waiting";
+              }else if(intentItem.fields.find(f => f.name === 'TestingConsent')['value'] == "True" ){
+                miniStatus = "Completed";
+                hyperlink = `/io/waiver/${intentItem.busObRecId}`
+              }
+              if(miniStatus =="Waiting"){
+                statusIcon = `<i class="fas fa-clock" style="color:var(--color-bright-1)"></i>`
+              }else if(miniStatus =="Completed"){
+                statusIcon = `<i class="fas fa-check-circle" style="color:var(--color-bright-2)"></i>`
+              }
+              surveyCardTitle = "2021-2022 Consent Forms";
+              let subLine = '';
+             
+                subLine = ``
+                dueDate = ``
+
+
+              output += `<a href="${hyperlink}" class="survey-card">
+                            <div class="survey-card-det">
+                              <div class="survey-card-title">${surveyCardTitle}</div>
+                              ${subLine}
+                              ${dueDate}
+
+                            </div>
+                            <div class="survey-card-status">
+                              <div>${statusIcon} ${miniStatus}</div>
+                            </div>
+                          </a>`
+              
+            }
+
+            if(outTerm == "202201" && outPTerm == "A" && intentItem.fields.find(f => f.name === 'RecordType')['value'] == "Student"){
+              if(intentItem.fields.find(f => f.name === 'IsEarlyArrival')['value'] == "False"
+              ){
+                if(intentItem.fields.find(f => f.name === 'Status')['value'] == "Waiting" || intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'] == "" || intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'] ==  "1/1/1900 12:00:00 AM"){
+                  surveyCardTitle = "A-Term / Fall 2021 Onboarding Dates";
+                  let subLine = '';
+                
+                    subLine = `Choose your onboarding day`
+                    dueDate = ``
+
+                  output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                                <div class="survey-card-det">
+                                  <div class="survey-card-title">${surveyCardTitle}</div>
+                                  ${subLine}
+                                  ${dueDate}
+
+                                </div>
+                                <div class="survey-card-status">
+                                  <div><i class="fas fa-clock" style="color:var(--color-bright-1)"></i> Waiting</div>
+                                </div>
+                              </a>`
+                }else if(intentItem.fields.find(f => f.name === 'Status')['value'] == "Completed" && (intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'] != "" && intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'] !=  "1/1/1900 12:00:00 AM")){
+                  let dateOut = moment(new Date(intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'])).format('MMMM Do YYYY');
+                  let fyspecial ="";
+                  let outLink = ""
+                  let outLink2 = ""
+                  if((intentItem.fields.find(f => f.name === 'WPIColCode')['value'] == "25" && intentItem.fields.find(f => f.name === 'IsResident')['value'] == "False" ) || intentItem.fields.find(f => f.name === 'WPIColCode')['value'] == "TR"){
+                    fyspecial = `<p>Please plan to arrive to Harrington Auditorium between 8am-11:30am or 1pm-5pm for your onboarding testing and start to New Student Orientation. You do not need to select a testing appointment.</p>`;
+                  }else{
+                    if(intentItem.fields.find(f => f.name === 'IsResident')['value'] == "True"){
+                      outLink=""
+                    }else{
+                      outLink = `<a class="" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=${locals.userAttributes.givenname}&lastName=${locals.userAttributes.surname}&email=${locals.userAttributes.emailaddress}" target="_blank" class="acuity-embed-button">Schedule Your Onboarding Test</a>`
+                    }
+                      outLink2 = `<a class="" target="_blank" href="/io/Student-Intent/${intentItem.busObRecId}" class="acuity-embed-button">Change Onboarding Day</a>`
+                  }
+                  output += `<div class="survey-card no-link">
+                              <div class="survey-card-det" style="width: 100%;">
+                                <div class="survey-card-title">Onboarding Date</div>
+                                <strong>${dateOut}</strong>
+                                ${fyspecial}
+                                <div class="cell small-12 quick-links" style="justify-content: space-evenly;padding: .5em 0 0;">
+                                  ${outLink}
+                                  ${outLink2}
+                                </div>
+                              </div>
+                            </div>`
+                }
+              }
+              else if(intentItem.fields.find(f => f.name === 'IsEarlyArrival')['value'] == "True" && intentItem.fields.find(f => f.name === 'IsInternational')['value'] == "True"){
+                if(intentItem.fields.find(f => f.name === 'Status')['value'] == "Waiting"){
+                  surveyCardTitle = "A-Term / Fall 2021 Onboarding Dates";
+                  let subLine = '';
+                
+                    subLine = `Choose your onboarding day`
+                    dueDate = ``
+
+                  output += `<a href="/io/Student-Intent/${intentItem.busObRecId}" class="survey-card">
+                                <div class="survey-card-det">
+                                  <div class="survey-card-title">${surveyCardTitle}</div>
+                                  ${subLine}
+                                  ${dueDate}
+
+                                </div>
+                                <div class="survey-card-status">
+                                  <div><i class="fas fa-clock" style="color:var(--color-bright-1)"></i> Waiting</div>
+                                </div>
+                              </a>`
+                }else if(intentItem.fields.find(f => f.name === 'Status')['value'] == "Completed"){
+                  let dateOut = moment(new Date(intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'])).format('MMMM Do YYYY');
+                  let fyspecial ="";
+                  let outLink = ""
+                  let outLink2 = ""
+                  if((intentItem.fields.find(f => f.name === 'WPIColCode')['value'] == "25" && intentItem.fields.find(f => f.name === 'IsResident')['value'] == "False" ) || intentItem.fields.find(f => f.name === 'WPIColCode')['value'] == "TR"){
+                    fyspecial = `<p>Please plan to arrive to Harrington Auditorium, between 8am-11:30am or 1pm-5pm, for your onboarding testing and start to New Student Orientation. You do not need to select a testing appointment.</p>`;
+                  }else{
+                    if(intentItem.fields.find(f => f.name === 'IsResident')['value'] == "True"){
+                      outLink = ""
+                    }else{
+                      outLink = `<a class="" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=${locals.userAttributes.givenname}&lastName=${locals.userAttributes.surname}&email=${locals.userAttributes.emailaddress}" target="_blank" class="acuity-embed-button">Schedule Your Onboarding Test</a>`
+                    }
+                      outLink2 = `<a class="" target="_blank" href="/io/Student-Intent/${intentItem.busObRecId}" class="acuity-embed-button">Change Onboarding Day</a>`
+                  }
+                  output += `<div class="survey-card no-link">
+                              <div class="survey-card-det" style="width: 100%;">
+                                <div class="survey-card-title">Onboarding Date</div>
+                                <strong>${dateOut}</strong>
+                                ${fyspecial}
+                                <div class="cell small-12 quick-links" style="justify-content: space-evenly;padding: .5em 0 0;">
+                                  ${outLink}
+                                  ${outLink2}
+                                </div>
+                              </div>
+                            </div>`
+                }
+              }
+              else if(intentItem.fields.find(f => f.name === 'IsEarlyArrival')['value'] == "True" && intentItem.fields.find(f => f.name === 'IsInternational')['value'] == "False"){
+                let dateOut = moment(new Date(intentItem.fields.find(f => f.name === 'OnboardingTest1')['value'])).format('MMMM Do YYYY');
+                output += `<div class="survey-card no-link">
+                              <div class="survey-card-det">
+                                <div class="survey-card-title">Early Arrival - Onboarding Date</div>
+                                <strong>${dateOut}</strong> - ${intentItem.fields.find(f => f.name === 'EarlyArrivalProgram')['value']}
+                              </div>
+                            </div>`
+              }
+              else if(false == true && intentItem.fields.find(f => f.name === 'IsResident')['value'] == "True"){
+                if(intentItem.fields.find(f => f.name === 'WPIColCode')['value'] == "25"){
+                  output += `<div class="survey-card no-link">
+                              <div class="survey-card-det">
+                                <div class="survey-card-title">Residential Students - Onboarding Date</div>
+                                <p><strong>First Year Student Move-In is</strong>: ${moment(new Date('2021-08-21')).format('MMMM Do YYYY')}</p>
+                                <p>You will recieve additional information around your move-in and onboarding time after housing selection has concluded.</p>
+                              </div>
+                            </div>`
+                }else{
+                output += `<div class="survey-card no-link">
+                              <div class="survey-card-det">
+                                <div class="survey-card-title">Residential Students - Onboarding Date</div>
+                                Please standby for more information on your Move-in and Onboarding Date
+                              </div>
+                            </div>`
+                }
+              }
+             
+
+              if(intentItem.fields.find(f => f.name === 'IsResident')['value'] == "True"
+              && ((intentItem.fields.find(f => f.name === 'Status')['value'] == "Completed"
+              && intentItem.fields.find(f => f.name === 'MoveInDateStart')['value'] != "" 
+              && intentItem.fields.find(f => f.name === 'MoveInDateStart')['value'] !=  "1/1/1900 12:00:00 AM")
+              || (intentItem.fields.find(f => f.name === 'Status')['value'] == "Waiting"
+              && intentItem.fields.find(f => f.name === 'MoveInDateStart')['value'] != "" 
+              && intentItem.fields.find(f => f.name === 'MoveInDateStart')['value'] !=  "1/1/1900 12:00:00 AM"))){
+                if(intentItem.fields.find(f => f.name === 'MoveInTime')['value'] != "" && intentItem.fields.find(f => f.name === 'MoveInTime')['value'] !=  "1/1/1900 12:00:00 AM"){
+                  let formatDate = moment(new Date(intentItem.fields.find(f => f.name === 'MoveInDateStart')['value'])).utc().format('MMMM Do YYYY');
+                  let formatTime = moment(new Date(intentItem.fields.find(f => f.name === 'MoveInTime')['value'])).utc().utcOffset(-5).format('h:mm a');
+                  output += `<div class="survey-card no-link">
+                              <div class="survey-card-det" style="width: 100%;">
+                                <div class="survey-card-title">Your Move-In</div>
+                                <p><strong>${intentItem.fields.find(f => f.name === 'RoomLocation')['value']} - ${intentItem.fields.find(f => f.name === 'RoomSpace')['value']}</strong> | ${formatDate},  ${formatTime}</p>
+
+                                <div class="cell small-12 quick-links" style="justify-content: space-evenly;padding: .5em 0 0;">
+                                  <a class="" target="_blank" href="/io/move-in" class="acuity-embed-button">Change Move-in Time</a>
+                                </div>
+                              </div>
+                            </div>`
+                }else{
+                  output += `<a href="/io/Move-In" class="survey-card">
+                                <div class="survey-card-det">
+                                  <div class="survey-card-title">Choose Your Move-in Time</div>
+                                </div>
+                              </a>`
+                }
+                
+              }
+            }
+            
+            
+            // Responses due
+
+            // <div class="survey-card-title"><span class="label warning" style="background-color:var(--color-bright-3);border-radius:9px">NEW</span> End of Term / Semester Survey <span style="font-size:.75em;font-weight: 400;color:var(--color-body-subtitle);">(updated 11/17/20)</span></div>
+            // <div class="survey-card-update"><i class="fad fa-exclamation-triangle"></i> Important Update</div>
+            // <div class="survey-card-due"><strong>Responses Due</strong> ${fromCherwellEnd.format('MMM Do YYYY, h:mm:ss a')}</div>
+            
+          }
+
+      }
+    } %>
+    <% 
+        var CurrentIntent = "";
+        const currentTerm = "202103";
+        const currentPTerm = "E";
+        for (let intentItem of intent){ 
+            
+            if(intentItem.fields.find(f => f.name === 'Term')['value'] == currentTerm && intentItem.fields.find(f => f.name === 'PTerm')['value'] == currentPTerm){
+              CurrentIntent = intentItem;
+            }else{
+            }
+    
+          }
+        var NextIntent = "";
+        const nextTerm = "202201";
+        const nextPTerm = "A";
+        for (let intentItem of intent){ 
+            
+            if(intentItem.fields.find(f => f.name === 'Term')['value'] == nextTerm && intentItem.fields.find(f => f.name === 'PTerm')['value'] == nextPTerm){
+              NextIntent = intentItem;
+            }else{
+              
+            }
+    
+          }
+    
+        %>
+    <div class="grid-x grid-margin-x">
+
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="custom-icon"><%- include('../partials/components/tech-flex-svg.ejs'); %></i> <span>My TechFlex</span></h2>
+        <div class="profile-section-content">
+          <% if(intent.length > 0 && output != ""){ %>
+            
+            <div class="cell small-6">
+              <h3>Assigned Tasks</h3>
+              <p>You have the following open tasks assigned to you.</p>
+            </div>
+            <div>
+              <%-output%>
+            </div>
+        <% }else{ %>
+          <div class="cell medium-12 empty-note">
+            <p>You do not currently have any assigned tasks at this time.</p>
+          </div>
+        <% } %>
+        </div>
+      </div>
+      <!-- Note hidden with true==false -->
+      <% if(true == false && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] != "Remote Learner" && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] != "Withdrawn"){%>
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="far fa-alarm-exclamation"></i><span> Temporary Change of Sunday Testing Hours</span></h2>
+        <div class="profile-section-content">
+
+            <div class="grid-x">
+              <div class="cell medium-2 hide-for-small-only" style="justify-content: center;align-items: center;display: flex;">
+                <i style="font-size:4em;color:var(--color-bright-3)" class="fad fa-business-time"></i>
+              </div>
+              <div class="cell small-12 medium-10">
+                <h3>Please Note</h3>
+                <p>Due to a scheduled maintenance, testing will close early on Sunday, Feb 7th at <strong>5:00 pm</strong>.</p>
+              </div>
+            </div>
+
+        </div>
+      </div>
+      <% } %>
+      
+      <% if(true == false && CurrentIntent != "" ){%>
+      <% if(intent.length > 0 && CurrentIntent != false && (CurrentIntent.fields.find(f => f.name === 'Status')['value'] == "Completed" || NextIntent.fields.find(f => f.name === 'Status')['value'] == "Completed") && (CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "On-Campus" || NextIntent.fields.find(f => f.name === 'Designation')['value'] == "On-Campus" || CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "Remote - In Testing")){ %>
+        <% const isSunday = CurrentIntent.fields.find(f => f.name === 'TestSunday')['value'] == "True" ? "active" : "";
+        const isMonday = CurrentIntent.fields.find(f => f.name === 'TestMonday')['value'] == "True" ? "active" : "";
+        const isTuesday = CurrentIntent.fields.find(f => f.name === 'TestTuesday')['value'] == "True" ? "active" : "";
+        const isWednesday = CurrentIntent.fields.find(f => f.name === 'TestWednesday')['value'] == "True" ? "active" : "";
+        const isThursday = CurrentIntent.fields.find(f => f.name === 'TestThursday')['value'] == "True" ? "active" : "";
+        const isFriday = CurrentIntent.fields.find(f => f.name === 'TestFriday')['value'] == "True" ? "active" : "";
+        const isSaturday = CurrentIntent.fields.find(f => f.name === 'TestSaturday')['value'] == "True" ? "active" : "";
+        const plural = CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] > 1 ? "s" : "";
+        const isExempt = CurrentIntent.fields.find(f => f.name === 'OnboardingStatus')['value'];
+        const isResident = CurrentIntent.fields.find(f => f.name === 'IsResident')['value'];
+        const nextResident = NextIntent.fields.find(f => f.name === 'IsResident')['value'];
+        %>
+        <% 
+          var showTimeline = false;
+          if(NextIntent.fields.find(f => f.name === 'MoveInReturner')['value'] == "Yes"){
+            showTimeline = true;
+          }
+          if(
+            (NextIntent.fields.find(f => f.name === 'PreviousTermDesignation')['value'] == "Remote Learner" || NextIntent.fields.find(f => f.name === 'PreviousTermDesignation')['value'] == "Remote - In Testing") 
+            && NextIntent.fields.find(f => f.name === 'Designation')['value'] == "On-Campus"){
+              showTimeline = true;
+          }
+          showTimeline= false;
+        %>
+        <ul class="cell medium-12 box card profile-section accordion" data-accordion="" data-allow-all-closed="true" style="<%= showTimeline == true ? "" : "display:none" %>">
+          <li class='accordion-item is-active' data-accordion-item>
+          <a href="#" class="accordion-title"><h2><i class="far fa-calendar-alt"></i> My Timeline to Campus</h2></a>
+          <div class="accordion-content" data-tab-content>
+          <div class="profile-section-content">
+            <% if(isResident == "True"){%>
+            <div class="grid-x" style="margin-top:.5em">
+              <div class="cell small-6">
+                <p>This timeline is personalized based upon your assigned dates, pay careful attention to the events below.</p>
+              </div>
+              
+              <div class="cell small-6 text-right title-lane-buttons">
+                <a style="display:none;" target="_blank" href="/io/Change-Arrival" class="title-lane-button">Request Change of Move-In Day</a>
+              </div>
+            </div>
+            <%}else{%>
+            <div class="grid-x" style="margin-top:.5em">
+              <div class="cell small-6">
+                <p>This timeline is personalized based upon your assigned dates, pay careful attention to the events below.</p>
+              </div>
+              
+              <div class="cell small-6 text-right title-lane-buttons">
+                <a target="_blank" href="/io/Change-Onboarding" class="title-lane-button">Request Change of Onboarding Day</a>
+              </div>
+            </div>
+            <%}%>
+            
+            <div class="grid-x" style="justify-content: center;">
+
+              <div class="techTimeline cell small-12 medium-12 large-6">
+
+                <div class="techTimeline-head">
+                  My Timeline<br>to Campus
+                </div>
+
+                <div class="techTimeline-marker techTimeline-liner past">
+                  <div class="techTimeline-title">Today</div>
+                  <div class="techTimeline-date"><%- moment().utc().utcOffset(-5).format('MM/DD/YYYY')%></div>
+                </div>
+                
+                <% var WhereTest ="";
+                var hasModal ="";
+                var modalText = "";
+                if(NextIntent.fields.find(f => f.name === 'PreArrivalTestType')['value'] == "Broad"){
+                  WhereTest ="On-Campus (Harrington Auditorium - Broad)"
+                  hasModal = true;
+                  modalText ="Your pre-arrival test is marked as Broad. This means you will need to make an appointment and come to campus, in person, on your pre-arrival test day."
+
+                }
+                if(NextIntent.fields.find(f => f.name === 'PreArrivalTestType')['value'] == "Quest"){
+                  WhereTest ="At Home"
+                  hasModal = true;
+                  modalText ="For Pre-Arrival At Home Tests, WPI will email you further directions once your information is available. Please be patient as we review responses to the survey and be sure to check your WPI email regularly."
+                }
+                if(NextIntent.fields.find(f => f.name === 'PreArrivalTestType')['value'] == "Other"){
+                  WhereTest =""
+                  hasModal = false;
+                }
+                if(NextIntent.fields.find(f => f.name === 'PreArrivalTestType')['value'] == "Self"){
+                  WhereTest ="Self-Procured Test"
+                  hasModal = false;
+                }
+
+                  
+                %>
+                <% 
+                
+                var preDate = moment(new Date(NextIntent.fields.find(f => f.name === 'PreArrivalTestDate')['value'])).format('MM/DD/YYYY'); 
+                var moveDate = moment(new Date(NextIntent.fields.find(f => f.name === 'MoveInDateStart')['value'])).format('MM/DD/YYYY'); 
+                var onboarding1Date = moment(new Date(NextIntent.fields.find(f => f.name === 'OnboardingTest1')['value'])).format('MM/DD/YYYY'); 
+                var onboarding2Date = moment(new Date(NextIntent.fields.find(f => f.name === 'OnboardingTest2')['value'])).format('MM/DD/YYYY'); 
+                var testStartDate = moment(new Date(NextIntent.fields.find(f => f.name === 'TestingStartDate')['value'])).format('MM/DD/YYYY'); 
+                
+                preDate = (preDate == '01/01/1900' || preDate == "") ? ""  : preDate;
+                moveDate = (moveDate == '01/01/1900' || moveDate == "") ? ""  : moveDate;
+                onboarding1Date = (onboarding1Date == '01/01/1900' || onboarding1Date == "") ? ""  : onboarding1Date;
+                onboarding2Date = (onboarding2Date == '01/01/1900' || onboarding2Date == "") ? ""  : onboarding2Date;
+                testStartDate = (testStartDate == '01/01/1900' || testStartDate == "") ? ""  : testStartDate;
+                
+                %>
+                <% if(false == true){%>
+                  <div class="techTimeline-item techTimeline-liner">
+                    <div class="techTimeline-icon"><i class="fas fa-box"></i></div>
+                    <div class="techTimeline-details">
+                      <div class="techTimeline-title">Intent Survey Part A</div>
+                      <!-- <div class="techTimeline-location"><a href="/io/Student-Intent/<%-NextIntent.busObRecId%>" target="_blank">Complete Online</a></div> -->
+                      <div class="techTimeline-location">Complete Online</div>
+                      <div class="techTimeline-date">Before: 01/03/2021</div>
+                    </div>
+                  </div>
+                  <%}%>
+
+                  <% if(false == true){%>
+                    <div class="techTimeline-item techTimeline-liner">
+                      <div class="techTimeline-icon"><i class="fas fa-snowflake"></i></div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Winter Break Testing</div>
+                        <div class="techTimeline-location"><a data-open="winterBreakModal" href="#">Remaining for winter break</a></div>
+                        <div class="techTimeline-date">Follow provided testing timelines</div>
+                      </div>
+                    </div>
+                  <%}%>
+
+                  <% if(isExempt == "Exempt"){%>
+                    <div class="techTimeline-item techTimeline-liner">
+                      <div class="techTimeline-icon"><i class="fas fa-shield-virus"></i></div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Exempt</div>
+                        <div class="techTimeline-location"><a href="#" data-open="exemptModal" >Temporary Testing Exemption</a></div>
+                      </div>
+                    </div>
+                                      
+                    <div class="reveal" id="exemptModal" data-reveal>
+                      <p class="lead">Exempt from Testing</p>
+                      <p>Our records indicate that you are currently exempt from Pre-Arrival and / or Onboarding tests.</p>
+                      
+                      <p>Please resume regular testing on <%=testStartDate%>.</p>
+                    
+                      <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  <%}%>
+
+
+                <% if(isResident == "True" || nextResident == "True"){%>
+                  <% if(isExempt != "Exempt" && isExempt != "Pending"){%>
+                  <div class="techTimeline-item techTimeline-liner color1">
+                    <div class="techTimeline-icon"><i class="fas fa-home"></i></div>
+                    <div class="techTimeline-details">
+                      <div class="techTimeline-title">Pre-Arrival Test</div>
+                      <% if(hasModal == true){%>
+                        <div class="techTimeline-location"><a data-open="preArrivalModal" href="#"><%-WhereTest%></a></div>
+                      <%}else{%>
+                        <div class="techTimeline-location"><%-WhereTest%></div>
+                      <%}%>
+                      
+                      <div class="techTimeline-date"><%- preDate%></div>
+                    </div>
+                  </div>
+                  <%}%>
+                <div class="techTimeline-item techTimeline-liner color2">
+                  <div class="techTimeline-icon"><i class="fas fa-box"></i></div>
+                  
+                  <div class="techTimeline-details">
+                    <div class="techTimeline-title">Move-In Day</div>
+                    <div class="techTimeline-location"><%- NextIntent.fields.find(f => f.name === 'RoomLocation')['value']%> - <%- NextIntent.fields.find(f => f.name === 'RoomSpace')['value']%></div>
+                    <div class="techTimeline-date"><%- moveDate%></div>
+                  </div>
+                  <div class="tech-link">
+                    <% if(NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] == "" ||NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] ==  "1/1/1900 12:00:00 AM"){%>
+                      <a href="/io/Move-In/" target="_blank">Choose Time</a>
+                    <%}else{%>
+                      <a href="/io/Move-In/" target="_blank"><%=moment(new Date(CurrentIntent.fields.find(f => f.name === 'MoveInTime')['value'])).utc().utcOffset(-5).format('h:mm A')%></a>
+                    <%}%>
+                  </div>
+                </div>
+                <!-- Move-in details -->
+                  <% if(NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] != "" && NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] !=  "1/1/1900 12:00:00 AM"){%>
+
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color6">
+                      <div class="techTimeline-time single"><i class="fad fa-head-side-cough"></i></div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-location"><a href="#" data-open="feelingicky" >Are you or a family member feeling sick? Read our FAQs</a></div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color2">
+                      <div class="techTimeline-time"><%=moment(new Date(NextIntent.fields.find(f => f.name === 'MoveInTime')['value'])).subtract(10,"minutes").utc().utcOffset(-5).format('h:mm A')%></div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Arrive to Campus</div>
+                        <div class="techTimeline-location"><a href="https://goo.gl/maps/sQrcUZ6uedGRVAnS6"target="_blank">Park Ave Garage OR Rec Center Circle</a></div>
+                        <div class="techTimeline-text">
+                          <p><i class="fas fa-car"></i> <strong>By Car</strong>: Park in Park Ave. Garage</p>
+                          <p><i class="fas fa-taxi"></i> <strong>Drop Off / Ride Share</strong>: Get dropped off in Rec. Center Circle</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color2">
+                      <div class="techTimeline-time"><%=moment(new Date(NextIntent.fields.find(f => f.name === 'MoveInTime')['value'])).utc().utcOffset(-5).format('h:mm A')%></div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Harrington Check-in</div>
+                        <div class="techTimeline-location"><a href="https://goo.gl/maps/cykKciYo7BL1TSLc8" target="_blank">Harrington Auditorium</a></div>
+                        <div class="techTimeline-text">Proceed to the front doors of Harrington Auditorium, enter through the doors to the right hand side and follow the <strong style="color:var(--color-bright-1)">PURPLE</strong> dots.</div>
+                      </div>
+                    </div>
+
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color2">
+                      <div class="techTimeline-time single">1</div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Pre-Arrival Review</div>
+                        <div class="techTimeline-location"><a href="https://goo.gl/maps/cykKciYo7BL1TSLc8" target="_blank">Harrington Auditorium</a></div>
+                        <div class="techTimeline-text">Have your pre-arrival information reviewed and verified, receive your room key, and move-in bracelet.</div>
+                      </div>
+                    </div>
+
+                    <% if(isExempt != "Pending"  && isExempt != "Exempt"){%>
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color3">
+                      <div class="techTimeline-time single">2</div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Onboarding Test 1</div>
+                        <div class="techTimeline-location"><a href="https://goo.gl/maps/cykKciYo7BL1TSLc8" target="_blank">Harrington Auditorium</a></div>
+                        <div class="techTimeline-text">Get your first on-boarding test, immediately after receiving your room key.</div>
+                      </div>
+                    </div>
+                    <%}%>
+
+                    <div class="techTimeline-item techTimeline-item-sub techTimeline-liner color2">
+                      <div class="techTimeline-time single">3</div>
+                      <div class="techTimeline-details">
+                        <div class="techTimeline-title">Move In to Your Residence Hall</div>
+                        <div class="techTimeline-location"><%- NextIntent.fields.find(f => f.name === 'RoomLocation')['value']%> - <%- NextIntent.fields.find(f => f.name === 'RoomSpace')['value']%></div>
+                        <div class="techTimeline-text">Proceed to your residence hall to move-in.</div>
+                      </div>
+                    </div>
+                  <%}%>
+                <%}%>
+
+                <% if(isExempt != "Exempt"  && isExempt != "Pending" && (NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] == "" || NextIntent.fields.find(f => f.name === 'MoveInTime')['value'] ==  "1/1/1900 12:00:00 AM")){%>
+                <div class="techTimeline-item techTimeline-liner <%- (isResident == "True" || nextResident == "True") ? "color3" : "color2"%>">
+                  <div class="techTimeline-icon"><i class="fas fa-vial"></i></div>
+                  <div class="techTimeline-details">
+                    <div class="techTimeline-title">Onboarding Test 1</div>
+                    <div class="techTimeline-location">On-Campus</div>
+                    <div class="techTimeline-date"><%- onboarding1Date%></div>
+                  </div>
+                </div>
+                <%}%>
+
+                <% if(isResident == "False"){%>
+                  <% if(isExempt != "Exempt" && isExempt != "Pending"){%>
+                  <div class="techTimeline-item techTimeline-liner <%- (isResident == "True" || nextResident == "True") ? "color4" : "color3"%>">
+                    <div class="techTimeline-icon"><i class="fas fa-vial"></i></div>
+                    <div class="techTimeline-details">
+                      <div class="techTimeline-title">Onboarding Test 2</div>
+                      <div class="techTimeline-location">On-Campus</div>
+                      <div class="techTimeline-date"><%- onboarding2Date%></div>
+                    </div>
+                  </div>
+                  <%}%>
+                <%}%>
+
+                <div class="techTimeline-item techTimeline-liner <%- (isResident == "True" || nextResident == "True") ? "color5" : "color4"%>">
+                  <div class="techTimeline-icon"><i class="fas fa-calendar-week"></i></div>
+                  <div class="techTimeline-details">
+                    <div class="techTimeline-title">Routine Testing</div>
+                    <div class="techTimeline-location"></div>
+                    <div class="techTimeline-date">Beginning <%-testStartDate%></div>
+                    <div class="techTimeline-date"><%= NextIntent.fields.find(f => f.name === 'TestingFrequency')['value'] %>x/weekly</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+          </li>
+        </ul>
+        <% if(CurrentIntent != "" && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "On-Campus" || CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "Remote - In Testing"){%>
+        <div class="cell medium-12 box card profile-section">
+          <h2><i class="far fa-hourglass"></i><span> Testing</span></h2>
+          <div class="profile-section-content">
+            <h3>Current Summer 2021 Designation</h3>
+            <p>Your current designation indicates your current participation in the WPI Testing program as determined by your answers to the Intent Survey.</p>
+            <div class="designation-badges grid-x grid-margin-x">
+              <div class="cell small-12 medium-12 large-6 designation">
+                <div class="designation-icon"><i class="fad fa-shield-virus"></i></div>
+                <div class="designation-details">
+                  <div class="designation-label">In Testing Program</div>
+                  <div class="designation-frequency"><%= CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] %>x/weekly</div>
+                </div>
+              </div>
+              <% if(CurrentIntent != "" && CurrentIntent.fields.find(f => f.name === 'OnboardingStatus')['value'] == "Exempt"){%>
+                <div class="cell small-12 medium-12 large-6 designation">
+                  <div class="designation-icon"><i class="fad fa-calendar-star"></i></div>
+                  <div class="designation-details">
+                    <div class="designation-label">Temporary Testing Exemption</div>
+                    <% if(CurrentIntent.fields.find(f => f.name === 'ExemptionEndDate')['value'] != "" || CurrentIntent.fields.find(f => f.name === 'ExemptionEndDate')['value'] !=  "1/1/1900 12:00:00 AM"){%>
+                      <div class="designation-frequency">Through:<%=moment(new Date(CurrentIntent.fields.find(f => f.name === 'ExemptionEndDate')['value'])).utc().utcOffset(-5).format('MM/DD/YYYY')%></div>
+                    <%}%>
+                  </div>
+                </div>
+              <%}%>
+            </div>
+            <div class="grid-x" style="margin-top:.5em">
+              <div class="cell small-6">
+                <h3>Assigned Testing Day<%-plural%></h3>
+              </div>
+              
+              <div class="cell small-6 text-right title-lane-buttons">
+                <a target="_blank" href="https://hub.wpi.edu/article/757/request-change-to-covid-testing-day" class="title-lane-button">Request Change of Test Day</a>
+              </div>
+            </div>
+            <p>Each day you are assigned to participate in testing will be indicated here, make sure to book your weekly test<%-plural%> using the provided link below.</p>
+            <div class='testingBlock'>
+              <%if(CurrentIntent != "" && CurrentIntent.fields.find(f => f.name === 'TestDaysUpdated')['value'] == "True" || CurrentIntent.fields.find(f => f.name === 'TestDaysUpdated')['value'] == true){%>
+                <div class="note note-warning" style="background: hsl(192, 68%, 95%);">
+                  <div class="note-title"><i class="fad fa-info-circle color-bright-5"></i> Your Test Days Have Changed!</div>
+                  <div class="note-message">Your testing days have changed. Please pay close attention to your assigned days as they may not be what you have gotten used to.</div>
+                </div>
+              <%}%>
+            <h4>Routine Testing Schedule</h4>
+            
+            <div class="cell small-12 testDays grid-x grid-margin-x"style="margin-left:0;margin-right:0;">
+              <div class="cell small-4 medium-4 large-2 testDay <%-isSunday%>"><span>S</span><span>Sunday</span></div>
+              <div class="cell small-4 medium-4 large-2 testDay <%-isMonday%>"><span>M</span><span>Monday</span></div>
+              <div class="cell small-4 medium-4 large-2 testDay <%-isTuesday%>"><span>T</span><span>Tuesday</span></div>
+              <div class="cell small-4 medium-4 large-2 testDay <%-isWednesday%>"><span>W</span><span>Wednesday</span></div>
+              <div class="cell small-4 medium-4 large-2 testDay <%-isThursday%>"><span>R</span><span>Thursday</span></div>
+              <div class="cell small-4 medium-4 large-2 testDay <%-isFriday%>"><span>F</span><span>Friday</span></div>
+            </div>
+            </div>
+            <h3>Quick Links</h3>
+            <div class="cell small-12 quick-links grid-x grid-margin-x" style="margin-left:0;margin-right:0;">
+              <a class="cell small-12 medium-12 large-3" href="#"  data-open="testingHours">Testing Hours</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=<%- locals.userAttributes.givenname%>&lastName=<%- locals.userAttributes.surname%>&email=<%- locals.userAttributes.emailaddress%>&phone=<%-CurrentIntent.fields.find(f => f.name === 'Phone')['value']%>" target="_blank" class="acuity-embed-button">Schedule Your Tests</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://wpi.schooltesting.org/">Access Results Portal</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://apps.powerapps.com/play/e985cef5-c57c-4e21-9a1f-36190e13a239?tenantId=589c76f5-ca15-41f9-884b-55ec15a0672a">Use Symptom Tracker</a>
+            </div>
+          </div>
+        </div>
+        <%}%>
+      <%}%>
+      <%}else{%>
+        <div class="cell medium-12 box card profile-section">
+          <h2><i class="far fa-mouse-pointer"></i><span> Quick links</span></h2>
+          <div class="profile-section-content">
+            <div class="cell small-12 quick-links grid-x grid-margin-x" style="margin-left:0;margin-right:0;">
+              <a class="cell small-12 medium-12 large-3" href="#"  data-open="testingHours">Testing Hours</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=<%- locals.userAttributes.givenname%>&lastName=<%- locals.userAttributes.surname%>&email=<%- locals.userAttributes.emailaddress%>" target="_blank" class="acuity-embed-button">Schedule Your Tests</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://wpi.schooltesting.org/">Access Results Portal</a>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://apps.powerapps.com/play/e985cef5-c57c-4e21-9a1f-36190e13a239?tenantId=589c76f5-ca15-41f9-884b-55ec15a0672a">Use Symptom Tracker</a>
+            </div>
+          </div>
+        </div>
+      <%}%>
+      <% if(true == false && CurrentIntent != "" ){%>
+        <% if(intent.length > 0 && CurrentIntent != false && CurrentIntent != "" && CurrentIntent.fields.find(f => f.name === 'Status')['value'] == "Completed" && CurrentIntent.fields.find(f => f.name === 'Designation')['value'] == "Remote Learner"){ %>
+        
+          <div class="cell medium-12 box card profile-section">
+            <h2><i class="far fa-hourglass"></i><span> Testing</span></h2>
+            <div class="profile-section-content">
+              <h3>Current Summer 2021 Designation</h3>
+              <p>Your current designation indicates your participation in the WPI Testing program for E-Term / Summer 2021 as determined by your answers to the Intent Survey for E-term / Summer 2021.</p>
+              <div class="cell small-12 designation">
+                <div class="designation-icon"><i class="fad fa-laptop-house"></i></div>
+                <div class="designation-details">
+                  <div class="designation-label">Remote - Not In Testing</div>
+                  <div class="designation-frequency"></div>
+                </div>
+              </div>
+              <h3>Quick Links</h3>
+              <div class="cell small-12 quick-links grid-x grid-margin-x" style="margin-left:0;margin-right:0;">
+                <a class="cell small-12 medium-12 large-3" href="#"  data-open="testingHours">Testing Hours</a>
+                <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=<%- locals.userAttributes.givenname%>&lastName=<%- locals.userAttributes.surname%>&email=<%- locals.userAttributes.emailaddress%>&phone=<%-CurrentIntent.fields.find(f => f.name === 'Phone')['value']%>" target="_blank" class="acuity-embed-button">Schedule Your Tests</a>
+                <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://wpi.schooltesting.org/">Access Results Portal</a>
+                <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://apps.powerapps.com/play/e985cef5-c57c-4e21-9a1f-36190e13a239?tenantId=589c76f5-ca15-41f9-884b-55ec15a0672a">Use Symptom Tracker</a>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      <%}%>
+    </div>
+  <% }else{ %>
+    <div class="grid-x grid-margin-x">
+      <div class="cell medium-12 box card profile-section">
+        <h2><i class="custom-icon"><%- include('../partials/components/tech-flex-svg.ejs'); %></i> <span>My TechFlex</span></h2>
+        <div class="profile-section-content">
+
+          <div class="cell medium-12 empty-note">
+            <p>You do not appear to have an active intent survey, or assigned designation at this time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+<% } %>
+
+<div class="reveal" id="testingHours" data-reveal>
+  <h1>Testing Hours of Operation</h1>
+
+   <p><strong>A-Term Testing Schedule </strong>(starting Monday, Aug 9th)</p> 
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Appointment Only</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sunday</td>
+          <td>8:00am-12:00pm<br>
+            12:30pm-4:00pm</td>
+        </tr>
+        <tr>
+          <td>Monday</td>
+          <td>8:00am-12:00pm<br>
+            12:30pm-5:00pm</td>
+        </tr>
+        <tr>
+          <td>Tuesday</td>
+          <td>8:00am-12:00pm<br>
+            12:30pm-5:00pm</td>
+
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>8:00am-12:00pm<br>
+            12:30pm-5:00pm</td>
+        </tr>
+        <tr>
+          <td>Thursday </td>
+          <td>8:00am-12:00pm<br>
+            12:30pm-5:00pm</td>
+        </tr>
+        <tr>
+          <td>Friday </td>
+          <td>Closed</td>
+        </tr>
+        <tr>
+          <td>Saturday </td>
+          <td>Closed</td>
+        </tr>
+      </tbody>
+      <p>Testing Site will be closed Sunday, Sept 5th and Monday Sept 6th for Labor Day</p>
+      <p>**Please note: There are extended hours for onboarding and move-in days (Aug 10, 15, 18, and 21-24)</p>
+    </table>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="reveal" id="onboardingModal" data-reveal>
+  <p class="lead">Change of day(s) coming soon!</p>
+  <p>If you are absolutely unable to make your current onboarding day(s), there will be a request for change process avaialable starting in January 2021.</p>
+
+
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="reveal" id="winterBreakModal" data-reveal>
+  <p class="lead">Remaining on-Campus for Winter Break</p>
+  <p>You are currently marked as someone who is remaining active, and on-campus for winter break. Please adhere to your regular testing protocols and make appointments</p>
+  <p>Should you miss testing appointments or leave campus, you will need to follow the listed onboarding procedures in order to return to campus.</p>
+
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="reveal" id="preArrivalModal" data-reveal>
+  <p class="lead">About Your Pre-Arrival Test</p>
+  <p><%=modalText%></p>
+
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="reveal" id="feelingicky" data-reveal>
+  <p class="lead">FAQs about Feeling sick on Move-in Day</p>
+
+
+  <h2 style="font-size:1.25em;font-weight: 600;">What if I test positive the day I'm supposed to move in?</h2>
+    <ul>
+      <li>Fill out your Symptom Tracker immediately. Someone from the Health Team will reach out to you with your next steps.</li>
+      <li>If you have not yet left home, stay home—do not come to campus. If you are driving to campus, go back home. If you arrived by airplane and then learned of your results, you will need to isolate in a designated space on campus and follow instructions from our Health Team.</li>
+    </ul>
+
+    <h2 style="font-size:1.25em;font-weight: 600;">What if I feel sick the day I’m supposed to move in?</h2>
+    <ul>
+      <li>If you have any symptoms of illness, fill out your Symptom Tracker immediately, even if your symptoms are mild. Someone from the Health Team will reach out to you with your next steps.</li>
+      <li>If you have not yet left home, stay home—do not come to campus. If you are driving to campus, go back home. If you arrived by airplane and then started to feel ill, you will need to isolate in a designated space on campus and follow instructions from our Health Team.</li>
+    </ul>
+
+    <h2 style="font-size:1.25em;font-weight: 600;">What if I find out I am a close contact the day I’m supposed to move in?</h2>
+    <ul>
+      <li>Fill out your Symptom Tracker immediately. Someone from the Health Team will reach out to you with your next steps.</li>
+      <li>If you have not yet left home, stay home—do not come to campus. If you are driving to campus, go back home. If you arrived by airplane and then learned of your close contact status, you will need to quarantine in a designated space on campus and follow instructions from our Health Team.</li>
+    </ul>
+
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>
+

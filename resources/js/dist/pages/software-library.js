@@ -1,0 +1,1 @@
+"use strict";$(document).ready(function(){var a=$("#softwareTable").DataTable({pageLength:25,searching:!0,dom:"tipr",columnDefs:[{targets:"table-hidden",visible:!1,searchable:!0}]});$(".filter-find").keyup(function(){a.search($(this).val()).draw()})});

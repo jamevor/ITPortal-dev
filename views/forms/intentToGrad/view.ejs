@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/flickity.ejs'); %>
+  <%- include('../../partials/header.ejs'); %>
+  <%- include('../../partials/datatables.ejs'); %>
+  <style>
+    .request-page {
+      margin-top:1.5em;
+    }
+    .request-page h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 2.875em;
+      text-transform: capitalize;
+      line-height: 1;
+      padding-bottom: .25em;
+    }
+    .note{
+    position:relative;
+  }
+  </style>
+  <script type="text/javascript" src="/js/pages/intent-to-grad.js" defer></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<div class="request-page">
+
+  <%- include('./partials/intent-to-grad.ejs'); %>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

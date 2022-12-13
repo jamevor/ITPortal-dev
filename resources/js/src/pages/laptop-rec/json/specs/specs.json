@@ -1,0 +1,14 @@
+{
+    "cpu": ["Core i5/Ryzen 5", "Core i5/Ryzen 5", "Core i7/Ryzen 7", "Core i9/Ryzen 9", "Core i9/Ryzen 9"],
+    "gpu": ["Integrated graphics", "Integrated graphics", "GTX 1650/1660 or Radeon 5300M", "RTX 2060/3050 or Radeon 5500M/5600M", "RTX 2070/3060 or Radeon 6600M", "RTX 3070 or Radeon 6700M", "RTX 3080/3090"],
+    "ram": ["8 GB", "8-16 GB", "16 GB", "16-32 GB", "32 GB", "32 GB"],
+    "storage": ["~500 GB", "~500 GB", "1 TB", "2 TB", "4 TB", "4 TB"],
+    "storage_secondary": ["1 TB", "1 TB", "2 TB", "4 TB", "8 TB", "8 TB"],
+    "form": ["Laptop", "Laptop", "2-in-1 or Laptop"],
+    "storage_steps": [-1, 500, 1000, 2000, 4000],
+    "ram_steps": [8, 12, 16, 24, 32],
+    "cpu_specialized_threshold": 3,
+    "gpu_specialized_threshold": 3,
+    "storage_specialized_threshold": 3,
+    "ram_specialized_threshold": 3
+}

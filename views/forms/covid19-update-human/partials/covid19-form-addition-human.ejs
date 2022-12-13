@@ -1,0 +1,566 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-lane-subtler);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .carousel { height: calc(100% - 8em);}
+
+  .carousel-cell {
+    height: 100%;
+    width:100%;
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:2em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+  .subtitle{
+    font-size: 1.25em;
+    margin-top: -1em;
+    margin-bottom: .25em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+    <div class='cell  show-for-small-only'>
+      <div style="font-size:6em;text-align:center;margin:.25em">
+        <span class="fa-stack">
+          <i class="fas fa-mobile-alt fa-stack-1x"></i>
+          <i style="color:var(--color-pop)" class="fas fa-ban fa-stack-2x"></i>
+        </span>
+      </div>
+      <p>Because this form requires extensive writing and text entry, for ease of use and best results, we recommend accessing the form from a computer.</p>
+    </div>
+    <div class='cell hide-for-small-only medium-4 large-3'>
+      <% if (locals.user && user.id && locals.userAttributes) { %>
+        <div class="user-info">
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p id="verified"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+          <p id="full-name"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-department"><%= userAttributes['user.department'] %></p>
+          <p id="wpi-id"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email"><i class="fas fa-envelope-square"></i> <%= userAttributes.emailaddress %></p>
+          <p id="wpi-phone"><i class="fas fa-phone-square"></i> <%= userAttributes['user.telephonenumber'] %></p>
+        </div>
+      <% } %>
+      <div>
+        <h2>Contents</h2>
+        <ul class="toc no-bullet">
+          <li><a class="toc-item active" data-controls="0" href="#">Before You begin</a></li>
+          <li><a class="toc-item" data-controls="1" href="#">Research Lab Plan</a></li>
+          <li><a class="toc-item" data-controls="2" href="#">About the Research</a></li>
+          <li><a class="toc-item" data-controls="3" href="#">Study Participants</a></li>  
+          <li><a class="toc-item" data-controls="4" href="#">Locations</a></li>
+          <li><a class="toc-item" data-controls="5" href="#">In-Person Interaction</a></li>
+          <li><a class="toc-item" data-controls="6" href="#">Ramp Down</a></li>
+          <li><a class="toc-item" data-controls="7" href="#">Certifications & Submit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class='cell  hide-for-small-only medium-8 large-9'>
+      <h1>Research Lab Plan Update</h1>
+      <p class="subtitle">Conducting In-Person Human Subjects Research During COVID-19</p>
+      <div class="carousel help-form">
+        <!-- Before You begin -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <div style="font-size:8em;text-align:center;margin:.25em">
+            <span class="fa-stack">
+              <i style="color:var(--color-pop)" class="fas fa-octagon fa-stack-2x"></i>
+              <i class="fas fa-hand-paper fa-stack-1x fa-inverse"></i>
+            </span>
+          </div>
+          <h2>Before You Begin</h2>
+          <p>The purpose of this document is to ensure that appropriate safety precautions are in place before re-starting or commencing in-person human subjects research. <strong>These precautions are separate from IRB approval</strong>. Safety precautions related to COVID-19 are distinct from precautions within an IRB protocol; thus, it was deemed necessary to break out this request into an approval separate from IRB review. The approval process for re-starting or commencing in-person human subjects research is detailed in the Research Lab Reopening Guidance. Once confirmed, any additional compliance reviews and approvals (e.g., IRB, IBC) should be obtained. Research must occur at a WPI owned and operated facility. </p>
+          <ul>
+            <li>If you are looking to submit a first time request please <a href="/io/Lab-Reopening">use this form</a>.</li>
+          </ul>
+        </div>
+        <!-- Prior form details Form -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <p style="font-weight:600">Please fill out this form in its entirety.</p>
+
+          <fieldset id="detail-questions">
+            <legend>Research Lab Plan</legend>
+
+            <label class="form-label"  for="RLR-1-original-ticket">Original Ticket # *</label>
+            <p class="form-label-help">If you have one, please provide the six digit ticket number of your original request.</p>
+            <input type="text" id="RLR-1-original-ticket" name="RLR-1-original-ticket">
+            
+            <p class="form-label-help">Choose Department Head, Center Director, or other supervisor overseeing this lab for compliance</p>
+            <select id="RLR-4-head" name="RLR-4-head">
+              <option value="">--</option>
+              <option value="Billiar, Kristen">Billiar, Kristen</option>
+              <option value="Brown, Donald R">Brown, Donald R</option>
+              <option value="Butler, Andrew">Butler, Andrew</option>
+              <option value="Capogna, Luca">Capogna, Luca</option>
+              <option value="deWinter, Jennifer">deWinter, Jennifer</option>
+              <option value="Douglas, Emily M">Douglas, Emily M</option>
+              <option value="Duffy, Joseph B">Duffy, Joseph B</option>
+              <option value="Eggleston, Carrick M">Eggleston, Carrick M</option>
+              <option value="Gatsonis, Nikolaos A">Gatsonis, Nikolaos A</option>
+              <option value="Fischer, Gregory S">Fischer, Gregory S</option>
+              <option value="Gericke, Arne">Gericke, Arne</option>
+              <option value="Korkin, Dmitry">Korkin, Dmitry</option>
+              <option value="Krueger, Robert">Krueger, Robert</option>
+              <option value="Mathisen, Paul P">Mathisen, Paul P</option>
+              <option value="Mishra, Brajendra">Mishra, Brajendra</option>
+              <option value="Moncrief, Kathryn">Moncrief, Kathryn</option>
+              <option value="Petkie, Douglas T">Petkie, Douglas T</option>
+              <option value="Roberts, Susan C.">Roberts, Susan C.</option>
+              <option value="Rundensteiner, Elke A">Rundensteiner, Elke A</option>
+              <option value="Simeoni, Albert">Simeoni, Albert</option>
+              <option value="Strong, Diane M">Strong, Diane M</option>
+              <option value="Wills, Craig E">Wills, Craig E</option>
+              <option value="Xiao, Jing">Xiao, Jing</option>
+              <option value="Yagoobi, Jamal">Yagoobi, Jamal</option>
+            </select>
+          </fieldset>
+
+        </div>
+
+        <!-- About the Research -->
+        <div class="form-page carousel-cell" data-simplebar>
+
+          <fieldset id="research-questions">
+            <legend>About the Research</legend>
+
+            <label class="form-label" for="RLR-5-research">Provide a brief summary of the research, in lay terms (max 500 words).</label>
+            <textarea id="RLR-5-research" name="RLR-5-research" rows="6"></textarea>
+
+            <label class="form-label" for="RLR-6-rationale">Describe the rationale for conducting in-person, face-to-face human subjects research at this time. Researchers must present a rationale for the research given the potential risks of COVID-19 (max 500 words).</label>
+            <textarea id="RLR-6-rationale" name="RLR-6-rationale" rows="6"></textarea>
+
+            <label class="form-label" for="RLR-7-noremote">Describe why the human subjects research cannot be performed remotely (max 500 words)</label>
+            <textarea id="RLR-7-noremote" name="RLR-7-noremote" rows="6"></textarea>
+
+            
+          </fieldset>
+
+        </div>
+
+        <!-- Study participants -->
+        <div class="form-page carousel-cell" data-simplebar>
+
+          <fieldset id="participant-questions">
+            <legend>Study Participants</legend>
+
+            <label class="form-label" for="RLR-8-number">Total number to participate in the study and the timeframe </label>
+            <p class="form-label-help"> (e.g., 20 subjects over the next 6 months; 2 subjects during the coming week)</p>
+            <textarea id="RLR-8-number" name="RLR-8-number" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-9-wpiPeople">Number of participants that are WPI students or employees</label>
+            <textarea id="RLR-9-wpiPeople" name="RLR-9-wpiPeople" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-10-existingAccess">How many have Campus access already?</label>
+            <p class="form-label-help">(e.g., are they RAs in your lab)</p>
+            <textarea id="RLR-10-existingAccess" name="RLR-10-existingAccess" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-11-recruited">Number of participants that are recruited from outside of WPI</label>
+            <textarea id="RLR-11-recruited" name="RLR-11-recruited" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-12-age">Age Range</label>
+            <textarea id="RLR-12-age" name="RLR-12-age" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-13-exclude">Is it possible (depending on the research purpose) to exclude individuals above a certain age, or with specific chronic conditions?</label>
+            <p class="form-label-help"> Please be mindful not to include individuals who are particular vulnerable to COVID-19 according to the <a href="https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-at-higher-risk.html" rel="noopener noreferrer">CDC</a>.</p>
+            <textarea id="RLR-13-exclude" name="RLR-13-exclude" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-14-healthStatus">Health status of participants—screening for co-morbidities</label>
+            <p class="form-label-help">How is health information assessed, as required by the Return to Campus Guidance?</p>
+            <textarea id="RLR-14-healthStatus" name="RLR-14-healthStatus" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-15-recruitment">How recruitment and screening will be altered for COVID-19</label>
+            <textarea id="RLR-15-recruitment" name="RLR-15-recruitment" rows="2"></textarea>
+
+          </fieldset>
+
+
+        </div>
+
+         <!-- Locations -->
+         <div class="form-page carousel-cell" data-simplebar>
+
+          <fieldset id="location-questions">
+            <legend>Research Locations</legend>
+
+            <label class="form-label" for="RLR-16-location">List research sites</label>
+            <p class="form-label-help">Include which Campus, Building(s), and Room(s) </p>
+            <textarea id="RLR-16-location" name="RLR-16-location" rows="4"></textarea>
+
+            <label class="form-label" for="RLR-17-travelFrom">List which counties/states participants will be traveling from to participate in the study:</label>
+            <textarea id="RLR-17-travelFrom" name="RLR-17-travelFrom" rows="4"></textarea>
+
+            <label class="form-label" for="RLR-18-travelRestrictions">Are there COVID-19-related restrictions for counties/states listed?</label>
+            <textarea id="RLR-18-travelRestrictions" name="RLR-18-travelRestrictions" rows="2"></textarea>
+
+            <label class="form-label" for="RLR-19-facilityConsult">If using an on-campus, shared facility (e.g., PracticePoint), have you consulted with the relevant Facility Director?</label>
+            <textarea id="RLR-19-facilityConsult" name="RLR-19-facilityConsult" rows="3"></textarea>
+        
+          </fieldset>
+
+        </div>
+
+        <!-- In Person -->
+        <div class="form-page carousel-cell" data-simplebar>
+
+          <fieldset id="inPerson-questions">
+            <legend>In-Person Interaction</legend>
+
+            <p>Describe planned in-person, face-to-face contact to occur between research staff member(s) and the participant(s) and COVID-19 risk mitigation. </p>
+
+            <label class="form-label" for="RLR-20-travelPath">The planned travel path of the participants into and out of the building and room where face-to-face activities will occur</label>
+            <p class="form-label-help">include travel across campus, parking, etc. Outline how social distancing and de-densification requirements are being maintained at all times. Outline and maintain a coordinate schedule for disinfecting common spaces across all building users (research team and participants)</p>
+            <textarea id="RLR-20-travelPath" name="RLR-20-travelPath" rows="6"></textarea>
+
+            <label class="form-label" for="RLR-21-number">The number of participants and study staff who will be in the same space/spaces throughout the study visit </label>
+            <p class="form-label-help"> (include all types of spaces—waiting areas, interview rooms)</p>
+            <textarea id="RLR-21-number" name="RLR-21-number" rows="3"></textarea>
+
+            <label class="form-label" for="RLR-22-contactLength">The length of the contact and with whom; and length of time between participant study visits. </label>
+            <p class="form-label-help">Consider/address the following questions:</p>
+            <ol class="form-label-help">
+              <li>Can any interviews and check-ins be conducted remotely?</li>
+              <li>How do study staff interact with subjects?</li>
+              <li>Can 6 feet distance between staff and participant be maintained during visit?</li>
+              <li>Does the type of activity that the participant performs require more distance?</li>
+              <li>Does the visit require close interactions where physical distancing cannot be maintained at all times? If yes, how much time and what is the nature of this interaction?</li>
+              <li>Is it not possible to wear masks during such close physical contact? If so, why and what COVID-19 risk mitigation efforts are you planning to implement in such instances.</li>
+              <li>How many in-person visits are required per subject?</li>
+              </ol>
+            
+            <textarea id="RLR-22-contactLength" name="RLR-22-contactLength" rows="6"></textarea>
+
+            <label class="form-label" for="RLR-23-whatDo">What will participants be asked to do during the study visits?</label>
+            <textarea id="RLR-23-whatDo" name="RLR-23-whatDo" rows="4"></textarea>
+
+            <label class="form-label" for="RLR-24-distance">How will interaction between study staff members be managed for physical distancing and how staff will be protected?</label>
+            <textarea id="RLR-24-distance" name="RLR-24-distance" rows="4"></textarea>
+            
+            <label class="form-label" for="RLR-25-changes">What changes will changes be implemented in the physical space</label>
+            <p class="form-label-help"> (e.g., participant chairs being changed from cloth to plastic)</p>
+            <textarea id="RLR-25-changes" name="RLR-25-changes" rows="4"></textarea>
+
+            <label class="form-label" for="RLR-26-cleaning">What are the cleaning protocols for the physical space, including equipment, between research visits </label>
+            <textarea id="RLR-26-cleaning" name="RLR-26-cleaning" rows="4"></textarea>
+            
+          </fieldset>
+
+          <fieldset id="screening-questions">
+            <legend>Screening Precautions</legend>
+
+            <label class="form-label" for="RLR-27-screening">Describe health screening procedures for study visits, as required by the Return toCampus Guidance</label>
+            <textarea id="RLR-27-screening" name="RLR-27-screening" rows="8"></textarea>
+
+          </fieldset>
+
+          <fieldset id="screening-questions">
+            <legend>Positive Case Handling</legend>
+
+            <label class="form-label" for="RLR-28-positive">Describe plans for handling if a staff member or participant tests positive for COVID19 following participant interaction, including notification of close contacts which may include staff members or other participants:</label>
+            <textarea id="RLR-28-positive" name="RLR-28-positive" rows="8"></textarea>
+
+          </fieldset>
+
+        </div>
+
+        <!-- Ramp Down -->
+        <div class="form-page carousel-cell" data-simplebar>
+
+          <fieldset id="rampDown-questions">
+            <legend>Ramp Down Planning</legend>
+
+            <label class="form-label" for="RLR-29-rampdown">How will the research rapidly ramp down, if needed? Will the research pause? Will portions of the research be conducted remotely? Can the research space be closed rapidly, if needed (i.e., to reinstate working from home protocols, secure data, etc.)? </label>
+            <textarea id="RLR-29-rampdown" name="RLR-29-rampdown" rows="8"></textarea>
+
+
+        
+          </fieldset>
+
+        </div>
+
+        <!-- Certifications & Submit -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <h2>Certifications & Submit</h2>
+          <p>The Office of the Vice Provost for Research will inform PIs and center directors in writing once their modified plans and request for Human Subjects Research have been approved.</p>
+          <p>By submitting this form, you acknowledge that you have fully read the <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance">Return to Campus Guidance</a> and the <a href="https://www.wpi.edu/news/coronavirus/guidance-research/research-lab-reopening-guidance">Research Lab Reopening Guidance</a>.</p>
+          <button id="button-submit-help-form" class="button-submit">Submit Access Request</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+          
+        </div>
+        
+      </div>
+      <div class="form-nav">
+        <button id="nav-back" class="form-nav-button back disabled">Back</button>
+        <button id="nav-next" class="form-nav-button next">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

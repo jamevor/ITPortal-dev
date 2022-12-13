@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <style>
+    .request-page {
+      display: flex;
+    }
+    .request-page h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 2.875em;
+      text-transform: capitalize;
+      line-height: 1;
+      padding-bottom: .25em;
+    }
+    .not-available{
+      border: 1px dashed var(--color-lane);
+      display:flex;
+      border-radius: 3px;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: all .5s ease;
+      margin:1em;
+      padding: 1em;
+    }
+    .not-available p{
+      color:var(--color-body-text);
+    }
+  </style>
+  <script type="text/javascript" src="/js/pages/grade-format-form.js" defer></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+
+<div class="request-page">
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container grid-x align-center">
+      <div class="cell small-12 medium-8 large-8">
+        
+        <h1 class="text-center">Summer Session 2022 Grading Format Request Form</h1>
+        <div class="grid-container grid-x grid-margin-x align-center" style="font-size: 0.875em;">
+          <div class="cell small-12 medium-8">
+            <p class="">This form can be used by <strong>undergraduate and Mass Academy</strong> students to choose the Pass/NR option instead of traditional letter grading.</p>
+            <p><strong>Your course will appear below only AFTER the grade is submitted by your instructor and appears in Workday</strong>. When a course is eligible, it will appear in the list below and you may select the option.</p>
+            <p>If you prefer to keep the letter grade, simply do not submit that course.</p>
+          </div>
+          <div class="cell small-12 medium-4"style="border-left: 1px solid var(--color-lane);padding-left: 1em;height: fit-content;margin-bottom:1em;">
+            <p>Review <a href="https://hub.wpi.edu/article/533/" target="_blank">Instructions</a> for using this form if you need help.</p>
+            <h2>Deadlines</h2>
+            <ul>
+              <li><strong>E2-Term (Summer Session II)</strong> -  Thursday, August 23, 2022, 5:00 PM EDT</li>
+            </ul> 
+            <p>Deadlines will be strictly enforced. When the E-term deadline passes, no E-term courses will appear on this form.</p>
+      
+          </div>
+        </div>
+        
+      </div>
+      <% if(moment().utc().isBefore("2022-08-23T21:00:00Z")) { %>
+        <div class="grid-x grid-margin-x">
+          <%- include('./partials/passfail-form.ejs',{courses}); %>
+        </div>
+      <% } else { %>
+        <div class="not-available">
+          <p>This form is not currently Available</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

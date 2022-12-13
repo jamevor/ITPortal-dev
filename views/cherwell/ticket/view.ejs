@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <script defer type="text/javascript" src="/js/pages/ticket.js"></script>
+  <link rel="stylesheet" href="/css/ticket.css">
+  <style>
+    .profile-img {
+      background: <%= locals.requesterUser ? `hsla(${requesterUser.hue}, 100%, 40%, 1)` : 'var(--color-pop)' %>;
+    }
+  </style>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<div class="grid-container fluid swim-lane article edit" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x align-justify">
+      <div class="cell small-12 medium-8 large-7 two-col-content">
+
+        <nav aria-label="You are here:" role="navigation">
+          <ul class="breadcrumbs">
+            <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+            <li><a href="/Me/My-Tickets">Ticket</a></li>
+            <li><span class="show-for-sr">Current: </span><%= ticket.busObPublicId %></li>
+          </ul>
+        </nav>
+
+
+        <h1 class="article-heading"><%= ticket.fields.find(f => f.name === 'Summary')['value'] %></h1>
+
+        <input type="hidden" value="<%= ticket.busObPublicId %>" id="ticket-id">
+
+        <div class="cell medium-12 box card profile">
+          <div class='grid-x grid-margin-x input-box'>
+            <div class='cell small-4 box-verified-profile'>
+              <div class="profile-img" style="background-image:url('/img/ico-intro.svg');"></div>
+            </div>
+            <div class='cell small-8 box-verified-info'>
+              <h3 class="content-label">Requestor</h3>
+              <p id="full-name" class="content"><%= ticket.fields.find(f => f.name === 'CustomerDisplayName')['value'] %></p>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="cell medium-12 box card ticket-section">
+          <h2> <i class="far fa-edit"></i>Description</h2>
+          <div class="ticket-section-content">
+            <pre data-simplebar><%= ticket.fields.find(f => f.name === 'Description')['value'] %></pre>
+          </div>
+        </div>
+
+        <% if (ticket.fields.find(f => f.name === 'Status')['value'] === 'Resolved') { %>
+          <div class="cell medium-12 box card ticket-section">
+            <h2> <i class="far fa-check-circle"></i>Resolution</h2>
+            <p>Your ticket has been marked as resolved with the following resolution:</p> 
+            <div class="ticket-section-content">
+              <pre><%= ticket.fields.find(f => f.name === 'CloseDescription')['value'] %></pre>
+            </div>
+            <ul class="ticket-section-buttons">
+              <li class="ticket-section-button negative"><a href="#" id="button-reopen-ticket">ReOpen Ticket</a></li> 
+              <li class="ticket-section-button affirmative"><a href="#" id="button-close-ticket"><i class="far fa-check-circle"></i> Close Ticket</a></li>
+            </ul>
+            <div class="reopen-ticket" style="display:none;">
+              <p>Please let us know why you would like to reopen this ticket:</p> 
+              <div class="ticket-section-content">
+                <div class="grid-x">
+                  <div class="cell small-10">
+                    <textarea rows="7" id="comment"></textarea>
+                    <button class="button expanded" id="button-reopen-ticket-submit"><i class="far fa-plus-circle"></i> Add Comment and Reopen Ticket</button>
+                  </div>
+                  <div class="cell small-2">
+                    <div class="post-sub-item-icon"><i class="fas fa-user fa-lg"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } else if (ticket.fields.find(f => f.name === 'Status')['value'] === 'Closed') { %>
+          <div class="cell medium-12 box card ticket-section">
+            <h2> <i class="far fa-check-circle"></i>Resolution</h2>
+            <p>Your ticket has been closed with the following resolution:</p> 
+            <div class="ticket-section-content">
+              <pre><%= ticket.fields.find(f => f.name === 'CloseDescription')['value'] %></pre>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (ticket.fields.find(f => f.name === 'Status')['value'] !== 'Closed' || portalJournals.length) { %>
+
+          <% if (regApprovals.length) { %>
+            <div class="approval-block">
+            <h2>Registration Approvals</h2>
+              <% for (const regApproval of regApprovals) { %> 
+                <% const userIsApprover = (regApproval.fields.find(f => f.name === 'ApproverWPIID')['value'] == user.employeeID) %>
+                <div class="approval-item <%- userIsApprover ? "isApprover" : ""%>" data-approvalRecID="<%= regApproval.busObRecId %>" data-approvalPublicID="<%= regApproval.busObPublicId %>">
+                  <div class="approval-item-relation">
+                    <%= regApproval.fields.find(f => f.name === 'Relation')['value'] %>
+                  </div>
+                  <div class="approval-content">
+                    <div class="approval-item-approver">
+                      <div class="approval-item-approver-name"><%= regApproval.fields.find(f => f.name === 'ApproverName')['value'] %><%- userIsApprover ? "<span>(You)</span>" : ""%></div>
+                      <div class="approval-item-approver-email"><%= regApproval.fields.find(f => f.name === 'ApproverEmail')['value'] %></div>
+                      
+                      <div class="approval-item-approver-id"><%= regApproval.fields.find(f => f.name === 'ApproverWPIID')['value'] %></div>
+                      <div class="approval-item-approver-pidm"><%= regApproval.fields.find(f => f.name === 'ApproverPIDM')['value'] %></div>
+                    </div>
+                    <div class="approval-item-type"><%= regApproval.fields.find(f => f.name === 'Type')['value'] %></div>
+                    
+                  </div>
+                  <% if(regApproval.fields.find(f => f.name === 'Status')['value'] == "Waiting" && userIsApprover){ %>
+                    <div class="approval-item-actions"><a data-value="Approved" class="approval-approve approve" href="#">Approve</a> <a data-value="Denied"  class="approval-approve deny"  href="#">Deny</a></div>
+                    <div style="display:none" class="approval-item-status"><%= regApproval.fields.find(f => f.name === 'Status')['value'] %></div>
+                  <% }else{ %>
+                    <div class="approval-item-status <%= regApproval.fields.find(f => f.name === 'Status')['value'].toLowerCase() %>"><%= regApproval.fields.find(f => f.name === 'Status')['value'] %></div>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+
+          <div class="ticket-sub" id='ticket-sub'>
+            <h2>Communications</h2>
+            <% if (ticket.fields.find(f => f.name === 'Status')['value'] !== 'Closed' && ticket.fields.find(f => f.name === 'Status')['value'] !== 'Resolved') { %>
+              <div class="cell medium-12 box card ticket-section">
+                <h2> <i class="far fa-comment"></i>Comments</h2>
+                <div class="ticket-section-content">
+                  <div class="grid-x">
+                    <div class="cell small-10">
+                      <textarea rows="7" id="comment"></textarea>
+                      <button id="button-add-update" class="button expanded disabled"><i class="far fa-plus-circle"></i> Add Update</button>
+                    </div>
+                    <div class="cell small-2">
+                      <div class="post-sub-item-icon"><i class="fas fa-user fa-lg"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <%# ticket subs go here, loaded via ajax %>
+
+          </div>
+          
+        <% } %>
+
+      </div>
+
+      <div class="cell small-12 medium-4 two-col-sidebar">
+
+        <% 
+          const statusStyles = {
+            'New': {
+              color: 'var(--color-bright-1)',
+              icon: 'fa-plus-circle'
+            },
+            'Assigned': {
+              color: 'var(--color-bright-1)',
+              icon: 'fa-sync'
+            },
+            'In Progress': {
+              color: 'var(--color-bright-1)',
+              icon: 'fa-sync'
+            },
+            'Pending': {
+              color: 'var(--color-lane-subtler)',
+              icon: 'fa-clock'
+            },
+            'Resolved': {
+              color: 'var(--color-bright-3)',
+              icon: 'fa-check-circle'
+            },
+            'Reopened': {
+              color: 'var(--color-bright-4)',
+              icon: 'fa-redo'
+            },
+            'Closed': {
+              color: 'var(--color-bright-2)',
+              icon: 'fa-check-circle'
+            }
+          };
+        %>
+
+        <div class="box">
+          <h2>Status</h2>
+          <input id="ticket-status" type="hidden" value="<%- ticket.fields.find(f => f.name === 'Status')['value'] %>">
+          <div class="news-status-card" style="background-color:<%= statusStyles[ticket.fields.find(f => f.name === 'Status')['value']].color %>">
+            <div class="news-status-icon"><i class="far <%= statusStyles[ticket.fields.find(f => f.name === 'Status')['value']].icon %> fa-2x"></i></div>
+            <div class="news-status-title"><%= ticket.fields.find(f => f.name === 'Status')['value'] %></div>
+          </div>
+          <% if (locals.portalJournals && portalJournals.length) { %>
+            <a href='#ticket-sub' class="news-status-updates" data-smooth-scroll>This Ticket has <span class="badge"><%= portalJournals.length %></span> <%= portalJournals.length === 1 ? 'Update' : 'Updates' %> </a>
+          <% } %>
+        </div>
+
+
+        <div class="box card">
+          <h2>Details</h2>
+
+          <h3>Ticket Source</h3>
+          <p><%= ticket.fields.find(f => f.name === 'CallSource')['value'] %></p>
+
+          <h3>Ticket ID #</h3>
+          <p><%= ticket.busObPublicId %></p>
+
+          <h3>Created</h3>
+          <p><%= ticket.fields.find(f => f.name === 'CreatedDateTime')['value'] %></p>
+
+          <% if (ticket.fields.find(f => f.name === 'Status')['value'] === 'Closed') { %>
+            <h3>Closed</h3>
+            <p><%= ticket.fields.find(f => f.name === 'ClosedDateTime')['value'] %></p>
+          <% } %>
+
+        </div>
+
+        <div class="box card">
+          <h2>Users</h2>
+          <h3>Requestor</h3>
+          <p><%= ticket.fields.find(f => f.name === 'CustomerDisplayName')['value'] %></p>
+          <% if (subscribers.length) { %>
+            <h3>Subscribers</h3>
+            <% for (const subscriber of subscribers) { %> 
+              <p><%= subscriber.fields.find(f => f.name === 'FullName')['value'] %></p>
+            <% } %>
+          <% } %>
+        </div>
+        <a id="button-request-help" href="/Request">
+          <div class="box card helpMe">
+            <div class="grid-x grid-margin-x align-justify">
+                <div class="cell small-2 text-right">
+                  <i class="fas fa-question-circle fa-2x"></i> 
+                </div>
+                <div class="cell small-10">
+                  <h2>Open a New Ticket!</h2>
+                </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your ticket has been updated.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit update your ticket',
+    show: false
+  }
+];
+%>
+<%- include('../../partials/components/toaster.ejs', { toasts }); %>
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

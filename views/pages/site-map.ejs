@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <style>
+    .sitemap ul {
+      columns: 3;
+     -webkit-columns: 3;
+      -moz-columns: 3;
+    }
+    .sitemap ul li a {
+      color: var(--color-pop);
+      transition: color .5s ease;
+    }
+    .sitemap ul li a:hover {
+      color: var(--color-pop-h);
+    }
+    /* small only */
+    @media screen and (max-width: 39.9375em) {
+      .sitemap ul {
+        columns: 1;
+        -webkit-columns: 1;
+        -moz-columns: 1;
+      }
+    }
+    /* medium only */
+    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+      .sitemap ul {
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+      }
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div class='sitemap'>
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <h1>Site Map</h1>
+    </div>
+  </div>
+
+  <% if (locals.pages && pages.length) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Pages</h2>
+        <ul>
+          <% for (let page of pages) { %>
+            <li><a href="<%= page.url %>"><%= page.title %></a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+
+  <% if ((locals.portfolios && portfolios.length) || (locals.services && services.length) || (locals.components && components.length)) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Service Catalog</h2>
+        <% if (locals.portfolios && portfolios.length) { %>
+          <h3>Portfolios</h3>
+          <ul>
+            <% for (let portfolio of portfolios) { %>
+              <li><a href="<%= portfolio.url %>"><%= portfolio.title %></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+        <% if (locals.services && services.length) { %>
+          <h3>Services</h3>
+          <ul>
+            <% for (let service of services) { %>
+              <li><a href="<%= service.url %>"><%= service.title %></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+        <% if (locals.components && components.length) { %>
+          <h3>Components</h3>
+          <ul>
+            <% for (let component of components) { %>
+              <li><a href="<%= component.url %>"><%= component.title %></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (locals.articles && articles.length || locals.spreads && spreads.length) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Knowledge Base</h2>
+        <% if (locals.articles && articles.length) { %>
+          <h3>Articles</h3>
+          <ul>
+            <% for (let article of articles) { %>
+              <li><a href="<%= article.url %>"><%= article.title %></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+        <% if (locals.spreads && spreads.length) { %>
+          <h3>Spreads</h3>
+          <ul>
+            <% for (let spread of spreads) { %>
+              <li><a href="<%= spread.url %>"><%= spread.title %></a></li>
+            <% } %>
+          </ul>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (locals.software && software.length) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Software</h2>
+        <ul>
+          <% for (let software_ of software) { %>
+            <li><a href="<%= software_.url %>"><%= software_.title %></a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (locals.buildings && buildings.length) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Buildings</h2>
+        <ul>
+          <% for (let building of buildings) { %>
+            <li><a href="<%= building.url %>"><%= building.title %></a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (locals.locations && locations.length) { %>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h2>Locations</h2>
+        <ul>
+          <% for (let location of locations) { %>
+            <li><a href="<%= location.url %>"><%= location.title %></a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

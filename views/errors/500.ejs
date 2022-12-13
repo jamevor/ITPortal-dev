@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <style>
+    .error-block {
+        height: 70vh;
+        overflow: hidden;
+    }
+
+    .error-block h1 {
+        font-weight: 800;
+        font-size: 6em;
+        margin-top: 30vh;
+        color: var(--color-chrome);
+    }
+
+    .error-block h2 {
+        font-size: 3em;
+        color: var(--color-chrome);
+    }
+
+    .error-block p {
+        font-size: 2em;
+        color: var(--color-chrome);
+    }
+
+    body {
+        background: var(--color-pop);
+    }
+
+    .layered {
+        z-index: 99;
+    }
+
+    .bouncy {
+        z-index: -2;
+
+    }
+
+    .bouncy img {
+        animation-duration: 5s;
+        flex: 1;
+        width: 100px;
+        height: 100px;
+    }
+
+    .x {
+        animation: x 13s linear infinite alternate;
+    }
+
+    .y {
+        animation: y 7s linear infinite alternate;
+    }
+
+
+    @keyframes x {
+        100% {
+            transform: translateX(calc(100vw - 100px - var(--ui-nav-w))) rotate(0deg);
+
+        }
+    }
+
+    @keyframes y {
+        100% {
+            transform: translateY(calc(100vh - 180px)) rotate(360deg);
+        }
+    }
+
+
+    @media screen and (max-width: 39.9375em) {
+        .error-block h1 {
+            font-size: 4em;
+            margin-top: 10vh;
+        }
+
+        .error-block p {
+            font-size: 1.5em;
+            color: var(--color-chrome);
+        }
+    }
+    /* ripple */
+    .circle-ripple {
+      background-color: rgba(255, 255, 255, .5);
+      border-radius: 50%;
+      animation: ripple 20s ease infinite, y 7s linear infinite alternate;
+      position: relative;
+      z-index: -2;
+      display: flex;
+      align-items: center;
+    }
+
+    .circle-ripple img {
+      animation-duration: 5s;
+      flex: 1;
+    }
+
+    @keyframes ripple {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1), 0 0 0 25vw rgba(255, 255, 255, 0.1), 0 0 0 50vw rgba(255, 255, 255, 0.1), 0 0 0 75vw rgba(255, 255, 255, 0.1);
+      }
+      100% {
+        box-shadow: 0 0 0 25em rgba(255, 255, 255, 0.1), 0 0 0 50vw rgba(255, 255, 255, 0.1), 0 0 0 75vw rgba(255, 255, 255, 0.1), 0 0 0 100vw rgba(255, 255, 255, 0);
+      }
+    }
+
+    @media screen and (max-width: 39.9375em) {
+      .error-block h1 {
+        font-size: 4em;
+        margin-top: 10vh;
+      }
+      .error-block p {
+        font-size: 1.5em;
+        color: var(--color-chrome);
+      }
+    }
+    </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div class="x bouncy">
+    <img class="y fa-spin circle-ripple" src="/img/ico-intro.svg">
+  </div>
+
+  <div class="grid-container fluid swim-lane error-block">
+    <div class="grid-container">
+      <h1>Error: <%= error.status %></h1>
+      <h2><%= error.name %></h2>
+      <p><%= error.message %></p>
+    </div>
+  </div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

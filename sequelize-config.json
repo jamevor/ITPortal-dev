@@ -1,0 +1,23 @@
+{
+  "production": {
+    "username": "itswebp_dba",
+    "password": "!TG8P6y^dTV%$s6GgZwx",
+    "database": "itswebp_db",
+    "host": "127.0.0.1",
+    "dialect": "mariadb"
+  },
+  "staging": {
+    "username": "itswebd_db",
+    "password": "@ZcNqnXvk$9rkYVy5CrcFH",
+    "database": "itswebd_db",
+    "host": "127.0.0.1",
+    "dialect": "mariadb"
+  },
+  "development": {
+    "username": "portalproxy",
+    "password": "M3@t&Che3seZ",
+    "database": "itsportal",
+    "host": "127.0.0.1",
+    "dialect": "mariadb"
+  }
+}

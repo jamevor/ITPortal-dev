@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/commencement.js"></script>
+<style>
+
+ .me-box-items .box-item{
+  background: var(--color-body);
+    padding: 1em;
+    border-radius: 3px;
+    color: var(--color-body-text);
+    box-shadow: var(--shadow-standard-y);
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    flex-direction: column;
+    justify-content: center;
+ }
+ .me-box-items .box-item:hover,.me-box-items .box-item:focus,.me-box-items .box-item:active{
+    box-shadow:var(--shadow-standard-y-h)
+ }
+ .box-item-title{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+ }
+ .box-item-date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+ }
+ .me-box.group.commencement-highlight{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url('/img/content/commencementBanner.jpg');
+    background-size: cover;
+    background-position: center;
+ }
+ .commencement-highlight h1{
+    color: var(--color-light);
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 11px rgb(0 0 0 / 40%);
+ }
+ .commencementItem {
+  display: flex;
+  height: 250px;
+  margin-bottom: 1em;
+  background-color: var(--color-chrome);
+  border-radius: 3px;
+  box-shadow: var(--shadow-standard-y);
+}
+ .commenceImage{
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100px;
+  box-shadow: inset -11px 0px 11px 17px var(--shadow-color);
+  clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 50%, 0% 0%);
+ }
+
+ .commenceImage.gr{
+  background-image: url(/img/content/commenceGR.jpg);
+ }
+ .commenceImage.ug{
+  background-image: url(/img/content/commenceUG.jpg);
+
+ }
+ .commenceDetails{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   margin-left: 1em;
+   margin-top: 1em;
+   margin-bottom: 1em;
+ }
+ .commenceDetails h2{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ .commenceDetails .date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+ }
+ .commenceDetails-line table *{
+   background: none;
+   border:none;
+   color:var(--color-body-text)
+ }
+ .commenceDetails-line table th{
+    color: var(--color-body-subtitle);
+    font-size: .6875em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 0;
+    padding: 0 1em;
+ }
+ .commenceActions{
+    display: flex;
+    flex-direction: column;
+    margin: auto 1em auto auto;
+  width: 20%;
+ }
+ .commenceActions a{
+  text-align: left;
+  font-weight: 600;
+ }
+ .me-quicklink.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-quicklink.disabled:hover,.me-quicklink.disabled:focus,.me-quicklink.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-link-item.disabled:hover{
+  cursor:not-allowed;
+  box-shadow: var(--shadow-standard-y)
+ }
+ #RSVPModal,#previewModal{
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: var(--color-chrome);
+ }
+ #RSVPModal h1,#previewModal h1{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ #RSVPModal #RSVPChoices button{
+   background: var(--color-lane);
+   color:var(--color-body-text);
+   padding:1em;
+   border-radius: 3px;
+   margin-top: 0.5em;
+   transition:all .5s ease;
+ }
+ #RSVPModal #RSVPChoices button:hover{
+  cursor: pointer;
+}
+ #RSVPModal #RSVPChoices{
+   display: flex;
+   flex-direction: column;
+ }
+ #RSVPModal #RSVPChoices button.chosen.yes{
+   background: var(--color-bright-2);
+ }
+ #RSVPModal #RSVPChoices button.chosen.no{
+  background: var(--color-bright-4);
+ }
+
+ #RSVPModal #RSVPChoices button.yes:hover,#RSVPModal #RSVPChoices button.yes:active,#RSVPModal #RSVPChoices button.yes:focus{
+   background: var(--color-bright-2);
+ }
+ #RSVPModal #RSVPChoices button.no:hover,#RSVPModal #RSVPChoices button.no:active,#RSVPModal #RSVPChoices button.no:focus{
+  background: var(--color-bright-4);
+ }
+ #RSVPLoader{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 3em;
+    font-size: 2em;
+  }
+  @media screen and (max-width: 39.9375em) {
+    .commenceImage{
+      display: none;
+    }
+    .commencementItem {
+      flex-direction: column;
+      height:auto
+    }
+    .commenceActions {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto .5em auto;
+      width: 90%;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+
+<% //Check if they have an active record
+if(commencementOut && commencementOut != null){ %>
+  <%if(commencementRSVPOut && commencementRSVPOut != null){ %>
+
+    <% const Commencement = commencementOut[0];
+       const CommencementRSVP = commencementRSVPOut;
+       const CommencementEnroll = commencementEnrollOut;
+       const cerLabel = CommencementRSVP.length > 1 ? "Ceremonies" : "Ceremony";
+    %>
+      <!--Top Bar-->
+      <div class="grid-container me-section">
+        <div class="me-box group grid-x grid-padding-x commencement-highlight">
+         <h1>My Commencement</h1>
+          <div class="grid-container me-box-items grid-x grid-margin-x" data-smooth-scroll data-offset="100">
+            <% for(const RSVP of CommencementRSVP){%>
+              <a class="box-item cell small-12 medium-6 large-auto" href="#<%=RSVP.CeremonyRecID%>">
+                <div class="box-item-title"><%=RSVP.CeremonyTitle%></div>
+                <div class="box-item-date"><%=moment(new Date(RSVP.CeremonyDate)).format('MMMM Do YYYY, h:mm a')%></div>
+              </a>
+            <%}%>
+          </div>
+        </div>
+      </div>
+      
+      <!--Tasks-->
+      <div class="grid-container me-section" style="padding:0">
+  <h2 class="section-header">My Tasks</h2>
+    <div class="grid-x grid-margin-x">
+
+      <%
+      let RSVPStatus = {};
+      if (CommencementRSVP.filter(RSVP => RSVP.Status === 'Awaiting Response').length == 0) {
+        RSVPStatus.text = "Complete";
+        RSVPStatus.icon = "fa-check-circle";
+        RSVPStatus.color = "var(--color-bright-2)";
+      }else{
+        RSVPStatus.text = "Waiting";
+        RSVPStatus.icon = "fa-question-circle";
+        RSVPStatus.color = "var(--color-bright-3)";
+      }
+
+      %>
+      <% if(false){%>
+      <a class="cell small-12 medium-6 large-6 me-link-item" href="#userCer" data-smooth-scroll data-offset="100">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-graduation-cap"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>RSVP to <%=cerLabel%></h3>
+            <div>Let us know if you plan to attend</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal <%=RSVPStatus.icon%>" style="color:<%=RSVPStatus.color%>"></i>
+            <div><%=RSVPStatus.text%></div>
+          </div>
+        </div>
+      </a>
+      <%}%>
+      <%
+      let careerStatus = {};
+      if (Commencement && Commencement.CDCSurveyCompleted == "True") {
+        careerStatus.text = "Complete";
+        careerStatus.icon = "fa-check-circle";
+        careerStatus.color = "var(--color-bright-2)";
+        careerStatus.link = "#"
+      }else{
+        careerStatus.text = "Waiting";
+        careerStatus.icon = "fa-question-circle";
+        careerStatus.color = "var(--color-bright-3)";
+        careerStatus.link = "https://app.joinhandshake.com/first_destination_responses/new/eG2mFbVaBzMeEcLZB44HFrcF8U8gyZ7QJBowSPKy6Yxq5YYFFPm8Nw"
+      }
+      %>
+      <a class="cell small-12 medium-6 large-6 me-link-item" href="<%=careerStatus.link%>"  target="_blank">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-poll"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>Complete Career Survey</h3>
+            <div>Tell WPI about your future plans (There may be a slight delay in updating status on this one!)</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal <%=careerStatus.icon%>" style="color:<%=careerStatus.color%>"></i>
+            <div><%=careerStatus.text%></div>
+          </div>
+        </div>
+      </a>
+
+      <% if(false && CommencementRSVP.filter(RSVP => RSVP.CeremonyTitle == "Undergraduate Commencement").length >= 1){%>
+
+      <a class="cell small-12 medium-6 large-6 me-link-item disabled" href="#"  target="_blank" style="color:var(--color-body-subtitle);border-color: var(--color-lane);">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-ticket"style="color:var(--color-body-subtitle)"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text" style="color:var(--color-body-subtitle)">
+            <h3>Invite Guests</h3>
+            <div>Send tickets and invite your guests</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal fa-calendar-star" style="color:var(--color-lane)"></i>
+            <div>Coming Soon</div>
+          </div>
+        </div>
+      </a>
+    <%}%>
+    <% if(false){%>
+    <script type="text/javascript" src="https://s3.us-east-2.amazonaws.com/nc-widget-v3/bundle.js?v011"></script>
+      
+      <div class="cell small-12 medium-6 large-6 me-link-item" >
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-podium"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>Tell us how to pronounce your name</h3>
+            <div>Use Name Coach to let us know how to say your name properly.</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <button type="button" class="me-quicklink" title="Use NameCoach to let us know how to pronounce your name"
+        data-toggle="nc-widget"
+        data-attributes-email-value="<%=commencementOut[0].Email%>"
+        ><i class="fad fa-microphone-alt" style="pointer-events: none;"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+
+      ncE(function() {
+        ncE.configure(function(config) {
+          config.eventCode = "278F15";
+          config.accessToken = "7wUSFczJEV28zHZdBapY";
+          config.brandColor = "#c1272d";
+          config.dictionary = {
+            modal_header: "WPI's 2022 Commencement",
+            submit_button_text: "Submit Changes"
+          };
+        });
+      });
+
+      </script>
+      <%}%>
+    </div>
+  </div>
+  <div class="grid-container me-section" style="padding:0">
+    <h2 class="section-header">Quick Links</h2>
+    <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4">
+      <a href="https://wpi.shopoakhalli.com/purchasewizard/Welcome" target="_blank" class="cell me-quicklink">Order Cap & Gown</a>
+      <a href="https://www.balfour.com/wpi" target="_blank" class="cell me-quicklink">Order Class Ring </a>
+      <a href="https://www.wpi.edu/alumni/benefits/centennial-walkway" target="_blank" class="cell me-quicklink">Order Quad Walkway Brick</a>
+      <a href="https://wpiadvancement.tfaforms.net/288" target="_blank" class="cell me-quicklink">Update Lifetime Engagement</a>
+    </div>
+  </div>
+
+  <div class="grid-container me-section" style="padding:0" id="userCer">
+    <h2 class="section-header">My <%=cerLabel%></h2>
+    <% for(const RSVP of CommencementRSVP){%>
+
+      <% if(RSVP.Status != "Void"){%>
+      <%
+      var commenceImgClass = '';
+      if(RSVP.CeremonyTitle == "Undergraduate Commencement"){
+        commenceImgClass = 'ug'
+      }else if(RSVP.CeremonyTitle == "Graduate Commencement"){
+        commenceImgClass = 'gr'
+      }%>
+      <div class="commencementItem" id="<%=RSVP.CeremonyRecID%>">
+        <div class="commenceImage <%=commenceImgClass%>">
+        
+        </div>
+        <div class="commenceDetails">
+          <div class="commenceDetails-label">
+            <h2><%=RSVP.CeremonyTitle%></h2>
+            <div class="date"><%=moment(new Date(RSVP.CeremonyDate)).format('dddd, MMMM Do YYYY, h:mm a')%></div>
+          </div>
+          <%if(RSVP.RequiresLineup =="True"){%>
+          <div class="commenceDetails-line">
+            <table>
+                <thead>
+                    <tr>
+                      <th>Lineup Row</th>
+                      <th>Lineup Position</th>
+                      <th>Lineup Time</th>
+                      <th>Lineup Location</th>
+                      <th>Degree Pickup Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <% //TEMP Remove lineup working
+                      // RSVP.LineupRow = null;
+                      // RSVP.LineupSide = null;
+                      // RSVP.LineupMarch = null;
+                      %>
+                      <% const nullTable = '<span style="text-align: center;width: 100%;display: inline-block;">-</span>';%>
+                        <td><%-RSVP.LineupRow || nullTable%></td>
+                        <td><%-RSVP.LineupSide || nullTable%><%-RSVP.LineupMarch  || nullTable%></td>
+                        <td><%-moment(new Date(RSVP.LineupTime)).format('h:mm a') || nullTable%></td>
+                        <td><%-RSVP.LineupLocation  || nullTable%></td>
+                        <td><%-RSVP.DegreePickupLocation  || nullTable%></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+          </div>
+          <%}%>
+        </div>
+        
+        <div class="commenceActions">
+          <% if(RSVP.Status == "Awaiting Response"){%>
+            <a href="#" class="cell me-quicklink rsvpChanger disabled" data-rsvpid="<%=RSVP.RecID%>" data-ceremony="<%=RSVP.CeremonyTitle%>" data-status="<%=RSVP.Status%>" data-open="">RSVP</a>
+          <%}else{%>
+            <a href="#" class="cell me-quicklink rsvpChanger disabled" style="display:flex;justify-content: space-between;"  data-rsvpID="<%=RSVP.RecID%>" data-ceremony="<%=RSVP.CeremonyTitle%>" data-status="<%=RSVP.Status%>" data-open=""><span>Change RSVP</span> <span style="font-weight:400;"><%=RSVP.Status%></span> </a>
+          <%}%>
+
+          <% if(RSVP.RequiresTickets == "True"){%>
+            <%if(RSVP.Status == "Attending"){%>
+              <a href="/Me/My-Commencement/Tickets/<%=RSVP.RecID%>" class="cell me-quicklink" target="_blank">View Guests</a>
+            <%}else{%>
+              <a href="#" class="cell me-quicklink disabled">View Guests</a>
+            <%}%>
+            
+          <%}%>
+          <% if(RSVP.CeremonyAcademicLevel != ""){%>
+            <%
+            var thisEnroll = CommencementEnroll.filter(Enrollment => Enrollment.AcademicLevel === RSVP.CeremonyAcademicLevel)
+
+            var enrollStatus = thisEnroll[0].PrimaryProgramOfStudyCompletionStatus
+              
+            var enrollName = Commencement.FirstName + " " + Commencement.LastName;
+            if(Commencement.DiplomaFirst || Commencement.DiplomaLast){
+              enrollName = Commencement.DiplomaFirst  + " " + Commencement.DiplomaMiddle + " " + Commencement.DiplomaLast + " " + Commencement.DiplomaSuffix
+            }
+            var enrollHonors = thisEnroll[0].HonorsFromProgramsOfStudy || "TBD"
+            %>
+
+            <a href="#" class="cell me-quicklink enrollPreview" data-open="previewModal" data-enrollstatus="<%=enrollStatus%>" data-enrollname="<%=enrollName%>" data-enrollhonors="<%=enrollHonors%>" data-level="<%=thisEnroll[0].AcademicLevel%>">Preview Degree</a>
+          <%}%>
+        </div>
+
+      </div>
+      <%}%>
+    <%}%>
+  </div>
+  <%if(false){%>
+  <div class="reveal" id="RSVPModal" data-reveal>
+    <h1>RSVP to <span id="RSVPModal-title">Ceremony</span></h1>
+    <p><strong>Current Status:</strong> <span id="RSVPModal-status"></span></p>
+    <input type="hidden" value="" id="RSVPModal-id">
+    <div id="RSVPBlock">
+      <div id="RSVPChoices">
+        <button data-choice="yes" class="yes">Attending</button>
+        <button data-choice="no" class="no">Not Attending</button>
+      </div>
+
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div id="RSVPLoader" style="display: none;">
+      <i id="spinner" class="fas fa-spinner fa-spin"></i>
+      <i id="success" class="fas fa-check-circle" style="display: none;;color:var(--color-bright-2)"></i>
+      <i id="error" class="fas fa-times-circle" style="display: none;color:var(--color-bright-4)"></i>
+    </div>
+    
+  </div>
+  <%}%>
+
+
+  <%if(true){%>
+  <div class="reveal" id="previewModal" data-reveal>
+    <h1>Degree Preview</h1>
+    <p><strong>Diploma Name:</strong> <span id="previewModal-name"></span></p>
+    <p><strong>Current Status:</strong> <span id="previewModal-status"></span></p>
+    <p id="honorsShower"><strong>Honors:</strong> <span id="previewModal-honors"></span></p>
+
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    
+  </div>
+  <%}%>
+  <%if(false){%>
+      <div class="grid-container me-section" style="padding:0">
+      <h2 class="section-header">Raw Data</h2>
+        <!--Raw Data-->
+        <h2>Commencement</h2>
+        <pre><%= JSON.stringify(commencementOut,null,2)%></pre>
+        <h2>Commencement RSVPs</h2>
+        <pre><%= JSON.stringify(commencementRSVPOut,null,2)%></pre>
+        <h2>Commencement Enrollment</h2>
+        <pre><%= JSON.stringify(commencementEnrollOut,null,2)%></pre>
+      </div>
+    <%}%>
+    <%// Show Error.
+    }else{
+    %>
+    <div class="grid-container">
+      <div class="me-box group">
+          You do not appear to have any active Ceremonies for this year.
+      </div>
+    </div>
+  <%}%>
+<%// Show Error.
+}else{
+%>
+  <div class="grid-container">
+    <div class="me-box group">
+        You do not appear to have a current Commencement Record for this year.
+    </div>
+  </div>
+<%}%>
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,33 @@
+<%# Subsites are special so they have their own admin-card %>
+<div class="box card<%- !locals.edit && locals.canEdit ? ' show-for-large' : '' %>"<%- !locals.edit && locals.canEdit ? ' id="adminBox"' : '' %>>
+  <h2 style="font-size: 1.25em;">Admin</h2>
+  <ul class="link-cards no-icon">
+    <% if (!locals.edit && locals.subsite && subsite.subSitePhase) { %>
+      <li><span class='text'>Current Phase: <%= subsite.subSitePhase.title %></span></li>
+    <% } %>
+    <% if (!locals.edit) { %>
+      <li><a href="/console/subsite/edit/<%= subsite.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+    <% } %>
+    <% if (locals.subsite && locals.edit) { %>
+      <li><a href="/s/<%= subsite.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Sub Site</a></li>
+      <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+    <% } %>
+    <% if (locals.edit) { %>
+      <li><a data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+      <li><a data-open="featured-content-modal" id="button-featured-content">Manage Featured Content</a></li>
+    <% } %>
+    <% if (locals.edit && locals.subsite && subsite.subSitePhase && !locals.canPublish) { %>
+      <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+      <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+        <h2>Are you sure?</h2>
+        <p>You will not be able to edit this sub site while it is being reviewed.</p>
+        <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+        <a href="#" class="button-confirm bright-4" data-close>No</a>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+          <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+        </button>
+      </div>
+    <% } %>
+    <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+  </ul>
+</div>

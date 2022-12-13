@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <script defer type="text/javascript" src="/js/components/AssetCard.js"></script>
+  <script defer type="text/javascript" src="/js/pages/asset.js"></script>
+  <link rel="stylesheet" href="/css/me.css">
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<input type="hidden" name="assetTag" id="assetTag" value="<%= asset.busObPublicId %>">
+<input type="hidden" name="assetFriendly" id="assetFriendly" value="<%= asset.fields.find(f => f.name === 'FriendlyName')['value'] %>">
+
+<div class="grid-container fluid swim-lane article" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+  <div class="grid-container">
+
+    <nav aria-label="You are here:" role="navigation">
+      <ul class="breadcrumbs">
+        <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+        <li><a href="/Me/My-Assets">Asset</a></li>
+        <li><span class="show-for-sr">Current: </span> <%= asset.busObPublicId %></li>
+      </ul>
+    </nav>
+
+
+    <div class="grid-x grid-margin-x align-justify">
+      <div class="cell small-12 medium-8 large-7 two-col-content">
+
+
+        <div class="cell small-9 medium-10 large-11">
+          <h1 class="article-heading"><%= asset.fields.find(f => f.name === 'FriendlyName')['value'] %></h1>
+        </div>
+
+        <div class="box card asset-details">
+          <h2>Overview</h2>
+          <div class="grid-x">
+            <div class="cell small-4" style="text-align:center;">
+              <h3><i class="far fa-fw fa-tag"></i> Asset Tag</h3>
+              <p style="font-size:3em"><%= asset.busObPublicId %></p>
+            </div>
+
+            <% if (asset.fields.some(f => f.name === 'PrimaryUserName' || f.name === 'PrimaryUse')) { %>
+              <div class="cell small-6 medium-offset-2">
+                <% if (asset.fields.some(f => f.name === 'PrimaryUserName')) { %>
+                  <h3><i class="far fa-fw fa-user-tag"></i> Primary user</h3>
+                  <p><%= asset.fields.find(f => f.name === 'PrimaryUserName')['value'] %></p>
+                <% } %>
+                <% if (asset.fields.some(f => f.name === 'PrimaryUse')) { %>
+                  <h3><i class="far fa-fw fa-hammer"></i> Primary use</h3>
+                  <p><%= asset.fields.find(f => f.name === 'PrimaryUse')['value'] %></p>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <% if (
+          (
+            asset.fields.some(f => f.name === 'PrimaryUse')
+            && asset.fields.find(f => f.name === 'PrimaryUse')['value'] === 'Individual Workstation'
+            && asset.fields.some(f => f.name === 'ReDeploy')
+            && asset.fields.find(f => f.name === 'ReDeploy')['value'] === 'False'
+          ) && (
+            asset.fields.some(f => f.name === 'ShippingDate' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'PurchaseDate' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'DeploymentDate' && f.value && f.value.length)
+          )
+        ) { %>
+          <div class="box card asset-details">
+            <h2>Timing</h2>
+            <div class="grid-x">
+              <div class="cell small-4" style="text-align:center;">
+                <% if (asset.fields.some(f => f.name === 'ShippingDate' && f.value && f.value.length)) { %>
+                  <h3><i class="far fa-fw fa-clock"></i> Age</h3>
+                  <%
+                    const assetShipDate = moment(asset.fields.find(f => f.name === 'ShippingDate')['value'], 'M/D/YYYY').local();
+                    const now = moment().local();
+                    const ago6months = moment().local().subtract(6, 'months');
+                    const ago1year = moment().local().subtract(1, 'year');
+                    const ago2years = moment().local().subtract(2, 'years');
+                    const ago3years = moment().local().subtract(3, 'years');
+                    const ago4years = moment().local().subtract(4, 'years');
+                    let text = '';
+                    if (assetShipDate.isBetween(ago6months, now, 'day')) {
+                      text = '< 6 months';
+                    } else if (assetShipDate.isBetween(ago1year, now, 'day')) {
+                      text = '< 1 year';
+                    } else if (assetShipDate.isBetween(ago2years, now, 'day')) {
+                      text = '< 2 years';
+                    } else if (assetShipDate.isBetween(ago3years, now, 'day')) {
+                      text = '< 3 years';
+                    } else if (assetShipDate.isBetween(ago4years, now, 'day')) {
+                      text = '< 4 years';
+                    } else {
+                      text = '> 4 years';
+                    }
+                  %>
+                  <p style="font-size:3em"><%- text %></p>
+                <% } %>
+              </div>
+              <div class="cell small-6 medium-offset-2">
+                <% if (asset.fields.some(f => f.name === 'ShippingDate' && f.value && f.value.length)) { %>
+                  <h3><i class="far fa-fw fa-box-heart"></i> Ship Date</h3>
+                  <p><%= asset.fields.find(f => f.name === 'ShippingDate')['value'] %></p>
+                <% } %>
+                <% if (asset.fields.some(f => f.name === 'PurchaseDate' && f.value && f.value.length)) { %>
+                  <h3><i class="far fa-fw fa-box-usd"></i> Purchase Date</h3>
+                  <p><%= asset.fields.find(f => f.name === 'PurchaseDate')['value'] %></p>
+                <% } %>
+                <% if (asset.fields.some(f => f.name === 'DeploymentDate' && f.value && f.value.length)) { %>
+                  <h3><i class="far fa-fw fa-box-check"></i> Deployment Date</h3>
+                  <p><%= asset.fields.find(f => f.name === 'DeploymentDate')['value'] %></p>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (
+          asset.fields.some(f => f.name === 'Manufacturer' && f.value && f.value.length)
+          || asset.fields.some(f => f.name === 'Model' && f.value && f.value.length)
+          || asset.fields.some(f => f.name === 'SerialNumber' && f.value && f.value.length)
+          || asset.fields.some(f => f.name === 'Carrier' && f.value && f.value.length)
+          || asset.fields.some(f => f.name === 'IMEI' && f.value && f.value.length)
+          || asset.fields.some(f => f.name === 'SIMCard' && f.value && f.value.length)
+          ) { %>
+          <div class="box card asset-details data-list">
+            <h2>Device Details</h2>
+            <% if (asset.fields.some(f => f.name === 'Manufacturer' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-building"></i> Manufacturer</h3>
+              <p><%= asset.fields.find(f => f.name === 'Manufacturer')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'Model' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-desktop"></i> Model</h3>
+              <p><%= asset.fields.find(f => f.name === 'Model')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'SerialNumber' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-barcode-scan"></i> Service Tag / Serial</h3>
+              <p><%= asset.fields.find(f => f.name === 'SerialNumber')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'Carrier' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-tag"></i> Carrier</h3>
+              <p><%= asset.fields.find(f => f.name === 'Carrier')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'IMEI' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-barcode-scan"></i> IMEI</h3>
+              <p><%= asset.fields.find(f => f.name === 'IMEI')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'SIMCard' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-sim-card"></i> SIM</h3>
+              <p><%= asset.fields.find(f => f.name === 'SIMCard')['value'] %></p>
+            <% } %>
+          </div>
+        <% } %>
+
+        <% if (
+          (
+            asset.fields.some(f => f.name === 'OperatingSystem' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'CPUType' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'PhysicalMemory' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'VideoCard' && f.value && f.value.length)
+          ) && (
+            asset.fields.some(f => f.name === 'ConfigurationItemTypeName') && asset.fields.find(f => f.name === 'ConfigurationItemTypeName')['value'] === 'Config - Computer'
+          )
+        ) { %>
+          <div class="box card asset-details data-list">
+            <h2>Device Configuration</h2>
+            <% if (asset.fields.some(f => f.name === 'OperatingSystem' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-terminal"></i> Operating System</h3>
+              <p><%= asset.fields.find(f => f.name === 'OperatingSystem')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'CPUType' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-microchip"></i> CPU Type</h3>
+              <p><%= asset.fields.find(f => f.name === 'CPUType')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'PhysicalMemory' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-memory"></i> Memory (RAM)</h3>
+              <p><%= asset.fields.find(f => f.name === 'PhysicalMemory')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'VideoCard' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-computer-classic"></i> Video Card (GPU)</h3>
+              <p><%= asset.fields.find(f => f.name === 'VideoCard')['value'] %></p>
+            <% } %>
+          </div>
+        <% } %>
+
+        <% if (
+          (
+            asset.fields.some(f => f.name === 'HostName' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'MACAddress' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'IPAddress' && f.value && f.value.length)
+            || asset.fields.some(f => f.name === 'IPAddresV6' && f.value && f.value.length)
+          ) && (
+            asset.fields.some(f => f.name === 'ConfigurationItemTypeName') && asset.fields.find(f => f.name === 'ConfigurationItemTypeName')['value'] === 'Config - Computer'
+          )
+          ) { %>
+          <div class="box card asset-details data-list">
+            <h2>Network Information</h2>
+            <% if (asset.fields.some(f => f.name === 'HostName' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-window-alt"></i> Hostname</h3>
+              <p><%= asset.fields.find(f => f.name === 'HostName')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'MACAddress' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-network-wired"></i> MAC Address</h3>
+              <p><%= asset.fields.find(f => f.name === 'MACAddress')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'IPAddress' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-router"></i> IPV4 Address</h3>
+              <p><%= asset.fields.find(f => f.name === 'IPAddress')['value'] %></p>
+            <% } %>
+            <% if (asset.fields.some(f => f.name === 'IPAddresV6' && f.value && f.value.length)) { %>
+              <h3><i class="far fa-fw fa-satellite-dish"></i> IPV6 Address</h3>
+              <p><%= asset.fields.find(f => f.name === 'IPAddresV6')['value'] %></p>
+            <% } %>
+          </div>
+        <% } %>
+
+      </div>
+
+
+      <div class="cell small-12 medium-4 two-col-sidebar">
+
+        <div class="box asset-img">
+          <% if (asset._image) { %>
+          <img src="<%= asset._image %>" alt="Image of asset">
+          <% } else { %>
+            <i class="fad fa-fw <%= asset._icon %>"></i>
+          <% } %>
+        </div>
+
+
+        <%
+
+        const statuses = {
+          'Active': {
+            'icon': 'fa-check-circle',
+            'color': '--color-bright-2'
+          },
+          'Down': {
+            'icon': 'fa-times-hexagon',
+            'color': '--color-bright-4'
+          },
+          'In Repair': {
+            'icon': 'fa-tools',
+            'color': '--color-bright-3'
+          },
+          'In Stock': {
+            'icon': 'fa-inventory',
+            'color': '--color-bright-1'
+          },
+          'In Testing': {
+            'icon': 'fa-flask',
+            'color': '--color-bright-3'
+          },
+          'New': {
+            'icon': 'fa-cart-plus',
+            'color': '--color-bright-2'
+          },
+          'Ordered': {
+            'icon': 'fa-shipping-timed',
+            'color': '--color-bright-1'
+          },
+          'Planned': {
+            'icon': 'fa-clipboard-list-check',
+            'color': '--color-bright-1'
+          },
+          'Retired': {
+            'icon': 'fa-tombstone-alt',
+            'color': '--color-bright-4'
+          },
+          'Stolen/MIA': {
+            'icon': 'fa-ghost',
+            'color': '--color-bright-4'
+          }
+        };
+
+        %>
+
+
+        <div class="news-status-card" style="margin-bottom:1em; background-color:var(<%= statuses[asset.fields.find(f => f.name === 'Status')['value']]['color'] %>);">
+          <div class="news-status-icon"><i class="far fa-2x <%= statuses[asset.fields.find(f => f.name === 'Status')['value']]['icon'] %>"></i></div>
+          <div class="news-status-title"><%= asset.fields.find(f => f.name === 'Status')['value'] %></div>
+        </div>
+
+        <div class="box">
+          <h2>Actions</h2>
+          <ul class="link-cards">
+            <li><a class="internal button-asset-issue" href="#">Report an Issue with your Device</a></li>
+            <li><a class="internal button-asset-replacement" href="#">Assess Replacement</a></li>
+            <li><a class="internal button-asset-not-mine" href="#">What is this device?</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your ticket has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your ticket',
+    show: false
+  }
+];
+%>
+<%- include('../../partials/components/toaster.ejs', { toasts }); %>
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

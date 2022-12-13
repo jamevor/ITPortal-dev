@@ -1,0 +1,81 @@
+<style>
+
+    #editor_save{
+        background:var(--color-pop);
+        color:var(--color-body);
+        bottom:0;
+        width:calc(100% - var(--ui-nav-w))!important;
+        max-width:100%!important;
+        z-index:100;
+        margin-top:1em;
+        padding:1em;
+        transition:all .5s ease;
+    }
+
+    #editor_save.is-anchored.is-at-bottom {
+        width: 100%!important;
+    }
+
+    #editor_save h2{
+        font-Size: 1.8em;
+        font-weight: 600;
+    }
+    #editor_save h2 .contentCall{
+        font-Size: .75em;
+        font-weight: 400;
+        padding: .25em .5em;
+        color: var(--color-pop);
+    }
+
+    #editor_save h2 .contentType{
+        border-radius: 4em 0 0 4em;
+        background:var(--color-body);
+    }
+    #editor_save h2 .contentID{
+        border-radius: 0 4em 4em 0;
+
+        background:var(--color-lane);
+    }
+    #editor_save a{
+        color:var(--color-body);
+        padding: .5em 1em;
+    }
+
+    #editor_save a:hover{
+        opacity: .7;
+        cursor: pointer;
+    }
+
+    #editor_save a.disabled{
+        color:var(--color-lane-subtler);
+    }
+
+    #editor_save a.disabled:hover{
+        opacity: 1;
+        cursor: not-allowed;
+    }
+
+    #editor_save.is-anchored{
+        background:var(--color-body-text);
+        color:var(--color-body);
+        top: 0!important;
+    }
+    #editor_save.is-anchored a{
+
+    }
+
+
+</style>
+
+<nav id="editor_save" class="grid-container fluid" data-sticky data-stick-to="bottom" data-btm-anchor="site-footer:top" data-options="marginBottom:0;width:100%!important;">
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x align-justify align-middle large-up-2">
+            <div class="cell"><h2>Currently Editing <span class="contentCall contentType"><%= locals.entityTitle %></span><span class="contentCall contentID"><%= locals.entityID %></span></h2></div>
+            <div class="cell text-right">
+                <%# <a class='button-cancel'><i class='fas fa-trash fa-2x'></i></a> %>
+                <a class='button-save disabled'><i class='fas fa-save fa-2x'></i></a>
+            </div>
+            
+        </div>
+    </div>
+</nav>

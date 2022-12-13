@@ -1,0 +1,676 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-pop);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  .pasteExcel:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel:focus,
+  .pasteExcel:active{
+    background:var(--color-pop-h);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .carousel { height: calc(100% - 8em);}
+
+  .carousel-cell {
+    height: 100%;
+    width:100%;
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:2em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+    <div class='cell  show-for-small-only'>
+      <div style="font-size:8em;text-align:center;margin:.25em">
+        <span class="fa-stack">
+          <i class="fas fa-mobile-alt fa-stack-1x"></i>
+          <i style="color:var(--color-pop)" class="fas fa-ban fa-stack-2x"></i>
+        </span>
+      </div>
+      <p>Because this form requires extensive writing and text entry, for ease of use and best results, we recommend accessing the form from a computer.</p>
+    </div>
+    <div class='cell hide-for-small-only medium-4 large-3'>
+      <% if (locals.user && user.id && locals.userAttributes) { %>
+        <div class="user-info">
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p id="verified"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+          <p id="full-name"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-department"><%= userAttributes['user.department'] %></p>
+          <p id="wpi-id"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email"><i class="fas fa-envelope-square"></i> <%= userAttributes.emailaddress %></p>
+          <p id="wpi-phone"><i class="fas fa-phone-square"></i> <%= userAttributes['user.telephonenumber'] %></p>
+        </div>
+      <% } %>
+      <div style="margin-top:2em">
+        <h2>Contents</h2>
+        <ul class="toc no-bullet">
+          <li><a class="toc-item active" data-controls="0" href="#">Before You Begin</a></li>
+          <li><a class="toc-item" data-controls="1" href="#">Department Information</a></li>
+          <li><a class="toc-item" data-controls="2" href="#">Department Reopening Plan</a></li>
+          <li><a class="toc-item" data-controls="3" href="#">Personnel List</a></li>
+          <li><a class="toc-item" data-controls="4" href="#">Certifications & Submit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class='cell  hide-for-small-only medium-8 large-9'>
+      <h1>Department Reopening Plan</h1>
+      <div class="carousel help-form">
+        <!-- Before You begin -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <div style="font-size:6em;text-align:center;margin:.25em">
+            <span class="fa-stack">
+              <i style="color:var(--color-pop)" class="fas fa-octagon fa-stack-2x"></i>
+              <i class="fas fa-hand-paper fa-stack-1x fa-inverse"></i>
+            </span>
+          </div>
+          <h2>Before You Begin</h2>
+          <p style="font-weight:600">This form is intended to be used by Department or Division Heads to submit only after you have compiled them using WPI Guidelines and MA Office Spaces Checklist. For your convenience you may download a <a href="https://itscdn.wpi.edu/public/Department%20Reopening%20Plan%20Template.docx">template of this webform</a> and the <a href="https://itscdn.wpi.edu/public/Department%20Personnel%20List%20Template.xlsx">Personnel Spreadsheet Template</a> with detailed instructions to assist in your preparations. Please take time to fully review the guidance and associated documents before continuing.</p>
+          <ul>
+            <li>Read and Review the <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance" target="_blank">Return to Campus Guidance</a> and the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download" target="_blank">Massachusetts Office Spaces Checklist</a>.</li>
+            <li>Prior to completing the Department Reopening Plan, review your Plan with your department managers and employees to ensure measures are achievable.</li>
+            <li>All team members will need to complete COVID-19 Training module and sign an acknowledgment form.</li>
+          </ul>
+        </div>
+        <!-- Department Info -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <p style="font-weight:600">Please fill out this form in its entirety.</p>
+
+          <fieldset id="detail-questions">
+            <legend>Department Information</legend>
+
+            <label class="form-label"  for="DRW-1-department-name">Department Name</label>
+            <input type="text" id="DRW-1-department-name" name="DRW-1-department-name" value="<%= userAttributes['user.department'] %>">
+
+            <label class="form-label" for="DRW-2-department-location">Building(s) / Room(s)</label>
+            <p class="form-label-help">Please provide the building(s) and list all room numbers or locations your department will occupy.</p>
+            <textarea id="DRW-2-department-location" name="DRW-2-department-location" rows="4"></textarea>
+
+            <label class="form-label" for="DRW-3-department-rationale">Rationale for Return to Campus</label>
+            <p class="form-label-help">Considering WPI’s Return to Campus work priorities, explain why your department’s return to campus should be prioritized.</p>
+            <textarea id="DRW-3-department-rationale" name="DRW-3-department-rationale" rows="4"></textarea>
+
+          </fieldset>
+
+        </div>
+
+
+        <!-- DepartmentReopening Plan -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Department Reopening Plan</legend>
+            <p>Department heads are required to develop a Department Reopening Plan that complies with the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download" target="_blank">Massachusetts Office Spaces Checklist</a> issued by Massachusetts and <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance" target="_blank">WPI’s Return to Campus Guidance</a>.  We recommend having both of these documents easily accessible while you are drafting your Department Reopening Plan.</p>
+            
+            <p>Your Department Reopening Plan should include information that considers a gradual return to campus this summer and more students and employees on campus in the fall.</p>
+            
+            <p>After consulting with your Talent & Inclusion Partner and reviewing the FAQs on the <a href="https://www.wpi.edu/news/coronavirus" target="_blank"></a>WPI Coronavirus (COVID-19) Resources and Updates website</a>, submit any remaining questions to <a href="mailto:coronavirusquestions@wpi.edu" target="_blank">coronavirusquestions@wpi.edu</a>. </p>
+            
+            <p><strong>Please respond to all questions in this form.</strong></p>
+            
+            
+            <label class="form-label" for="DRW-4-distancing">Social Distancing</label>
+            <p class="form-label-help">Describe how your department will ensure social distancing (> 6 feet between individuals).</p>
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-people-arrows color-bright-1"></i> Social Distancing
+              </div>
+              <div class="note-message">
+                <p>Consider how your department will meet each of the requirements listed in the “Social Distancing” section of the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download" target="_blank">Massachusetts checklist</a>.</p>
+                <p>Contact your Talent & Inclusion Partner to discuss resources such as:</p>
+                <ul>
+                  <li>Staffing options and scheduling scenarios.</li>
+                  <li>The supports that Facilities can provide to physically modify or add signage to workplaces (if needed).</li>
+                  <li>The building plans Facilities is developing for building occupancy, common hallways, elevators, restrooms, and stairwells in buildings.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="form-label-help">Please note whether any physical modifications to the lab/bench spaces are necessary (floor markers, plexiglass shields, etc.)</p>
+            <p class="form-label-help">After submitting this form, please reply to the ticket confirmation email to provide office drawings and layouts whenever possible.</p>
+            <textarea id="DRW-4-distancing" name="DRW-4-distancing" rows="6"></textarea>
+
+
+            <label class="form-label" for="DRW-5-hygiene">Hygiene Protocols</label>
+            <p class="form-label-help">Describe how your department will apply robust hygiene protocols.</p>
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-hands-wash color-bright-1"></i> Hygiene Protocols
+              </div>
+              <div class="note-message">
+                <p>Consider how your department will meet each of the requirements listed in the “Hygiene Protocols” section of the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download" target="_blank">Massachusetts checklist</a>.</p>
+                <p>Contact your Talent & Inclusion Partner to discuss resources such as:</p>
+                <ul>
+                  <li>The coordination of orders for alcohol-based hand sanitizer and other supplies.</li>
+                  <li>How Facilities and EHS are supplying cleaning products in common areas in buildings.</li>
+                  <li>Sample cleaning logs for offices, common spaces, and equipment.</li>
+                  <li>Signage available from Marketing & Communications.</li>
+                  
+                </ul>
+              </div>
+            </div>
+
+            <textarea id="DRW-5-hygiene" name="DRW-5-hygiene" rows="6"></textarea>
+
+            <label class="form-label" for="DRW-6-staffing">Staffing & Operations</label>
+            <p class="form-label-help">Describe how your department will include safety procedures in its operations.</p>
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-users color-bright-1"></i> Staffing & Operations
+              </div>
+              <div class="note-message">
+                <p>Consider how your department will meet each of the requirements listed in the “Staffing & Operations” section of the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download target="_blank"">Massachusetts checklist</a>.</p>
+                <p>Contact your Talent & Inclusion Partner to discuss resources such as:</p>
+
+                <ul>
+                  <li>How to communicate to employees about their return to work on campus and the COVID-19 training required before returning to campus.</li>
+                  <li>Staffing options and scheduling scenarios.</li>
+                  <li>WPI’s current prohibitions on WPI-sponsored travel.</li>
+                  <li>How to ensure that employees stay home if they are sick, report absences, and disclose positive COVID tests to WPI.</li>
+                  <li>Signage available from Marketing & Communications.</li>
+                  <li>Workplace accommodations available for employees at higher risk for severe illness from COVID-19.</li>
+                  <li>WPI’s current policies on visitors and vendors.</li>
+                  <li>Sample visitor logs for offices.</li>
+
+                </ul>
+              </div>
+            </div>
+
+            <textarea id="DRW-6-staffing" name="DRW-6-staffing" rows="6"></textarea>
+
+            <label class="form-label" for="DRW-7-cleaning">Cleaning & Disinfecting</label>
+            <p class="form-label-help">Describe how your department will incorporate robust cleaning and disinfecting protocols in the offices and shared spaces.</p>
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-shield-virus color-bright-1"></i> Cleaning & Disinfecting
+              </div>
+              <div class="note-message">
+                <p>Consider how your department will meet each of the requirements listed in the “Cleaning & Disinfecting” section of the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download" target="_blank">Massachusetts checklist</a>.</p>
+                <p>Contact your Talent & Inclusion Partner to discuss resources such as:</p>
+
+                <ul>
+                  <li>How Facilities and EHS are supplying cleaning products in common areas in buildings.</li>
+                  <li>Sample cleaning logs for offices, common spaces, and equipment.</li>
+                  <li>Signage available from Marketing & Communications.</li>
+                  <li>What to do if WPI closes your office or building for a deep cleaning and disinfection by the EHS HAZMAT team.</li>
+
+                </ul>
+              </div>
+            </div>
+
+            <textarea id="DRW-7-cleaning" name="DRW-7-cleaning" rows="6"></textarea>
+
+            <label class="form-label" for="DRW-8-other">Other</label>
+            <p class="form-label-help">What other plans will you put in place to reduce chance of COVID-19 transmission?  How will you supervise and enforce your plans? </p>
+            <textarea id="DRW-8-other" name="DRW-8-other" rows="4"></textarea>
+
+            <label class="form-label" for="DRW-9-rampdown">Ramp-down Plan</label>
+            <p class="form-label-help">If required to ramp down your department’s on-campus presence, what steps will you take to restrict your department’s presence as soon as possible?</p>
+            <textarea id="DRW-9-rampdown" name="DRW-9-rampdown" rows="4"></textarea>
+
+          </fieldset>
+        </div>
+
+        <!-- Personnel -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <h3 style="margin-bottom:0; font-size:1.25em;">Who are you requesting access for?</h3>
+          <p style="font-size:.875rem; margin-bottom:0;"><em>Fill out full details for all people in your department, including yourself, who will be returning to campus at any phase.</em></p>
+          <p style="font-size:.875rem; margin-bottom:0;">Use <a href="https://itscdn.wpi.edu/public/Department%20Personnel%20List%20Template.xlsx">this excel template</a> to generate your list before pasting it here.</p>
+          <fieldset id="personnelTable">
+            <script>
+              window.addEventListener('load', function() {
+            $(document).ready(function () {
+
+              var makeElementEditable = function (element) {
+                $(element).attr("contenteditable", true);
+                $(element).focusout(function () {
+                  $(element).attr("contenteditable", false);
+                });
+                $(element).keydown(function (e) {
+                  if (e.which == 13) {
+                    e.preventDefault();
+                    $(element).attr("contenteditable", false);
+                    $(document).focus();
+                  }
+                });
+                $(element).on("paste", function (e) {
+                  e.preventDefault();
+                });
+              };
+              $(document).on("keypress", "textarea#excelPasteBox", function (e) {
+                if (e.ctrlKey !== true && e.key != "v") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              });
+              $(document).on("paste", "textarea#excelPasteBox", function (e) {
+                e.preventDefault();
+                var cb;
+                var clipText = "";
+                if (window.clipboardData && window.clipboardData.getData) {
+                  cb = window.clipboardData;
+                  clipText = cb.getData("Text");
+                } else if (e.clipboardData && e.clipboardData.getData) {
+                  cb = e.clipboardData;
+                  clipText = cb.getData("text/plain");
+                } else {
+                  cb = e.originalEvent.clipboardData;
+                  clipText = cb.getData("text/plain");
+                }
+                var clipRows = clipText.split("\n");
+                for (i = 0; i < clipRows.length; i++) {
+                  clipRows[i] = clipRows[i].split("\t");
+                }
+                var jsonObj = [];
+                for (i = 1; i < clipRows.length - 1; i++) {
+                  var item = {};
+                  for (j = 0; j < clipRows[i].length; j++) {
+                    if (clipRows[i][j] != "\r") {
+                      if (clipRows[i][j].length !== 0) {
+                        item[j] = clipRows[i][j];
+                      }else{
+                        item[j] = null;
+                      }
+                    }
+                  }
+                  jsonObj.push(item);
+                }
+                $("textarea#jsonDataDump").val("");
+                var tablePlaceHolder = document.getElementById("output");
+                tablePlaceHolder.innerHTML = "";
+                var table = document.createElement("table");
+                table.id = "excelDataTable";
+                table.className = "table";
+                var header = table.createTHead();
+                var row = header.insertRow(0);
+                var keys = ["First Name","Last Name","WPI Email","ID Number","Does the Employee Have Their ID Card?","Able to Work Remotely (Y/N)","Date Needed on Campus"];
+
+                keys.forEach(function (value, index) {
+                  var headerCell = document.createElement("th");
+                  headerCell.innerHTML = value;
+
+                  var cell = row.insertCell(index);
+                  cell.parentNode.insertBefore(headerCell, cell);
+                  cell.parentNode.removeChild(cell);
+                });
+                tablePlaceHolder.appendChild(table);
+                var excelTable = $("#excelDataTable").DataTable({
+                  "paging":false,
+                  "data": jsonObj,
+                  "searching": false,
+                  "ordering": false
+                });
+                $(document).on("click", "#excelDataTable td", function(){
+                  makeElementEditable(this);
+                });
+                $('#pasteModal').foundation('close');
+
+              });
+              $(".pasteExcel").click(function(){
+                  $('#pasteModal').foundation('open');
+                  $('#excelPasteBox').focus();
+                });
+              
+
+            });
+          });
+
+            </script>
+            <style>
+            
+            #personnelTable textarea#excelPasteBox {
+              width: 60%;
+              padding: 8px;
+            }
+            
+        
+            #personnelTable td:empty{
+              background: var(--color-bright-3);
+            }
+            #personnelTable [contenteditable="true"]{
+              transition:all .5s ease;
+            }
+            #personnelTable [contenteditable="true"]:active,
+            #personnelTable [contenteditable="true"]:focus{
+              background: var(--color-light);
+
+            }
+            #excelPasteBox{
+              border: 2px solid #217245;
+            }
+            #excelPasteBoxLabel{
+              background:#217245;
+              color:var(--color-light);
+              padding:1em;
+              margin:0;
+            }
+            
+            </style>
+            <div class="reveal" id="pasteModal" data-reveal>
+              <h1>Paste From Excel</h1>
+              <p>Open your 'Personnel List' Excel document select all rows and columns including the headers and paste here</p>
+              <img src="/img/content/ExcelCopy.gif" alt="Selection of rows and columns in an excel window">
+              <hr>
+              <label id="excelPasteBoxLabel" class="form-label" for="excelPasteBox"><i class="fal fa-table"></i> Paste from Excel</label>
+              <textarea rows="1" id="excelPasteBox" placeholder="Paste your excel form data here..." rows="4"></textarea>
+              <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <button class="button pasteExcel">Paste Personnel List from <i class="fal fa-table"></i> Excel</button>
+            <div id="output">
+              <table id="excelDataTable"></table>
+            </div>
+            
+          </fieldset>
+        </div>
+
+        <!-- Certifications & Submit -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <h2>Certifications & Submit</h2>
+          <p>By submitting this form, you acknowledge that you have fully read the <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance">Return to Campus Guidance</a> and the <a href="https://www.mass.gov/doc/phase-iii-step-1-office-spaces-checklist/download target="_blank""> Massachusetts Office Spaces Checklist</a>.</p>
+          <button id="button-submit-help-form" class="button-submit">Submit Access Request</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+          
+        </div>
+        
+      </div>
+      <div class="form-nav">
+        <button id="nav-back" class="form-nav-button back disabled">Back</button>
+        <button id="nav-next" class="form-nav-button next">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

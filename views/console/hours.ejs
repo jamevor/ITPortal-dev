@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <%- include('../partials/moment.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type="text/javascript" src="/js/console/hours.js"></script>
+  <script type="text/javascript">
+    window.standardHoursData = <%- JSON.stringify(standardHours) %>;
+    window.specialHoursData = <%- JSON.stringify(specialHours) %>;
+  </script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-clock"></i> Hours</h2>
+  <div class="grid-x grid-padding-x">
+    <div class="cell auto">
+      <% if (locals.user && ((user.permissions && user.permissions['hours'] && user.permissions['hours'].level >= 1) || user.isAdmin || user.isSuperUser)) { %>
+        <label for="location">Location</label>
+        <select id="location">
+          <option value="null" selected>-- Select a Location --</option>
+          <% for (const location of locations) { %>
+            <option value="<%= location.id %>"><%= location.title %></option>
+          <% } %>
+        </select>
+      <% } %>
+    </div>
+    <div class="cell shrink text-right" style="display:flex; align-items: center;">
+      <a class='button-save color-pop'><i class='fas fa-save fa-2x'></i></a>
+    </div>
+  </div>
+  <div class="console-section-content">
+    <div class="grid-x grid-margin-x">
+      <div class="cell medium-8">
+        <h3>Standard Hours</h3>
+      </div>
+      <div class="cell medium-4 text-right">
+        <span>Enable Editing</span>
+        <div class="switch">
+          <input class="switch-input" id="hours-standard-editable" type="checkbox" name="hours-standard-editable">
+          <label class="switch-paddle" for="hours-standard-editable">
+            <span class='show-for-sr'>Enable Editing</span>
+            <span class='switch-active'>Yes</span>
+            <span class='switch-inactive'>No</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <table class='table' id='hours-standard'>
+      <thead>
+        <tr>
+          <th class='table-hidden'>Day Of Week ID</th>
+          <th>Day Of Week</th>
+          <th>Closed</th>
+          <th>Open Time</th>
+          <th>Close Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const day of daysOfWeek) { %>
+          <tr id="hours-standard-day-<%= day.id %>">
+            <td><%= day.id %></td>
+            <td><%= day.title %></td>
+            <td><input class='hours-standard-input' type='checkbox' disabled></td>
+            <td><input class='hours-standard-input' type="time" value="" disabled></td>
+            <td><input class='hours-standard-input' type="time" value="" disabled></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <div class="grid-x grid-margin-x">
+      <div class="cell medium-8">
+        <h3>Special Hours</h3>
+      </div>
+      <div class="cell medium-4 text-right">
+        <button class='console-add' id='hours-special-add-row'><i class='fas fa-plus'></i> Add Hours</button>
+        <span>Enable Editing</span>
+        <div class="switch">
+          <input class="switch-input" id="hours-special-editable" type="checkbox" name="hours-special-editable">
+          <label class="switch-paddle" for="hours-special-editable">
+            <span class='show-for-sr'>Enable Editing</span>
+            <span class='switch-active'>Yes</span>
+            <span class='switch-inactive'>No</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <table class='table' id='hours-special'>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Closed</th>
+          <th>Open Time</th>
+          <th>Close Time</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%
+
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Hours has been updated',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to update your Hours',
+    show: false
+  },
+  {
+    id: 'toast-invalid-times',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Times cannot be blank, and the Close Time must be after the Open Time. There cannot be more than one Special Hours with the same date.',
+    show: false
+  }
+];
+
+%>
+<%- include('../partials/components/toaster.ejs', { toasts }); %>
+
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,6 @@
+/resources/js/lib
+/resources/js/dist
+/node_modules
+/server/database_builder/databaseDefaultValues.js
+/__tests__
+**/*.ejs

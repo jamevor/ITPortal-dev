@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+
+  <style>
+    .not-sus{
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      margin-bottom: -5.25em;
+    }
+  </style>
+
+<link rel="preload" as="image" href="/img/content/amogus.png">
+<link rel="preload" as="image" href="/img/content/amogus2.png">
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div class="container">
+    <div class="grid-x grid-margin-x">
+      <div class="cell small-12 not-sus">
+        <img src="/img/content/amogus.png" alt="Illustration of two crewmates reminecent of, but well within acceptable fair-use, AmongUs, dressed like InTro the Robot, and a goat" title="Two pals hanging out, no one sus here" onclick="this.src='/img/content/amogus2.png';this.title='And they were crewmates'">
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    console.log(`
+    . 　　　。　　　　•　 　ﾟ　　。 　　.
+  
+  　　　.　　　 　　.　　　　　。　　 。　. 　
+  
+  .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
+  
+  　　ﾟ　　 White was not An Impostor.　 。　.
+  
+  　　'　　　     2 Impostors remain 　 　　。
+  
+  　　ﾟ　　　.　　　. ,　　　　.　 .
+    `)
+    </script>
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

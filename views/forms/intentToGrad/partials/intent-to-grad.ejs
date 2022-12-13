@@ -1,0 +1,677 @@
+<style>
+    @font-face {
+      font-family: 'wedding_textregular';
+      src: url('/css/fonts/wedding_text-webfont.woff2') format('woff2'),
+          url('/css/fonts/wedding_text-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+
+  }
+  .preview-warn{
+    display: none;
+  }
+  .preview{
+    font-family: 'wedding_textregular';
+    font-size: 2.5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    background: var(--color-lane);
+    line-height: 1;
+    padding: .5em;
+    display:none;
+    margin-bottom: .25em;
+  }
+  .preview.longName{
+    font-size: 2em;
+  }
+  .preview.longerName{
+    font-size: 1.5em;
+  }
+  .preview.longestName{
+    overflow-x: auto;
+  }
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-lane-subtle);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .help-form .impact-boxes .cell label span{
+    font-weight: 400;
+    font-size:.875em
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-pop);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  .pasteExcel:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel:focus,
+  .pasteExcel:active{
+    background:var(--color-pop-h);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .help-form {
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:2em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:.25em;
+    font-style: italic;
+  }
+  .box-links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin:1em 0;
+  }
+  .box-links a{
+    padding: 1em;
+    text-decoration: none;
+    transition: all .5s ease;
+    margin: 1em;
+    text-align: center;
+    border: 2px solid var(--color-bright-5);
+    background: var(--color-light);
+    color: var(--color-bright-5);
+    border-radius: 3px;
+  }
+  .box-links a:hover{
+    background-color: var(--color-bright-5);
+    color:var(--color-light);
+  }
+  
+  .info-box {
+    background-color: hsl(192 68% 95% / 1);
+    padding: 1em;
+    font-size: .875em;
+    color:var(--color-dark);
+  }
+  .night .language-text, .night .info-box{
+    background-color: hsl(192 68% 95% / .8);
+  }
+  .language-text{
+    background-color: hsl(192 68% 95% / 1);
+    padding: 1em;
+    margin:1em 0;
+    font-size: .875em;
+    color:var(--color-dark);
+  }
+  .language-text table{
+    font-size: .875em;
+  }
+  .language-text thead,.language-text thead tr{
+    background: hsl(192 68% 85% / 1);
+  }
+  .language-text tbody, .language-text tr, .language-text tbody tr:nth-child(even){
+    background: var(--color-light);
+    color:var(--color-dark);
+  }
+  .has-tip{
+    line-height: 1;
+  }
+  #loader{
+    text-align: center;
+  }
+  #loader p{
+    font-size:.5em
+  }
+  .box.card h2{
+    font-size: 1.2em;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  #already-complete .language-text{
+    background:hsl(31deg 100% 95%);
+  }
+  #already-complete .language-text .box-links a{
+    padding: 1em;
+    text-decoration: none;
+    transition: all .5s ease;
+    margin: 1em;
+    text-align: center;
+    border: 2px solid var(--color-bright-3);
+    background: var(--color-light);
+    color: var(--color-bright-3);
+    border-radius: 3px;
+  }
+  #already-complete .language-text .box-links a:hover{
+    background-color: var(--color-bright-3);
+    color:var(--color-light);
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your Intent to Graduate has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your intent form',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+    <div class='cell small-12 medium-4 large-3 hide-for-small-only'>
+      <% if (locals.user && user.id && locals.userAttributes) { %>
+        <div class="user-info">
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p id="verified"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+          <p id="full-name"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-id"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email"><i class="fas fa-envelope-square"></i> <%= userAttributes.emailaddress %></p>
+        </div>
+      <% } %>
+
+    </div>
+    <div class='cell  small-12 medium-8 large-9'>
+      <h1>Application to Graduate</h1>
+      <div class="help-form">
+
+
+        <div class="form-page">
+          <p style="font-weight:600">This form is for use by WPI Students to submit their intent to graduate.</p>
+          <p style="font-size:.875rem;">You will be tracked for graduation with the information on this form. If there are any changes to be made after submission, please email registrar@wpi.edu with specific updates. Do not submit a new application.</p>
+
+          <div class="cell small-12 medium-12" id="loader">
+            <div class="fa-3x">
+              <i class="fas fa-spinner fa-pulse"></i>
+              <p>Fetching form...</p>
+            </div>
+          </div>
+          <div class="cell small-12 medium-12" id="already-complete" style="display:none">
+            <div class="language-text">
+              <h2 style="margin-bottom:.25em; font-size:.875rem;font-weight:600;"><i class="fad fa-exclamation-triangle"></i> Already Completed</h2>
+              <p><%- userAttributes.givenname %> our records indicate that you have already submitted an application to graduate.</p>
+              <p>If you would like to change your response, or have additional questions, please reach out to the Registrar.</p>
+              <p>If this is a new application for a different certificate, degree, or level please continue below.</p>
+              <div class="box-links">
+                <a href="" id="responseID"><i class="fal fa-ticket"></i> View Recent Application</a>
+                <a href="" id="continue"><i class="fal fa-arrow-circle-right"></i> Continue Submitting New Application</a>
+              </div>
+              
+              
+            </div>
+          </div>
+
+          <fieldset id="degree-questions" style="display:none;">
+
+            <p style="margin-bottom:.25em; font-size:.875rem;font-weight:600;">What type of degree are you applying for?</p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-undergrad" name="type" value="Undergraduate">
+                <label for="type-undergrad">Undergraduate<span>Bachelor's Degree</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-grad" name="type" value="Graduate">
+                <label for="type-grad">Graduate<span>Master's Degree / Graduate Certificate</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="radio" id="type-phd" name="type" value="PhD">
+                <label for="type-phd">PhD<span>Doctoral Degree</span></label>
+              </div>
+            </div>
+
+            <p style="margin-bottom:.25em; font-size:.875rem;font-weight:600;">What graduation date are you applying for?</p>
+            <p style="margin-bottom:.25em; font-size:.75rem;font-weight:400;font-style: italic;">Currently accepting graduation applications only for the degree date(s) below. Other degree dates will be available at a later date. </p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <!-- <div class="cell small-12 medium-auto">
+                <input type="radio" id="date-aug2021" name="date" value="AUG2022">
+                <label for="date-aug2021">August 2022</label>
+              </div> -->
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="date-dec2021" name="date" value="DEC2022">
+                <label for="date-dec2021">December 2022</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="date-may2023" name="date" value="MAY2023">
+                <label for="date-may2023">May 2023</label>
+              </div>
+            </div>
+
+          </fieldset>
+
+          
+
+          <div id="postChoice" style="display: none;">
+            <div id="language-undergrad" class="toggled show-undergrad language-text" style="display: none;">
+              <h2 style="margin-bottom:.25em; font-size:.875rem;font-weight:600;"><i class="fad fa-info-circle"></i> Notes for Undergraduates</h2>
+              <p>Complete the application below to inform the Registrar’s Office of your intent to graduate. Completion of this form will place your name on file for graduation, and we will begin the diploma order. Students must be registered in the semester in which they complete their degree requirements.</p>
+              <p>Please follow the chart below for deadlines for this application.</p>
+
+              <table class="unstriped">
+                <thead>
+                  <tr>
+                    <th>Completion of Degree Requirements</th>
+                    <th>Application Deadline<br>(Intent to Graduate)</th>
+                    <th>Degree Conferral Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Summer Semester</td>
+                    <td>July 15<sup>th</sup> 2022</td>
+                    <td>August 2022</td>
+
+                  </tr>
+                  <tr>
+                    <td>Fall Semester</td>
+                    <td>October 8<sup>th</sup> 2022</td>
+                    <td>December 2022</td>
+
+                  </tr>
+                  <tr>
+                    <td>Spring  Semester</td>
+                    <td>October 8<sup>th</sup> 2022</td>
+                    <td>May 2023</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+              <p>Complete the following form as soon as possible. If you revise your date of graduation or do not complete your program as planned, you MUST complete this application again.</p>
+              <p><strong>Note:</strong> there is a $35 re-processing fee if you request a name change after placing this order.</p>
+            </div>
+
+            <div id="language-grad" class="toggled show-grad language-text" style="display: none;">
+              <h2 style="margin-bottom:.25em; font-size:.875rem;font-weight:600;"><i class="fad fa-info-circle"></i> <span id="note-name">Notes for Graduate Students</span></h2>
+              <p>Complete the application below to inform the Registrar’s Office of your intent to graduate.
+              Completion of this form will place your name on file for graduation, and we will begin the diploma order.
+              Students must be registered in the semester in which they complete their degree requirements.</p>
+              <p>Please follow the chart below for deadlines for this application.</p>
+              <table class="unstriped">
+                <thead>
+                  <tr>
+                    <th>Completion of Degree Requirements</th>
+                    <th>Application Deadline<br>(Intent to Graduate)</th>
+                    <th>Degree Conferral Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Summer Semester</td>
+                    <td>July 15<sup>th</sup> 2022</td>
+                    <td>August 2022</td>
+
+                  </tr>
+                  <tr>
+                    <td>Fall Semester</td>
+                    <td>October 14<sup>th</sup> 2022</td>
+                    <td>December 2022</td>
+                    
+                  </tr>
+                  <tr>
+                    <td>Spring  Semester</td>
+                    <td>February 1<sup>st</sup> 2023</td>
+                    <td>May 2023</td>
+                  </tr>
+
+                </tbody>
+              </table>
+              <p>In order to be considered a graduation candidate, after you submit this online application, you must also complete the <a href="https://www.wpi.edu/sites/default/files/docs/Offices/Registrar/Graduate%20Degree%20Completion%20Form.pdf" rel="nofollow norefer" target="_blank"> Graduate Degree Completion form (PDF)</a> and return it to the Registrar’s Office.</p>
+              <div class="box-links">
+                <a href="https://www.wpi.edu/sites/default/files/docs/Offices/Registrar/Graduate%20Degree%20Completion%20Form.pdf" rel="nofollow norefer" target="_blank"><i class="fal fa-file-pdf"></i> Graduate Degree Completion form (PDF)</a>
+              </div>
+              <p>Complete the following form as soon as possible. If you revise your date of graduation or do not complete your program as planned, you MUST complete this application again.</p>
+              <p><strong>Note:</strong> there is a $35 re-processing fee if you request a name change after placing this order.</p>
+
+            </div>
+
+          <fieldset id="graduate-questions" class="toggled show-grad">
+            <legend>Graduate Details</legend>
+
+            <label class="form-label"  for="degree">Degree</label>
+            <input type="text" id="degree" name="degree">
+
+            <label class="form-label"  for="major">Major</label>
+            <input type="text" id="major" name="major">
+
+            <div class="toggled show-grad-only">
+              <p style="margin-bottom:.25em; font-size:.875rem;font-weight:600;">Are you completing a Thesis for your Master's Degree?</p>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-6">
+                  <input type="radio" id="thesis-yes" name="thesis" value="True">
+                  <label for="thesis-yes">Yes</label>
+                </div>
+                <div class="cell small-12 medium-6">
+                  <input type="radio" id="thesis-no" name="thesis" value="False">
+                  <label for="thesis-no">No</label>
+                </div>
+
+              </div>
+            </div>
+
+          </fieldset>
+          <fieldset id="degree-questions">
+          <legend>Diploma Name</legend>
+          <div class='grid-x grid-margin-x'>
+            <div class="cell small-12 medium-5 info-box">
+              <h2 style="margin-bottom:.25em; font-size:.875rem;font-weight:600;"><i class="fad fa-signature"></i> Notes on Diploma Name</h2>
+              <p>Please enter your FULL name as you would like it to be printed on your DIPLOMA (middle name/initial and any suffix you would like included). </p>
+              <p>Family name, if different from what you used while in attendance at WPI, will result in a different placement in the lineup and program. </p>
+              <p>If a name change is requested after original order has been placed, student will be subject to a <strong>$35 re-processing fee.</strong></p>
+            </div>
+            <div class="cell small-12 medium-7">
+              
+
+                
+                <label class="form-label"  for="name-first">First Name</label>
+                <input class=" nameField" type="text" id="name-first" name="name-first">
+
+                <label class="form-label"  for="name-middle">Middle Name / Initial</label>
+                <input class=" nameField" type="text" id="name-middle" name="name-middle">
+
+                <label class="form-label"  for="name-last">Last Name</label>
+                <input class=" nameField" type="text" id="name-last" name="name-last">
+
+                <label class="form-label"  for="name-suffix"><span data-tooltip tabindex="1" title="Example: Jr, Sr, MD, III">Suffix</span> (if applicable)</label>
+                <input class=" nameField" type="text" id="name-suffix" name="name-suffix">
+
+                <p class="preview">preview</p>
+                <p class="preview-warn" style="font-size:.75em;font-style: italic;color:var(--color-body-subtitle)">This is for preview purposes only. final text, sizing, spacing, decoration, font or ornamentation may differ on printed diploma</p>
+
+            </div>
+          </div>
+        </fieldset>
+        <fieldset id="mailing-questions">
+          <legend>Mailing Address</legend>
+          <div class='grid-x grid-margin-x'>
+            <div class="cell small-12 medium-5 info-box">
+              <h2 style="margin-bottom:.25em; font-size:.875rem;font-weight:600;"><i class="fad fa-map-marked-alt"></i> Notes on Mailing Address</h2>
+              <p>Diplomas awarded in May will be handed out at the Commencement ceremony.</p>
+              <p>If you do not attend the ceremony, your diploma will be mailed to the address provided on this form.</p>
+              <p>Diplomas awarded in September and December will be mailed to the address below.</p>
+              <p>Diplomas cannot be sent to P.O. Boxes.</p>
+            </div>
+            <div class="cell small-12 medium-7">
+              
+
+                <label class="form-label"  for="address-1">Address Line 1</label>
+                <input type="text" id="address-1" name="address-1">
+
+                <label class="form-label"  for="address-2">Address Line 2</label>
+                <input type="text" id="address-2" name="address-2">
+
+                <label class="form-label"  for="address-city">City</label>
+                <input type="text" id="address-city" name="address-city">
+
+                <label class="form-label"  for="address-state">State</label>
+                <input type="text" id="address-state" name="address-state">
+
+                <label class="form-label"  for="address-zip">Zip / Postal Code</label>
+                <input type="text" id="address-zip" name="address-zip">
+
+                <label class="form-label"  for="address-country">Country</label>
+                <input type="text" id="address-country" name="address-country">
+            </div>
+          </div>
+        </fieldset>
+
+        <button id="button-submit-help-form" class="button-submit">Submit Intent To Graduate</button>
+        <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+        </div>
+
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

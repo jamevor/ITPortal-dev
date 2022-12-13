@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/knowledge-base.js'></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div class="all-articles">
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+
+      <h2>Categories</h2>
+      <div class="grid-x grid-margin-x small-up-3 medium-up-4 large-up-6 categories">
+
+        <a class="cell card box" href="/service/43">
+          <i class="fal fa-wifi"></i>
+          <h3>Network Access</h3>
+        </a>
+        <a class="cell card box" href="/service/49">
+          <i class="fal fa-envelope"></i>
+          <h3>Email & Calendars</h3>
+        </a>
+        <a class="cell card box" href="/component/105">
+          <i class="fal fa-user"></i>
+          <h3>Accounts & Passwords</h3>
+        </a>
+        <a class="cell card box" href="/service/63">
+          <i class="fal fa-save"></i>
+          <h3>Storage</h3>
+        </a>
+        <a class="cell card box" href="/service/44">
+          <i class="fal fa-globe-americas"></i>
+          <h3>Remote Access</h3>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane dark">
+    <div class="grid-container">
+
+      <h2>Featured Articles</h2>
+      <ul class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-1 large-up-2">
+
+        <li class="cell">
+          <a class="article-card" href="/article/230">
+            <h3 class="article-card-title">Self Service Password Reset</h3>
+          </a>
+        </li>
+
+        <li class="cell">
+          <a class="article-card" href="/article/315">
+            <h3 class="article-card-title">Install Office 365 on Personal Machine</h3>
+          </a>
+        </li>
+        <li class="cell">
+          <a class="article-card" href="/article/216">
+            <h3 class="article-card-title">O365 Groups</h3>
+          </a>
+        </li>
+
+
+        <li class="cell">
+          <a class="article-card" href="/article/249">
+            <h3 class="article-card-title">Use OneDrive</h3>
+          </a>
+        </li>
+
+        <li class="cell">
+          <a class="article-card" href="/article/288">
+            <h3 class="article-card-title">Requesting Academic Software</h3>
+          </a>
+        </li>
+
+        <li class="cell">
+          <a class="article-card" href="/article/114">
+            <h3 class="article-card-title">Report Phishing</h3>
+          </a>
+        </li>
+        <li class="cell">
+          <a class="article-card" href="/article/152">
+            <h3 class="article-card-title">Preventing Cyber Attacks</h3>
+          </a>
+        </li>
+
+        <li class="cell">
+          <a class="article-card" href="/article/232">
+            <h3 class="article-card-title">Multifactor Authentication</h3>
+          </a>
+        </li>
+
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-6">
+          <h2>Recently Updated</h2>
+          <ul id='recentlyUpdatedArticles' class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-1 large-up-1 compact">
+          </ul>
+        </div>
+
+        <div class="cell small-12 medium-6">
+          <h2>New Articles</h2>
+
+          <ul id='recentlyCreatedArticles' class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-2 large-up-1 compact">
+          </ul>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  <div class="grid-container fluid swim-lane bright-1">
+    <div class="grid-container">
+      <h1 class="text-center">Find a Knowledge Article</h1>
+      <div class="grid-x grid-margin-x  align-center">
+
+        <div class="cell small-12 large-6">
+          <div class="search filter-icon">
+            <label for="filter-articles" class="show-for-sr">Filter Articles</label>
+            <input id='filter-articles' class="filter-find" placeholder="Search our Knowledge Base...">
+            <i class="far fa-search"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <h2>All Articles (A-Z)</h2>
+      <ul id="allArticles" class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-2 large-up-1 compact">
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

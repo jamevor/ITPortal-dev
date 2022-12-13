@@ -1,0 +1,385 @@
+<%- include('../partials/api/editorjsToHTML.ejs'); %>
+
+<%
+const endpoint = locals.component ? '/api/v1/component/update/one/' + component.id : '/api/v1/component/create/one';
+const method = locals.component ? 'PUT' : 'POST';
+
+let contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <%- include('../partials/editorjs.ejs'); %>
+    <script type="text/javascript">
+      window.editorjs_initialize_data = {};
+      <% if (locals.component && component.descriptionLong && component.descriptionLong.length) { %>
+        window.editorjs_initialize_data.descriptionLong = <%- component.descriptionLong %>;
+      <% } else { %>
+        window.editorjs_initialize_data.descriptionLong = {};
+      <% } %>
+    </script>
+    <script type='text/javascript' src='/js/console/EntityGroupsUtility.js' defer></script>
+    <script type='text/javascript' src='/js/console/component/edit.js' defer></script>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<% if (locals.edit) { %>
+  <% if (locals.component) { %>
+    <input type='hidden' id='component-id' name='componentID' value='<%= component.id %>'>
+  <% } %>
+  <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+  <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+<% } %>
+
+
+  <div class="grid-container fluid swim-lane article<%= locals.edit ? ' edit' : ''%>" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+
+
+      <nav aria-label="You are here:" role="navigation">
+        <ul class="breadcrumbs">
+          <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+          <li><a href="/Service-Catalog">Service Catalog</a></li>
+          <li class='has-child-crumbs'>
+            <a href="#">Portfolios <i class='fas fa-caret-down'></i></a>
+            <% if (locals.component && component.service && component.service.portfolios && component.service.portfolios.length) { %>
+              <ul class='child-list'>
+                <% for (const portfolio of component.service.portfolios) { %>
+                  <li><a href='/portfolio/<%= portfolio.id %>'><%= portfolio.title %></a></li>
+                <% } %>
+              </ul>
+            <% } %>
+          </li>
+          <li><a href="<%= !locals.edit && locals.component && component.service ? '/service/' + component.service.id : '#' %>"><%= locals.component && component.service ? component.service.title : '' %></a></li>
+          <li><a href='#'>
+              <span class="show-for-sr">Current: </span> <%= locals.component ? component.title : '' %>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+
+      <div class="grid-x grid-margin-x align-justify">
+        <div class="cell small-12 medium-8 large-7 two-col-content">
+
+
+          <div class="grid-x grid-margin-x align-justify">
+            <div class="cell small-4 medium-4 large-2" style="display: flex;align-items: center;">
+              <i id='component-icon' class="fas <%= locals.component && component.icon ? component.icon : 'fa-globe' %> fa-4x"></i>
+            </div>
+            <div class="cell small-8 medium-8 large-10">
+              <h1 id="article-title" class="article-heading" <%= contentEditable %> <%- locals.edit ? 'placeholder="Component Title"' : '' %>><%= locals.component ? component.title : '' %></h1>
+              <% if (locals.edit || (locals.component && component.descriptionShort)) { %>
+                <p id="article-summary" class="article-summary" <%= contentEditable %> <%- locals.edit ? 'placeholder="Short Description"' : '' %>><%- locals.component ? component.descriptionShort : '' %></p>
+              <% } %>
+            </div>
+          </div>
+
+
+          <div class="article-body">
+            <h2>About</h2>
+            <% if (locals.edit) { %>
+              <div id='descriptionLong'></div>
+            <% } else { %>
+              <%- editorjsToHTML(component.descriptionLong); %>
+            <% } %>
+          </div>
+
+
+          <% if (locals.articles && articles.length || locals.edit) { %>
+            <div class="swim-lane">
+              <h2>Related Articles</h2>
+              <div class="grid-container full">
+              <% if (locals.edit) { %>
+                <input id='article' type='hidden' name='article'>
+                <div class="input-group">
+                  <input class='ez-input input-group-field' type='text' id='add-article-input'>
+                  <div class="input-group-button">
+                    <button id="add-article-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                  </div>
+                </div>
+              <% } %>
+                <ul class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-2 large-up-2 article-cards-wrapper">
+                <% if (locals.articles && articles.length) { %>
+                  <% for (const article of articles) { %>
+                    <%- include('../partials/components/article-card.ejs', {
+                      article,
+                      edit: locals.edit
+                    }); %>
+                  <% } %>
+                <% } %>
+                </ul>
+
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+
+
+        <div class="cell small-12 medium-4 two-col-sidebar">
+
+          <% if (locals.edit) { %>
+            <input type="hidden" id='is-access-restricted' value="<%- locals.component && component.accessRestricted ? 'true' : 'false' %>">
+            <input type="hidden" id='can-remove-groups' value="<%- locals.canRemoveGroups %>">
+            <div class="box card" id="egu"></div>
+          <% } %>  
+
+          <%- include('../partials/components/catalog-item-use.ejs', {
+            contentEditable,
+            edit: locals.edit,
+            typeTitle: 'Component',
+            item: locals.component
+          }); %>
+
+          <% if(locals.component && component.actions.length || locals.edit) { %>
+          <div class="box">
+              <h2>Actions</h2>
+              <% if (locals.edit) { %>
+                <div id="add-action-box" class="link-cards">
+                  <input type="hidden" id="action" name="action">
+                  <label for="actionTitle">Action Title</label>
+                  <div class="input-group">
+                    <input type="text" id="actionTitle" name="actionTitle" class="add-action-input input-group-field ez-input">
+                    <div class="input-group-button">
+                      <button id="add-action-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+              <ul class="link-cards" id="link-cards-action">
+              <% if (locals.component && component.actions.length) { %>
+                <% for (let action of component.actions) { %>
+                  <li data-actionid="<%= action.id %>"><a class="<%= action.actionType.title %>" target="<%= locals.edit ? '_self' : action.actionType.target %>" href="<%= locals.edit ? '#' : `${action.actionType.URIscheme}${action.link}` %>" title="<%- action.title %>"><%- action.title %><% if (locals.edit) { %> <button class='remove-action-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                <% } %>
+              <% } %>
+              </ul>
+          </div>
+          <% } %>
+
+
+          <% if(locals.component && (component.createdAt || component.updatedAt) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+              <p><strong>Created:</strong> <%= locals.component && component.createdAt ? moment(component.createdAt).format('ll') : '' %></p>
+              <p><strong>Modified:</strong> <%= locals.component && component.updatedAt ? moment(component.updatedAt).format('ll') : '' %></p>
+            </div>
+          <% } %>
+
+
+          <% if (locals.component && (component.tags.length || component.audiences.length || component.aliases.length) || locals.edit) { %>
+            <div class="box card">
+              <h2>Metadata</h2>
+              <% if(locals.component && component.tags.length || locals.edit) { %>
+                <h3>Tags</h3>
+                <ul class="tags">
+                  <% if (locals.component && component.tags.length) { %>
+                    <% component.tags.forEach(function(tag){ %>
+                      <li data-tagid="<%= tag.id %>" class='tag'><a href="<%= locals.edit ? '#' : '/tag/' + tag.id %>"><%- tag.title %><% if (locals.edit) { %> <button class='remove-tag-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                      <li data-tagid=""><input type='text' id='add-tag-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="tag" name="tag">
+                <% } %>
+              <% } %>
+              <% if (locals.component && component.audiences.length || locals.edit) { %>
+                <h3>Audience</h3>
+                <ul class="audience">
+                  <% if (locals.component && component.audiences.length) { %>
+                    <% component.audiences.forEach(function(audience){ %>
+                      <li data-audienceid="<%= audience.id %>" class="audience-item"><a href="<%= locals.edit ? '#' : '/audience/' + audience.id %>"><%- audience.title %><% if (locals.edit) { %> <button class='remove-audience-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-audienceid=""><input type='text' id='add-audience-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="audience" name="audience">
+                <% } %>
+              <% } %>
+              <% if (locals.component && component.aliases.length || locals.edit) { %>
+                <h3>Alias</h3>
+                <ul class="alias">
+                  <% if (locals.component && component.aliases.length) { %>
+                    <% component.aliases.forEach(function(alias){ %>
+                      <li data-aliasid="<%= alias.id %>" class="alias-item"><a href="<%= locals.edit ? '#' : '/alias/' + alias.id %>"><%- alias.title %><% if (locals.edit) { %> <button class='remove-alias-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-aliasid=""><input type='text' id='add-alias-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="alias" name="alias">
+                <% } %>
+              <% } %>
+            </div>
+          <% } %>
+
+
+
+          <% if (locals.canEdit) { %>
+            <div class="box card">
+              <h2>Admin</h2>
+              <ul class="link-cards no-icon">
+                <% if (!locals.edit && locals.component && component.catalogPhase) { %>
+                  <li><span class='text'>Current Phase: <%= component.catalogPhase.title %></span></li>
+                <% } %>
+                <% if (!locals.edit) { %>
+                  <li><a href="/console/component/edit/<%= component.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+                <% } %>
+                <% if (locals.component && locals.edit) { %>
+                  <li><a href="/component/<%= component.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Component</a></li>
+                  <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+                <% } %>
+                <% if (locals.edit) { %>
+                  <li><a data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+                <% } %>
+                <% if (locals.edit && locals.component && component.catalogPhase && !locals.canPublish) { %>
+                  <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+                  <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+                    <h2>Are you sure?</h2>
+                    <p>You will not be able to edit this component while it is being reviewed.</p>
+                    <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+                    <a href="#" class="button-confirm bright-4" data-close>No</a>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                      <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+                    </button>
+                  </div>
+                <% } %>
+                <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+              </ul>
+            </div>
+          <% } %>
+
+          
+
+          <%- include('../partials/components/request-help.ejs'); %>
+
+          <%- include('../partials/components/print-share.ejs'); %>
+
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <% if (locals.edit) { %>
+    <%- include('../partials/components/edit.ejs', {
+      entityTitle: 'Component',
+      entityID: locals.component && component.id ? component.id : 'New'
+    }); %>
+    <%
+
+    const toasts = [
+      {
+        id: 'toast-save-success',
+        type: 'success',
+        title: 'Success',
+        message: 'Component has been saved',
+        show: false
+      },
+      {
+        id: 'toast-save-error',
+        type: 'error',
+        title: 'Whoops',
+        message: 'Something went wrong trying to save your component',
+        show: false
+      }
+    ];
+    %>
+    <%- include('../partials/components/toaster.ejs', { toasts }); %>
+  <% } %>
+
+  <% if (locals.edit && locals.component) { %>
+    <%- include('../partials/components/preview-modal.ejs'); %>
+  <% } %>
+
+
+  <% if (locals.edit) { %>
+  <div class="reveal console-modal" id="advanced-settings-modal" data-reveal data-options="closeOnClick:false;" data-simplebar>
+    <ul class="tabs" data-tabs id="advancedSettingsTabs">
+      <li class="tabs-title is-active"><a href="#phaseTab" aria-selected="true"><i class='far fa-satellite-dish'></i> State</a></li>
+      <li class="tabs-title"><a href="#customizeTab"><i class='fas fa-palette'></i> Customize</a></li>
+      <li class="tabs-title"><a href="#relationshipsTab"><i class='fas fa-database'></i> Relationships</a></li>
+      <li class="tabs-title"><a href="#auditTab"><i class='far fa-history'></i> Audit</a></li>
+    </ul>
+    <div data-tabs-content="advancedSettingsTabs">
+      <div id="phaseTab" class="tabs-panel is-active">
+        <% if (locals.canPublish) { %>
+          <label for="phase">Phase</label>
+          <select name="phase" id="phase" class='title-case'>
+          <% for (let phase of phases) { %>
+            <option class='title-case' value="<%= phase.id %>" <%= locals.component && component.idCatalogPhase == phase.id ? 'selected' : '' %>><%= phase.title %></option>
+          <% } %>
+          </select>
+        <% } else { %>
+          <input type="hidden" id="phase" value="1">
+        <% } %>
+        <label for="status">Status</label>
+        <select name="status" id="status" class='title-case'>
+          <% for (let status of statuses) { %>
+            <option class='title-case' value="<%= status.id %>" <%= locals.component && component.idCatalogStatus == status.id ? 'selected' : '' %>><%= status.title %></option>
+          <% } %>
+        </select>
+      </div>
+      <div id="customizeTab" class="tabs-panel">
+        <label for="icon">Icon</label>
+        <a href="https://fontawesome.com/icons?d=gallery&s=solid" target="_blank">Available Icons <i class="far fa-external-link"></i></a>
+        <input type='text' id='icon' name='icon' value="<%= locals.component && component.icon ? component.icon : '' %>" placeholder="fa-globe">
+        <label for="color">Color</label>
+        <input type='color' id='color' name='color' value="<%- locals.component && component.color ? '#' + component.color : '#000000' %>">
+      </div>
+      <div id="relationshipsTab" class="tabs-panel">
+        <div class='relationship-box'>
+          <h2>Related Service</h2>
+          <input id='service' type='hidden' name='service'>
+          <div id="relate-service-input-group" class="input-group" <%= locals.component && component.service ? "style='display:none" : '' %>>
+            <input class='ez-input input-group-field' type='text' id='relate-service-input'>
+            <div class="input-group-button">
+              <button id="relate-service-button" class='button-link-item'><i class="fas fa-link"></i> Relate</button>
+            </div>
+          </div>
+          <ul class="card-list no-indent grid-x grid-margin-x small-up-2 medium-up-2 large-up-3 service-cards-wrapper">
+            <% if (locals.component && component.service) { %>
+              <%- include('../partials/components/service-card.ejs', {
+                title: component.service.title,
+                compact: false,
+                link: '#',
+                icon: component.service.icon,
+                type: 'service',
+                id: component.service.id
+              }); %>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <div id="auditTab" class="tabs-panel">
+        <h2>Details</h2>
+        <p><strong>Date Review By: </strong><%= locals.component && component.dateReviewBy ? moment(component.dateReviewBy).format('ll') : '' %></p>
+        <p><strong>Created On: </strong><%= locals.component && component.createdAt ? moment(component.createdAt).format('ll') : '' %></p>
+        <p><strong>Created By: </strong><%= locals.component && component.userCreatedBy && component.userCreatedBy.username ? component.userCreatedBy.username : '' %></p>
+        <p><strong>Modified On: </strong><%= locals.component && component.updatedAt ? moment(component.updatedAt).format('ll') : '' %></p>
+        <p><strong>Last Modified By: </strong><%= locals.component && component.userModifiedBy && component.userModifiedBy.username ? component.userModifiedBy.username : '' %></p>
+      </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true"><i class='far fa-times'></i></span>
+    </button>
+  </div>
+<% } %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

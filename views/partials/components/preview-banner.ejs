@@ -1,0 +1,19 @@
+<% if (locals.preview) { %>
+  <div class="grid-container fluid swim-lane alert info" data-closable>
+    <div class="grid-container">
+      <div class="grid-x align-middle">
+        <div class="cell small-4 medium-2 text-center">
+          <i class="fas fa-info-circle fa-4x"></i>
+        </div>
+        <div class="cell small-8 medium-10">
+          <h2>Preview Mode</h2>
+          <p>You are currently previewing this page.</p>
+        </div>
+      </div>
+
+      <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true"><i class='fas fa-times'></i></span>
+      </button>
+    </div>
+  </div>
+<% } %>

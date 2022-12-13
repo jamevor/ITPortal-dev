@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/moment.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <script src="/js/components/CanvasCourseCard.js" defer></script>
+  <script src="/js/me/my-canvas.js" defer></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+<div class="grid-x grid-margin-x">
+
+  <div class="cell medium-12">
+    <div class="profile-section-boxless">
+      <h2 style="margin-bottom: 1em;">My Canvas</h2>
+      <div class="grid-x grid-margin-x" id="my-courses">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/sites.js'></script>
+  <style>
+    .all-sites .featured .site-item {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: var(--color-pop);
+      color: var(--color-light);
+      min-height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      position:relative;
+      margin-bottom:1em;
+    }
+    .all-sites .featured .site-title {
+      color: var(--color-light);
+      font-weight: 600;
+      background:linear-gradient(to top, rgba(0,0,0,0.7) 25%,rgba(0,0,0,0) 100%);
+      width: 100%;
+      display: block;
+      padding: 1em;
+      position: absolute;
+      bottom: 0;
+      height: 33.333%;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div class="all-sites">
+<% if (locals.subsites) { %>
+
+  <% if (subsites.length) { %>
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+
+      <h2>Featured Hub Sites</h2>
+      <div class="grid-x grid-margin-x featured">
+        <% for (const subsite of subsites) { %>
+          <a class="cell small-12 medium-auto site-item" href="/s/<%- subsite.id %>" style="background-image:url('<%- subsite.image && subsite.image.src ? subsite.image.src : '' %>');">
+            <div class="site-title"><%- subsite.title %></div>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% }%>
+
+  <div class="grid-container fluid swim-lane pop">
+    <div class="grid-container">
+      <h1 class="text-center">Find a Hub Site</h1>
+      <div class="grid-x grid-margin-x  align-center">
+
+        <div class="cell small-12 large-6">
+          <div class="search filter-icon">
+            <label for="filter-articles" class="show-for-sr">Filter Hub Sites</label>
+            <input id='filter-articles' class="filter-find" placeholder="Search Hub Sites...">
+            <i class="far fa-search"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <h2>All Hub Sites (A-Z)</h2>
+      <ul id="allArticles" class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-2 large-up-1 compact">
+      </ul>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

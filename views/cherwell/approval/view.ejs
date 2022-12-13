@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <script defer type="text/javascript" src="/js/pages/approval.js"></script>
+  <link rel="stylesheet" href="/css/ticket.css">
+  <style>
+    .profile-img {
+      background: <%= locals.requesterUser ? `hsla(${requesterUser.hue}, 100%, 40%, 1)` : 'var(--color-pop)' %>;
+    }
+    .approval-buttons{
+      display:flex;
+      justify-content: space-between;
+    }
+    .approval-buttons a{
+      box-shadow: var(--shadow-standard-y);
+      color: var(--color-light);
+      transition: all .5s ease;
+      padding: 1em;
+      width: 100%;
+      text-align: center;
+      margin: 1em;
+    }
+    .approval-buttons a:hover{
+      box-shadow: var(--shadow-standard-y-h);
+      background-color:var(--color-lane-subtler);
+    }
+    .approval-buttons #approve{
+      background-color: var(--color-bright-2);
+    }
+    .approval-buttons #deny{
+      background-color: var(--color-bright-4);
+    }
+    #notes{
+      margin:1em;
+      width: calc(100% - 2em);
+      resize: vertical;
+    }
+  </style>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+<div class="grid-container fluid swim-lane article edit" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x align-justify">
+      <div class="cell small-12 medium-8 large-7 two-col-content">
+
+        <nav aria-label="You are here:" role="navigation">
+          <ul class="breadcrumbs">
+            <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+            <li><a href="/Me/My-Approvals">Approval</a></li>
+            <li><span class="show-for-sr">Current: </span><%= approval.busObPublicId %></li>
+          </ul>
+        </nav>
+
+
+        <h1 class="article-heading"><%= approval.fields.find(f => f.name === 'Title')['value'] %></h1>
+
+        <input type="hidden" value="<%= approval.busObPublicId %>" id="ticket-id">
+
+        <div class="cell medium-12 box card profile">
+          <div class='grid-x grid-margin-x input-box'>
+            <div class='cell small-4 box-verified-profile'>
+              <div class="profile-img" style="background-image:url('/img/ico-intro.svg');"></div>
+            </div>
+            <div class='cell small-8 box-verified-info'>
+              <h3 class="content-label">Approver</h3>
+              <p id="full-name" class="content"><%= approval.fields.find(f => f.name === 'Name')['value'] %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell medium-12 box card ticket-section">
+          <h2> <i class="far fa-edit"></i>Description</h2>
+          <div class="ticket-section-content">
+            <pre data-simplebar><%= approval.fields.find(f => f.name === 'Description')['value'] %></pre>
+          </div>
+        </div>
+
+        <% if (approval.fields.find(f => f.name === 'Status')['value'] === 'Waiting') { %>
+          <div class="cell medium-12 box card ticket-section" id="approvalBox">
+            <h2> <i class="far fa-edit"></i>Description</h2>
+            <div class='grid-x grid-margin-x'>
+              <div class='cell small-12'>
+                <label for="notes" style="margin:0 1em;">Approval Notes <span style="color:var(--color-lane-subtler);font-size:.875em">(optional)</span></label>
+                <textarea rows="4" id="notes" name="notes"></textarea>
+              </div>
+              <div class='cell small-12 approval-buttons'>
+                <a data-value="Approved" href="#" id="approve">Approve</a>
+                <a data-value="Denied"  href="#" id="deny">Deny</a>
+              </div>
+
+            </div>
+            
+            
+          </div>
+        <% } %>
+
+
+      </div>
+
+      <div class="cell small-12 medium-4 two-col-sidebar">
+
+        <% 
+          const statusStyles = {
+            'Waiting': {
+              color: 'var(--color-lane-subtler)',
+              icon: 'fa-clock'
+            },
+            'Approved': {
+              color: 'var(--color-bright-2)',
+              icon: 'fa-check-circle'
+            },
+            'Denied': {
+              color: 'var(--color-bright-4)',
+              icon: 'fa-check-circle'
+            },
+            'Withdrawn': {
+              color: 'var(--color-bright-1)',
+              icon: 'fa-circle'
+            }
+          };
+        %>
+
+        <div class="box">
+          <h2>Status</h2>
+          <input id="ticket-status" type="hidden" value="<%- approval.fields.find(f => f.name === 'Status')['value'] %>">
+          <div class="news-status-card" style="background-color:<%= statusStyles[approval.fields.find(f => f.name === 'Status')['value']].color %>">
+            <div class="news-status-icon"><i class="far <%= statusStyles[approval.fields.find(f => f.name === 'Status')['value']].icon %> fa-2x"></i></div>
+            <div class="news-status-title"><%= approval.fields.find(f => f.name === 'Status')['value'] %></div>
+          </div>
+        </div>
+
+
+        <div class="box card">
+          <h2>Details</h2>
+
+          <h3>Approval ID #</h3>
+          <p id="publicID"><%= approval.busObPublicId %></p>
+          <h3>Approval Unique ID #</h3>
+          <p id="recID" style="font-size:.75em"><%= approval.busObRecId %></p>
+
+          <h3>Created</h3>
+          <p><%= approval.fields.find(f => f.name === 'CreatedDateTime')['value'] %></p>
+
+          <% if (approval.fields.find(f => f.name === 'Deadline')['value'] !== "") { %>
+            <h3>Deadline</h3>
+            <p><%= approval.fields.find(f => f.name === 'Deadline')['value'] %></p>
+          <% } %>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your ticket has been updated.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit update your ticket',
+    show: false
+  }
+];
+%>
+<%- include('../../partials/components/toaster.ejs', { toasts }); %>
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

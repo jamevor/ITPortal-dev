@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/service-catalog.js'></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div class="service-catalog">
+    <div class="grid-container fluid swim-lane bright-2 about">
+      <div class="grid-container">
+        <h1 class="">Service Catalog </h1>
+        <h2><i class="fas fa-search"></i> Find a Service</h2>
+        <label for="filter-services" class="show-for-sr">Filter Services</label>
+        <input id="filter-services" class="filter-find" placeholder="Find a Service...">
+      </div>
+      <%- include('../partials/components/tech-svg.ejs'); %>
+    </div>
+
+    <% for (const portfolio of portfolios) { %>
+      <% if (portfolio.services && portfolio.services.length) { %>
+        <div class="grid-container fluid swim-lane service-catalog-portfolio">
+          <div class="grid-container">
+            <h2><a href="/portfolio/<%= portfolio.id %>"><i class="fas fa-fw <%= portfolio.icon %>"></i> <%= portfolio.title %></a></h2>
+            <div class="grid-x grid-margin-x align-stretch">
+              <% for (const service of portfolio.services) { %>
+                <div class="cell small-12 large-4 card box service-catalog-box">
+                  <a href="/service/<%= service.id %>" class="service-catalog-box-clicker">
+                    <div class="service-catalog-box-icon" <%- service.color ? "style='background: #" + service.color + "'" : '' %>><i class="fad fa-fw <%= service.icon %>"></i></div>
+                    <h3 class="service-catalog-box-service"><%= service.title %></h3>
+                    <p class="service-catalog-box-description"><%= service.descriptionShort %></p>
+                  </a>
+                  <% if (service.components && service.components.length) { %>
+                    <h4>Service Components</h4>
+                    <ul class="service-catalog-box-list">
+                      <% for (const component of service.components) { %>
+                        <li class="service-catalog-box-list-item"><a href="/component/<%= component.id %>"><i class="fas fa-fw <%= component.icon %>"></i> <%= component.title %></a></li>
+                      <% } %>
+                    </ul>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

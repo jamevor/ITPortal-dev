@@ -1,0 +1,1 @@
+"use strict";$(document).ready(function(){AssetCard.renderForm(),AssetCard.attachFormListener(),AssetCard.attachActionListeners()});

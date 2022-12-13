@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <!-- Meta -->
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= locals.title %></title>
+    <meta name="robots" content="<%= locals.robots %>">
+    <meta name="description" content="IT Service & Support enables the effective use of technology for teaching, learning, research, and the administrative work of the University by providing technology and mobility solutions, support, IT content and communications.">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#c1272d">
+    <meta name="apple-mobile-web-app-title" content="The WPI Hub">
+    <meta name="application-name" content="The WPI Hub">
+    <meta name="theme-color" content="#c1272d">
+    <meta name="google-site-verification" content="zaW_K1-k8hmFB2Y7mlF1CnNtSnE3XpRpxz4oL0qBGUk">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+      @page {
+          size: letter;
+        }
+        @page :left {
+          margin-left: .25in;
+        }
+
+        @page :right {
+          margin-left: .25in;
+        }
+      .checkbox{
+        width:16px;
+        height:16px;
+        display: inline-block;
+        border:1px solid black;
+      }
+      .rowSection{
+        width:100%;
+        margin: 0 auto;
+        page-break-after: always;
+        font-family: sans-serif;
+      }
+      .rowSection h1{
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.5em;
+        margin-bottom: 0;
+      }
+      .rowSection h2{
+        text-align: center;
+        font-weight: 400;
+        font-size: .8em;
+        margin-top: 0;
+      }
+      .rowSection table{
+        width: 100%;
+      }
+      .rowSection tr{ 
+        text-align: center;
+      }
+      .rowSection tr>:nth-child(1){ 
+        text-align: right;
+      }
+
+      .rowSection tr>:nth-child(2),.rowSection tr>:nth-child(8){ 
+        font-size: .75em;
+      }
+
+
+      .rowSection tr>:nth-child(5){ 
+        font-weight:600;
+      }
+
+      .rowSection tr>:nth-child(9){ 
+        text-align: left;
+      }
+      .specialStrike{
+        /* text-decoration: line-through; */
+      }
+      .specialStrike::before{
+        content: '!';
+        display: inline;
+        background: #EEE;
+        width: 1em;
+        height: 1em;
+        padding: 0.5em;
+        margin-right: 1em;
+        font-size: .75em;
+        border-radius: 1em;
+        text-decoration:none;
+      }
+      @media only screen {
+        .rowSection {
+          background: #FFF;
+          border: 1px solid #EFEFEF;
+          margin-bottom: 1em;
+          width: 8in;
+          min-height: 11in;
+          position: relative;
+        }
+        
+        .showruler.rowSection::after{
+          content: '▶';
+          height: 1px;
+          width: 100%;
+          border-bottom: 1px dashed #DDD;
+          position: absolute;
+          top: 10in;
+          display: block;
+          pointer-events: none;
+          line-height: 1px;
+          color: #DDD;
+          left: -1px;
+        }
+
+        .rowSection table {
+          margin-bottom:.25in;
+        }
+        body{
+          background: #FAFAFA;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%for(const [key, rsvpRow] of Object.entries(rsvpOut)){
+      let RowSize = Object.entries(rsvpRow).length;
+      let showRuler = RowSize > 33 ? "showruler" : "";
+    %>
+      <div class="rowSection <%=showRuler%>">
+       
+        <table>
+
+          <thead>
+            <tr>
+              <th width="100%" colspan="9">
+                <h1>Row <%=key%></h1>
+                <h2><%=level%> Commencement </h2>
+              </th>
+            </tr>
+            <tr>
+              <th width="30%">Left</th>
+              <th width="10%"></th><span style="display:none">DepCode</span></th>
+              <th width="5%"><span style="display:none">check1</span></th>
+              <th width="3%"><span style="display:none">L</span></th>
+              <th>March</th>
+              <th width="3%"><span style="display:none">R</span></th>
+              <th width="5%"><span style="display:none">check2</span></th>
+              <th width="10%"><span style="display:none">DepCode</span></th>
+              <th width="30%">Right</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%for(const [key, rsvpMarchers] of Object.entries(rsvpRow)){%>
+                <% let personL = rsvpMarchers.filter(marcher => marcher.LineupSide == "L")[0] || {}
+                  let personR = rsvpMarchers.filter(marcher => marcher.LineupSide == "R")[0] || {}
+                  let March = key;
+                  if(Object.keys(personL).length <=1 ){
+                    personL.FullName = "-"
+                  }
+                  if(Object.keys(personR).length <=1 ){
+                    personR.FullName = "-"
+                  }
+                  var specialL = (personL && personL.SpecialAttendance && personL.SpecialAttendance == "True") ? "specialStrike" : null;
+                  var specialR = (personR && personR.SpecialAttendance && personR.SpecialAttendance == "True") ? "specialStrike" : null;
+                %>
+              <tr>
+                <td class="<%=specialL%>"><%=personL.FullName%></td>
+                <td><%=personL.LineupDepCode%></td>
+                <td><span class="checkbox"></span></td>
+                <td>L</td>
+                <td><%=March%></td>
+                <td>R</td>
+                <td><span class="checkbox"></span></td>
+                <td><%=personR.LineupDepCode%></td>
+                <td class="<%=specialR%>"><%=personR.FullName%></td>
+              </tr>
+            <%}%>
+
+          </tbody>
+        </table>
+      </div>
+
+    <%}%>
+  </body>
+
+</html>

@@ -1,0 +1,127 @@
+<%
+  var classCompact, classActive = '';
+  var classToggleArrow = 'fa-arrow-from-right';
+  if (locals.preferences && (locals.preferences.navbarCompact == true || locals.preferences.navbarCompact == 'true')) {
+    classCompact = 'compact-nav';
+    classToggleArrow = 'fa-arrow-from-left';
+  }
+  if (locals.preferences && (locals.preferences.navbarOpen == true || locals.preferences.navbarOpen == 'true')) {
+    classActive = 'is-active-left';
+  }
+  
+  var canAccessConsole = false;
+  if (locals.user) {
+    if (typeof user.permissions === 'object') {
+      for (let userPermission in user.permissions) {
+        if (user.permissions[userPermission].level !== null) {
+          canAccessConsole = true;
+          break;
+        }
+      }
+    }
+    if (!canAccessConsole && Array.isArray(user.groups)) {
+      canAccessConsole = user.groups.some(g => {
+        if (typeof g.permissions === 'object') {
+          for (let groupPermission in g.permissions) {
+            if (g.permissions[groupPermission].level !== null) {
+              return true;
+            }
+          }
+        }
+      });
+    }
+    if (!canAccessConsole && (user.isAdmin || user.isSuperUser)) {
+      canAccessConsole = true;
+    }
+  }
+%>
+  
+  <body class="<%= locals.preferences && locals.preferences.themePreference ? locals.preferences.themePreference : '' %> <%= locals.preferences && locals.preferences.seasonalTheme ? locals.preferences.seasonalTheme : '' %>">
+    <div class="header-bar">
+      <div class="grid-container fluid" style="height:100%;">
+        <div class="grid-x align-middle" style="height:100%;">
+
+          <div id="pwa-back" class="cell shrink" style="display:none;">
+            <a href="#"><i class="fas fa-2x fa-arrow-left header-icon"></i><span class="show-for-sr">Back</span></a>
+          </div>
+
+          <div class="cell small-2 medium-2 large-shrink">
+            <button id="menuButton" class="header-icon hamburger hamburger--squeeze <%= classActive %>" type="button" aria-label="Menu" aria-controls="navigation" aria-expanded="true/false" data-toggle="offCanvas">
+              <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+              </span>
+            </button>
+          </div>
+
+          <div class="cell auto align-right" style="display:flex;">
+            <a class="header-brand" href="/" title="The WPI Hub">
+              <% if (locals.siteInfo && locals.siteInfo.headerInclude === true) { %>
+                <span class="show-for-sr">The WPI Hub</span>
+                
+                <% if (locals.preferences && locals.preferences.themePreference == "holiday") { %>
+                  <%- include('./header-brand-holiday.ejs'); %>
+                <% }else{ %>
+                    <%- include('./header-brand.ejs'); %>
+                <% } %>
+              <% } else if (locals.siteInfo && locals.siteInfo.headerImage) { %>
+                <img src="<%= siteInfo.headerImage %>" alt="The WPI Hub">
+              <% } else { %>
+                <% if (locals.siteInfo && locals.siteInfo.headerBrandFirst) { %>
+                  <div class="header-brand-first"><%= siteInfo.headerBrandFirst %></div>
+                <% } %>
+                <% if (locals.siteInfo && locals.siteInfo.headerBrandSecond) { %>
+                  <div class="header-brand-second"><%= siteInfo.headerBrandSecond %></div>
+                <% } %>
+              <% } %>
+            </a>
+          </div>
+          <div class="cell auto text-right">
+            <div class="header-menu-icons">
+              <% if (locals && locals.user) { %>
+                <a class="notify" id="userMenuToggle">
+                  <div class="user-menu-avatar" style="background-image:url('/img/ico-intro.svg')"></div>
+                </a>
+              <% } else { %>
+                <a href="/login"><i class="fas fa-2x fa-user-circle header-icon"></i> <span style="vertical-align: super;color:var(--color-header-icons)">Sign In</span></a>
+              <% } %>
+              <a href="/Search"><i class="fas fa-2x fa-search header-icon hide-for-small-only"></i><span class="show-for-sr"> Search</span></a>
+
+              <%# <a class="notify active">
+                  <i class="fas fa-2x fa-bell header-icon"></i>
+                  <span class="badge bg-bright-3">40</span>
+              </a> %>
+
+              <a href="/Help"><i class="fas fa-2x fa-question-circle header-icon hide-for-small-only"></i><span class="show-for-sr"> Get Help</span></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  <div class="site-wrapper <%= classCompact %> <%= classActive %>">
+
+    <nav class="site-nav" data-simplebar>
+      <a href="#" id="menuShrink" class="shrink hide-for-small-only"><i class="far <%= classToggleArrow %>"></i><span class="show-for-sr"> Shrink Sidebar</span></a>
+
+      <ul class="vertical menu">
+        <li class="show-for-small-only double">
+          <a href="/Search"><i class="fas fa-fw fa-search fa-2x color-pop"></i><span class="show-for-sr"> Search</span></a>
+          <a href="/Help"><i class="fas fa-fw fa-question-circle fa-2x color-pop"></i><span class="show-for-sr"> Get Help</span></a>
+        </li>
+        <li><a href="/" class="<%= locals.tabs && locals.tabs.index ? locals.tabs.index : '' %>"><i class="far fa-fw fa-home fa-2x color-pop"></i> <span class="linklabel"> Home</span></a></li>
+        <li><a href="/Me/My-Dashboard" class="<%= locals.tabs && locals.tabs.myDashboard ? locals.tabs.myDashboard : '' %>"><i class="far fa-fw fa-robot fa-2x color-user"></i> <span class="linklabel"> My Dashboard</span></a></li>
+        <li><a href="/Sites" class="<%= locals.tabs && locals.tabs.sites ? locals.tabs.sites : '' %>"><i class="far fa-fw fa-comment-alt fa-2x color-pop"></i> <span class="linklabel"> Hub Sites</span></a></li>
+        <li><a href="/Knowledge-Base" class="<%= locals.tabs && locals.tabs.knowledgeBase ? locals.tabs.knowledgeBase : '' %>"><i class="far fa-fw fa-file-alt fa-2x color-bright-1"></i> <span class="linklabel"> Knowledge Base</span></a></li>
+        <li><a href="/Service-Catalog" class="<%= locals.tabs && locals.tabs.serviceCatalog ? locals.tabs.serviceCatalog : '' %>"><i class="far fa-fw fa-book fa-2x color-bright-2"></i> <span class="linklabel"> Service Catalog</span></a></li>
+        <li><a href="/Software-Library" class="<%= locals.tabs && locals.tabs.softwareLibrary ? locals.tabs.softwareLibrary : '' %>"><i class="far fa-fw fa-arrow-alt-to-bottom fa-2x color-bright-3"></i> <span class="linklabel"> Software Library</span></a></li>
+        <li><a href="/Locations-and-Servers" class="<%= locals.tabs && locals.tabs.locations ? locals.tabs.locations : '' %>"><i class="far fa-fw fa-map-marker-alt fa-2x color-bright-4"></i> <span class="linklabel"> Locations & Servers</span></a></li>
+        <li><a href="/News-and-Events" class="<%= locals.tabs && locals.tabs.newsAndEvents ? locals.tabs.newsAndEvents : '' %>"><i class="far fa-fw fa-newspaper fa-2x color-pop"></i> <span class="linklabel"> News & Events</span></a></li>
+        <li><a href="/App-Marketplace" class="<%= locals.tabs && locals.tabs.apps ? locals.tabs.apps : '' %>"><i class="far fa-fw fa-icons fa-2x color-bright-5"></i> <span class="linklabel"> Apps</span></a></li>
+      </ul>
+      
+    </nav>
+
+    <section class="site-content">
+    
+    <%- include('../components/preview-banner.ejs'); %>

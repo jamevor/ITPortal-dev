@@ -1,0 +1,281 @@
+.help-page h1 {
+  font-family: 'Roboto', Sans-Serif;
+  font-weight: 600;
+  font-Size: 2.875em;
+  text-transform: capitalize;
+  line-height: 1;
+  padding-bottom: .25em;
+}
+
+.help-page h2 {
+  font-Size: 1.8em;
+  font-weight: 600;
+}
+
+.help-page .help-card {
+  border: none;
+  background: var(--color-chrome);
+  color: var(--color-body-text);
+  box-shadow: var(--shadow-double-y);
+  text-align: center;
+  min-height: 300px;
+  border-radius: 3px;
+  padding: 1em;
+  display: flex;
+  transition: all .5s ease;
+  align-items: stretch;
+  justify-content: center;
+  margin-bottom: .25em;
+}
+
+.help-page .help-card.feature {
+  background: var(--color-pop);
+  color: var(--color-chrome);
+}
+
+.help-page .help-card:hover {
+  background: var(--color-lane);
+  margin-top: -.25em;
+  margin-bottom: .5em;
+}
+
+.help-page .help-card.feature:hover {
+  background: var(--color-pop-h);
+}
+
+.help-page .help-card .help-card-icon {
+  font-size: 4em;
+  padding: .5em;
+  width: 2em;
+  height: 2em;
+  background: var(--color-lane-subtle);
+  color: var(--color-chrome);
+  border-radius: 50%;
+  margin: 0 auto .25em auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.help-page .help-card.feature .help-card-icon {
+  background: var(--color-pop-light);
+  color: var(--color-chrome);
+}
+
+.help-page .help-card .help-card-heading {
+  font-weight: 600;
+}
+
+.help-page .help-card .help-card-cta {
+  font-weight: 600;
+  font-size: .875em;
+  color: var(--color-body-text);
+  background: var(--color-chrome);
+  border: 2px solid var(--color-lane);
+  border-radius: 3px;
+  max-width: 75%;
+  margin: 1em auto 1em auto;
+  padding: 1em 4em;
+  transition: all .5s ease;
+}
+
+.help-page .help-card .help-card-cta:hover {
+  color: var(--color-chrome);
+  background: var(--color-lane-subtler);
+  border: 2px solid var(--color-chrome);
+}
+
+.help-page .help-card.feature .help-card-cta {
+  color: var(--color-pop);
+  background: var(--color-chrome);
+  border: 2px solid var(--color-pop-light);
+}
+
+.help-page .help-card.feature .help-card-cta:hover {
+  color: var(--color-chrome);
+  background: var(--color-pop-light);
+  border: 2px solid var(--color-chrome);
+}
+
+.help-location {
+  justify-content: center;
+  color: var(--color-body-text);
+  background: var(--color-chrome);
+  border: none;
+}
+
+.help-location h2 {
+  padding: 1em 0;
+  color: var(--color-body-headers);
+  font-Size: 1.3em;
+  font-weight: 600;
+}
+
+.help-location h3 {
+  color: var(--color-header-icons);
+  font-size: .875em;
+  text-transform: capitalize;
+  font-variant: small-caps;
+  font-weight: 600;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-bottom: 1px solid var(--color-lane);
+}
+
+.open-indicator {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  background: var(--color-body);
+  border-right: 1px solid var(--color-lane)
+}
+
+.open-indicator p {
+  margin: 0;
+}
+
+.open-indicator i {
+  margin-top: .5em;
+  font-weight: 600;
+  color: var(--color-lane);
+}
+
+.help-location.open .open-indicator i {
+  font-weight: 800;
+  color: var(--color-bright-2)
+}
+
+.help-location.closed .open-indicator i {
+  font-weight: 800;
+  color: var(--color-bright-4)
+}
+
+.help-location table {
+  margin: 0;
+  background: var(--color-body);
+}
+
+.help-location tr td[colspan="2"] {
+  text-align: center;
+  color: var(--color-pop);
+}
+
+.help-location tr td {
+  padding: .1rem .5rem;
+  color: var(--color-body-text);
+  background: transparent;
+}
+
+.help-location table tbody {
+  border: none;
+  border-left: 1px solid var(--color-lane);
+  background: transparent;
+}
+
+.help-location table tbody tr {
+  border-color: var(--color-lane);
+  background: transparent;
+}
+
+.help-location tr td:not(:first-of-type), .help-location tr th:not(:first-of-type) {
+  text-align: center;
+}
+
+.help-location tr td:first-of-type {
+  text-align: right;
+  font-weight: 500;
+}
+
+.help-location tr th:first-of-type {
+  text-align: right;
+}
+
+.help-location.closed table tbody tr.dayHighlight {
+  background: var(--color-pop);
+}
+.help-location.closed table tbody tr.dayHighlight td {
+  color: var(--color-light);
+}
+.help-location.open table tbody tr.dayHighlight {
+  background: var(--color-bright-2);
+}
+.help-location.open table tbody tr.dayHighlight td {
+  color: var(--color-dark);
+}
+
+.location-img svg {
+  fill: var(--color-body-text);
+}
+
+.location-img svg path:nth-of-type(1) {
+  fill: var(--color-pop);
+}
+
+.location-img svg path:nth-of-type(3) {
+  fill: var(--color-body-subtitle);
+}
+
+.location-img svg path:nth-of-type(2) {
+  fill: var(--color-body-text);
+}
+
+.location-img.standalone {
+  padding: 1em;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .open-indicator {
+    flex-direction: row;
+    padding: .25em;
+    border: none;
+  }
+  .help-location .details {
+    text-align: center;
+    border-bottom: 1px solid var(--color-lane);
+  }
+  .open-indicator i {
+    margin-right: 1em;
+    margin-top: .3em;
+  }
+  .location-img {
+    text-align: center
+  }
+  .location-img svg {
+    width: 150px;
+  }
+  .help-location h2 {
+    padding: 0;
+  }
+  .help-location h3 {
+    margin: 0;
+    padding: .5em;
+  }
+  .help-page .help-card .help-card-icon {
+    font-size: 2em;
+    padding: .5em;
+    width: 2em;
+    height: 2em;
+    margin: 0;
+  }
+  .help-page .help-card {
+    min-height: auto;
+    margin-bottom: .5em;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .help-page .help-card:hover {
+    background: var(--color-lane);
+    margin-top: 0;
+    margin-bottom: .5em;
+  }
+  .help-page .help-card .help-card-cta {
+    margin: 0;
+    width: 50%;
+    font-size: .8em;
+    padding: 1em;
+  }
+}

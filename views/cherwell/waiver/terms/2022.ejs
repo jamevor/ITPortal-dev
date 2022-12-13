@@ -1,0 +1,402 @@
+<%  
+    const currentTerm = "202201";
+    const currentPTerm = "A";
+    const validDate = true//moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment(new Date(intent.fields.find(f => f.name === 'Deadline')['value'])))
+    // const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment('2020-12-13 09:00:00-05:00'))
+    const queryTerm = intent.fields.find(f => f.name === 'Term')['value'];
+    const queryPTerm = intent.fields.find(f => f.name === 'PTerm')['value'];
+    const termLabel = "A-Term / Fall 2021";
+    const status = intent.fields.find(f => f.name === 'Status')['value'];
+    const recordType = intent.fields.find(f => f.name === 'RecordType')['value']
+    const completed = intent.fields.find(f => f.name === 'TestingConsent2022')['value'] == "True";
+    var isMinor;
+    
+    if(intent.fields.find(f => f.name === 'DOB')['value'] != "" && intent.fields.find(f => f.name === 'DOB')['value'] !=  "1/1/1900 12:00:00 AM"){
+      isMinor = (moment().diff(new Date(intent.fields.find(f => f.name === 'DOB')['value']), 'years',true) < 18)
+    }
+    const age = moment().diff(new Date(intent.fields.find(f => f.name === 'DOB')['value']), 'years',true);
+%>
+<%if(completed){%>
+<style>
+  .initial-item,#agreeFields,.sig-item,.sig-item-guard,#initial{
+    display:none !important;
+  }
+  #hmaFields,#waiverFields{
+    display:block !important;
+  }
+</style>
+<%}%>
+<div class="grid-container fluid">
+    <div class="grid-container grid-x grid-margin-x" style="margin:auto">
+      <div class='cell small-12 medium-12 large-12'>
+        <h1>WPI COVID-19 HEALTH MANAGEMENT PROGRAM 2022-2023</h1>
+        <%if(completed){%>
+
+          <div class="note note-info" style="background: hsl(120, 92%, 95%);position:relative" data-closable>
+            <button class="print-button button success" title="Print a copy of this waiver" aria-label="Print a copy of this waiver" type="button" style="    position: absolute;
+            right: .5em;
+            border-radius: 3px;
+            padding: .5em;
+            top: .5em;" onclick="window.print();return false;"><i class="fas fa-print"></i></button>
+            <div class="note-title">
+              <i class="fad fa-check-circle color-bright-2"></i> Waivers Completed
+            </div>
+            <div class="note-message">  
+              <p>You (<%- locals.userAttributes.givenname%> <%- locals.userAttributes.surname%>) completed this form on <%= moment(new Date(intent.fields.find(f => f.name === 'TestingConsentDate2022')['value'])).utc().utcOffset(-4).format('MMMM Do YYYY, h:mm a') %>.</p>
+            </div>
+          </div>
+          <div>
+
+          </div>
+        <%}%>
+        <div class="help-form">
+          <fieldset id="agreeFields">
+            <legend>About You</legend>
+            <p><%- locals.userAttributes.givenname%>, please enter your full legal name and initials below to begin.</p>
+            <p class="help-text">By entering your name and initials you agree to sign this document electronically.</p>
+
+            <label class="form-label" for="signName">Full Legal Name (as you would sign)</label>
+            <input type="text" id="signName" name="signName" placeholder="ex: John J. Smith">
+
+            <label class="form-label" for="initials">Initials</label>
+            <input type="text" id="initials" name="initials" placeholder="ex: JJS">
+
+            <% if(isMinor == true){%>
+              <input type="hidden" id="isMinor" name="isMinor" value="true">
+              <p>Our records indicate that you are currently a minor. For individuals under 18 years old, a parent/guardian's signature is required.</p>
+              <p class="help-text">Please have a parent or guardian complete this form with you.</p>
+
+              <label class="form-label" for="guardName">Guardian's Full Name</label>
+              <input type="text" id="guardName" name="guardName" placeholder="ex: John J. Smith">
+
+              <label class="form-label" for="guardRel">Guardian's relationship to the Individual Named Above</label>
+              <input type="text" id="guardRel" name="guardRel" placeholder="ex: Mother">
+            <%}else{%>
+              <input type="hidden" id="isMinor" name="isMinor" value="false">
+            <%}%> 
+
+            <p id="continuePrompt" class="help-text" style="text-align:center">Enter your name and initials to continue</p>
+            
+          </fieldset>
+
+          <fieldset id="hmaFields" style="display:none;background:var(--color-body)">
+            <legend>2022-2023 WPI COVID-19 HEALTH MANAGEMENT PROGRAM AGREEMENT AND AUTHORIZATION FORM</legend>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12 clause-block-text'>
+                <p>I acknowledge, agree, and consent to the following WPI COVID-19 Health Management Program (“Program”) as a condition of being allowed on campus:</p>  
+              </div>
+            </div>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                  <p>1. WPI's COVID-19 testing  may include PCR testing (individual or pooled) and/or antigen testing.  I agree to participate in and comply with the testing protocol, in the manner and frequency required by WPI.</p>
+                </div>
+                <div class='cell small-12 medium-2 large-2'>
+                  <button class="initial-item">Click to Initial</button>
+                </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>2. I agree to comply with WPI's protocols for COVID-19 symptom monitoring and reporting, in the manner and frequency required by WPI.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>3. I agree to comply with WPI's protocols for COVID-19 contact tracing, in the manner and frequency required by WPI.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>4. I agree to comply with WPI's protocols for COVID-19 quarantine and isolation, in the manner and frequency required by WPI. I understand that I will not be permitted to come to classes, programs, activities, or work on campus for any reason during any period of quarantine or isolation. I understand that WPI will only provide separate quarantine and isolation space for students with specific risks, as determined by WPI's Public Health Team.  I will be required to provide my own quarantine and isolation space (e.g., my own residence hall room, apartment, hotel room, or house within driving distance of WPI) if I test positive for COVID-19 or if I am directed to quarantine or self-isolate by a medical professional, health official, or WPI's Public Health Team.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>5. I agree that I will not come to classes, programs, activities or work on campus if: (i) I have received a positive test result for COVID-19; and/or (ii) I have a fever or am experiencing any COVID-19-like symptoms; and/or (iii) I have had close contact with anyone who has been diagnosed with COVID-19 and I am not up to date on my COVID-19 vaccinations (including booster); and/or (iv) I have been asked to self-isolate or quarantine by a medical professional, health official, or WPI's Public Health Team.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>6. I voluntarily consent to the testing entity(ies)'s disclosure of my COVID-19 test results to WPI. If any COVID-19 test is ordered or otherwise arranged by my own health care provider or if I take an at-home COVID-19 test, I agree to promptly report any positive test result to WPI.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>7. I voluntarily consent to disclosure of my COVID-19-related information, including my name, phone number, mailing address, email address, WPI identification number, date of birth, demographic information, symptoms, COVID-19 test results, close contacts, and COVID-19 vaccination status for the purposes of implementing the Program, including disclosures to individuals and entities implementing the Program, including WPI employees, independent contractors, testing entities, vaccination entities, and public health authorities with a legitimate need to know to know this information.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>8. I will comply with all applicable public health guidance, protocols, and requirements related to COVID-19, including any applicable federal, state, or local guidance and WPI's protocols on the <a href="https://www.wpi.edu/we-are-wpi" target="_blank">WeAreWPI website</a>.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>9. I understand and agree that WPI has the discretion to determine whether I am permitted to be on campus and at any time may require me to leave and not return to campus if it is determined that I have not complied with WPI or public health guidance, protocols, and requirements or if my presence on campus poses a health risk to others.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>10. I understand that WPI may, and I authorize them to, arrange for COVID-19 tests to be ordered for me as part of the Program, including PCR testing (individual and pooled) and antigen testing.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>11. <span style="text-decoration: underline;">For WPI Employees, Independent Contractors, and Massachusetts Academy</span>: I understand that WPI does not have the capability to provide, and is not responsible for providing, any health care services to me.  If I have COVID-like symptoms, receive a positive COVID-19 test result, am instructed to quarantine or isolate, and/or have any other medical concern, I agree to seek medical attention from my own health care provider(s).</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+                <% if(recordType != "Employee"){%>
+                  <button class="initial-item skip">N/A</button>
+                <%}%>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>12. I understand that I have the right (i) not to consent to the release of my information, (ii) to inspect any written records released pursuant to this Agreement, and (iii) to revoke this Agreement at any time by delivering a written revocation to WPI's Testing Coordinator:  <a href="mailto:testingcoordinator@wpi.edu" target="_blank">testingcoordinator@wpi.edu.</a></p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>13. I understand that this Agreement, including the various consents I have granted herein, will remain in effect for the duration of the Program at WPI.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-10 medium-10 large-10 clause-block-text'>
+                <p>14. I understand and agree that any of the following may require me to forfeit the privilege of remaining on campus: (i) any failure to consent to or revocation of this Agreement; (ii) any determination by WPI that I have not complied with the Program or any other applicable public health guidance, protocols, or requirements; and/or (iii) any determination by WPI or public health officials that my presence on campus poses a health risk to others.</p>
+              </div>
+              <div class='cell small-12 medium-2 large-2'>
+                <button class="initial-item">Click to Initial</button>
+              </div>
+            </div>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12 clause-block-text'>
+                <p><strong>BY MY SIGNATURE BELOW, I HEREBY, KNOWINGLY AND VOLUNTARILY AGREE TO PARTICIPATE IN AND COMPLY WITH WPI'S COVID-19 HEALTH MANAGEMENT PROGRAM, AND I HEREBY CONSENT TO THE USES AND DISCLOSURES OF MY INFORMATION IN THE MANNER DESCRIBED IN THIS AGREEMENT.</strong></p>  
+              </div>
+            </div>
+
+            <div id="initial" style="text-align:center"><span id="initialCounter">0</span> / 14 Items Initialed</div>
+            <div id='error-initial-count' style="display: none;text-align:center"></div>
+            
+            <button id="hmaSig" class="sig-item">Click to Sign</button>
+            <% if(isMinor == true){%>
+              <button id="hmaSigGuard" class="sig-item-guard">Guardian Click to Sign</button>
+            <%}%>
+
+          </fieldset>
+
+          <% if(recordType == "Employee"){%>
+          <fieldset id="waiverFields" style="display:none;background:var(--color-body)">
+            <legend>Consent to SARS-CoV-2 Testing </legend>
+            
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Background</strong>: Your employer is providing SARS-CoV-2 testing to its employees. This form explains the SARS-CoV-2 test and who will get your results. The test(s) that you will receive are designed to detect if you have SARS-CoV-2, also known as the “coronavirus.” SARS-CoV-2 is the virus that causes the disease known as COVID-19. The results of this test will <strong style="text-decoration: underline;">not</strong> tell you if you had the virus in the past or if you have immunity to getting the virus in the future. <strong>It only tests for the presence of the virus in your specimen at the time of the test. More details about the SARS-CoV-2 test</strong>, including the Fact Sheets for Patients and how results can be accessed, are attached hereto.</p>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>SARS-CoV-2 PCR testing</strong>: PCR testing, or molecular testing, is designed to detect the presence of the nucleic acids of SARS-CoV-2. Your sample will be collected through a process that involves swabbing your nose. Your sample will be sent to the Broad Institute's CLIA-certified laboratory, the Clinical Research Sequencing Platform (CRSP), for the test to be performed. </p>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Rapid Antigen Testing</strong>: Antigen testing is designed to identify proteins of the SARS-CoV-2 virus. Your specimen will be collected through a process that involves swabbing your nose. The test will be performed on site under the direction of a medical professional as authorized by the FDA pursuant to an Emergency Use Authorization.</p>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Initial Test to be Used</strong>: You will be receiving one of two tests, depending on the type of testing program selected by your employer. One type of test that may be used is the rapid antigen test, which will produce a rapid test result. A second type of test that may be used is the CRSP SARS-CoV-2 Real-time Reverse Transcriptase (RT)-PCR Assay (the “CRSP PCR Test”), which depending on your employer's testing program, will either be:</p>
+                <ol type="i">
+                  <li><strong>analyzed individually</strong>, in which case you will receive an individual test result, or</li>
+                  <li><strong>tested on a pooled basis</strong>, meaning your sample will be placed in a tube with samples from a common group of 2-10 individuals and tested to see if any member of the group is positive for COVID-19. Pooled testing does not yield a definitive individual result for each member. You acknowledge and agree that if your sample is tested on a pooled basis, your test result should not be used for diagnostic purposes, meaning that a positive result in your common group does not mean that you are individually positive for COVID-19, and a negative result in your common group does not indicate with certainty that you are individually negative for COVID-19. As a result, whether your pooled test result is positive or negative, you agree to receive further confirmatory testing from CRSP upon the request of your employer.</li>
+                </ol>
+                <p>If your sample is tested on a pooled basis and a negative result is generated from the pool in which your sample is included, you will most likely be treated as negative. You may be asked to re-test on an individual basis for other reasons, such as experiencing symptoms or suspected exposure to COVID-19. </p>
+                <p>If your sample is tested on a pooled basis and a positive result is generated from the pool in which your sample is included, you may be required by your employer to isolate immediately and undergo a confirmatory test.</p>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Secondary Test to be Used</strong>: Confirmatory testing will involve obtaining a new sample from you and will be performed using the individual CRSP PCR Test or the rapid antigen test, at the discretion of your employer. Antigen testing will provide rapid results at the point of testing but may require a further confirmatory test.</p>
+              </div>
+            </div>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Your Results</strong>: The results of your test will be shared with you (where permitted by state law) and your employer through a web portal or mobile software application. Your results will also be shared with the health care provider who ordered your test and may be shared with relevant state health authorities, and certain federal, state, or local government agencies as required by law.</p>
+              </div>
+            </div>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>What to Do After Testing</strong>: If your individual results from the CRSP PCR Test or rapid antigen test are positive, please contact a doctor immediately. If your test is performed on a pooled basis, please follow the instructions provided by your employer. Only a doctor can diagnose you with COVID-19 and give you information about what you should do next. As further outlined in the Fact Sheets for Patients, negative results mean that the virus was not detected in your specimen. It is possible for the tests to produce an incorrect negative result (called a “false negative”) in some people who have SARS-CoV-2. If you test negative but have symptoms of COVID-19 or concerns about exposure to SARS-CoV-2, contact a doctor to determine if you should be retested or take other actions.</p>
+              </div>
+            </div>
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p><strong>Acknowledgment Concerning CRSP</strong>: CRSP is a clinical laboratory. CRSP does not give medical advice or provide medical care. You should talk to a doctor about any health care needs you may have, including any related to receiving this test. CRSP is not responsible for any medical care you receive. CRSP is providing this testing as a service to your employer and CRSP is not responsible for the ways in which your employer may use the results of your test. If you have questions about why you are taking this test or how your employer may use the results of your test, please talk to your employer. If there is leftover specimen after your test is performed, CRSP may remove information that identifies you from the specimen and use it for quality assurance, validation, and laboratory testing development, either alone or in collaboration with a public health authority.  </p>
+              </div>
+            </div>
+
+            <div class="grid-container grid-x grid-margin-x clause-block" >
+              <div class='cell small-12'>
+                <p>By signing below you agree: (i) that you have read and understand the information in this consent form and related documents such as the Fact Sheets for Patients; (ii) to provide a nasal swab specimen for testing; (iii) to permit your personal information to be released to CRSP and providers of technology platforms used by CRSP; (iv) to have your specimen tested by CRSP for SARS-CoV-2 and/or by rapid antigen test; (v) that CRSP and the Broad Institute may disclose your test results as outlined in this form; (vi) to return for confirmatory testing to the extent requested by your educational institution; and (vii) that your leftover specimen and/or information about you may be used without information that readily identifies you after the testing is over for analysis in collaboration with a public health authority, including but not limited to sequencing to identify different strains of SARS-CoV-2. You voluntarily agree to this testing for SARS-CoV-2. </p>
+              </div>
+            </div>
+            <button id="waiverSig" class="sig-item">Click to Sign</button>
+            <% if(isMinor == true){%>
+              <button id="waiverSigGuard" class="sig-item-guard">Guardian Click to Sign</button>
+            <%}%>
+          </fieldset>
+          <%}else{%>
+            <fieldset id="waiverFields" style="display:none;background:var(--color-body)">
+              <legend>Consent to SARS-CoV-2 Testing </legend>
+              
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Background</strong>: Your educational institution is providing SARS-CoV-2 testing to its students. This form explains the SARS-CoV-2 tests and who will get your results. The test(s) that you will receive are designed to detect if you have SARS-CoV-2, also known as the “coronavirus.”  SARS-CoV-2 is the virus that causes the disease known as COVID-19. The results of this test will <strong style="text-decoration: underline;">not</strong> tell you if you had the virus in the past or if you have immunity to getting the virus in the future. <strong>It only tests for the presence of the virus in your specimen at the time of the test</strong>. More details about the SARS-CoV-2 test, including the Fact Sheets for Patients and how results can be accessed, are attached hereto. </p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>SARS-CoV-2 PCR testing</strong>: PCR testing, or molecular testing, is designed to detect the presence of the nucleic acids of SARS-CoV-2. Your sample will be collected through a process that involves swabbing your nose. Your sample will be sent to the Broad Institute's CLIA-certified laboratory, the Clinical Research Sequencing Platform (CRSP), for the test to be performed. </p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Rapid Antigen Testing</strong>: Antigen testing is designed to identify proteins of the SARS-CoV-2 virus. Your specimen will be collected through a process that involves swabbing your nose. The test will be performed on site under the direction of a medical professional as authorized by the FDA pursuant to an Emergency Use Authorization.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Initial Test to be Used</strong>: You will be receiving one of two tests, depending on the type of testing program selected by your educational institution. One type of test that may be used is the rapid antigen test, which will produce a rapid test result. A second type of test that may be used is the CRSP SARS-CoV-2 Real-time Reverse Transcriptase (RT)-PCR Assay (the “CRSP PCR Test”), which depending on your educational institution's testing program, will either be:</p>
+                  <ol type="i">
+                    <li><strong>analyzed individually</strong>, in which case you will receive an individual test result, or</li>
+                    <li><strong>tested on a pooled basis</strong>, meaning your sample will be placed in a tube with samples from a common group of 2-10 individuals and tested to see if any member of the group is positive for COVID-19. Pooled testing does not yield a definitive individual result for each member. You acknowledge and agree that if your sample is tested on a pooled basis, your test result should not be used for diagnostic purposes, meaning that a positive result in your common group does not mean that you are individually positive for COVID-19, and a negative result in your common group does not indicate with certainty that you are individually negative for COVID-19. As a result, whether your pooled test result is positive or negative, you agree to receive further confirmatory testing upon the request of your educational institution.</li>
+                  </ol>
+                  <p>If your sample is tested on a pooled basis and a negative result is generated from the pool in which your sample is included, you will most likely be treated as negative. You may be asked to re-test on an individual basis for other reasons, such as experiencing symptoms or suspected exposure to COVID-19. </p>
+                  <p>If your sample is tested on a pooled basis and a positive result is generated from the pool in which your sample is included, you will be asked to re-test on an individual basis. You may be required by your educational institution to isolate immediately.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Secondary Test to be Used</strong>: Confirmatory testing will involve obtaining a new sample from you and will be performed using the individual CRSP PCR Test or the rapid antigen test, at the discretion of your educational institution. Antigen testing will provide rapid results at the point of testing but may require a further confirmatory test.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Records to be Released From Your Educational Institution</strong>: By signing the below, you authorize your educational institution to release to CRSP, and providers of technology platforms used by CRSP, your name, phone number, mailing address, email address, student identification number, date of birth, and other demographic information, as disclosed. You are not required to consent to the release of these records. However, if you do not consent, CRSP will be unable to perform SARS-CoV-2 testing on you. </p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Duration of Release</strong>: Your educational institution will release your information to CRSP as needed to perform the testing. </p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Purpose of Release</strong>: Your information is being released to CRSP for the purpose of performing SARS-CoV-2 testing and reporting such results back to you, the health care provider who ordered your test, your educational institution, and where required by law, certain federal, state, or local government agencies. You acknowledge and agree that to the extent you are providing a sample for pooled testing, a positive result may not be returned to you individually, and that instead you may be asked to re-test without acknowledgement of the result. </p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Revocability</strong>: You have the right to revoke this consent at any time by delivering a written revocation to testingcoordinator@wpi.edu.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Right to Record Disclosed</strong>: Under the Family Educational Rights and Privacy Act, you have the right to request from your educational institution the records disclosed to CRSP pursuant to this written consent.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Information to be Released by CRSP</strong>: By signing below, you authorize CRSP to release the results of your test to you (where permitted by state law) and your educational institution through a web portal or mobile software application. Your results will also be shared with the health care provider who ordered your test. By signing below, you also authorize CRSP to release your test results to relevant state health authorities, and certain federal, state, or local government agencies as required by law.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>What to Do After Testing</strong>: If your individual results from the CRSP PCR Test or rapid antigen test are positive, please contact a doctor immediately. If your test is performed on a pooled basis, please follow the instructions provided by your educational institution. Only a doctor can diagnose you with COVID-19 and give you information about what you should do next. As further outlined in the Fact Sheets for Patients, negative results mean that the virus was not detected in your specimen. It is possible for the test to produce an incorrect negative result (called a “false negative”) in some people who have SARS-CoV-2. If you test negative but have symptoms of COVID-19 or concerns about exposure to SARS-CoV-2, contact a doctor to determine if you should be retested or take other actions.</p>
+                </div>
+              </div>
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p><strong>Acknowledgment Concerning CRSP</strong>: CRSP is a clinical laboratory. CRSP does not give medical advice or provide medical care. You should talk to a doctor about any health care needs you may have, including any related to receiving this test. CRSP is not responsible for any medical care you receive. CRSP is providing this testing as a service to your educational institution and CRSP is not responsible for the ways in which your educational institution may use the results of your test. If you have questions about why you are taking this test or how your educational institution may use the results of your test, please talk to your educational institution. If there is leftover specimen after your test is performed, CRSP may remove information that identifies you from the specimen and use it for quality assurance, validation and laboratory testing development either alone or in collaboration with a public health authority.  </p>
+                </div>
+              </div>
+              
+              <div class="grid-container grid-x grid-margin-x clause-block" >
+                <div class='cell small-12'>
+                  <p>By signing below you agree: (i) that you have read and understand the information in this consent form and related documents such as the Fact Sheets for Patients; (ii) to provide a nasal swab specimen for testing; (iii) to permit your personal information to be released to CRSP and providers of technology platforms used by CRSP; (iv) to have your specimen tested by CRSP for SARS-CoV-2 and/or by rapid antigen test; (v) that CRSP and the Broad Institute may disclose your test results as outlined in this form; (vi) to return for confirmatory testing to the extent requested by your educational institution; and (vii) that your leftover specimen and/or information about you may be used without information that readily identifies you after the testing is over for analysis in collaboration with a public health authority, including but not limited to sequencing to identify different strains of SARS-CoV-2. You voluntarily agree to this testing for SARS-CoV-2. </p>
+                </div>
+              </div>
+
+              <button id="waiverSig" class="sig-item">Click to Sign</button>
+              <% if(isMinor == true){%>
+                <button id="waiverSigGuard" class="sig-item-guard">Guardian Click to Sign</button>
+              <%}%>
+            </fieldset>
+          <%}%>
+
+          <p id="error1" class="error-text"></p>
+          <p id="error2" class="error-text"></p>
+          <% if(intent.fields.find(f => f.name === 'TestingConsent2022')['value'] == "True" ){%>
+            <button class="button-submit disabled">You (<%- locals.userAttributes.givenname%> <%- locals.userAttributes.surname%>) completed this form on <%= moment(new Date(intent.fields.find(f => f.name === 'TestingConsentDate2022')['value'])).utc().utcOffset(-5).format('MMMM Do YYYY, h:mm a') %></button>
+          <%}else{%>
+            <button id="button-submit-help-form" class="button-submit disabled" style="display: none;">Submit Waivers</button>
+            <p style="font-size: 0.75rem;margin-top: 2em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>  
+          <%}%>
+        </div>
+        </div>
+  
+            
+  
+      </div>
+    </div>
+  </div>

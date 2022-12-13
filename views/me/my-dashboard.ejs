@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/my-apps.css">
+  <link rel="stylesheet" type="text/css" href="/css/help.css">
+  <script defer type="text/javascript" src="/js/me/my-its.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+<div class="grid-x grid-margin-x small-up-1 large-up-2 user-dashboard">
+
+
+  <% if (locals.user && Array.isArray(user.widgets) && user.widgets.filter(w => w.userHasWidget.isDashboard).length) { %>
+    
+  <div class="switch">
+    <input class="switch-input" id="dashboard-drag-toggle" type="checkbox" name="dashboard-drag-toggle">
+    <label class="switch-paddle" for="dashboard-drag-toggle">
+      <span class="show-for-sr">Drag to Reorder</span>
+      <span class="switch-active"><fa class="far fa-fw fa-lock-open-alt"></fa></span>
+      <span class="switch-inactive"><fa class="far fa-fw fa-lock-alt"></fa></span>
+    </label>
+  </div>
+    <% for (const widget of user.widgets.filter(w => w.userHasWidget.isDashboard).sort((a, b) => a.userHasWidget.orderDashboard < b.userHasWidget.orderDashboard ? -1 : 1)) { %>
+      <%# make sure we're only loading the client side js once %>
+      <% if (!user.widgets.some(w => w.userHasWidget.isSidebar && w.scriptSrc === widget.scriptSrc)) { %>
+        <script src="<%- widget.scriptSrc %>" type="text/javascript" defer></script>
+      <% } %>
+      <style><%- widget.styles %></style>
+      <div class="user-widget <%= widget.containerId %> cell" id="<%= widget.containerId %>--dashboard" data-widgetid="<%= widget.id %>">
+        <div class="user-widget-header">
+          <div class="user-widget-title"><i class="far <%= widget.icon %>"></i> <%- widget.title %></div>
+          <% if (widget.link !== null) { %>
+            <a href="<%- widget.link %>" target="<%= widget.target %>" class="user-widget-context-button"><%- widget.linkTitle %></a>
+          <% } %>
+        </div>
+        <%# Stuff goes here via ajax calls %>
+      </div>
+    <% } %>
+  <% } else { %>
+    <div class="user-widget empty">
+      <p>You do not currently have any Widgets</p>
+      <a href="/Me/Widgets" class="button"><i class="far fa-plus-circle"></i> Customize Your Dashboard</a>
+    </div>
+  <% } %>
+  
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

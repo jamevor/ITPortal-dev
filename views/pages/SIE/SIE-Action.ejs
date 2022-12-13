@@ -1,0 +1,287 @@
+<% if(locals.action && action != null){
+  
+  action = action[0];
+
+
+%>
+<style>
+  .action-sidebar{
+    background-color: var(--color-chrome);
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    padding: 1em;
+    border: 1px solid var(--color-lane);
+    display: flex;
+    flex-direction: column;
+    height: fit-content!important;
+  }
+  .action-description{
+    font-size: 1.375em;
+    margin-bottom: 1.25em;
+    line-height: 1.5;
+  }
+  .action-title{
+    font-size: 1.75em;
+    line-height: 1.25em;
+    font-weight: 600;
+  }
+  .action-goal{
+    font-size:.8em;
+    padding:.5em;
+    text-align: center;
+    color:var(--color-light);
+    border-radius: 3px;
+    margin: .5em 0;
+    transition: all .5s ease;
+  }
+  .action-goal.sie-1{
+    background:var(--colorway-4);
+  }
+  .action-goal.sie-2{
+    background:var(--colorway-2);
+  }
+  .action-goal.sie-3{
+    background:var(--colorway-3);
+  }
+  .action-goal.sie-4{
+    background:var(--colorway-1);
+  }
+  .action-goal.sie-1:hover, .action-goal.sie-1:active, .action-goal.sie-1:focus{
+    background:var(--colorway-4-h);
+    color:var(--color-light);
+  }
+  .action-goal.sie-2:hover, .action-goal.sie-2:active, .action-goal.sie-2:focus{
+    background:var(--colorway-2-h);
+    color:var(--color-light);
+  }
+  .action-goal.sie-3:hover, .action-goal.sie-3:active, .action-goal.sie-3:focus{
+    background:var(--colorway-3-h);
+    color:var(--color-light);
+  }
+  .action-goal.sie-4:hover, .action-goal.sie-4:active, .action-goal.sie-4:focus{
+    background:var(--colorway-1-h);
+    color:var(--color-light);
+  }
+  .action-sidebar h3{
+    font-size: 1em;
+    line-height: 1.25em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-lane);
+  }
+  .action-body h3{
+    font-size: 1.25em;
+    line-height: 1.25em;
+    font-weight: 600;
+  }
+  .accordion{
+    background:transparent;
+  }
+  .accordion-item{
+    background: var(--color-chrome);
+    color:var(--color-body-text);
+    border:1px solid var(--color-lane);
+    border-radius:3px;
+    margin-bottom:1em;
+  }
+  .accordion-title.strategy-title{
+    background: transparent;
+    color:var(--color-body-text);
+    border:none;
+    border-bottom:1px solid var(--color-lane);
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .accordion-content {
+    display: none;
+    padding: 1rem;
+    border: none;
+    border-bottom: 0;
+    background-color: transparent;
+    color: #0a0a0a;
+  }
+  .strategy-title{
+    display: flex;
+  }
+  .strategy-logo svg{
+    width:20px;
+    height:20px
+  }
+  .strategy-logo.sie-logo {
+    width: 20px;
+    margin-right: 1em;
+    max-width: 20px;
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .strategy-title-text{
+    font-size: 1.25em;
+    width: 80%;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .strategy-title-status{
+    text-align: right;
+    margin-right: 2em;
+    align-self: center;
+  }
+  .accordion-title::before {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    margin-top: -1rem;
+    content: "+";
+    font-size: 1em;
+    background: var(--color-lane);
+    border-radius: 50%;
+    line-height: 1;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition:all .5s ease;
+}
+.accordion-title:hover::before {
+  background: var(--color-lane-subtle);
+}
+.accordion-content h4{
+    font-size: 1em;
+    line-height: 1.25em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-lane);
+}
+  </style>
+    <div class="cell small-12 medium-8 large-7 large-offset-1 action-body">
+      <h2 class="action-title"><%= action.Title %></h2>
+      <p class="action-subtitle"><%= action.Subtitle %></p>
+      <p class="action-description"><%= action.Description %></p>
+      <%if(action.Outcomes !== null && action.Outcomes !== ""){%>
+        <h3>Outcomes</h3>
+        <p class="action-description"><%= action.Outcomes %></p>
+      <%}%>
+      <%if(action.Strategies && action.Strategies.length){%>
+        <h3>Implementation Strategies and Actions</h3>
+
+        <ul class="accordion" data-accordion data-allow-all-closed="true" data-multi-expand="true">
+          <% for(const strategy of action.Strategies){%>
+          <li class="accordion-item" data-accordion-item >
+            <a href="#" class="accordion-title strategy-title">
+              <div class="strategy-logo sie-logo <%= strategy.Goal1 == "True" ? "sie-1" : null%> <%= strategy.Goal2 == "True" ? "sie-2" : null%> <%= strategy.Goal3 == "True" ? "sie-3" : null%> <%= strategy.Goal4 == "True" ? "sie-4" : null%>">
+                  <%- include('partials/sielogo.ejs'); %>
+              </div>
+              <div class="strategy-title-text"><%= strategy.Title %></div>
+              <%
+              var icon = "";
+              var iconColor = ""; 
+              if(strategy.status =="Launched"){
+                icon = "fa-rocket";
+                iconColor = "var(--color-bright-5)";
+              }if(strategy.status =="In-Progress"){
+                icon = "fa-spinner-third";
+                iconColor = "var(--color-bright-3)";
+              }if(strategy.status =="Complete"){
+                icon = "fa-check-circle";
+                iconColor = "var(--color-bright-2)";
+              }
+              %>
+              <div class="strategy-title-status hide-for-small"><i class="fad <%=icon%>" style="color:<%=iconColor%>"></i> <span class="show-for-sr"><%= strategy.status%></span></div>
+            </a>
+
+            <div class="accordion-content" data-tab-content>
+              <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-4 large-4">
+                  <h4>Start Date</h4>
+                  <p><%= strategy.StartDate%></p>
+
+                </div>
+                <div class="cell small-12 medium-4 large-4">
+                  <h4>End Date</h4>
+                  <p><%= strategy.EndDate%></p>
+
+                </div>
+                <div class="cell small-12 medium-4 large-4">
+                  <h4>Current Status</h4>
+                  <p><i class="fad <%=icon%>" style="color:<%=iconColor%>"></i> <%= strategy.status%></p>
+
+                </div>
+                <%if(strategy.Measures !== null && strategy.Measures !== ""){%>
+                  <div class="cell small-12 medium-12 large-12" style="display:none">
+                    <h4>Measures of Success</h4>
+                    <ul>
+                    <% if(strategy.Measures.includes("•")){
+                      var measureArray = strategy.Measures.split("•");%>
+                      
+                      <%for(measure of measureArray){%>
+                        <%if(measure != ""){%>
+                          <li><%= measure.trim()%></li>
+                        <%}%>
+                      <%}%>
+                    <%}else{%>
+                      <li><%= strategy.Measures%></li>
+                    <%}%>
+                  </ul>
+                    
+                  </div>
+                <%}%>
+
+                <%if(strategy.Outcomes !== null && strategy.Outcomes !== ""){%>
+
+                  <div class="cell small-12 medium-12 large-12">
+                    <h4>Outcomes</h4>
+                    <p><%= strategy.Outcomes %></p>
+                  </div>
+                <%}%>
+                
+              </div>
+
+            </div>
+          </li>
+          <%}%>
+
+        </ul>
+      <%}%>
+    </div>
+    <div class="cell small-12 medium-4 large-4 action-sidebar">
+      <% var icon = "";
+        var iconColor = ""; 
+        if(action.status =="Launched"){
+          icon = "fa-rocket";
+          iconColor = "var(--color-bright-5)";
+        }if(action.status =="In-Progress"){
+          icon = "fa-spinner-third";
+          iconColor = "var(--color-bright-3)";
+        }if(action.status =="Complete"){
+          icon = "fa-check-circle";
+          iconColor = "var(--color-bright-2)";
+        }%>
+      <h3>Status</h3>
+      <p class="action-status"><i class="fad <%=icon%>" style="color:<%=iconColor%>"></i> <%= action.status%></p>
+      <h3>Department</h3>
+      <p class="action-department"><%= action.Department %></p>
+      <h3>Start Date</h3>
+      <p class="action-date-start"><%= action.StartDate %></p>
+      <h3>End Date</h3>
+      <p class="action-date-start"><%= action.EndDate %></p>
+      <h3>Goal Alignment</h3>
+      <% if(action.Goal1 == "True"){ %>
+        <a href="/IE/Goals/1" class="action-goal sie-1"><strong>Goal 1:</strong><br> Inclusive Campus Culture</a>
+      <%}%>
+      <% if(action.Goal2 == "True"){ %>
+        <a href="/IE/Goals/2" class="action-goal sie-2"><strong>Goal 2:</strong><br> Innovation and Equity in Teaching/Research</a>
+      <%}%>
+      <% if(action.Goal3 == "True"){ %>
+        <a href="/IE/Goals/3" class="action-goal sie-3"><strong>Goal 3:</strong><br> STEM Access and Retention</a>
+      <%}%>
+      <% if(action.Goal4 == "True"){ %>
+        <a href="/IE/Goals/4" class="action-goal sie-4"><strong>Goal 4:</strong><br> Diverse Talent Strategies</a>
+      <%}%>
+
+    </div>
+
+
+<%}else{%>
+  <div>An action with this ID was not found</div>
+<%}%>

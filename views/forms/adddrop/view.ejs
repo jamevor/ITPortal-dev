@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+  <style>
+    .request-page h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 2.875em;
+      text-transform: capitalize;
+      line-height: 1;
+      padding-bottom: .25em;
+      text-align: center;
+    }
+    .not-available{
+      border: 1px dashed var(--color-lane);
+      display:flex;
+      border-radius: 3px;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: all .5s ease;
+      margin:1em;
+      padding: 1em;
+    }
+    .not-available p{
+      color:var(--color-body-text);
+    }
+  </style>
+  <%- include('../../partials/easy-autocomplete.ejs'); %>
+
+  <% if (locals.UserEnrollments && UserEnrollments){ %>
+    <script>
+      const ssrEnroll = <%- JSON.stringify(UserEnrollments) %>;         
+    </script>
+  <% }else{%>
+    <script>
+      const ssrEnroll = null;         
+    </script>
+  <%} %>
+
+  <script type="text/javascript" src="/js/pages/adddrop-form.js" defer></script>
+  
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+
+
+<div class="request-page">
+  <h1>Course Add / Drop</h1>
+  <div class="grid-container fluid">
+        <div class="grid-x grid-margin-x">
+          <% if(true){%>
+          <%- include('./partials/adddrop-form.ejs'); %>
+          <%}else{%>
+            <div class="grid-container help-form">
+            <div class="grid-x grid-margin-x align-center">
+              <div class='cell small-12 medium-8 large-8'>
+                <div class='grid-x grid-margin-x text-center'>
+                  <p>The Add Drop Period For B-Term 2022 has concluded</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%}%>
+        </div>
+  </div>
+
+
+</div>
+
+
+
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

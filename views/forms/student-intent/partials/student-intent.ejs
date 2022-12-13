@@ -1,0 +1,488 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit,.button-enable {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover,.button-enable:hover  {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled,.button-enable.disabled  {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
+  .help-form label i{
+    font-size:2em;
+    color: var(--color-body-subtitle)
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label i{
+    color: var(--color-light);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-between;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+  .course-item-name{
+    font-size: .875em;
+    font-weight: 600;
+    line-height: 1;
+    color:var(--color-pop);
+  }
+  .course-item-crn, .course-item-current-gmod{
+    font-size: .6875em;
+    color: var(--color-body-subtitle);
+    margin-top: .25em;
+  }
+  .course-item-details{
+    width:60%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .course-item-buttons{
+    width:40%;
+  }
+  .help-form .impact-boxes .cell label span{
+    line-height: 1;
+    font-weight: 600;
+    margin-top: .875em;
+  }
+
+  fieldset:hover{
+    background:var(--color-chrome);
+    transition: all 2s ease;
+  }
+  #back-text{
+    color: var(--color-pop);
+    margin-right: .25em;
+    display:none;
+    transition:all .5s ease;
+  }
+  #back-text:hover{
+    color: var(--color-pop-h);
+  }
+  .address-check{
+    padding: 1em;
+    border: 1px dashed var(--color-lane-subtle);
+    background:hsl(31, 100%, 95%);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    transition:all .5s ease;
+  }
+  .address-check-icon{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow:.5;
+    font-size: 2em;
+    color: var(--color-bright-3);
+    transition:all .5s ease;
+  }
+  .address-check-addr{
+    flex-grow:1;
+  }
+  .address-check.ok{
+    background:hsl(132, 66%, 95%);
+  }
+  .address-check.ok .address-check-icon{
+    color: var(--color-bright-2);
+  }
+  .address-check.ok .address-check-icon i:before{
+    content:"\f058";
+  }
+  .address-check.no{
+    background:hsl(8, 88%, 95%);
+  }
+  .address-check.no .address-check-icon{
+    color: var(--color-bright-4);
+  }
+  .address-check.no .address-check-icon i:before{
+    content:"\f057";
+  }
+  
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  },
+  {
+    id: 'toast-unfilled',
+    type: 'error',
+    title: 'Please Review Your Answers',
+    message: 'It looks like you have not selected a plan. Please choose an option before submitting.',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+
+
+<div class="help-form cell small-12 medium-12" style="display:none;">
+  <div class='box'>
+    <% if (locals.user && user.id && locals.userAttributes) { %>
+      <div class='grid-x grid-margin-x input-box'>
+        <div class='cell small-6 box-verified-profile'>
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p style="margin:0;"><i class="fad fa-badge-check color-bright-2"></i> Verified User</p>
+        </div>
+
+        <div class='cell small-6 box-verified-info'>
+          <p id="full-name" class="content" style="margin:0;"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-id" class="content2"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email" class="content"><i class="fas fa-envelope-square"></i></i> <%= userAttributes.emailaddress %></p>
+          <p id="wpi-colCode" style="display:none"><%= BannerUser[0].COLLEGE_CODE %></p>
+        </div>
+        
+      </div>
+
+    <% } %>
+
+  </div>
+
+  <div class='cell' style="margin-top:1em;">
+
+    <fieldset>
+
+      <h3 style="margin-bottom:0;font-size:.875rem;font-weight:600">Now that WPI has announced plans for the fall; for A & B Term / Fall Semester do you plan to:</h3>
+        <div class='grid-x grid-margin-x impact-boxes' style="margin-bottom:1em;">
+          
+          <div class="cell small-12 medium-auto">
+            <input type="radio" id="student-plan-remote" name="student-plan" value="remotely">
+            <label for="student-plan-remote"><i class='fad fa-laptop-house'></i> <span>Take all classes remotely; do not plan to come to campus at all</span></label>
+          </div>
+          <div class="cell small-12 medium-auto">
+            <input type="radio" id="student-plan-onCampus" name="student-plan" value="on-campus">
+            <label for="student-plan-onCampus"><i class='fad fa-university'></i> <span>Plan to physically come to campus for classes or other activities</span></label>
+          </div>
+          <div class="cell small-12 medium-auto">
+            <input type="radio" id="student-plan-defer" name="student-plan" value="defer">
+            <label for="student-plan-defer"><i class='fad fa-stopwatch'></i> <span>Defer for a semester</span></label>
+          </div>
+          <div class="cell small-12 medium-auto">
+            <input type="radio" id="student-plan-none" name="student-plan" value="none">
+            <label for="student-plan-none"><i class='fad fa-comment-times'></i> <spa"n>I will not work or conduct research</span></label>
+          </div>
+          
+          <div class="cell small-12 medium-auto">
+            <input type="radio" id="student-plan-other" name="student-plan" value="Other">
+            <label for="student-plan-other"><i class='fad fa-info-circle'></i> <span>Other</span></label>
+          </div>
+        </div>
+
+        <div id="student-plan-other-toggle" class='grid-x grid-margin-x' style="margin-bottom:1em;display:none;">
+          <div class="cell small-12">
+            <label for="student-plan-other-details">(Other) Please specify your plans</label>
+            <textarea id="student-plan-other-details" name="student-plan-other-details" rows="3"></textarea>
+          </div>
+        </div>
+        
+      <div id="on-campus-toggle" style="display:none;">
+        <hr>
+          <h3 style="margin-bottom:0;font-size:.875rem;font-weight:600">Where do you plan to live?</h3>
+          <div class='grid-x grid-margin-x impact-boxes' style="margin-bottom:1em;">
+
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="housing-onCampus" name="housing" value="On-Campus">
+              <label for="housing-onCampus"><i class='fad fa-university'></i> <span>On-Campus</span></label>
+            </div>
+
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="housing-offCampus" name="housing" value="Off campus, on my own or with roommates ">
+              <label for="housing-offCampus"><i class='fad fa-house-leave'></i> <span>Off campus, on my own or with roommates </span></label>
+            </div>
+
+            <div class="cell small-12 medium-auto not-resident upper-class remote-class">
+              <input type="radio" id="housing-greek" name="housing" value="Off campus, in my fraternity/sorority house">
+              <label for="housing-greek"><i class='fad fa-pi'></i> <span>Off campus, in my fraternity/sorority house</span></label>
+            </div>
+
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="housing-permanent" name="housing" value="Off campus, at my permanent home">
+              <label for="housing-permanent"><i class='fad fa-home'></i> <span>Off campus, at my permanent home</span></label>
+            </div>
+
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="housing-other" name="housing" value="Other">
+              <label for="housing-other"><i class='fad fa-info-circle'></i> <span>Other</span></label>
+            </div>
+            <div id="housing-note" class="cell small-12 medium-8" style="display:none">
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-info-circle color-bright-1"></i> You are Currently Marked as an On-Campus Resident
+              </div>
+              <div class="note-message">  
+                <p>If you plan to take classes physically on campus for A & B Term but do not plan to live on campus any longer a Housing Contract Release request must be filled out with Residential Services.</p>
+                <p>Please contact them directly <a target="_blank" href="mailto:res-services@wpi.edu">res-services@wpi.edu</a> for more information</p>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+          <div id="housing-other-toggle" class='grid-x grid-margin-x' style="margin-bottom:1em;display:none;">
+            <div class="cell small-12">
+              <label for="housing-other-details">(Other) Please specify your plans</label>
+              <textarea id="housing-other-details" name="housing-other-details" rows="3"></textarea>
+            </div>
+          </div>
+          
+      </div>
+      <hr>
+      <div id="visa-toggle" class='grid-x grid-margin-x international' style="margin-bottom:1em;display:none;">
+        <hr>
+        <div class="cell small-12">
+          <label class="form-label"  for="visa-location">Are you located outside the U.S? </label>
+          <select id="visa-location" name="visa-location">
+            <option value="">-</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="cell small-12">
+          <label class="form-label"  for="visa-secured">Do you need to secure a new visa?</label>
+          <select id="visa-secured" name="visa-secured">
+            <option value="">-</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div id="visa-appointment-toggle" class="cell small-12" style="display:none">
+          <div class="cell small-12">
+            <label class="form-label"  for="visa-appointment">Have You Secured a Visa Appointment?</label>
+            <select id="visa-appointment" name="visa-appointment">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div id="visa-detail-toggle" class="cell small-12" style="margin-bottom:1em;display:none;">
+            <label for="visa-date">(Yes) When is it?</label>
+            <input type="date" id="visa-date" name="visa-detail">
+          </div>
+        </div>
+      </div>
+      <div id="address-toggle" class='grid-x grid-margin-x' style="margin-bottom:1em;display:none;">
+        <hr>
+        <div class="cell small-12">
+          <p>As of <strong>August 10th</strong> what address will you be collecting physical mail from?</p>
+        </div>
+        <div class="cell small-12">
+          <p style="font-size: .875rem;font-weight:600">This is the address WPI has on file for you:</p>
+
+          <div class="address-check">
+            <div class="address-check-icon">
+              <i class="fas fa-question-circle"></i>
+            </div>
+            <div class="address-check-addr">
+              <%- BannerUser[0].PR_ADDRESS1 %><br>
+              <% if(BannerUser[0].PR_ADDRESS2 != null){ %>
+                <%- BannerUser[0].PR_ADDRESS2 _%><br>
+              <% } %>
+              <%- BannerUser[0].PR_CITY %>, <%- BannerUser[0].PR_STATE %>, <%- BannerUser[0].PR_ZIP_CODE %><br>
+              <%- BannerUser[0].PR_COUNTRY_NAME %>
+            </div>
+          </div>
+          <label class="form-label"  for="addressOK">Is this address where you will be collecting physical mail as of August 10th?</label>
+
+          <select id="addressOK" name="addressOK">
+            <option value="">-</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div id="address-block" class="cell small-12 grid-x grid-margin-x" style="display:none;">
+          <p style="font-size: .875rem;font-weight:600">Please Update Your Address:</p>
+          <div class="cell small-12">
+            <label class="form-label" for="address1">Address Line 1</label>
+            <input type="text" id="address1" name="address1" value="<%- BannerUser[0].PR_ADDRESS1 %>">
+          </div>
+          <div class="cell small-12">
+            <label class="form-label" for="address2">Address Line 2</label>
+            <input type="text" id="address2" name="address2" value="<%- BannerUser[0].PR_ADDRESS2 %>">
+          </div>
+          <div class="cell small-12">
+            <label class="form-label" for="city">City</label>
+            <input type="text" id="city" name="city" value="<%- BannerUser[0].PR_CITY %>">
+          </div>
+          <div class="cell small-12">
+            <label class="form-label" for="state">State</label>
+            <input type="text" id="state" name="state" value="<%- BannerUser[0].PR_STATE %>">
+          </div>
+          <div class="cell small-12">
+            <label class="form-label" for="zip">Zip</label>
+            <input type="text" id="zip" name="zip" value="<%- BannerUser[0].PR_ZIP_CODE %>">
+          </div>
+          <div class="cell small-12">
+            <label class="form-label" for="country">Country</label>
+            <input type="text" id="country" name="country" value="<%- BannerUser[0].PR_COUNTRY_NAME %>">
+          </div>
+        </div>
+      </div>
+
+      <div id="special-toggle" class='grid-x grid-margin-x' style="margin-bottom:1em">
+        <hr>
+        <div class="cell small-12">
+          <label class="form-label"  for="special">Are there special circumstances that affect your decisions above that you’d like to talk about with a WPI representative? </label>
+
+          <select id="special" name="special">
+            <option value="">-</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div id="special-detail-toggle" class="cell small-12 grid-x grid-margin-x" style="display:none;">
+          <label for="special-detail">(Yes) Please describe</label>
+          <textarea id="special-detail" name="special-detail" rows="4"></textarea>
+        </div>
+      </div>
+
+    </fieldset>
+    <button id="button-submit-help-form" class="button-submit">Submit Form</button>
+    <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+    
+  </div>
+</div>

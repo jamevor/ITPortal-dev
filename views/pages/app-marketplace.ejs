@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" href="/css/my-apps.css">
+  <script defer type='text/javascript' src='/js/components/MyAppCard.js'></script>
+  <script defer type='text/javascript' src='/js/pages/app-marketplace.js'></script>
+  <style>
+  .my-apps.empty {
+    height: 100%;
+    background: rgba(255,255,255,.4);
+    border: none;
+  }
+  .my-apps.empty:hover {
+    background: rgba(255,255,255,.4);
+    border: none;
+  }
+  .my-apps.empty p {
+    color: var(--color-dark);
+  }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div class="app-marketplace">
+    <div class="grid-container fluid swim-lane bright-5 about">
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+          <div class="small-12 medium-8">
+            <h1>App Marketplace</h1>
+            <h2><i class="fas fa-search"></i> Find an App</h2>
+            <label for="filter-apps" class="show-for-sr">Filter Apps</label>
+            <input id="filter-apps" class="filter-find" placeholder="Find an App...">
+          </div>
+          <% if (!locals.user) { %>
+            <div class="small-12 medium-4">
+              <div class="cell medium-12 my-apps empty">
+                <p>You can sign in to customize your Apps & Utilities</p>
+                <a href="/login" class="button"><i class="far fa-sign-in"></i> Sign In</a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      <%- include('../partials/components/tech-svg.ejs'); %>
+    </div>
+
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x align-stretch" id="app-marketplace-container">
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

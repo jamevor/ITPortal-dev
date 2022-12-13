@@ -1,0 +1,9 @@
+<li data-<%=type%>id="<%=id%>" class="cell <%=type%>-card-item<%= compact ? ' compact' : '' %>">
+  <a class="service-card" href="<%= !locals.edit ? `/${type}/${id}` : '#' %>">
+    <i class="service-card-icon fas <%= icon ? icon : 'fa-globe' %>"></i>
+    <h3 class="service-card-title"><%= title %></h3>
+    <% if (locals.edit) { %>
+      <button class='remove-catalog-item-button'><i class='fas fa-times-circle'></i></button>
+    <% } %>
+  </a>
+</li>

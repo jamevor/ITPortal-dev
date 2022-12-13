@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../../partials/header.ejs'); %>
+
+  <style>
+    .groupTitle {
+        font-size: 1em;
+        font-weight: 600;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        border-bottom: 1px solid var(--color-lane);
+        margin-left: -1em;
+        margin-right: -1em;
+        background: var(--color-lane);
+        padding: 1em;
+        border-radius: 3px;
+        position: relative;
+    }
+    .groupTitle .groupNumber{
+        font-size: .7em;
+        padding: 0.5em 1em;
+        margin-right: 0.5em;
+        display: inline-block;
+        border-radius: 2.5em;
+        background: var(--color-pop);
+        color: var(--color-body);
+    }
+    .groupTitle .groupNote{
+        font-size: .875em;
+        font-weight: 400;
+        color: var(--color-body-subtitle);
+        letter-spacing: 1px;
+        margin-bottom: 1em;
+    }
+    .groupScroll{
+        position: absolute;
+        right: -1.5em;
+        font-size: 1em;
+        color: var(--color-pop);
+        transition: all .5s ease;
+    }
+    .groupScroll:hover,.groupScroll:active,.groupScroll:focus{
+        color: var(--color-pop-h);
+    }
+    .councilPersonImg{
+        height: 250px;
+        width: 250px;
+        min-width: 250px;
+        background-size: cover;
+        border-radius: 50%;
+        position: relative;
+        z-index: 50;
+        background-color: var(--color-pop);
+        border: 20px solid var(--color-body);
+    }
+    .councilPerson {
+        background: var(--color-chrome);
+        padding: 1em;
+        box-shadow: var(--shadow-standard-y);
+        border-radius: 3px;
+        margin-left: -125px;
+        padding-left: calc(125px + 1em);
+        width: 100%;
+    }
+    .councilWrapper{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 1em;
+    }
+    .councilPersonData p{
+        margin-bottom: 0;
+    }
+    .councilPersonData h3{
+        font-size: 1.5em;
+        font-weight: 600;
+        color: var(--color-body-text);
+    }
+    .councilPersonData {
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .councilPersonQuestions {
+        background: var(--color-body);
+        padding: 1em;
+        border-radius: 3px;
+    }
+    .councilPersonQuestions h4{
+        font-size: 1em;
+        font-weight: 600;
+        color: var(--color-body-text);
+        margin: 0;
+    }
+    ul > li {
+        margin-bottom: 0.5em;
+        font-size: .875em;
+    }
+    a{
+        color: var(--color-pop);
+        transition: all .5s ease;
+    }
+    a:hover,a:focus,a:active{
+        color: var(--color-pop-h);
+    }
+    .compact .councilWrapper{
+
+    }
+    .compact .councilPersonQuestions{
+        display: none;
+    }
+    @media screen and (max-width: 39.9375em) {
+        .councilWrapper {
+        display: flex;
+        flex-direction: column;
+        }
+        .councilPerson {
+        margin-left: 0;
+        padding-left: 1em;
+        width: 100%;
+        margin-top: -1em;
+        }
+        .councilPersonData{
+            text-align: center;
+            margin-bottom: 1em;
+        }
+        .councilPersonQuestions{
+            padding: 0;
+            background: transparent
+        }
+        .groupScroll{
+            display: none;
+        }
+        .groupTitle{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+        .groupNumber{
+            width: auto;
+            width: fit-content;
+            margin-top: -2em;
+        }
+  }
+
+
+  </style>
+  <script defer type="text/javascript" src="/js/pages/staff-council.js"></script>
+</head>
+<%- include('../../partials/layout/top.ejs'); %>
+<% const staffData = JSON.parse(include('staffdata.ejs')); 
+
+const groupBy = (items, key) => items.reduce(
+  (result, item) => ({
+    ...result,
+    [item[key]]: [
+      ...(result[item[key]] || []),
+      item,
+    ],
+  }), 
+  {},
+);
+
+const GroupedStaff = groupBy(staffData,'Group')
+%>
+
+<div class="help-page staffVoting">
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <h1 id="top">Staff Council - Voting Companion</h1>
+        <div class="cell small-12" style="justify-content: flex-end;display: flex;margin-top:-2em">
+            <div class="switch">
+                <input class="switch-input" id="compactMode" type="checkbox" name="compactMode">
+                <label class="switch-paddle" for="compactMode">
+                  <span class="switch-active" aria-hidden="true"><i class="fas fa-user-circle"></i></span>
+                  <span class="switch-inactive" aria-hidden="true"><i class="fas fa-address-card"></i></span>
+                </label>
+              </div>
+        </div>
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12 medium-6">
+                <p>The WPI Staff Council is the voice of the employees at the university. Members are elected by their peers to advocate for and act as a collective voice for the interests and needs of WPI’s non-union staff. Having a staff council helps foster a positive and inclusive environment at WPI and offers an informed support and resource for staff members.</p>
+                <p>The elections for the inaugural Staff Council are opening this week. Online ballots will open on Wednesday, July 20, and will close for voting on July 29.</p>
+                <p>For more information about the Staff Council, see the <a href="https://www.wpi.edu/offices/talent/employee-resources/staff-council" target="_blank">Staff Council webpage</a>.</p>
+            </div>
+            <div class="cell small-12 medium-6">
+                <ul data-smooth-scroll data-offset="150" class="no-bullet">
+                    <li><strong>Quick Links</strong></li>
+                    <li><a href="#group1">Group 1 - Advancement, OGC, and Talent & Inclusion</a></li>
+                    <li><a href="#group2">Group 2 - Finance & Operations (Budget & Operations, Campus Safety, Controller's Office, and Campus Planning & Facilities Management)</a></li>
+                    <li><a href="#group3">Group 3 - Chief of Staff, Marketing Communications, and Undergraduate Enrollment</a></li>
+                    <li><a href="#group4">Group 4 - Finance & Operations (Information Technology)</a></li>
+                    <li><a href="#group5">Group 5 - Provost Office (Office Operations-Provost, Budget & IT- Provost, CPBL and GPS, Undergraduate Studies, Faculty Governance, and Graduate Studies)</a></li>
+                    <li><a href="#group6">Group 6 - Provost Office (Academic & Corporate Engagement, Innovation & Entrepreneurship, Research Division, Library Services, and Registrar)</a></li>
+                    <li><a href="#group7">Group 7 - Provost Office (Global School, School of Arts & Sciences, School Of Business, and School of Engineering)</a></li>
+                    <li><a href="#group8">Group 8 - Student Affairs</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+  <% for(const [key,value] of Object.entries(GroupedStaff)){%>
+    <div class="grid-container fluid swim-lane">
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
+                <% const group = {};
+                group.number = key.split(":")[0];
+                group.name = key.includes(":") ? key.split(":")[1].split("(")[0] : null;
+                group.note =  key.includes("(") ? "(" + key.split(":")[1].split("(")[1].slice(0, -1) + ")" : null;
+                %>
+
+                <h2 class="groupTitle" id="<%=group.number.replace(/ /g, "").toLowerCase()%>"><span class="groupNumber"><%=group.number%></span><span class="groupName"><%=group.name%></span><span class="groupNote"><%=group.note%></span><a class="groupScroll" href="#top" title="Scroll to Top of Page" data-smooth-scroll><i class="fas fa-chevron-up"></i></a></h2>
+
+
+            </div>
+            <div class="cell small-12 grid-x">
+                <% value.sort((a, b) => (a.Name.split(' ').pop() > b.Name.split(' ').pop()) ? 1 : -1) %> 
+
+                <%for(person of value){%>
+                    
+                    <% 
+                    var imgURL = ''
+                    if(person["Picture File Name"] != ''){
+                        imgURL = "background-image:url('img/staffCouncil/" + person["Picture File Name"] + ".jpg')"
+                    }
+                    %>
+                    <div class="cell small-12 medium-12 councilWrapper">
+                            <div class="councilPersonImg" style="<%=imgURL%>"></div>
+                            <div class="councilPerson grid-x">
+                                <div class="cell small-12 medium-3 councilPersonData">
+                                    <h3><%=person.Name%></h3>
+                                    <p class="councilPersonTitle"><%=person["Business Title"]%></p>
+                                    <p class="councilPersonEmail"><a href="mailto:<%=person['Contact Information']%>"><i class="fad fa-envelope"></i> <%=person['Contact Information']%></a></p>
+                                    <p class="councilPersonTenure"><%=parseFloat(person["Tenure (in Years)"].toFixed(1))%> years at WPI</p>
+                                </div>
+
+                                <div class="cell small-12 medium-9 councilPersonQuestions">
+                                    <%if(person["What do you hope to achieve as a member of the Staff Council?"] != ''){%>
+                                        <h4>What do you hope to achieve as a member of the Staff Council?</h4>
+                                        <p><%-person["What do you hope to achieve as a member of the Staff Council?"]%></p>
+                                    <%}%>
+                                    <%if(person["What do you believe the Staff Council should focus on to support the staff experience and voice at WPI?"] != ''){%>
+                                        <h4>What do you believe the Staff Council should focus on to support the staff experience and voice at WPI?</h4>
+                                        <p><%-person["What do you believe the Staff Council should focus on to support the staff experience and voice at WPI?"]%></p>
+                                    <%}%>
+                                    <%if(person["What would you like people to know about you as a candidate for Staff Council?"] != ''){%>
+                                        <h4>What would you like people to know about you as a candidate for Staff Council?</h4>
+                                        <p><%-person["What would you like people to know about you as a candidate for Staff Council?"]%></p>
+                                    <%}%>
+                                    <%if(person["What is your favorite hobby, movie, song, fun fact, and/or quote?"] != ''){%>
+                                        <h4>What is your favorite hobby, movie, song, fun fact, and/or quote?</h4>
+                                        <p><%-person["What is your favorite hobby, movie, song, fun fact, and/or quote?"]%></p>
+                                    <%}%>
+                                </div>
+                            </div>
+
+                    </div>
+                <%}%>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    <%}%>
+
+  <div class="container">
+    <div class="grid-x grid-margin-x">
+      <div class="cell small-12">
+        
+      </div>
+    </div>
+  </div>
+<%- include('../../partials/layout/bottom.ejs'); %>
+</html>

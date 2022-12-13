@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <script async type="text/javascript" src="/js/components/ApprovalCard.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/ticket.css">
+  <link rel="stylesheet" type="text/css" href="/css/my-apps.css"> <%# this is needed for the "you dont have tickets" stuff" %>
+  <script defer type="text/javascript" src="/js/me/my-approvals.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+<div class="grid-container me-section" style="padding:0">
+
+  <div class="grid-x grid-margin-x">
+    <div class="cell medium-12 box card profile-section" style="position: relative;">
+      <a class="cell text-right" style="position: absolute; top: .5em; right: .5em;" href="https://hub.wpi.edu/article/699/" target="_blank"><i class="fad fa-info-circle"></i> How do I use this page?</a>
+      <h2> <i class="far fa-sync"></i> Open Approval Requests</h2>
+      <div class="profile-section-content" id="approvals-open">
+  
+      </div>
+    </div>
+    
+    <div class="cell medium-12 box card profile-section">
+      <h2> <i class="far fa-history"></i> Approval Request History</h2>
+      <div class="profile-section-content" id="approvals-history">
+  
+      </div>
+    </div>
+  
+  </div>
+</div>
+
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

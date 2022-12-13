@@ -1,0 +1,443 @@
+ZOODEV=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannertest.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=zoodev.admin.wpi.edu)
+    )
+  )
+
+ODST=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=odstest-02.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odst.admin.wpi.edu)
+    )
+  )
+
+ODSP=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=odsedw-p.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odsp.admin.wpi.edu)
+    )
+  )
+
+TESTARG=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=130.215.34.34)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=testarg)
+    )
+  )
+
+STAGE=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannertest2.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=stage.admin.wpi.edu)
+    )
+  )
+
+PROD=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannerprod.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=prod.admin.wpi.edu)
+    )
+  )
+
+TRNG=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannertrng.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=trng.admin.wpi.edu)
+    )
+  )
+
+PPRD=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannertest2.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=pprd.admin.wpi.edu)
+    )
+  )
+
+ban2cash=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=charon.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SID=ban2cash)
+    )
+  )
+
+LFPDB=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=130.215.37.46)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SID=enc)
+    )
+  )
+
+LIBR=
+  (DESCRIPTION=
+    (ADDRESS=
+      (COMMUNITY=TCP.world)
+      (PROTOCOL=TCP)
+      (HOST=gordonlibrary.WPI.EDU)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (GLOBAL_NAME=LIBR.world)
+      (SID=LIBR)
+    )
+  )
+
+vger=
+  (DESCRIPTION=
+    (ADDRESS=
+      (COMMUNITY=TCP.world)
+      (PROTOCOL=TCP)
+      (HOST=gordonlibrary.WPI.EDU)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (GLOBAL_NAME=VGER.world)
+      (SID=VGER)
+    )
+  )
+
+LOCKS=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=locks)
+    )
+  )
+
+CBORD=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=cbord)
+    )
+  )
+
+SURVEYPD=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=classclimate)
+    )
+  )
+
+EMIS=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=unixmysql)
+    )
+  )
+
+REMEDY=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=remedy)
+    )
+  )
+
+MGE=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=oracle.wpi.edu)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=WPIDBR2)
+    )
+  )
+
+MNG=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=oracle.wpi.edu)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=WPIDBR2)
+    )
+  )
+
+CS=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=oracle.wpi.edu)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=WPIDBR2)
+    )
+  )
+
+ban2cashi=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=charon.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=ban2cash.admin.wpi.edu)
+    )
+  )
+
+runner=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=doctor.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=runner.wpi.edu)
+    )
+  )
+
+JUDICIAL=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=zakim.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=judicial)
+    )
+  )
+
+ODST2=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannerv7.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odst2.admin.wpi.edu)
+    )
+  )
+
+fldrwve=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=folderwave)
+      (PORT=1530)
+    )
+    (CONNECT_DATA=
+      (SID=fldrwve)
+    )
+  )
+
+fldrwvt=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=folderwavetest)
+      (PORT=1530)
+    )
+    (CONNECT_DATA=
+      (sid=fldrwvt)
+    )
+  )
+
+wpicneti=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=cashnet.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=wpicnet.admin.wpi.edu)
+    )
+  )
+
+wpicnet=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=cashnet.wpi.edu)
+      (PORT=1528)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=wpicnet.admin.wpi.edu)
+    )
+  )
+
+ODSPPP=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=odsedw-p.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odsp.admin.wpi.edu)
+    )
+  )
+
+ODYSSEYT=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=cbord-dbtest01.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odysseyt.admin.wpi.edu)
+    )
+  )
+
+ODYSSEY=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=cbord-db01.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=odyssey.admin.wpi.edu)
+    )
+  )
+
+seed8=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=delphi.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=seed8.admin.wpi.edu)
+    )
+  )
+
+ltest=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=delphitest-01.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=ltest.admin.wpi.edu)
+    )
+  )
+
+wdprep=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=bannertest.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=wdprep.admin.wpi.edu)
+    )
+  )
+
+banner9t=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=ban-db-t-w01.wpi.edu)
+      (PORT=1527)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=banner9t.admin.wpi.edu)
+    )
+  )

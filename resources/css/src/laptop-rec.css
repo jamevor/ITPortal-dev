@@ -1,0 +1,486 @@
+.laptoptool .header-icon {
+    position: relative;
+    margin-right: 20px;
+    top: 2.5px;
+    font-size: 1.5625rem;
+    display: inline;
+}
+
+.laptoptool .float-center {
+    margin-right: 25%;
+    margin-left: 25%
+}
+
+.laptoptool h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--color-body-text);
+}
+
+@media screen and (min-width: 40em) {
+    /* Labels for the input fields. Hidden on smaller devices to prevent overflow. */
+
+    /* https://stackoverflow.com/questions/49796934/add-a-text-suffix-to-input-type-number/49797347 */
+    /* With modifications made so it doesn't wrap every div under the sun */
+    /* prepare wrapper element */
+    .laptoptool .inputwrap {
+        display: inline-block;
+        position: relative;
+    }
+
+    /* position the unit to the right of the wrapper */
+    .laptoptool .inputwrap::after {
+        position: absolute;
+        top: 7px;
+        right: .5em;
+        transition: all .05s ease-in-out;
+    }
+
+    /* move unit more to the left on hover or focus within
+    for arrow buttons will appear to the right of number inputs */
+    .laptoptool .inputwrap:hover::after,
+    .laptoptool .inputwrap:focus-within::after {
+        right: 0.75em;
+    }
+
+    /* handle Firefox (arrows always shown) */
+    @supports (-moz-appearance:none) {
+        .laptoptool .inputwrap::after {
+            right: 0.75em;
+        }
+    }
+
+    /* set the unit abbreviation for each unit class */
+    .laptoptool .photosinput::after {
+        content: 'photos';
+    }
+
+    .laptoptool .programsinput::after {
+        content: 'programs';
+    }
+
+    .laptoptool .tabsinput::after {
+        content: 'tabs';
+    }
+
+    .laptoptool .songsinput::after {
+        content: 'songs';
+    }
+
+    .laptoptool .moviesinput::after {
+        content: 'movies';
+    }
+
+    .laptoptool .programsinput::after {
+        content: 'programs';
+    }
+
+    .laptoptool .gamesinput::after {
+        content: 'games';
+    }
+
+    .laptoptool .smallfileinput::after {
+        content: 'small files';
+    }
+
+    .laptoptool .largefileinput::after {
+        content: 'large files';
+    }
+
+    .laptoptool .videosinput::after {
+        content: 'videos';
+    }
+
+    .laptoptool .inputwrap::after {
+        color: var(--color-body-text);
+    }
+}
+
+/* https://get.foundation/building-blocks/blocks/progress-indicator.html */
+.laptoptool .progress-indicator {
+    list-style: none;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    display: table;
+    table-layout: fixed;
+}
+
+.laptoptool .progress-indicator > li {
+    position: relative;
+    display: table-cell;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.laptoptool .progress-indicator > li span {
+    position: absolute;
+    color: var(--color-lane-subtler);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.05px;
+    text-transform: uppercase;
+}
+
+.laptoptool .progress-indicator > li::before {
+    content: attr(data-step);
+    display: block;
+    margin: 0 auto;
+    background: var(--color-lane);
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    margin-bottom: 0.25em;
+    line-height: 1.5em;
+    border-radius: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.laptoptool .progress-indicator > li::after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: var(--color-lane);
+    width: 100%;
+    height: 0.15em;
+    top: 50%;
+    -webkit-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);
+    left: 50%;
+    margin-left: 1.5em\9;
+    z-index: 0;
+}
+
+.laptoptool .progress-indicator > li:last-child:after {
+    display: none;
+}
+
+.laptoptool .progress-indicator > li.is-complete {
+    color: var(--color-pop-h);
+}
+
+.laptoptool .progress-indicator > li.is-complete::before, .progress-indicator > li.is-complete::after {
+    color: var(--color-body);
+    background: var(--color-pop-h);
+}
+
+.laptoptool .progress-indicator > li.is-complete span {
+    color: var(--color-pop-h);
+}
+
+.laptoptool .progress-indicator > li.is-current {
+    color: var(--color-pop);
+}
+
+.laptoptool .progress-indicator > li.is-current::before {
+    color: var(--color-body);
+    background: var(--color-pop);
+}
+
+.laptoptool .progress-indicator > li.is-current span {
+    color: var(--color-pop);
+}
+
+/* Change width of the progress bar depending on screen size */
+@media screen and (max-width: 39.9375em) {
+    .laptoptool .progress-indicator {
+        width: 90%;
+    }
+
+    .laptoptool .progress-span {
+        display: none
+    }
+}
+
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    .laptoptool .progress-indicator {
+        width: 75%;
+    }
+}
+
+@media screen and (min-width: 64em) {
+    .laptoptool .progress-indicator {
+        width: 50%;
+    }
+}
+
+.laptoptool .specialized {
+    color: var(--color-bright-4);
+}
+
+.laptoptool .validation-small {
+    color: var(--color-bright-4) 
+}
+
+.laptoptool .button:hover {
+    background-color: var(--color-pop-h) !important
+}
+
+.laptoptool .button:focus {
+    background-color: var(--color-pop-h) !important
+}
+
+.laptoptool .button:focus .button:hover {
+    background-color: var(--color-pop-h) !important
+}
+
+.laptoptool .button {
+    background-color: var(--color-pop) !important
+}
+
+.laptoptool .slider-handle:hover {
+    background-color: var(--color-pop-h) !important
+}
+
+.laptoptool .slider-handle {
+    background-color: var(--color-pop) !important
+}
+
+/* Chrome, Safari, Edge, Opera */
+.laptoptool input::-webkit-outer-spin-button,
+.laptoptool input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.laptoptool input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.laptoptool .card-divider {
+    background-color: var(--color-lane)
+}
+
+.laptoptool .card-section {
+    background-color: var(--color-chrome)
+}
+
+/* Modify sizes of headers so they're not gigantic */
+.laptoptool h1 {
+    font-size: 1.75rem
+}
+
+.laptoptool h2 {
+    font-size: 1.5625rem
+}
+
+.laptoptool h3 {
+    font-size: 1.25rem
+}
+
+/* Use impact boxes from the hub */
+
+.laptoptool .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+}
+
+.laptoptool textarea {
+    min-width:100%;
+}
+
+.laptoptool input, .laptoptool textarea {
+    background-color: var(--color-body) !important;
+    color: var(--color-body-text) !important;
+}
+
+.laptoptool .night input:focus, .laptoptool .night textarea:focus {
+    background: var(--color-lane-subtler);
+}
+
+.laptoptool .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+}
+
+.laptoptool .button-submit:hover {
+    background: var(--color-pop-h);
+}
+
+.laptoptool .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+}
+
+.laptoptool .impact-boxes .cell input {
+    display: none;
+}
+
+.laptoptool .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: .5em;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    transition: all .5s ease;
+}
+
+.laptoptool .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+}
+
+.laptoptool .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+}
+
+.laptoptool .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+}
+
+.laptoptool .input-box .content{
+    font-weight: 800;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+.laptoptool .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.laptoptool .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+}
+
+.laptoptool .card {
+    border: 1px solid var(--color-lane);
+    color: var(--color-body-text)
+}
+
+/* Potential all fix */
+.laptoptool .slider-fill {
+    background-color: var(--color-lane-subtler)
+}
+
+/* Specific fixes for high contrast. */
+.highContrast .laptoptool .progress-indicator > li.is-current::before {
+    color: var(--color-body);
+    background: var(--color-pop-light);
+}
+
+.highContrast .laptoptool .progress-indicator > li span {
+    color: var(--color-body-text);
+}
+
+.highContrast .laptoptool .progress-indicator > li.is-complete::before, .highContrast .laptoptool .progress-indicator > li.is-complete::after {
+    color: var(--color-body);
+}
+
+.highContrast .laptoptool .slider-fill {
+    background-color: var(--color-pop);
+}
+
+.highContrast .laptoptool .inputwrap::after {
+    color: var(--color-pop);
+}
+
+.highContrast .laptoptool textarea {
+    background-color: var(--color-body);
+}
+
+.highContrast .laptoptool .card {
+    border: 1px solid var(--color-body-text);
+}
+
+.highContrast .laptoptool .impact-boxes .cell label {
+    border: 1px solid var(--color-pop);
+}
+
+.highContrast .laptoptool .progress-indicator > li::before {
+    border: 1px solid var(--color-pop);
+}
+
+.highContrast .laptoptool .progress-indicator > li::after {
+    border: 1px solid var(--color-pop);
+}
+
+.highContrast .laptoptool .card-divider {
+    border-bottom: 1px solid var(--color-pop);
+}
+
+/* Specific fixes for WPI Theme */
+.wpiTheme .laptoptool .slider-fill {
+    background-color: var(--color-lane-subtler);
+}
+
+/* Specific fixes for Shrek theme */
+.shrek .laptoptool .progress-indicator > li span {
+    color: var(--color-header-icons-d);
+}
+
+.shrek .laptoptool .progress-indicator > li.is-current span {
+    color: var(--color-header-icons-d);
+}
+
+/* Specific fixes for Holiday theme */
+.holiday .laptoptool .progress-indicator > li span {
+    color: var(--color-header-icons-d);
+}
+
+.holiday .laptoptool .progress-indicator > li.is-complete::before, .holiday .laptoptool .progress-indicator > li.is-complete::after {
+    color: var(--color-body-text);
+}
+
+
+.holiday .laptoptool .progress-indicator > li.is-current::before {
+    color: var(--color-body-text);
+}
+
+/* Fixes for smaller devices */
+.laptoptool [type="checkbox"] + label, .laptoptool [type="radio"] + label {
+    margin-left: 0rem;
+}
+
+.laptoptool-results-ul {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Fix for night mode */
+
+.night .laptoptool .progress-indicator > li.is-complete {
+    color: var(--color-pop);
+}
+
+.night .laptoptool .progress-indicator > li.is-complete::before, .night .laptoptool .progress-indicator > li.is-complete::after {
+    color: var(--color-body-text);
+    background: var(--color-pop);
+}
+
+.night .laptoptool .progress-indicator > li.is-complete span {
+    color: var(--color-pop);
+}
+
+.night .laptoptool .progress-indicator > li.is-current {
+    color: var(--color-pop-light);
+}
+
+.night .laptoptool .progress-indicator > li.is-current::before {
+    color: var(--color-body-text);
+    background: var(--color-pop-light);
+}
+
+.night .laptoptool .progress-indicator > li.is-current span {
+    color: var(--color-pop-light);
+}

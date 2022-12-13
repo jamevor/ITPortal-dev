@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  <script defer type="text/javascript" src="/onscan/onscan.min.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/commencement-manager.js"></script>
+<style>
+
+ .me-box-items .box-item{
+  background: var(--color-body);
+    padding: 1em;
+    border-radius: 3px;
+    color: var(--color-body-text);
+    box-shadow: var(--shadow-standard-y);
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    flex-direction: column;
+    justify-content: center;
+ }
+ .me-box-items .box-item:hover,.me-box-items .box-item:focus,.me-box-items .box-item:active{
+    box-shadow:var(--shadow-standard-y-h)
+ }
+ .box-item-title{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+ }
+ .box-item-date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+ }
+ .me-box.group.commencement-highlight{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url('/img/content/commencementBanner.jpg');
+    background-size: cover;
+    background-position: center;
+ }
+ .commencement-highlight h1{
+    color: var(--color-light);
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 11px rgb(0 0 0 / 40%);
+ }
+ .commencementItem {
+  display: flex;
+  height: 250px;
+  margin-bottom: 1em;
+  background-color: var(--color-chrome);
+  border-radius: 3px;
+  box-shadow: var(--shadow-standard-y);
+}
+ .commenceImage{
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100px;
+  box-shadow: inset -11px 0px 11px 17px var(--shadow-color);
+  clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 50%, 0% 0%);
+ }
+
+ .commenceImage.gr{
+  background-image: url(/img/content/commenceGR.jpg);
+ }
+ .commenceImage.ug{
+  background-image: url(/img/content/commenceUG.jpg);
+
+ }
+ .commenceDetails{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   margin-left: 1em;
+   margin-top: 1em;
+   margin-bottom: 1em;
+ }
+ .commenceDetails h2{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ .commenceDetails .date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+ }
+ .commenceDetails-line table *{
+   background: none;
+   border:none;
+   color:var(--color-body-text)
+ }
+ .commenceDetails-line table th{
+    color: var(--color-body-subtitle);
+    font-size: .6875em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 0;
+    padding: 0 1em;
+ }
+ .commenceActions{
+    display: flex;
+    flex-direction: column;
+    margin: auto 1em auto auto;
+  width: 20%;
+ }
+ .commenceActions a{
+  text-align: left;
+  font-weight: 600;
+ }
+ .me-quicklink.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-quicklink.disabled:hover,.me-quicklink.disabled:focus,.me-quicklink.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-link-item.disabled:hover{
+  cursor:not-allowed;
+  box-shadow: var(--shadow-standard-y)
+ }
+
+  #meHeader{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url(/img/content/commencementBanner.jpg);
+    background-size: cover;
+    background-position: center;
+
+  }
+  .me-box.group.commencement-highlight {
+    background:#c41230
+  }
+#meHeaderProfileAvatar .profileAvatar {
+    height: 125px;
+    width: 125px;
+    border-radius: unset;
+    background-color: transparent;
+}
+#meHeaderProfileAvatar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#meHeaderProfileText{
+  font-family: Merriweather,Serif;
+    color: var(--color-chrome);
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+}
+.commencemenu a.box-item{
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-pop-h);
+  transition: all .5s ease;
+}
+.commencemenu a.box-item.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .commencemenu a.box-item.disabled:hover,.commencemenu a.box-item.disabled:focus,.commencemenu a.box-item.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+.commencemenu a.box-item:hover,.commencemenu a.box-item:active,.commencemenu a.box-item:focus{
+  color: var(--color-pop);
+  background-color: var(--color-lane);
+}
+.commencemenu a.box-item i{
+  font-size: 3em;
+}
+.commencemenu a.box-item p{
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--color-body-subtitle);
+  text-align: center;
+  margin: 0;
+  }
+ #ticketTable_wrapper{
+   width: 100%;
+ }
+ #ticketTable_wrapper table{
+   width: 100%;
+ }
+ button.checkerIn {
+    background: var(--color-pop);
+    padding: 0.5em;
+    color: var(--color-light);
+    font-size: .85em;
+    border-radius: 1em;
+    box-shadow: var(--shadow-standard-y);
+    cursor: pointer;
+    margin: -0.5em;
+}
+button.checkerIn:hover,button.checkerIn:active,button.checkerIn:focus{
+  background-color: var(--color-pop-h);
+  box-shadow: var(--shadow-standard-y-h);
+}
+.paginate_button{
+  background-color: var(--color-pop);
+  color:var(--color-light)
+}
+.paginate_button a{
+  color:var(--color-light)
+}
+.paginate_button:active,.paginate_button:hover,.paginate_button:focus{
+  background-color: var(--color-pop-h);
+}
+
+.paginate_button.current{
+  background-color: var(--color-pop-h);
+}
+
+#responseReveal.successColor{
+  background:rgb(205, 238, 221);
+  border-top:16px solid rgb(1, 247, 21);
+}
+#responseReveal.warnColor{
+  background:rgb(228, 227, 177);
+  border-top:16px solid rgb(240, 236, 8);
+}
+#responseReveal.errorColor{
+  background:rgb(238, 174, 174);
+  border-top:16px solid rgb(224, 12, 12);
+}
+#responseReveal{
+  text-align: center;
+}
+@media screen and (max-width: 39.9375em) {
+    .commenceImage{
+      display: none;
+    }
+    .commencementItem {
+      flex-direction: column;
+      height:auto
+    }
+    .commenceActions {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto .5em auto;
+      width: 90%;
+      justify-content: center;
+    }
+    button.checkerIn {
+      width: 80%;
+      padding: 1em;
+      margin: 1em auto;
+    }
+    #ticketTable_wrapper table {
+        width: 100%!important;
+    }
+  }
+</style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div id="mePage">
+    <div id="meHeader" class="grid-container fluid">
+        <div id="meHeaderInterior" class="grid-container">
+          <div id="meHeaderInteriorRow" class="grid-x">
+            <div id="meHeaderProfile" class="cell small-12 medium-12 large-12 grid-x">
+              <div id="meHeaderProfileAvatar" class="cell small-12 large-12">
+                <div class="profileAvatar">
+                  <%- include('../partials/layout/wpi-seal.ejs'); %>
+                </div>
+              </div>
+              <div id="meHeaderProfileText" class="cell small-12 large-12">
+                Commencement Manager
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div id="meContent">
+            <!--Top Bar-->
+            <!-- <div class="grid-container me-section">
+
+              <div class="me-box group grid-x grid-padding-x commencement-highlight">
+                <div class="grid-container me-box-items grid-x grid-margin-x commencemenu">
+
+                    <a class="box-item cell small-4 medium-4 large-2">
+                      <i class="fas fa-barcode-read"></i>
+                      <p>Scanner</p>
+                    </a>
+                    <a class="box-item cell small-4 medium-4 large-2">
+                      <i class="fas fa-users"></i>
+                      <p>All Tickets</p>
+                    </a>
+
+                </div>
+              </div>
+            </div> -->
+
+            <div class="grid-container me-section">
+              <h2 class="section-header">Tickets</h2>
+              <div class="grid-x grid-margin-x">
+                <div class="cell medium-12 box card profile-section" style="padding:.5em">
+                  <table class="cell small-12 stack" id="ticketTable">
+                    <thead>
+                      <tr>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Student WPI ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                        <th>Checked In By</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+</div>
+  <div id="responseReveal" class="reveal large" data-reveal>
+    <div id="responseText">
+      <i class="icon fa fa-4x"></i>
+      <h1 class="rr-status">Response Status</h1>
+      <p class="rr-attendee">Attendee Name</p>
+      <p class="rr-statustime">Status Time</p>
+    </div>
+    <button class="close-button" data-close aria-label="Close reveal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

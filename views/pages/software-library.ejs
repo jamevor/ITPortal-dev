@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+  <script defer type='text/javascript' src='/js/pages/software-library.js'></script>
+  <% if (locals.preferences.themePreference === 'highContrast') { %>
+    <style>
+      table.dataTable.bright-3 tbody a {
+        color: #000000;
+      }
+    </style>
+  <% } else if (locals.preferences.themePreference !== 'night') { %>
+    <%
+      const cc = ColorConverter('#ff921f', 'hex');
+      const color = cc.toHSL().set('l', 26).toCSS();
+    %>
+    <style>
+      table.dataTable.bright-3 tbody a {
+        color: <%= color %>;
+      }
+    </style>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<div class="software-library">
+  <div class="grid-container fluid swim-lane bright-3 about">
+    <div class="grid-container">
+      <h1>Software Library</h1>
+      <h2><i class="fas fa-search"></i> Find Software</h2>
+      <label for="filter-software" class="show-for-sr">Filter Software</label>
+      <input id="filter-software" class="filter-find" placeholder="Find Software...">
+      <p><a class="filter-button show-more">Advanced Filters</a></p>
+    </div>
+    <%- include('../partials/components/tech-svg.ejs'); %>
+  </div>
+
+  <div class="grid-container fluid swim-lane dark advanced-filter">
+    <div class="grid-container">
+
+      <div class="grid-x grid-margin-x">
+        <% if (locals.softwareOs && softwareOs.length) { %>
+          <div class="medium-6 cell">
+            <label> Software OS
+              <select id="softwareOs" class="text-capitalize">
+                <option value="">- Filter by OS -</option>
+                <% for (let softwareOs_ of softwareOs) { %>
+                  <option value="<%= softwareOs_.title %>" class="text-capitalize"><%= softwareOs_.title %></option>
+                <% } %>
+              </select>
+            </label>
+          </div>
+        <% } %>
+        <div class="medium-12 cell">
+          <label> Features</label>
+        </div>
+      </div>
+
+
+      <div class="grid-x grid-margin-x small-up-2 medium-up-4 filter-options">
+        <label class="cell" for="isLicensed">
+          <input id="isLicensed" name="isLicensed" type="checkbox"><span>License Required</span>
+        </label>
+        <label class="cell" for="isCLA">
+          <input id="isCLA" name="isCLA" type="checkbox"><span>Available in Online Store</span>
+        </label>
+        <label class="cell" for="useWPI">
+          <input id="useWPI" name="useWPI" type="checkbox"><span>For use on WPI Devices</span>
+        </label>
+        <label class="cell" for="usePersonal">
+          <input id="usePersonal" name="usePersonal" type="checkbox"><span>For use on Personal Devices</span>
+        </label>
+        <label class="cell" for="isSCCM">
+          <input id="isSCCM" name="isSCCM" type="checkbox"><span>Available through Software Center</span>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <table id="softwareTable" class="bright-3">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Version</th>
+            <th>Publisher</th>
+            <th>OS</th>
+            <th>SoftwareOs</th>
+            <th>isSCCM</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

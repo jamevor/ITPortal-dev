@@ -1,0 +1,155 @@
+<style>
+    .help-form label {
+      /* font-weight: 600; */
+    }
+    .help-form .box {
+      background: var(--color-lane);
+      padding: 0.5em 1em;
+    }
+    .help-form textarea {
+      min-width:100%;
+    }
+    .help-form input, .help-form textarea {
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    .night .help-form input:focus, .night .help-form textarea:focus {
+      background: var(--color-lane-subtler);
+    }
+    .help-form .button-submit {
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    .help-form .button-submit:hover {
+      background: var(--color-pop-h);
+    }
+    .help-form .button-submit.disabled {
+      cursor: not-allowed;
+      background: var(--color-pop-h);
+    }
+    .help-form .impact-boxes .cell input {
+      display: none;
+    }
+    .help-form .impact-boxes .cell label {
+      border: 1px solid var(--color-lane);
+      padding: .5em;
+      text-align: center;
+      margin: 0;
+      width: 100%;
+      transition: all .5s ease;
+    }
+    .help-form .impact-boxes .cell input:checked + label {
+      background-color: var(--color-pop);
+      color: var(--color-light);
+      border-color: var(--color-pop-h);
+    }
+    .help-form .impact-boxes .cell label:hover {
+      background: var(--color-lane);
+    }
+    .input-box .content-label{
+      font-size: 1rem;
+      margin: 0;
+      line-height:1;
+    }
+    .input-box .content{
+      font-weight: 800;
+      margin: 0;
+      margin-bottom: 0.5em;
+    }
+    .box-verified-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-img-square {
+      background: var(--color-user);
+      width: 2em;
+      height: 2em;
+      font-size: 3em;
+    }
+    .note{
+    position:relative;
+  }
+  </style>
+  <%
+  const toasts = [
+    {
+      id: 'toast-save-success',
+      type: 'success',
+      title: 'Success',
+      message: 'Your Answer has been submitted. Look to your email for a ticket confirmation!',
+      show: false
+    },
+    {
+      id: 'toast-save-error',
+      type: 'error',
+      title: 'Whoops',
+      message: 'Something went wrong trying to submit, try again!',
+      show: false
+    }
+  ];
+  %>
+  <%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+  <div class="grid-container help-form">
+    <div class="grid-x grid-margin-x align-center">
+      <div class='cell small-12 medium-8 large-6'>
+        <div class='grid-x grid-margin-x'>
+  
+          <div class='cell box'>
+            <% if (locals.user && user.id && locals.userAttributes) { %>
+              <div class='grid-x grid-margin-x input-box'>
+                <div class='cell small-6 box-verified-profile'>
+                  <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                  <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+                </div>
+                <div class='cell small-6 box-verified-info'>
+                  <h3 class="content-label">Full Name</h3>
+                  <p id="full-name" class="content"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                  <h3 class="content-label">WPI email</h3>
+                  <p id="wpi-email" class="content"><%= userAttributes.emailaddress %></p>
+                  <h3 class="content-label">WPI ID #</h3>
+                  <p id="wpi-id" class="content"><%= userAttributes['user.employeeid'] %></p>
+                </div>
+              </div>
+            <% }%>
+          </div>
+      
+          <div class='cell' style="margin-top:1em;">
+            
+            <p>Completed your <a href="https://hub.wpi.edu/s/3/nso">NSO Scavenger hunt</a> and deciphered the clue? Enter the code for your chance at an IT Prize!</a></p>
+
+            <label for="details">Secret Code</label>
+            <input type=text id="details" name="details">
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-robot color-bright-1"></i> This submission will generate a ticket. 
+              </div>
+              <div class="note-message">  
+                <p>When you submit a ticket, someone will reach out to you to answer your questions, or assist you with any issues you are experiencing.</p>
+                <p>You can submit a ticket from any page on the WPI Hub by pressing the Request Help! button. </p>
+
+              </div>
+            </div>
+
+            <button id="button-submit-feedback-form" class="button-submit">Submit Your Answer</button>
+  
+            <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+            
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>

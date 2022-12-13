@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <%- include('../../partials/header.ejs'); %>
+    <%- include('../../partials/filterizr.ejs'); %>
+    <script defer type='text/javascript' src='/js/pages/SIE.js'></script>
+    <style>
+      :root{
+        --colorway-1:#BE3D5A;
+        --colorway-2:#319F8C;
+        --colorway-3:#C7AD22;
+        --colorway-4:#6A62A2;
+        --colorway-1-h: hsl(347deg 51% 39%);
+        --colorway-2-h: hsl(170deg 53% 31%);
+        --colorway-3-h: hsl(51deg 71% 36%);
+        --colorway-4-h: hsl(247deg 26% 41%);
+      }
+      
+      .sie-logo{
+        --colorway-1:#CACACA;
+        --colorway-2:#CACACA;
+        --colorway-3:#CACACA;
+        --colorway-4:#CACACA;
+        width: 100%;
+      }
+      
+      .sie-1{
+        --colorway-4:#6A62A2;
+      }
+      .sie-2{
+        --colorway-2:#319F8C;
+      }
+      .sie-3{
+        --colorway-3:#C7AD22;
+      }
+      .sie-4{
+        --colorway-1:#BE3D5A;
+      }
+      
+
+      .goal-box.border-sie-1{
+        border: 2px solid var(--colorway-4);
+      }
+      .goal-box.border-sie-2{
+        border: 2px solid var(--colorway-2);
+      }
+      .goal-box.border-sie-3{
+        border: 2px solid var(--colorway-3);
+      }
+      .goal-box.border-sie-4{
+        border: 2px solid var(--colorway-1);
+      }
+      .goal-card-objective {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .goal-card-objective svg{
+        width:100px;
+        height:100px
+      }
+
+      #main-hero{
+        background-image: '';
+      }
+      .hero-section {
+        background: 
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.6)
+        ),
+        url("/img/content/wpi-stock/wpi-quad.png");
+          background-size: cover;
+          height: 40vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          min-height: 480px;
+        }
+        .hero-section svg{
+          width: 200px;
+        }
+        .hero-section .hero-section-text{
+          text-align: center;
+        }
+        .hero-section .hero-section-text h1{
+          color: #fefefe;
+          font-size: 4em;
+          font-weight: 600;
+          line-height: 1em;
+          text-align: center;
+        }
+        .main-content{
+          background-color:var(--color-body);
+          margin-top: 4em;
+        }
+        #sie-nav{
+          background-color:#ac2b37;
+          border-bottom: 2px solid #8f2934;
+          height:85px;
+          display: flex;
+          overflow: hidden;
+          position: sticky;
+          top: 0px;
+          z-index: 100;
+        }
+        #sie-nav ul{
+          list-style: none;
+          padding: 0;
+          display: flex;
+          margin-bottom:0;
+        }
+        #sie-nav ul li{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 .25em;
+        }
+        #sie-nav ul li a{
+          color:var(--color-light);
+          font-weight: 600;
+          padding: .5em 1em;
+          transition: background-color .5s ease; 
+          border-radius: 3px;
+          overflow: hidden;
+          line-height: 1em;
+        }
+        #sie-nav ul li a.sie-1{
+          background: var(--colorway-4);
+        }
+        #sie-nav ul li a.sie-2{
+          background: var(--colorway-2);
+        }
+        #sie-nav ul li a.sie-3{
+          background: var(--colorway-3);
+        }
+        #sie-nav ul li a.sie-4{
+          background: var(--colorway-1);
+        }
+        #sie-nav ul li a.sie-1:hover{
+          background: var(--colorway-4-h);
+        }
+        #sie-nav ul li a.sie-2:hover{
+          background: var(--colorway-2-h);
+        }
+        #sie-nav ul li a.sie-3:hover{
+          background: var(--colorway-3-h);
+        }
+        #sie-nav ul li a.sie-4:hover{
+          background: var(--colorway-1-h);
+        }
+        #sie-nav ul li a:hover{
+          background-color:#8f2934;
+        }
+        #sie-nav ul li a:active,#sie-nav ul li a:focus{
+          outline: 2px solid #FFF;
+          background-color:#8f2934;
+        }
+        .lead-text p.focus-p{
+          font-size: 1.375em;
+          margin-bottom: 1.25em;
+          line-height: 2.0625em;
+        }
+        .aside p{
+          padding-left: 1em;
+          margin-bottom: 2em;
+          line-height: 1.65;
+        }
+        .lead-text h2, .aside h2{
+          font-size: 1.75em;
+          line-height: 1.25em;
+          font-weight: 600;
+          text-align: center;
+        }
+        .lead-text h3,.aside h3{
+          font-size: 1.25em;
+          line-height: 1em;
+          font-weight: 600;
+          text-transform: capitalize;
+        }
+        .aside h3{
+          padding-left: .875em;
+        }
+        .phase-pill{
+          flex-shrink: 0;
+          background-color: #8f2934;
+          color:#fff;
+          height: 2em;
+          padding-left: 1em;
+          padding-right: 1em;
+          border-radius: 1em;
+          display: flex;
+          align-items: center;
+          margin-right: .625em;
+          margin-top: .625em;
+          margin-left:-1em;
+          margin-bottom: .625em;
+          font-size: .875em;
+          border: none;
+        }
+        .aside.boxed{
+          background: var(--color-lane);
+          padding: 1em;
+          border-radius: 9px;
+        }
+        .division-item{
+          color: var(--color-light);
+          height: 8em;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          padding: 1em;
+          font-weight: 600;
+          line-height: 1.25;
+          margin-bottom: 1em;
+          transition: all .5s ease, outline 0s;
+        }
+        .division-item:hover{
+          box-shadow: var(--shadow-standard-y-h);
+          transform: scale(1.1);
+          color: var(--color-light);
+        }
+        .division-item:active,.division-item:focus{
+          box-shadow: var(--shadow-standard-y-h);
+          transform: scale(1.1);
+          color: var(--color-light);
+          outline: 2px solid var(--color-dark);
+        }
+        .division-item:nth-of-type(1n){
+          background:#ac2b37
+        }
+        .division-item:nth-of-type(2n){
+          background: #8f2934;
+        }
+        .division-item:nth-of-type(3n){
+          background:var(--color-body-subtitle)
+        }
+        .division-item.solid-color{
+          background:var(--color-body-subtitle)
+        }
+        .division-item.solid-color.active{
+          background: #ac2b37;
+        }
+        .goal-box{
+          background-color:var(--color-chrome);
+          box-shadow:var(--shadow-standard-y);
+          border-radius:3px;
+          padding:1em;
+          border: 1px solid var(--color-lane);
+          display:flex;
+          flex-direction: column;
+        }
+        .goal-wrapper{
+          display:flex;
+        }
+        .goal-actions{
+          display:flex;
+        }
+        .sie-term{
+          background-color:var(--color-chrome);
+          box-shadow:var(--shadow-standard-y);
+          border-radius:3px;
+          padding:1em;
+          border: 1px solid var(--color-lane);
+          margin-bottom:1em;
+        }
+
+        .goal-box .goal-number{
+          display: flex;
+          font-size:4em;
+          min-width: 3em;
+          width:3em;
+          line-height: 1;
+          font-weight:600;
+          justify-content: center;
+          align-items:center;
+          margin-right: .5em;
+        }
+        .goal-box .goal-number .text{
+          margin-left: -100%;
+          text-align: center;
+          width: 100%;
+        }
+        .goal-box .goal-data{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .goal-box .goal-data h3{
+          font-size: 2.25em;
+          font-weight: 600;
+          color:#ac2b37
+        }
+        .goal-box .goal-data p{
+          font-size: 1.5em;
+          margin-top: .75em;
+        }
+        .goal-box .goal-actions h4{
+          font-size:.875em;
+          font-weight: 600;
+          color:#ac2b37
+        }
+        .goal-box.border-sie-1 .goal-data h3, .goal-box.border-sie-1 .goal-data ul li span, .goal-box.border-sie-1 .goal-number .text {
+          color: var(--colorway-4);
+        }
+        .goal-box.border-sie-2 .goal-data h3, .goal-box.border-sie-2 .goal-data ul li span, .goal-box.border-sie-2 .goal-number .text{
+          color: var(--colorway-2);
+        }
+        .goal-box.border-sie-3 .goal-data h3, .goal-box.border-sie-3 .goal-data ul li span, .goal-box.border-sie-3 .goal-number .text{
+          color: var(--colorway-3);
+        }
+        .goal-box.border-sie-4 .goal-data h3, .goal-box.border-sie-4 .goal-data ul li span, .goal-box.border-sie-4 .goal-number .text{
+          color: var(--colorway-1);
+        }
+
+        .goal-box.border-sie-1 .goal-actions h4{
+          color: var(--colorway-4);
+        }
+        .goal-box.border-sie-2 .goal-actions h4{
+          color: var(--colorway-2);
+        }
+        .goal-box.border-sie-3 .goal-actions h4{
+          color: var(--colorway-3);
+        }
+        .goal-box.border-sie-4 .goal-actions h4{
+          color: var(--colorway-1);
+        }
+
+        .featured-box h4{
+           font-size:1.25emem;
+          font-weight: 600;
+          color:#ac2b37;
+          text-align:center;
+        }
+        .featured-box.sie-1 h4{
+          color: var(--colorway-4);
+        }
+        .featured-box.sie-2 h4{
+          color: var(--colorway-2);
+        }
+        .featured-box.sie-3 h4{
+          color: var(--colorway-3);
+        }
+        .featured-box.sie-4 h4{
+          color: var(--colorway-1);
+        }
+
+        .featured-box:before {
+          --colorway-1: #BE3D5A;
+          --colorway-2: #319F8C;
+          --colorway-3: #C7AD22;
+          --colorway-4: #6A62A2;
+          content: '';
+          height: 100px;
+          width: calc( 100% + 4px);
+          position: absolute;
+          left: -2px;
+          top: 7.5em;
+        }
+        .featured-box.sie-1:before {
+          background-color: var(--colorway-4);
+        }
+        .featured-box.sie-2:before {
+          background-color: var(--colorway-2);
+        }
+        .featured-box.sie-3:before {
+          background-color: var(--colorway-3);
+        }
+        .featured-box.sie-4:before {
+          background-color: var(--colorway-1);
+        }
+
+        .goal-box .color-button{
+          padding:1em;
+          margin:.5em 1em;
+          text-align: center;
+          border-radius: 3px;
+          box-shadow: var(--shadow-standard-y);
+          transition: all .5s ease;
+        }
+        .goal-box .color-button:hover{
+          box-shadow: var(--shadow-standard-y-h);
+        }
+        .goal-box.border-sie-1 .color-button{
+          background-color: var(--colorway-4);
+          color:var(--color-light);
+        }
+        .goal-box.border-sie-2 .color-button{
+          background-color: var(--colorway-2);
+          color:var(--color-light);
+        }
+        .goal-box.border-sie-3 .color-button{
+          background-color: var(--colorway-3);
+          color:var(--color-light);
+        }
+        .goal-box.border-sie-4 .color-button{
+          background-color: var(--colorway-1);
+          color:var(--color-light);
+        }
+        .goal-button{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        
+        .goal-box .goal-data ul li span{
+          color: #ac2b37;
+          text-decoration: underline;
+          font-weight: 600;
+        }
+        .goal-box .goal-data ul{
+          list-style: none;
+          margin:0;
+          padding:0;
+        }
+        .goal-box .goal-data ul li{
+          margin-bottom:.5em;
+          font-size:.875em;
+        }
+        .goal-box .goal-data ul li span{
+          color: #ac2b37;
+          text-decoration: underline;
+          font-weight: 600;
+        }
+        .filtr-item{
+
+        }
+        .goal-card{
+          padding:1em;
+          background-color:var(--color-chrome);
+          color: var(--color-body-text);
+          box-shadow:var(--shadow-standard-y);
+          border-radius:3px;
+          border: 1px solid var(--color-lane);
+          display:flex;
+          transition:all .5s ease;
+          width:calc(50% - 1.875rem);
+          min-width:calc(50% - 1.875rem);
+          position: relative;
+          height: 150px;
+          overflow:hidden;
+        }
+        .goal-card:hover{
+          color: inherit;
+          box-shadow:var(--shadow-standard-y-h);
+        }
+        .goal-card:focus, .goal-card:active{
+          color: inherit;
+          box-shadow:var(--shadow-standard-y-h);
+          outline: 2px solid var(--color-dark);
+        }
+        .goal-card-status{
+        }
+        .goal-card-status-icon{
+          font-size:3em;
+        }
+        .goal-card-status-text{
+          font-size:.75em;
+          font-weight: 600;
+        }
+        .goal-card-data{
+          display: flex;
+          flex-direction: column;
+          margin-left: 1em;
+          margin-top: .5em;
+          justify-content: space-between;
+          height: 100px;
+        }
+        .goal-card-dept{
+          margin: 0;
+          font-weight: 600;
+          color: var(--color-body-subtitle);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;  
+          overflow: hidden;
+        }
+        .featured-box .goal-card-data{
+          height:100%
+        }
+        
+        .goal-card-goal{
+          margin: 0;
+          font-size: 1.25em;
+          line-height: 1.25;
+          font-weight: 600;
+          height: 2.5em;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;  
+          overflow: hidden;
+        }
+        .featured-box .goal-card-goal{
+          height: auto;
+        }
+        .filtr-container{
+          display:none;
+          margin-left: 24px;
+        }
+        .sie-filter{
+          background:var(--color-lane);border-radius:9px;padding:2em;
+        }
+        .sie-filter input{
+          margin: 0;
+        }
+        .nav-mini{
+          font-weight: 400;
+        }
+        .hero-section .hero-section-text {
+            text-align: center;
+        }
+        .meter-item{
+          height:20px;
+          display: inline-block;
+          font-size: .75em;
+          text-align: center;
+          color: var(--color-light);
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .meter-item:first-of-type {
+          border-top-left-radius: 2em;
+          border-bottom-left-radius: 2em;
+        }
+        .meter-item:last-of-type {
+          border-top-right-radius: 2em;
+          border-bottom-right-radius: 2em;
+        }
+        .meter-stack{
+          background: var(--color-body);
+          padding: 1em;
+          border-radius: 3px;
+          margin: 1em;
+          flex-grow: 1;
+        }
+        .tooltip{
+          text-align: center;
+        }
+        .tooltip.preLaunch{
+          background: var(--color-pop);
+        }
+        .tooltip.Launched{
+          background: var(--color-bright-5);
+        }
+        .tooltip.inProgress{
+          background: var(--color-bright-3);
+        }
+        .tooltip.Complete{
+          background: var(--color-bright-2);
+        }
+
+        .tooltip.preLaunch::before{
+          border-color: var(--color-pop) transparent transparent;
+        }
+        .tooltip.Launched::before{
+          border-color: var(--color-bright-5) transparent transparent;
+        }
+        .tooltip.inProgress::before{
+          border-color: var(--color-bright-3) transparent transparent;
+        }
+        .tooltip.Complete::before{
+          border-color: var(--color-bright-2) transparent transparent;
+        }
+
+        .featured-star{
+          position: absolute;
+          top:.5em;
+          right: .5em;
+        }
+
+        .sie-1 .featured-star{
+          color:var(--colorway-4)
+        }
+        .sie-2 .featured-star{
+          color:var(--colorway-2)
+        }
+        .sie-3 .featured-star{
+          color:var(--colorway-3)
+        }
+        .sie-4 .featured-star{
+          color:var(--colorway-1)
+        }
+        .goal-card.featured {
+            height: 250px;
+            position: relative;
+            max-width: 600px;
+        }
+        .goal-card-desc {
+          margin: 1em 0;
+          font-size: .875em;
+        }
+        .featured-box{
+          padding: 1em;
+          width: calc(100% + 1.875rem);
+          margin-right: -.9375rem;
+          margin-left: -.9375rem;
+          margin-top: 0;
+          margin-bottom: 1em;
+          position: relative;
+        }
+        .featured-box .goal-card.featured{
+          border:1px solid var(--color-lane)
+        }
+        .featured-box.sie-1 .goal-card.featured{
+          border-color:var(--colorway-4)
+        }
+        .featured-box.sie-2 .goal-card.featured{
+          border-color:var(--colorway-2)
+        }
+        .featured-box.sie-3 .goal-card.featured{
+          border-color:var(--colorway-3)
+        }
+        .featured-box.sie-4 .goal-card.featured{
+          border-color:var(--colorway-1)
+        }
+        @media screen and (max-width: 64em) {
+          .goal-box .goal-data h3{
+          font-size: 1.5em;
+
+        }
+        .goal-box .goal-data p{
+          font-size: 1.25em;
+          margin-top: .5em;
+        }
+      }
+        @media screen and (max-width: 39.9375em) {
+          .goal-box .goal-data h3{
+          font-size: 1.5em;
+
+        }
+        .goal-box .goal-data p{
+          font-size: 1.25em;
+          margin-top: .5em;
+        }
+          .hero-section-text{
+            font-size: .5em;
+          }
+          #sie-nav{
+            font-size:.9em;
+          }
+          #sie-nav ul li a {
+            text-align: center;
+          }
+          .lead-text p.focus-p {
+              font-size: 1.25em;
+              margin-bottom: 1.25em;
+              line-height: 1.5em;
+          }
+          .goal-button {
+            justify-content: center;
+          }
+          .goal-card {
+              font-size: .8em;
+              width:calc(100% - 1.875rem);
+          min-width:calc(100% - 1.875rem);
+          }
+          .filtr-container{
+            justify-content: center;
+            margin-left: 0
+          }
+          .goal-card.featured {
+              margin-bottom: 1em;
+          }
+          .goal-actions {
+              flex-direction: column;
+          }
+        }
+        @media screen and (max-width: 63.9375em) {
+          .goal-card.featured {
+              margin-bottom: 1em;
+          }
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="hero-section">
+      <div class="hero-section-text">
+        <%- include('partials/sielogo.ejs'); %>
+        <h1><span style="font-size:.8em;font-weight: 400;">Inclusive Excellence</span><br>
+          Division/School Actions</h1>
+      </div>
+    </div>
+    <nav id="sie-nav" class="grid-container fluid">
+      <ul class="grid-container">
+        <li><a href="/SIE" title="Return to SIE Home"><i class="fad fa-house"></i><span class="show-for-sr">Home</span></a> </li>
+        <li><a class="sie-1" href="/IE/Goals/1">Goal 1<br> <span class="nav-mini show-for-large">Inclusive Campus Culture</span></a> </li>
+        <li><a class="sie-2" href="/IE/Goals/2">Goal 2<br> <span class="nav-mini show-for-large">Equity In Teaching/Research</span></a> </li>
+        <li><a class="sie-3" href="/IE/Goals/3">Goal 3<br> <span class="nav-mini show-for-large">STEM Access and Retention</span></a> </li>
+        <li><a class="sie-4" href="/IE/Goals/4">Goal 4<br> <span class="nav-mini show-for-large">Diverse Talent Strategies</span></a> </li>
+        <li><a href="/IE/Goals">Actions by Division/School</a> </li>
+
+      </ul>
+    </nav>
+    <section class="main-content grid-container fluid">
+      <% const divisions = departments; //sort here of needed
+      %>
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x grid-margin-y">
+          <% if(locals.subSite && subSite != ""){ %>
+            <% if(subSite == "Goals"){ %>
+              <% if(locals.goalID && goalID != ""){ %>
+
+                <%- include('SIE-Goals.ejs',
+                {
+                  divisions,
+                  goalID
+                }); %>
+              <%}else{%>
+                <%- include('SIE-Goals.ejs',
+                {
+                  divisions,
+                  goalID:null
+                }); %>
+              <%}%>
+            <%}%>
+
+            <% if(subSite == "Action"){ %>
+              <% if(locals.goalID && goalID != ""){ %>
+
+                <%- include('SIE-Action.ejs',
+                {
+                  goalID
+                }); %>
+              <%}else{%>
+                <%- include('SIE-Action.ejs',
+                {
+                  goalID:null
+                }); %>
+              <%}%>
+            <%}%>
+            
+          <%}else{%>
+            <%- include('SIE-Home.ejs',{divisions,goals}); %>
+          <%}%>
+        </div>
+      </div>
+    </section>
+    <div>
+      &nbsp;
+    </div>
+
+  </body>
+</html>

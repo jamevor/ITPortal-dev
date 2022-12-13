@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+  <script defer type="text/javascript" src="/js/console/my-groups.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-file-alt"></i> My Permissions Groups</h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class='filter-find' type="text" placeholder="Find a group...">
+    </div>
+    <div class="cell medium-6">
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <table id='groups-table' class="table" style="width:100%!important;">
+      <thead>
+        <tr>
+          <th data-name='id'>ID</th>
+          <th>Group</th>
+          <th data-name="isDefault"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+
+</html>

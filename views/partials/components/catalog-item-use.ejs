@@ -1,0 +1,32 @@
+
+<% if (locals.item && (item.availability || item.support || item.requesting || item.cost || item.requirements) || locals.edit) { %>
+  <div class="box card">
+    <h2>Using This <%= typeTitle %></h2>
+
+    <% if (locals.item && item.availability || locals.edit) { %>
+      <h3>Availability</h3>
+      <p id='availability' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="' + typeTitle + ' availability"' : '' %>><%= locals.item ? item.availability : '' %></p>
+    <% } %>
+
+    <% if (locals.item && item.support || locals.edit) { %>
+      <h3>Support Contact</h3>
+      <p id='support' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="' + typeTitle + ' support contact"' : '' %>><%= locals.item ? item.support : '' %></p>
+    <% } %>
+
+    <% if (locals.item && item.requesting || locals.edit) { %>
+      <h3>Requesting This <%= typeTitle %></h3>
+      <p id='requesting' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="Requesting this ' + typeTitle + '"' : '' %>><%= locals.item ? item.requesting : '' %></p>
+    <% } %>
+
+    <% if (locals.item && item.cost || locals.edit) { %>
+      <h3>Cost</h3>
+      <p id='cost' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="Cost of this ' + typeTitle + '"' : '' %>><%= locals.item ? item.cost : '' %></p>
+    <% } %>
+
+    <% if (locals.item && item.requirements || locals.edit) { %>
+      <h3>Requirements</h3>
+      <p id='requirements' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="' + typeTitle + ' requirements"' : '' %>><%= locals.item ? item.requirements : '' %></p>
+    <% } %>
+    
+  </div>
+<% } %>

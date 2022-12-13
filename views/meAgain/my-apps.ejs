@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+  <link rel="stylesheet" type="text/css" href="/css/my-apps.css">
+  <script defer type="text/javascript" src="/js/components/MyAppCard.js"></script>
+  <script defer type="text/javascript" src="/js/me/my-apps.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+<div class="grid-container me-section" style="padding:0">
+  <div class="grid-x grid-margin-x">
+
+    <div class="cell medium-12 box card profile-section">
+      <h2><i class="far fa-heart-circle"></i> My Favorite Apps</h2>
+      <div class="profile-section-content">
+        <div class="grid-x grid-margin-x" id="favorite-apps-container">
+        </div>
+      </div>
+    </div>
+  
+    <div class="cell medium-12 box card profile-section">
+  
+      <h2><i class="far fa-grip-horizontal"></i> My Apps</h2>
+      <div class="profile-section-content">
+        <div class="grid-x grid-margin-x" id="installed-apps-container">
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="cell medium-12 box card profile-section">
+  
+      <h2><i class="far fa-icons"></i> All Available Apps</h2>
+  
+      <div class="profile-section-content">
+        <label for="filter-apps" class="show-for-sr">Filter Apps</label>
+        <input id="filter-apps" class="filter-find" placeholder="Find an App...">
+        <div class="grid-x grid-margin-x" id="available-apps-container">
+  
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

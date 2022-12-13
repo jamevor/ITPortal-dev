@@ -1,0 +1,47 @@
+<section class="site-footer" id="site-footer">
+    <% if (locals.includeGetSupport) { %>
+        <div class="grid-container fluid footer help">
+            <div class="grid-container">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell small-12">
+                        <h2>Get Support</h2>
+                    </div>
+                </div>
+                <div class="grid-x grid-margin-x">
+
+                    <a class="cell small-6 medium-3" href="/Request">
+                        <h3>Get Help Online</h3>
+                        <p>Help Form</p>
+                    </a>
+                    <a class="cell small-6 medium-3" href="tel:<%= locals.siteInfo.phone %>">
+                        <h3>Call Us</h3>
+                        <p><%= locals.siteInfo.phoneDisplay %></p>
+                    </a>
+                    <a class="cell small-6 medium-3" href="mailto:<%= locals.siteInfo.email %>">
+                        <h3>Email Us</h3>
+                        <p><%= locals.siteInfo.email %></p>
+                    </a>
+                    <a class="cell small-6 medium-3" href="/Help">
+                        <h3>Visit Us</h3>
+                        <p>View Hours & Locations</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <% } %>
+    <div class="grid-container fluid footer legal">
+        <div class="grid-container">
+            <div class="grid-x grid-margin-x align-middle">
+                <div class="cell small-12 large-6 text-center large-text-left">&copy <%= moment().local().year() %> Worcester Polytechnic Institute, All Rights Reserved.</div>
+                <div class="cell small-12 large-6">
+                    <ul class="menu vertical large-horizontal align-center large-align-right">
+                        <li><a href='/Feedback'>Feedback</a></li>
+                        <li><a href='/Site-Map'>Site Map</a></li>
+                        <li><a href='https://www.wpi.edu/' target='_blank'>WPI Homepage</a></li>
+                        <li><a href='/article/139/it-policies-standards-and-procedures'>Policies & Procedures</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

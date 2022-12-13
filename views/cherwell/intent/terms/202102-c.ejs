@@ -1,0 +1,303 @@
+<%  const defInternational = (BannerUser.INTL_IND == "Y");
+    const defResident = (BannerUser.STARREZ == "TRUE");
+    const defFirstYear = (BannerUser.STUDENT_LEVEL == "01" && BannerUser.STYP_CODE == "N" && (BannerUser.COLLEGE_CODE == "24" || BannerUser.COLLEGE_CODE == "TR"));
+    const defGrad = (BannerUser.STUDENT_LEVEL == "05");
+    const defAthlete = (BannerUser.SPORTS.match(/\(([0-9]+)\)/)[1] > 0);
+    const currentTerm = "202001";
+    const currentPTerm = "B";
+    const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment(new Date(intent.fields.find(f => f.name === 'Deadline')['value'])))
+    // const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment('2020-12-13 09:00:00-05:00'))
+    const queryTerm = intent.fields.find(f => f.name === 'Term')['value'];
+    const queryPTerm = intent.fields.find(f => f.name === 'PTerm')['value'];
+    const termLabel = "C-Term / Spring Semester";
+    const status = intent.fields.find(f => f.name === 'Status')['value'];
+    const states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","AS","DC","FM","GU","MH","MP","PW","PR","VI","AE","AA","AE","AE","AE","AP"]
+    const localStates = ["MA","CT", "ME", "NH", "NY", "PA", "RI", "VT"]
+    const queryResident = (defResident == true || intent.fields.find(f => f.name === 'IsResident')['value'] == "True") ? true : false; 
+    const tzs = ["(GMT-11:00) American Samoa","(GMT-11:00) International Date Line West","(GMT-11:00) Midway Island","(GMT-10:00) Hawaii","(GMT-09:00) Alaska","(GMT-08:00) Pacific Time (US & Canada)","(GMT-08:00) Tijuana","(GMT-07:00) Arizona","(GMT-07:00) Chihuahua","(GMT-07:00) Mazatlan","(GMT-07:00) Mountain Time (US & Canada)","(GMT-06:00) Central America","(GMT-06:00) Central Time (US & Canada)","(GMT-06:00) Guadalajara","(GMT-06:00) Mexico City","(GMT-06:00) Monterrey","(GMT-06:00) Saskatchewan","(GMT-05:00) Bogota","(GMT-05:00) Eastern Time (US & Canada)","(GMT-05:00) Indiana (East)","(GMT-05:00) Lima","(GMT-05:00) Quito","(GMT-04:00) Atlantic Time (Canada)","(GMT-04:00) Caracas","(GMT-04:00) Georgetown","(GMT-04:00) La Paz","(GMT-04:00) Santiago","(GMT-03:30) Newfoundland","(GMT-03:00) Brasilia","(GMT-03:00) Buenos Aires","(GMT-03:00) Greenland","(GMT-03:00) Montevideo","(GMT-02:00) Mid-Atlantic","(GMT-01:00) Azores","(GMT-01:00) Cape Verde Is.","(GMT+00:00) Edinburgh","(GMT+00:00) Lisbon","(GMT+00:00) London","(GMT+00:00) Monrovia","(GMT+00:00) UTC","(GMT+01:00) Amsterdam","(GMT+01:00) Belgrade","(GMT+01:00) Berlin","(GMT+01:00) Bern","(GMT+01:00) Bratislava","(GMT+01:00) Brussels","(GMT+01:00) Budapest","(GMT+01:00) Casablanca","(GMT+01:00) Copenhagen","(GMT+01:00) Dublin","(GMT+01:00) Europe/Berlin","(GMT+01:00) Ljubljana","(GMT+01:00) Madrid","(GMT+01:00) Paris","(GMT+01:00) Prague","(GMT+01:00) Rome","(GMT+01:00) Sarajevo","(GMT+01:00) Skopje","(GMT+01:00) Stockholm","(GMT+01:00) Vienna","(GMT+01:00) Warsaw","(GMT+01:00) West Central Africa","(GMT+01:00) Zagreb","(GMT+01:00) Zurich","(GMT+02:00) Athens","(GMT+02:00) Bucharest","(GMT+02:00) Cairo","(GMT+02:00) Harare","(GMT+02:00) Helsinki","(GMT+02:00) Jerusalem","(GMT+02:00) Kaliningrad","(GMT+02:00) Kyiv","(GMT+02:00) Pretoria","(GMT+02:00) Riga","(GMT+02:00) Sofia","(GMT+02:00) Tallinn","(GMT+02:00) Vilnius","(GMT+03:00) Baghdad","(GMT+03:00) Istanbul","(GMT+03:00) Kuwait","(GMT+03:00) Minsk","(GMT+03:00) Moscow","(GMT+03:00) Nairobi","(GMT+03:00) Riyadh","(GMT+03:00) St. Petersburg","(GMT+03:30) Tehran","(GMT+04:00) Abu Dhabi","(GMT+04:00) Baku","(GMT+04:00) Muscat","(GMT+04:00) Samara","(GMT+04:00) Tbilisi","(GMT+04:00) Volgograd","(GMT+04:00) Yerevan","(GMT+04:30) Kabul","(GMT+05:00) Ekaterinburg","(GMT+05:00) Islamabad","(GMT+05:00) Karachi","(GMT+05:00) Tashkent","(GMT+05:30) Chennai","(GMT+05:30) Kolkata","(GMT+05:30) Mumbai","(GMT+05:30) New Delhi","(GMT+05:30) Sri Jayawardenepura","(GMT+05:45) Kathmandu","(GMT+06:00) Almaty","(GMT+06:00) Astana","(GMT+06:00) Dhaka","(GMT+06:00) Urumqi","(GMT+06:30) Rangoon","(GMT+07:00) Bangkok","(GMT+07:00) Hanoi","(GMT+07:00) Jakarta","(GMT+07:00) Krasnoyarsk","(GMT+07:00) Novosibirsk","(GMT+08:00) Beijing","(GMT+08:00) Chongqing","(GMT+08:00) Hong Kong","(GMT+08:00) Irkutsk","(GMT+08:00) Kuala Lumpur","(GMT+08:00) Perth","(GMT+08:00) Singapore","(GMT+08:00) Taipei","(GMT+08:00) Ulaanbaatar","(GMT+09:00) Osaka","(GMT+09:00) Sapporo","(GMT+09:00) Seoul","(GMT+09:00) Tokyo","(GMT+09:00) Yakutsk","(GMT+09:30) Adelaide","(GMT+09:30) Darwin","(GMT+10:00) Brisbane","(GMT+10:00) Canberra","(GMT+10:00) Guam","(GMT+10:00) Hobart","(GMT+10:00) Melbourne","(GMT+10:00) Port Moresby","(GMT+10:00) Sydney","(GMT+10:00) Vladivostok","(GMT+11:00) Magadan","(GMT+11:00) New Caledonia","(GMT+11:00) Solomon Is.","(GMT+11:00) Srednekolymsk","(GMT+12:00) Auckland","(GMT+12:00) Fiji","(GMT+12:00) Kamchatka","(GMT+12:00) Marshall Is.","(GMT+12:00) Wellington","(GMT+12:45) Chatham Is.","(GMT+13:00) Nuku'alofa","(GMT+13:00) Samoa","(GMT+13:00) Tokelau Is.",""]
+    function stateOptionGenerator(stateArray,selected){
+      selected = selected || "";
+      let output = "<option value='' style='display:none'></option>";
+      for (let state of stateArray){
+          let isSelected = state == selected ? "selected" : "";
+          output+= `<option value="${state}" ${isSelected}>${state}</option>`
+     }
+     return output;
+    }
+%>
+<div class="grid-container fluid">
+    <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+      <div class='cell small-12 medium-12 large-12'>
+        <h1>C-Term / Spring Semester Survey</h1>
+        <p style="font-weight:600"><%- locals.userAttributes.givenname%>, please use this form to tell us about your plans for C-Term / The Spring Semester</p>
+
+        <div class="help-form" id="IntentBlock">
+        <fieldset id="arrivingFrom" style="<%= queryResident == true  ? "" : "display:none"%>">
+          <legend><i class="fad fa-map-marker-smile"></i> Part A - Arriving From</legend>
+
+          <p>To determine which pre-arrival test you will require, we need to know your location roughly two weeks before you will arrive to campus for the start of the term/semester.</p>
+          <p>We need the full address: street address, city, state, ZIP code. <strong>Please complete by 11:59 p.m. January 3, 2021.</strong></p>
+          <p>As was the case in August students from within certain states will be expected to take their pre-arrival test at WPI and then return home until their assigned move-in day. Students from other states will be expected to take a test via Quest Diagnostics that will arrive in the mail. Further directions on your pre-arrival testing will be sent via email. Students arriving from within the United States will not be permitted to get a pre-arrival PCR test for their WPI move-in on their own.</p>
+          <p>For the following set of questions please answer for your anticipated location <strong>two weeks</strong> before your scheduled <strong>move-in date of <%= intent.fields.find(f => f.name === 'MoveInDateStart')['value']%></strong></p>
+
+          <h3 style="margin-bottom:0;">In which country will you be located two weeks before <%= intent.fields.find(f => f.name === 'MoveInDateStart')['value']%></h3>
+
+          <div class='grid-x grid-margin-x impact-boxes'>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="arrivingCountry-usa" name="arrivingCountry" value="USA" <%= intent.fields.find(f => f.name === 'ArrivingCountry')['value'] == "USA" ? "Checked" : ""%>>
+              <label for="arrivingCountry-usa">USA</label>
+            </div>
+            <div class="cell small-12 medium-auto">
+              <input type="radio" id="arrivingCountry-international" name="arrivingCountry" value="International" <%= intent.fields.find(f => f.name === 'ArrivingCountry')['value'] == "International" ? "Checked" : ""%>>
+              <label for="arrivingCountry-international">International Location</label>
+            </div>
+          </div>
+          <div id="international-block" style="display: none;">
+            <p>Please follow the travel guidance as indicated by the Commonwealth of Massachusetts and the United States. You will need a negative COVID-19 PCR test within 5 days of your arrival to the WPI campus in order to move-in to your residence hall. Please plan to bring your negative COVID-19 PCR test result with you on your move-in day for the Health Services staff to review.</p>
+          </div>
+          <div id="arriving-block" class="cell small-12 grid-x grid-margin-x" style="<%= intent.fields.find(f => f.name === 'ArrivingCountry')['value'] == "USA" ? "" : "display:none"%>">
+            <p style="font-size: .875rem;font-weight:600;margin-left:1em;margin-top:1em;">At What address will you be located two weeks before <%= intent.fields.find(f => f.name === 'MoveInDateStart')['value']%></p>
+            <div class="cell small-12">
+              <label class="form-label" for="arrivingAddress1">Address Line 1</label>
+              <input type="text" id="arrivingAddress1" name="arrivingAddress1" value="<%= intent.fields.find(f => f.name === 'ArrivingAddress1')['value']%>">
+            </div>
+            <div class="cell small-12">
+              <label class="form-label" for="arrivingAddress2">Address Line 2</label>
+              <input type="text" id="arrivingAddress2" name="arrivingAddress2" value="<%= intent.fields.find(f => f.name === 'ArrivingAddress2')['value']%>">
+            </div>
+            <div class="cell small-12">
+              <label class="form-label" for="arrivingCity">City</label>
+              <input type="text" id="arrivingCity" name="arrivingCity" value="<%= intent.fields.find(f => f.name === 'ArrivingCity')['value']%>">
+            </div>
+            <div class="cell small-12">
+              <label class="form-label" for="arrivingStateCode">State</label>
+              <select id="arrivingStateCode" name="arrivingStateCode">
+                <%- stateOptionGenerator(states,intent.fields.find(f => f.name === 'ArrivingStateCode')['value']) %>  
+              </select>
+            </div>
+            <div class="cell small-12">
+              <label class="form-label" for="arrivingZip">Zip</label>
+              <input type="text" id="arrivingZip" name="arrivingZip" value="<%= intent.fields.find(f => f.name === 'ArrivingZip')['value']%>">
+            </div>
+            <div class="cell small-12" id="boundry-block"style="<%= (intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "ME" ||  intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "VT" || intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "NH")? "" : "display:none"%>">
+              
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-4">
+                  <div class='grid-x grid-margin-x'>
+                    <p style="font-size: .875rem;font-weight:600;margin-left:1em;margin-top:1em;" id="splainer-text"></p>
+                    <div class="cell small-12">
+                      <input type="radio" id="arrivingBoundry-north" name="arrivingBoundry" value="North" <%= intent.fields.find(f => f.name === 'ArrivingBoundry')['value'] == "North" ? "Checked" : ""%>>
+                      <label for="arrivingBoundry-north" id="arrivingBoundry-north-label">North</label>
+                    </div>
+                    <div class="cell small-12">
+                      <input type="radio" id="arrivingBoundry-south" name="arrivingBoundry" value="South" <%= intent.fields.find(f => f.name === 'ArrivingBoundry')['value'] == "South" ? "Checked" : ""%>>
+                      <label for="arrivingBoundry-south" id="arrivingBoundry-south-label">South</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="cell small-12 medium-auto" id="boundry-splainer" style="justify-content: center;align-items: center;">
+                  <img class="boundmap" id="memap" src="/img/content/memap.png" alt ="Divided map of Maine showing all areas north of Portland as Northern Maine" style="<%= intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "ME" ? "" : "display:none"%>">
+                  <img class="boundmap"  id="nhmap" src="/img/content/nhmap.png" alt ="Divided map of New Hampshire showing all areas north of Manchester as Northern New Hampshire" style="<%= intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "ME" ? "" : "display:none"%>">
+                  <img class="boundmap" id="vtmap" src="/img/content/vtmap.png" alt ="Divided map of Vermont showing all areas north of Brattleboro as Northern Vermont" style="<%= intent.fields.find(f => f.name === 'ArrivingStateCode')['value'] == "ME" ? "" : "display:none"%>">
+                  
+                </div>
+              </div>
+              
+
+            </div>
+          </div>
+
+        </fieldset>
+
+        <div class="help-form" id="IntentBlock">
+          <fieldset>
+            <legend>Intent for <%=termLabel%></legend>
+            <h3 style="margin-bottom:0;">Do you plan to take <strong style="text-decoration: underline;font-weight: 800;">all</strong> your courses online in <%=termLabel%>?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="onlineOnly-yes" name="onlineOnly" value="Yes" <%= intent.fields.find(f => f.name === 'AllCoursesOnline')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="onlineOnly-yes"><i class='fas fa-laptop-house'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="onlineOnly-no" name="onlineOnly" value="No" <%= intent.fields.find(f => f.name === 'AllCoursesOnline')['value'] == "No" ? "Checked" : ""%>>
+                <label for="onlineOnly-no"><i class='fas fa-university'></i> No, I will come to campus to complete coursework</label>
+              </div>
+            </div>
+  
+            <h3 style="margin-bottom:0;">Apart from classes, will you come to campus for any other reason in <%=termLabel%>?</h3>
+            <p class="form-label-help">(studying, group projects, sports, research, a job, eating, library, working out, etc.)</p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="comeToCampus-yes" name="comeToCampus" value="Yes" <%= intent.fields.find(f => f.name === 'ComeToCampus')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="comeToCampus-yes"><i class='fas fa-check-circle'></i> Yes, I will come to campus for activities outside of coursework</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="comeToCampus-no" name="comeToCampus" value="No" <%= intent.fields.find(f => f.name === 'ComeToCampus')['value'] == "No" ? "Checked" : ""%>>
+                <label for="comeToCampus-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+            <h3 style="margin-bottom:0;">Are you employed by WPI</h3>
+            <p class="form-label-help">(work study, hourly employment, research assistant, teaching assistant, peer learning assistant, etc.)</p>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employedWPI-yes" name="employedWPI" value="Yes" <%= intent.fields.find(f => f.name === 'EmployedByWPI')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="employedWPI-yes"><i class='fas fa-check-circle'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employedWPI-no" name="employedWPI" value="No" <%= intent.fields.find(f => f.name === 'EmployedByWPI')['value'] == "No" ? "Checked" : ""%>>
+                <label for="employedWPI-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+
+            <h3 style="margin-bottom:0;">Which Timezone do you plan to take courses in?</h3>
+            <div class='grid-x grid-margin-x'>
+              <div class="cell small-12 medium-auto">
+                <select name="timeZone" id="timeZone">
+                  <%- stateOptionGenerator(tzs,intent.fields.find(f => f.name === 'TimeZone')['value']) %>  
+                </select>
+              </div>
+            </div>
+            </fieldset>
+            <fieldset>
+              <legend>Additional Details</legend>
+              <%if(!queryResident){ %>
+              <div id="requestHousing-block" style="display:none">         
+                <h3 style="margin-bottom:0;">Are you interested in moving on-campus for <%=termLabel%>?</h3>
+                <p class="form-label-help">Residence life staff will assess your request against current availability and contact you with more information</p>
+                <div class='grid-x grid-margin-x impact-boxes'>
+                  <div class="cell small-12 medium-auto">
+                    <input type="radio" id="requestHousing-yes" name="requestHousing" value="Yes" <%= intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "Yes" ? "Checked" : ""%>>
+                    <label for="requestHousing-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                  </div>
+                  <div class="cell small-12 medium-auto">
+                    <input type="radio" id="requestHousing-no" name="requestHousing" value="No" <%= intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "No" ? "Checked" : ""%>>
+                    <label for="requestHousing-no"><i class='fas fa-times-circle'></i> No</label>
+                  </div>
+                </div>
+
+                <div id="requestHousing-additional" style="<%= intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "Yes" ? "" : "display:none" %>">
+                  <div class='cell small-12'>
+                    <label for="housingBuilding" style="margin:0 1em;">Do you have a preferred building or buildings you would like to live in?</label>
+                    <textarea rows="4" id="housingBuilding" name="housingBuilding"><%= intent.fields.find(f => f.name === 'HousingRequestBuilding')['value']%></textarea>
+                  </div>
+                  <div class='cell small-12'>
+                    <label for="housingRoommate" style="margin:0 1em;">Do you have a preferred roomate or friend(s) you would like to live in?</label>
+                    <textarea rows="4" id="housingRoommate" name="housingRoommate"><%= intent.fields.find(f => f.name === 'HousingRequestFriends')['value']%></textarea>
+                  </div>
+                </div>
+                
+              </div>
+              <h3 id="noHousing" style="<%= intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "Yes" ? "" : "display:none" %>">If WPI is unable to provide on-campus housing...Where do you plan to live during <%=termLabel%>? </h3>
+              <h3 id="yesHousing"style="<%= (intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "No" || intent.fields.find(f => f.name === 'HousingNeeded')['value'] == "") ? "" : "display:none" %>">Where do you plan to live during <%=termLabel%>? </h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-greek" name="planToLive" value="Fraternity or Sorority House" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Fraternity or Sorority House" ? "Checked" : ""%>>
+                  <label for="planToLive-greek">Fraternity or Sorority House</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-offCampus-near" name="planToLive" value="Off-Campus Within 0.5 Miles in the US" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US" ? "Checked" : ""%>>
+                  <label for="planToLive-offCampus-near">Off-Campus<br>Within 0.5 Miles in the US</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-offCampus-far" name="planToLive" value="Off-Campus More Than 0.5 Miles Away in the US" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" ? "Checked" : ""%>>
+                  <label for="planToLive-offCampus-far">Off-Campus<br>More Than 0.5 Miles Away in the US</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="planToLive-international" name="planToLive" value="At An International Location" <%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "At An International Location" ? "Checked" : ""%>>
+                  <label for="planToLive-international">At An International Location</label>
+                </div>
+  
+              </div>
+            <% } %>
+            
+            <div id="offCampusBlock" style="<%= intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" ? "" : "display:none" %>">
+              <h3 style="margin-bottom:0;">Is this out of state?</h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="anotherState-yes" name="anotherState" value="Yes" <%= intent.fields.find(f => f.name === 'IsOutOfState')['value'] == "Yes" ? "Checked" : ""%>>
+                  <label for="anotherState-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="anotherState-no" name="anotherState" value="No" <%= intent.fields.find(f => f.name === 'IsOutOfState')['value'] == "No" ? "Checked" : ""%>>
+                  <label for="anotherState-no"><i class='fas fa-times-circle'></i> No</label>
+                </div>
+              </div>
+  
+            </div>
+            
+            <div id="address-block" class="cell small-12 grid-x grid-margin-x" style="<%= (intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Fraternity or Sorority House" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US") ? "" : "display:none"%>">
+              <p style="font-size: .875rem;font-weight:600;margin-left:1em;margin-top:1em">Please provide your <em>local</em> Address:</p>
+              <p  style="margin-left:1em;margin-top:-1em" class="form-label-help">Your <strong>Local Address</strong> is the address where you will be living while at WPI and participating in campus classes and activities.</p>
+              <div class="cell small-12">
+                <label class="form-label" for="address1">Address Line 1</label>
+                <input type="text" id="address1" name="address1" value="<%= intent.fields.find(f => f.name === 'Address1')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="address2">Address Line 2</label>
+                <input type="text" id="address2" name="address2" value="<%= intent.fields.find(f => f.name === 'Address2')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="city">City</label>
+                <input type="text" id="city" name="city" value="<%= intent.fields.find(f => f.name === 'City')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="state">State</label>
+                <select id="state" name="state">
+                  <%- stateOptionGenerator(states,intent.fields.find(f => f.name === 'State')['value']) %>  
+                </select>
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="zip">Zip</label>
+                <input type="text" id="zip" name="zip" value="<%= intent.fields.find(f => f.name === 'Zip')['value']%>">
+              </div>
+            </div>
+  
+            <div id="permAddress-block" style="<%= (intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus Within 0.5 Miles in the US" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "Off-Campus More Than 0.5 Miles Away in the US" || intent.fields.find(f => f.name === 'PlanToLive')['value'] == "At An International Location") ? "" : "display:none"%>">
+              <h3 style="margin-bottom:0;">Is this location at your permanent home?</h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="permAddress-yes" name="permAddress" value="Yes" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "Yes" ? "Checked" : ""%>>
+                  <label for="permAddress-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="permAddress-no" name="permAddress" value="No" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "No" ? "Checked" : ""%>>
+                  <label for="permAddress-no"><i class='fas fa-times-circle'></i> No</label>
+                </div>
+              </div>
+          </div>
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12">
+                <p style="font-size: .875rem;font-weight:600;margin: 1em 0 0 0;">If you have one, please provide your local Mobile Phone Number</p>
+                <p class="form-label-help">This should be a mobile number that you have active while on-campus that you can be reached at in relation to testing.</p>
+
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-area-code">Area Code</label>
+                <input type="text" id="telephone-area-code" name="telephone-area-code" value="<%= intent.fields.find(f => f.name === 'PhoneAreaCode')['value']%>" maxlength="6" placeholder="508">
+              </div>
+              <div class="cell small-12 medium-6">
+                <label class="form-label" for="telephone-number">Number</label>
+                <input type="text" id="telephone-number" name="telephone-number" value="<%= intent.fields.find(f => f.name === 'PhoneNumber')['value']%>" maxlength="12" placeholder="555-5555">
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-extension">Extension</label>
+                <input type="text" id="telephone-extension" name="telephone-extension" value="<%= intent.fields.find(f => f.name === 'PhoneExtension')['value']%>" maxlength="10">
+              </div>
+            </div>
+  
+  
+          </fieldset>
+
+          <p id="error1" class="error-text"></p>
+          <p id="error2" class="error-text"></p>
+          <button id="button-submit-help-form" class="button-submit">Submit Response</button>
+
+          <p style="font-size: 0.75rem;margin-top: 2em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+  
+        </div>
+  
+            
+  
+      </div>
+    </div>
+  </div>

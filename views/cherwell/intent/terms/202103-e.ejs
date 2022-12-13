@@ -1,0 +1,165 @@
+<%  const defInternational = (BannerUser.INTL_IND == "Y");
+    const defResident = (BannerUser.STARREZ == "TRUE");
+    const defFirstYear = (BannerUser.STUDENT_LEVEL == "01" && BannerUser.STYP_CODE == "N" && (BannerUser.COLLEGE_CODE == "24" || BannerUser.COLLEGE_CODE == "TR"));
+    const defGrad = (BannerUser.STUDENT_LEVEL == "05");
+    const defAthlete = (BannerUser.SPORTS.match(/\(([0-9]+)\)/)[1] > 0);
+    const currentTerm = "202003";
+    const currentPTerm = "E";
+    const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment(new Date(intent.fields.find(f => f.name === 'Deadline')['value'])))
+    // const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment('2020-12-13 09:00:00-05:00'))
+    const queryTerm = intent.fields.find(f => f.name === 'Term')['value'];
+    const queryPTerm = intent.fields.find(f => f.name === 'PTerm')['value'];
+    const termLabel = "E-Term / Summer";
+    const status = intent.fields.find(f => f.name === 'Status')['value'];
+    const states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","AS","DC","FM","GU","MH","MP","PW","PR","VI","AE","AA","AE","AE","AE","AP"]
+    const localStates = ["MA","CT", "ME", "NH", "NY", "PA", "RI", "VT"]
+    const queryResident = (defResident == true || intent.fields.find(f => f.name === 'IsResident')['value'] == "True") ? true : false; 
+    const tzs = ["(GMT-11:00) American Samoa","(GMT-11:00) International Date Line West","(GMT-11:00) Midway Island","(GMT-10:00) Hawaii","(GMT-09:00) Alaska","(GMT-08:00) Pacific Time (US & Canada)","(GMT-08:00) Tijuana","(GMT-07:00) Arizona","(GMT-07:00) Chihuahua","(GMT-07:00) Mazatlan","(GMT-07:00) Mountain Time (US & Canada)","(GMT-06:00) Central America","(GMT-06:00) Central Time (US & Canada)","(GMT-06:00) Guadalajara","(GMT-06:00) Mexico City","(GMT-06:00) Monterrey","(GMT-06:00) Saskatchewan","(GMT-05:00) Bogota","(GMT-05:00) Eastern Time (US & Canada)","(GMT-05:00) Indiana (East)","(GMT-05:00) Lima","(GMT-05:00) Quito","(GMT-04:00) Atlantic Time (Canada)","(GMT-04:00) Caracas","(GMT-04:00) Georgetown","(GMT-04:00) La Paz","(GMT-04:00) Santiago","(GMT-03:30) Newfoundland","(GMT-03:00) Brasilia","(GMT-03:00) Buenos Aires","(GMT-03:00) Greenland","(GMT-03:00) Montevideo","(GMT-02:00) Mid-Atlantic","(GMT-01:00) Azores","(GMT-01:00) Cape Verde Is.","(GMT+00:00) Edinburgh","(GMT+00:00) Lisbon","(GMT+00:00) London","(GMT+00:00) Monrovia","(GMT+00:00) UTC","(GMT+01:00) Amsterdam","(GMT+01:00) Belgrade","(GMT+01:00) Berlin","(GMT+01:00) Bern","(GMT+01:00) Bratislava","(GMT+01:00) Brussels","(GMT+01:00) Budapest","(GMT+01:00) Casablanca","(GMT+01:00) Copenhagen","(GMT+01:00) Dublin","(GMT+01:00) Europe/Berlin","(GMT+01:00) Ljubljana","(GMT+01:00) Madrid","(GMT+01:00) Paris","(GMT+01:00) Prague","(GMT+01:00) Rome","(GMT+01:00) Sarajevo","(GMT+01:00) Skopje","(GMT+01:00) Stockholm","(GMT+01:00) Vienna","(GMT+01:00) Warsaw","(GMT+01:00) West Central Africa","(GMT+01:00) Zagreb","(GMT+01:00) Zurich","(GMT+02:00) Athens","(GMT+02:00) Bucharest","(GMT+02:00) Cairo","(GMT+02:00) Harare","(GMT+02:00) Helsinki","(GMT+02:00) Jerusalem","(GMT+02:00) Kaliningrad","(GMT+02:00) Kyiv","(GMT+02:00) Pretoria","(GMT+02:00) Riga","(GMT+02:00) Sofia","(GMT+02:00) Tallinn","(GMT+02:00) Vilnius","(GMT+03:00) Baghdad","(GMT+03:00) Istanbul","(GMT+03:00) Kuwait","(GMT+03:00) Minsk","(GMT+03:00) Moscow","(GMT+03:00) Nairobi","(GMT+03:00) Riyadh","(GMT+03:00) St. Petersburg","(GMT+03:30) Tehran","(GMT+04:00) Abu Dhabi","(GMT+04:00) Baku","(GMT+04:00) Muscat","(GMT+04:00) Samara","(GMT+04:00) Tbilisi","(GMT+04:00) Volgograd","(GMT+04:00) Yerevan","(GMT+04:30) Kabul","(GMT+05:00) Ekaterinburg","(GMT+05:00) Islamabad","(GMT+05:00) Karachi","(GMT+05:00) Tashkent","(GMT+05:30) Chennai","(GMT+05:30) Kolkata","(GMT+05:30) Mumbai","(GMT+05:30) New Delhi","(GMT+05:30) Sri Jayawardenepura","(GMT+05:45) Kathmandu","(GMT+06:00) Almaty","(GMT+06:00) Astana","(GMT+06:00) Dhaka","(GMT+06:00) Urumqi","(GMT+06:30) Rangoon","(GMT+07:00) Bangkok","(GMT+07:00) Hanoi","(GMT+07:00) Jakarta","(GMT+07:00) Krasnoyarsk","(GMT+07:00) Novosibirsk","(GMT+08:00) Beijing","(GMT+08:00) Chongqing","(GMT+08:00) Hong Kong","(GMT+08:00) Irkutsk","(GMT+08:00) Kuala Lumpur","(GMT+08:00) Perth","(GMT+08:00) Singapore","(GMT+08:00) Taipei","(GMT+08:00) Ulaanbaatar","(GMT+09:00) Osaka","(GMT+09:00) Sapporo","(GMT+09:00) Seoul","(GMT+09:00) Tokyo","(GMT+09:00) Yakutsk","(GMT+09:30) Adelaide","(GMT+09:30) Darwin","(GMT+10:00) Brisbane","(GMT+10:00) Canberra","(GMT+10:00) Guam","(GMT+10:00) Hobart","(GMT+10:00) Melbourne","(GMT+10:00) Port Moresby","(GMT+10:00) Sydney","(GMT+10:00) Vladivostok","(GMT+11:00) Magadan","(GMT+11:00) New Caledonia","(GMT+11:00) Solomon Is.","(GMT+11:00) Srednekolymsk","(GMT+12:00) Auckland","(GMT+12:00) Fiji","(GMT+12:00) Kamchatka","(GMT+12:00) Marshall Is.","(GMT+12:00) Wellington","(GMT+12:45) Chatham Is.","(GMT+13:00) Nuku'alofa","(GMT+13:00) Samoa","(GMT+13:00) Tokelau Is.",""]
+    function stateOptionGenerator(stateArray,selected){
+      selected = selected || "";
+      let output = "<option value='' style='display:none'></option>";
+      for (let state of stateArray){
+          let isSelected = state == selected ? "selected" : "";
+          output+= `<option value="${state}" ${isSelected}>${state}</option>`
+     }
+     return output;
+    }
+%>
+<div class="grid-container fluid">
+    <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+      <div class='cell small-12 medium-12 large-12'>
+        <h1>E-Term / Summer Survey</h1>
+        <p style="font-weight:600"><%- locals.userAttributes.givenname%>, please use this form to tell us about your plans to come to campus for E-Term / Summer at WPI</p>
+
+        <div class="help-form" id="IntentBlock">
+          <fieldset>
+            <legend>Intent for <%=termLabel%></legend>
+            <h3 style="margin-bottom:0;">Will you be employed by, volunteering, or conducting in-person research at WPI's campus?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employed-yes" name="employed" value="Yes" <%= intent.fields.find(f => f.name === 'EmployedOnCampus')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="employed-yes"><i class='fas fa-university'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="employed-no" name="employed" value="No" <%= intent.fields.find(f => f.name === 'EmployedOnCampus')['value'] == "No" ? "Checked" : ""%>>
+                <label for="employed-no"><i class='fas fa-times-circle'></i> No, I will not come to campus</label>
+              </div>
+            </div>
+            
+            <div class="cell small-12" id="employedBlock"style="<%= intent.fields.find(f => f.name === 'EmployedOnCampus')['value'] == "Yes" ? "" : "display:none" %>">
+              <label class="form-label" for="employedSupervisor">Who is your supervisor for this work?</label>
+              <p  style="margin-top:-.5em" class="form-label-help">Please provide the person's full name, not just a department or building.</p>
+              <input type="text" id="employedSupervisor" name="employedSupervisor" value="<%= intent.fields.find(f => f.name === 'EmployedOnCampusSupervisor')['value']%>">
+              <div id="supError" style="display:none" class="error-text">Supervisor is a required field.</div>
+            </div>
+
+
+            <h3 style="margin-bottom:0;">This summer, are you living in a University-owned residence hall or property?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="summerHousing-yes" name="summerHousing" value="Yes" <%= intent.fields.find(f => f.name === 'SummerHousing')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="summerHousing-yes"><i class='fas fa-check-circle'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="summerHousing-no" name="summerHousing" value="No" <%= intent.fields.find(f => f.name === 'SummerHousing')['value'] == "No" ? "Checked" : ""%>>
+                <label for="summerHousing-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+            <div id="housing-reminder" style="<%=intent.fields.find(f => f.name === 'SummerHousing')['value'] == "Yes" ? "" : "display:none;" %>background:var(--color-lane);padding:1em;text-align: center;">
+              <i class="fas fa-info-circle"></i> Please reach out to <a href="mailto:res-services@wpi.edu" target="_blank" rel="norefer">Res Services</a> about summer housing if you have not already applied!
+            </div>
+
+            <h3 style="margin-bottom:0;">This summer, are you living in a fraternity/sorority house?</h3>
+            <div class='grid-x grid-margin-x impact-boxes'>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="summerGreekHousing-yes" name="summerGreekHousing" value="Yes" <%= intent.fields.find(f => f.name === 'SummerGreekHousing')['value'] == "Yes" ? "Checked" : ""%>>
+                <label for="summerGreekHousing-yes"><i class='fas fa-check-circle'></i> Yes</label>
+              </div>
+              <div class="cell small-12 medium-auto">
+                <input type="radio" id="summerGreekHousing-no" name="summerGreekHousing" value="No" <%= intent.fields.find(f => f.name === 'SummerGreekHousing')['value'] == "No" ? "Checked" : ""%>>
+                <label for="summerGreekHousing-no"><i class='fas fa-times-circle'></i> No</label>
+              </div>
+            </div>
+
+            </fieldset>
+
+            <fieldset>
+              <legend>Additional Details</legend>
+            
+            <div id="address-block" class="cell small-12 grid-x grid-margin-x" style="<%= (intent.fields.find(f => f.name === 'EmployedOnCampus')['value'] == "Yes" && intent.fields.find(f => f.name === 'SummerHousing')['value'] == "No") ? "" : "display:none" %>">
+              <div class="cell small-12">
+                <p style="font-size: .875rem;font-weight:600;margin-left:1em;margin-top:1em">Please provide your <em>local</em> Address:</p>
+                <p  style="margin-left:1em;margin-top:-1em" class="form-label-help">Your <strong>Local Address</strong> is the address where you will be living while coming to the WPI campus for summer.</p>
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="address1">Address Line 1</label>
+                <input type="text" id="address1" name="address1" value="<%= intent.fields.find(f => f.name === 'Address1')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="address2">Address Line 2</label>
+                <input type="text" id="address2" name="address2" value="<%= intent.fields.find(f => f.name === 'Address2')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="city">City</label>
+                <input type="text" id="city" name="city" value="<%= intent.fields.find(f => f.name === 'City')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="state">State</label>
+                <select id="state" name="state">
+                  <%- stateOptionGenerator(states,intent.fields.find(f => f.name === 'State')['value']) %>  
+                </select>
+              </div>
+              <div class="cell small-12">
+                <label class="form-label" for="zip">Zip</label>
+                <input type="text" id="zip" name="zip" value="<%= intent.fields.find(f => f.name === 'Zip')['value']%>">
+              </div>
+              <div class="cell small-12">
+                <h3 style="margin-bottom:0;">Is this location at your permanent home?</h3>
+                <div class='grid-x grid-margin-x impact-boxes'>
+                  <div class="cell small-12 medium-auto">
+                    <input type="radio" id="permAddress-yes" name="permAddress" value="Yes" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "Yes" ? "Checked" : ""%>>
+                    <label for="permAddress-yes"><i class='fas fa-check-circle'></i> Yes</label>
+                  </div>
+                  <div class="cell small-12 medium-auto">
+                    <input type="radio" id="permAddress-no" name="permAddress" value="No" <%= intent.fields.find(f => f.name === 'IsPermanentHome')['value'] == "No" ? "Checked" : ""%>>
+                    <label for="permAddress-no"><i class='fas fa-times-circle'></i> No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12">
+                <p style="font-size: .875rem;font-weight:600;margin: 1em 0 0 0;">If you have one, please provide your local Mobile Phone Number</p>
+                <p class="form-label-help">This should be a mobile number that you have active while on-campus that you can be reached at in relation to testing.</p>
+
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-area-code">Area Code</label>
+                <input type="text" id="telephone-area-code" name="telephone-area-code" value="<%= intent.fields.find(f => f.name === 'PhoneAreaCode')['value']%>" maxlength="6" placeholder="508">
+              </div>
+              <div class="cell small-12 medium-6">
+                <label class="form-label" for="telephone-number">Number</label>
+                <input type="text" id="telephone-number" name="telephone-number" value="<%= intent.fields.find(f => f.name === 'PhoneNumber')['value']%>" maxlength="12" placeholder="555-5555">
+              </div>
+              <div class="cell small-12 medium-3">
+                <label class="form-label" for="telephone-extension">Extension</label>
+                <input type="text" id="telephone-extension" name="telephone-extension" value="<%= intent.fields.find(f => f.name === 'PhoneExtension')['value']%>" maxlength="10">
+              </div>
+            </div>
+  
+  
+          </fieldset>
+
+          <p id="error1" class="error-text"></p>
+          <p id="error2" class="error-text"></p>
+          <button id="button-submit-help-form" class="button-submit">Submit Response</button>
+          <p style="font-size: 0.75rem;margin-top: 2em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+        </div>
+        </div>
+  
+            
+  
+      </div>
+    </div>
+  </div>

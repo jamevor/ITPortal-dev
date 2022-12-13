@@ -1,0 +1,8 @@
+<li data-articleid="<%= article.id %>" class="cell article-card-item">
+  <a class="article-card" href="<%= locals.edit ? '#' : '/article/' + article.id %>">
+    <h3 class="article-card-title"><%- article.title %></h3>
+    <% if (locals.edit) { %>
+      <button class='remove-article-card-button'><i class='fas fa-times-circle'></i></button>
+    <% } %>
+  </a>
+</li>

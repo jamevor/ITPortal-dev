@@ -1,0 +1,254 @@
+<%
+const endpoint = locals.group ? '/api/v1/group/update/one/' + group.id : '/api/v1/group/create/one';
+const method = locals.group ? 'PUT' : 'POST';
+
+const yesPermission ='<i class="group-level-yes fas fa-check-circle"></i>';
+const noPermission = '<i class="group-level-no fas fa-times-square"></i>';
+
+const contentEditable = locals.edit ? "contenteditable=true" : "";
+
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script type='text/javascript' src='/js/console/group/view.js' defer></script>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <script type='text/javascript' src='/js/console/group/edit.js' defer></script>
+  <% } %>
+  <style>
+      .user-name {
+        margin-bottom: 0;
+        margin-top: .5em;
+        line-height: 1;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+    
+      .user-title {
+        font-size: 1em;
+        font-family: 'Merriweather', Serif;
+        color: var(--color-body-subtitle);
+      }
+    
+      @media screen and (max-width: 39.9375em) {
+        .profile-box {
+          text-align: center;
+        }
+    
+        .user-avatar {
+          margin: 0 auto;
+        }
+      }
+      select.permission-level, select.permission-level.none {
+        background-color:var(--color-body);
+        color:var(--color-body-subtitle);
+      }
+      select.permission-level.read {
+        color:var(--color-bright-1);
+      }
+      select.permission-level.create {
+        color:var(--color-bright-2);
+      }
+      select.permission-level.author {
+        color:var(--color-bright-5);
+      }
+      select.permission-level.publish {
+        color:var(--color-bright-3);
+      }
+      select.permission-level.delete {
+        color:var(--color-bright-4);
+      }
+      select.permission-level > option {
+        background-color: var(--color-body);
+        color:var(--color-body-text);
+      }
+    </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <% if (locals.edit) { %>
+    <% if (locals.group) { %>
+      <input type='hidden' id='group-id' name='groupID' value='<%= group.id %>'>
+    <% } %>
+    <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+    <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+  <% } %>
+  
+  <div class="grid-container fluid swim-lane user" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x align-justify">
+  
+  
+        <div class="cell small-12 medium-8 large-7 two-col-content">
+          <div class="profile-box">
+            <div class="grid-x grid-margin-x align-justify">
+              <div class="cell small-12 medium-auto">
+                <h1 class="user-name" <%= contentEditable %> <%- locals.edit ? 'placeholder="Group Title"' : '' %>><%= locals.group ? group.title : '' %></h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="swim-lane">
+
+            <% if (locals.edit && (user.isAdmin || user.isSuperUser)) { %>
+              <p style="margin-bottom:0;">Is Super</p>
+              <div class="switch">
+                <input class="switch-input" id="isSuper" type="checkbox" name="isSuper" <%- locals.group && group.isSuper ? 'checked' : '' %>>
+                <label class="switch-paddle" for="isSuper">
+                  <span class='show-for-sr'>Is Super</span>
+                  <span class='switch-active'>Yes</span>
+                  <span class='switch-inactive'>No</span>
+                </label>
+              </div>
+            <% } %>
+
+            <h2 style="font-size: 1.5em;">Group Permissions</h2>
+            <table class="table" id="permissions-table">
+              <thead>
+                <tr>
+                  <th>Permission</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const permission of permissions) { %>
+                  <% if (locals.edit) { %>
+                    <tr>
+                      <td><%= permission.title %></td>
+                      <td>
+                        <select class="permission-level <%= locals.group && group.groupPermissionLevels.filter(gpl => gpl.permission.id === permission.id).length ? group.groupPermissionLevels.filter(gpl => gpl.permission.id === permission.id)[0].permissionLevel.title : 'none' %>" data-permissionid="<%= permission.id %>">
+                          <option data-permissionlevelclass="none" <%= locals.group && group.groupPermissionLevels && group.groupPermissionLevels.length && group.groupPermissionLevels.filter(gpl => gpl.permission.id === permission.id).length ? '' : 'selected' %> value="0">0 - none</option>
+                          <% for (const permissionLevel of locals.permissionLevels) { %>
+                            <option data-permissionlevelclass="<%= permissionLevel.title %>" value="<%= permissionLevel.id %>" <%= locals.group && group.groupPermissionLevels.filter(gpl => gpl.permission.id === permission.id).length && group.groupPermissionLevels.filter(gpl => gpl.permission.id === permission.id)[0].permissionLevel.id === permissionLevel.id ? 'selected' : '' %>><%= permissionLevel.id + ' - ' + permissionLevel.title %></option>
+                          <% } %>
+                        </select>
+                      </td>
+                    </tr>
+                  <% } else { %>
+                    <% if (locals.group && group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id)) { %>
+                      <tr>
+                        <td><%= permission.title %></td>
+                        <td>
+                          <div class="group-levels">
+                            <div data-tooltip tabindex="1" title="Read Published" class="bottom group-level-item group-level-readPublic"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && (gpl.idPermissionLevel === null || gpl.idPermissionLevel > 0)) ? yesPermission : noPermission %></div>
+                            <div data-tooltip tabindex="1" title="Read" class="bottom group-level-item group-level-read"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && gpl.idPermissionLevel >= 1) ? yesPermission : noPermission  %></div>
+                            <div data-tooltip tabindex="1" title="Create" class="bottom group-level-item group-level-create"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && gpl.idPermissionLevel >= 2) ? yesPermission : noPermission  %></div>
+                            <div data-tooltip tabindex="1" title="Author" class="bottom group-level-item group-level-author"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && gpl.idPermissionLevel >= 3) ? yesPermission : noPermission  %></div>
+                            <div data-tooltip tabindex="1" title="Publish" class="bottom group-level-item group-level-publish"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && gpl.idPermissionLevel >= 4) ? yesPermission : noPermission  %></div>
+                            <div data-tooltip tabindex="1" title="Delete" class="bottom group-level-item group-level-delete"><%- group.groupPermissionLevels.some(gpl => gpl.idPermission === permission.id && gpl.idPermissionLevel >= 5) ? yesPermission : noPermission  %></div>
+                          </div>
+                        </td>
+                      </tr>
+                    <% } %>
+                  <% } %>
+                <% } %>
+              </tbody>
+            </table>
+
+
+            <h2 style="font-size: 1.5em;">Group Members</h2>
+            <% if (locals.edit) { %>
+              <input type="hidden" id="user" name="user">
+              <label for="add-user-input">User Email</label>
+              <div class="input-group">
+                <input type="text" id="add-user-input" name="add-user-input" class="input-group-field ez-input">
+                <div class="input-group-button">
+                  <button id="add-user-button" class='button-link-item'><i class="fas fa-plus"></i> Add</button>
+                </div>
+              </div>
+            <% } %>
+            <table class="table" id="members-table">
+              <thead>
+                <tr>
+                  <% if (locals.edit) { %>
+                    <th>ID</th>
+                  <% } %>
+                  <th>Member</th>
+                  <th>Email</th>
+                  <% if (locals.edit) { %>
+                    <th></th>
+                  <% } %>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (locals.group && Array.isArray(group.users)) { %>
+                  <% for (const user_ of group.users) { %>
+                    <tr>
+                      <% if (locals.edit) { %>
+                        <td><%= user_.id %></td>
+                      <% } %>
+                      <td><%- user_.givenname + ' ' + user_.surname %><%- user_.id === locals.user.id ? '&nbsp;<span class="label" style="background:#36d657;">It\'s You!</span>' : '' %></td>
+                      <td><%- user_.username %></td>
+                      <% if (locals.edit) { %>
+                        <td><button class='button-remove-user'><i class='fas fa-minus-circle'></i> Remove</button></td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="cell small-12 medium-4 two-col-sidebar">
+
+          <div class="box card">
+            <h2>About</h2>
+  
+            <h3>ID</h3>
+            <p><%= locals.group && group.id ? group.id : '' %></p>
+            <h3>GUID</h3>
+            <p><%= locals.group && group.guid ? group.guid : '' %></p>
+            <h3>Members</h3>
+            <p><%= locals.group && group.users ? group.users.length : '0' %></p>
+  
+          </div>
+
+
+          <% if(locals.group && (group.createdAt || group.updatedAt) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+              <p><strong>Created:</strong> <%= locals.group && group.createdAt ? moment(group.createdAt).format('ll') : '' %></p>
+              <p><strong>Modified:</strong> <%= locals.group && group.updatedAt ? moment(group.updatedAt).format('ll') : '' %></p>
+            </div>
+          <% } %>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if (locals.edit) { %>
+    <%- include('../partials/components/edit.ejs', {
+      entityTitle: 'Group',
+      entityID: locals.group && group.id ? group.id : 'New'
+    }); %>
+        <%
+
+        const toasts = [
+          {
+            id: 'toast-save-success',
+            type: 'success',
+            title: 'Success',
+            message: 'Group has been saved',
+            show: false
+          },
+          {
+            id: 'toast-save-error',
+            type: 'error',
+            title: 'Whoops',
+            message: 'Something went wrong trying to save the group',
+            show: false
+          }
+        ];
+        %>
+        <%- include('../partials/components/toaster.ejs', { toasts }); %>
+  <% } %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

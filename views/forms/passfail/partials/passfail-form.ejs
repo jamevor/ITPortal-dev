@@ -1,0 +1,292 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  .course-item{
+    display: flex;
+    background: var(--color-chrome);
+    padding: 1em;
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    justify-content: space-between;
+    border: 1px solid var(--color-lane);
+    transition: all .5s ease;
+    margin-bottom:.5em;
+  }
+  .course-item:hover{
+    background: var(--color-lane-subtless);
+    border: 1px solid var(--color-lane-subtle);
+  }
+  .course-item-name{
+    font-size: .875em;
+    font-weight: 600;
+    line-height: 1;
+    color:var(--color-pop);
+  }
+  .course-item-crn, .course-item-current-gmod{
+    font-size: .6875em;
+    color: var(--color-body-subtitle);
+    margin-top: .25em;
+  }
+  .course-item-details{
+    width:60%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .course-item-buttons{
+    width:40%;
+  }
+  .note{
+    position:relative;
+  }
+
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  },
+  {
+    id: 'toast-courses',
+    type: 'info',
+    title: 'No Changes',
+    message: 'No changes to grading formats were detected; You do not need to submit this form if you are not requesting any changes',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container help-form">
+  <div class="grid-x grid-margin-x align-center">
+    <div class='cell small-12 medium-8 large-8'>
+      <div class='grid-x grid-margin-x'>
+
+        <div class='cell box'>
+          <% if (locals.user && user.id && locals.userAttributes) { %>
+            <div class='grid-x grid-margin-x input-box'>
+              <div class='cell small-6 box-verified-profile'>
+                <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+              </div>
+
+              <div class='cell small-6 box-verified-info'>
+                <p id="full-name" class="content" style="margin:0;"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                <p id="wpi-id" class="content2"><%= userAttributes['user.employeeid'] %></p>
+                <p id="wpi-email" class="content"><i class="fas fa-envelope-square"></i></i> <%= userAttributes.emailaddress %></p>
+
+              </div>
+              
+            </div>
+
+          <% } %>
+
+        </div>
+    
+        <div class='cell' style="margin-top:1em;">
+
+    
+          <h3 style="margin-bottom:0; font-size:1.25em;">My Courses</h3>
+
+          <% if (Array.isArray(locals.courses) && courses.length) { %>
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-info-circle color-bright-1"></i> Using this Form
+              </div>
+              <div class="note-message">  
+                <p>For each of your courses if you would like to change the grading format to Pass/NR select the box</p>
+              </div>
+            </div>
+          <% } %>
+
+
+          <fieldset id="courses-list">
+            <% const studentLevel = customer.fields.find(f => f.name === 'AcademicLevel')['value']%>
+            <% if (studentLevel == 'Undergraduate' || studentLevel == 'Mass Academy at WPI') { %>
+              <% if (Array.isArray(locals.courses) && courses.length) { %>
+                <% for (const course of locals.courses) { %>
+                  <div class="course-item" id="course_<%- course.cour_sec_def_referenceID %>">
+                    <input type="hidden" id="course_<%- course.cour_sec_def_referenceID %>_name" name="course_<%- course.CRN %>_name" value="<%- course.Course_Title %>">
+                    <input type="hidden" id="course_<%- course.cour_sec_def_referenceID %>_CRN" name="course_<%- course.CRN %>_CRN" value="<%- course.cour_sec_def_referenceID %>">
+                    <div class="course-item-details">
+                      <div class="course-item-name"><%- course.Course_Title %></div>
+                      <div class="course-item-crn"><%-course.Course_Definition %></div>
+                    </div>
+                    <div class="course-item-buttons">
+                      <div class='grid-x grid-margin-x impact-boxes'>
+                        <div class="show-for-sr cell small-12 medium-12 align-center">Grading Format</div>
+                        <div class="cell small-12">
+                          <input type="checkbox" id="course_<%- course.cour_sec_def_referenceID %>_choice_pf" name="course_<%- course.cour_sec_def_referenceID %>_choice" value="Pass/NR">
+                          <label for="course_<%- course.cour_sec_def_referenceID %>_choice_pf">Use Pass/NR</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <%# user has no courses or course fetch failed %>
+                <p class="text-center">You do not appear to have any eligible course enrollments at this time. <br>If you believe this to be in error, please use the comment box to provide details.</p>
+                <p class="text-center">Your course must be graded to be eligible to select the Pass/NR or NC option.</p>
+              <% } %>
+            <% } else { %>
+              <%# user is not undergrad %>
+              <p class="text-center">This form can be used by <strong>undergraduate and Mass Academy</strong> students to choose the Pass/NR option instead of traditional letter grading.</p>
+              <p class="text-center">According to our records you currently show as <strong><%=studentLevel || 'something other than one of these options'%></strong>.</p>
+            <% } %>
+          </fieldset>
+
+          <label for="details">Do you have any additional comments? <span style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">(optional)</span></label>
+          <textarea id="details" name="details" rows="5"></textarea>
+
+          <button id="button-submit-help-form" class="button-submit">Submit Request</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+          
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</div>

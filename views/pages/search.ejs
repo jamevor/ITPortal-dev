@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/instantsearch.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/search.js'></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<input type="hidden" id="algolia-index" value="<%= locals.algoliaIndex %>">
+
+<div class="search">
+  <div class="grid-container fluid swim-lane pop">
+    <div class="grid-container">
+      <h1 class="text-center"><i class="fas fa-sm fa-search"></i> Search</h1>
+      <div class="grid-x align-center">
+        <div class="cell medium-8" id="searchbox">
+          
+        </div>
+        <div class="cell medium-8" id="voicesearch" style="display:none">
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/components/tech-svg.ejs'); %>
+  </div>
+
+  <div class="grid-container swim-lane">
+    <div class="grid-x grid-margin-x grid-margin-y align-justify">
+
+      <div class="cell medium-3 sidebar">
+
+
+        <div class="box card">
+          <h2>Filters</h2>
+          <h3>By Type</h3>
+          <div id="refinement-type"></div>
+          <h3>By Tag</h3>
+          <div id="refinement-tag"></div>
+          <h3>By Audience</h3>
+          <div id="refinement-audience"></div>
+          <h3>By Alias</h3>
+          <div id="refinement-alias"></div>
+
+          <div id="current-refinements"></div>
+
+        </div>
+
+        <div class="box card">
+          <div class="cell medium-12" id="stats"></div>
+        </div>
+      </div>
+      <div class="cell medium-8">
+        <div class="grid-x">
+          <div class="cell medium-12">
+            <h2>Results</h2>
+          </div>
+        </div>
+
+        <div class="grid-x" id="hits">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

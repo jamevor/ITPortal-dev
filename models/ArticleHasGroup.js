@@ -1,0 +1,31 @@
+'use strict';
+module.exports = class ArticleHasGroup extends require('sequelize').Model {
+	static init(sequelize, DataTypes) {
+		return super.init({
+			idArticle: {
+				type: DataTypes.INTEGER,
+				primaryKey: true
+			},
+			idGroup: {
+				type: DataTypes.INTEGER,
+				primaryKey: true
+			},
+			guid: {
+				type: DataTypes.UUID,
+				defaultValue: DataTypes.UUIDV4
+			}
+		}, {
+			sequelize,
+			timestamps: true,
+			freezeTableName: true,
+			modelName: 'articleHasGroup',
+			tableName: 'articleHasGroup',
+			indexes: [
+				{
+					unique: true,
+					fields: ['guid']
+				}
+			]
+		});
+	}
+};

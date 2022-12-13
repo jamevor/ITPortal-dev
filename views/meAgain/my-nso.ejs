@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+<style>
+
+ .me-box-items .box-item{
+  background: var(--color-body);
+    padding: 1em;
+    border-radius: 3px;
+    color: var(--color-body-text);
+    box-shadow: var(--shadow-standard-y);
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    flex-direction: column;
+    justify-content: center;
+ }
+ .me-box-items .box-item:hover,.me-box-items .box-item:focus,.me-box-items .box-item:active{
+    box-shadow:var(--shadow-standard-y-h)
+ }
+ .box-item-title{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+ }
+ .box-item-date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+ }
+ .me-box.group.nso-highlight{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url('/img/content/nso1.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    justify-content: center;
+ }
+ .nso-highlight h1{
+    color: var(--color-light);
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 11px rgb(0 0 0 / 40%);
+ }
+ .nso-highlight .person-name{
+  -webkit-text-stroke: 1px  var(--color-light);
+  text-stroke:  1px  var(--color-light);
+  color:var(--color-pop)
+ }
+ .me-quicklink.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-quicklink.disabled:hover,.me-quicklink.disabled:focus,.me-quicklink.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-link-item.disabled:hover{
+  cursor:not-allowed;
+  box-shadow: var(--shadow-standard-y)
+ }
+ .fye-button{
+  background: linear-gradient(to right, #6d5faa 0%,#4a4077 100%);
+  color: #FFF;
+  margin-bottom:1em;
+  padding: 3px;
+  box-sizing: var(--shadow-standard-y);
+  display: flex;
+  justify-content: space-between;
+  width: auto;
+ }
+ .fye-button i{
+  padding:.5em
+ }
+ .fye-button:hover,.fye-button:active,.fye-button:focus{
+  background: #4a4077;
+  color: #FFF;
+  box-sizing: var(--shadow-standard-y-h);
+ }
+ .fye-button > span{
+  display: flex;
+    padding: 1em;
+    border: solid 1px #fff;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 1.25em;
+    font-weight: 600;
+    width: 100%;
+ }
+
+ .fye-button.canvas{
+  background: linear-gradient(to right, #23a9e7 0%,#1978a4 100%);;
+ }
+ .fye-button.canvas:hover,.fye-button.canvas:active,.fye-button.canvas:focus{
+  background: #1978a4;
+ }
+
+ .wpi-news-item-dateBig{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+ }
+ .wpi-news-item-dateBig span:first-of-type{
+  font-size:2em;
+ }
+ .wpi-news-item-dateBig span:last-of-type{
+    font-size: .875em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+ }
+ .wpinews-cards-wrapper, .news-cards-wrapper {
+    height: auto;
+}
+.wpi-news-item-content {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+.wpi-news-item {
+    height: auto;
+}
+.me-quicklinkcompact{
+    color: var(--color-pop);
+    text-decoration: underline;
+    margin-bottom: 0.5em;
+    line-height: 1;
+
+}
+.me-quicklinkcompact:hover,.me-quicklinkcompact:active,.me-quicklinkcompact:focus{
+  color: var(--color-pop-h);
+}
+.me-section .paper{
+  padding: 2em 1em 1em 1em;
+    background: var(--color-chrome);
+    box-shadow: var(--shadow-standard-y);
+    border-radius: 3px;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-size: 12px;
+}
+.news-sub-item-icon {
+  z-index: 1;
+}
+.me-link-item-text,
+.news-sub-item-event h3.news-sub-title{
+  font-size: .875em;
+}
+.news-sub-item:before {
+  z-index: 0;
+}
+
+  .bigDate{
+    display: flex;
+    flex-direction: column;
+  }
+  .bigDate-num{
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin-bottom: -0.25em;
+  }
+  .bigDate-mon{
+    text-align: center;
+    font-size: .875em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    letter-spacing: 1px;
+    margin-bottom: 1em;
+  }
+  .wpi-news-item-title {
+    font-size: .75em;
+  }
+  .wpi-news-item-title span{
+    font-size: .75em;
+    color: var(--color-body-subtitle);
+    line-height: 1;
+  }
+  h3.section-header{
+    font-size: .875em;
+    margin: 0;
+    color: var(--color-pop);
+    font-weight: 600;
+  }
+  h3.section-header span{
+    color: var(--color-body-subtitle);
+    font-weight: 400;
+  }
+  .videoembed{
+    overflow: hidden;
+    position: relative;
+    margin-bottom:1em
+  }
+  .videoembed h3{
+    font-weight: 600;
+    font-size: .875em;
+    margin-bottom: 0.5em;
+    position: relative;
+    overflow: hidden;
+    color: var(--color-body-headers);
+    text-overflow: ellipsis;
+  }
+  .videoembed h3:hover{
+    color: var(--color-body-headers);
+
+  }
+  .videoembed img{
+    width: 100%;
+    object-fit: cover;
+  }
+  .videoembed p{
+    position: absolute;
+    top: 6em;
+    right: 0.25em;
+    color: var(--color-light);
+    margin: 0;
+    background: rgba(0,0,0,.4);
+    padding: 0.25em;
+    font-size: .8em;
+  }
+  .videoembed::after {
+    content: '\f144';
+    font-size: 4em;
+    font-family: 'Font Awesome 5 Pro';
+    color: var(--color-light);
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0.2em;
+    justify-content: center;
+    opacity: .2;
+    font-weight: 800;
+    text-shadow: 1px 1px 3px rgb(0 0 0 / 20%);
+    transition:all .5s ease
+  }
+  .videoembed:hover::after {
+      content: '\f144';
+      font-family: 'Font Awesome 5 Pro';
+      opacity: .8;
+  }
+  @media screen and (max-width: 39.9375em) {
+      .me-quicklinkcompact {
+      color: var(--color-pop);
+      text-decoration: underline;
+      margin: 0.5em;
+      line-height: 1;
+      text-align: center;
+      padding: 0.5em;
+    }
+  }
+</style>
+</head>
+<%
+      const showUser = locals.user ? userAttributes.givenname : null;
+      const isLoggedIn = locals.user ? true : false;
+    %>
+<%- include('../partials/layout/top.ejs'); %>
+<%if(isLoggedIn){%>
+<%- include('./partials/top.ejs')%>
+<%}%>
+<% //Check if they have an active record
+if(true){ %>
+  <%if(true){ %>
+
+    
+      <!--Top Bar-->
+      <div class="grid-container me-section">
+        <div class="me-box group grid-x grid-padding-x nso-highlight">
+         <h1>Welcome to WPI <span class="person-name"><%=showUser%></span>!</h1>
+          <div class="grid-container me-box-items grid-x grid-margin-x" data-smooth-scroll data-offset="100">
+          </div>
+        </div>
+      </div>
+      <div class="grid-container me-section" style="padding:0">
+        <div class="grid-x grid-margin-x">
+          <div class="cell small-12 large-3">
+            <h2 class="section-header">Important Links</h2>
+            <div class="grid-y">
+              <%if(!isLoggedIn){%>
+              <a class="cell small-12 fye-button canvas" href="/login" referrerpolicy="same-origin">
+                <span>
+                  
+                  Students! Looking for personalized NSO Info?<br>
+                  Sign in
+                </span>
+              </a>
+              <%}%>
+              <a class="cell small-12 fye-button" href="https://fye.wpi.edu/" target="_blank"><span><span>First Year Experience Website</span><i class="fas fa-arrow-circle-right"></i></span></a>
+              <%if(isLoggedIn){%>
+              <a class="cell small-12 fye-button canvas" href="https://canvas.wpi.edu/courses/40863" target="_blank"><span><span>NSO Canvas Site</span><i class="fas fa-arrow-circle-right"></i></span></a>
+              <%}%>
+            </div>
+            <div class="grid-container me-section" style="padding:0">
+                  <h2 class="section-header">Additional Resources</h2>
+                  <div class="grid-x grid-margin-x small-up-1">
+                    <a href="https://www.wpi.edu/offices/academic-advising" target="_blank" class="cell me-quicklinkcompact">Academic Advising</a>
+                    <a href="https://www.wpi.edu/student-experience/resources/accessibility-services" target="_blank" class="cell me-quicklinkcompact">Accessibility Services</a>
+                    <a href="https://www.wpi.edu/student-experience/resources/collegiate-religious-center" target="_blank" class="cell me-quicklinkcompact">Collegiate Religious Center</a>
+                    <a href="https://www.wpi.edu/coming-to-campus" target="_blank" class="cell me-quicklinkcompact">Coming to Campus</a>
+                    <a href="https://www.wpi.edu/offices/dining-services" target="_blank" class="cell me-quicklinkcompact">Dining Services</a>
+                    <a href="https://www.wpi.edu/offices/office-diversity-inclusion-and-multicultural-education-odime " target="_blank" class="cell me-quicklinkcompact">Diversity, Inclusion and Multicultural Education</a>
+                    <a href="https://www.wpi.edu/student-experience/health-counseling/health-services" target="_blank" class="cell me-quicklinkcompact">Health Services</a>
+                    <a href="https://78144ca1-05e8-49cb-8834-aafbe3c6423d.filesusr.com/ugd/0f40b2_87451ecbd2fc47248d51777b07e90427.pdf" target="_blank" class="cell me-quicklinkcompact">Houses of Worship in Worcester, MA (PDF)</a>
+                    <a href="https://www.wpi.edu/offices/international-house/students" target="_blank" class="cell me-quicklinkcompact">International Student Life</a>
+                    <a href="https://www.wpi.edu/offices/residential-services-office" target="_blank" class="cell me-quicklinkcompact">Residential Services</a>
+                    <a href="https://www.wpi.edu/offices/student-activities" target="_blank" class="cell me-quicklinkcompact">Student Activities</a>
+
+                    
+
+                  </div>
+                </div>  
+          </div>
+          <div  class="cell small-12 large-9">
+            <div class="grid-container me-section" style="padding:0">
+                <h2 class="section-header">Calendar of Programs</h2>
+                <div class="wpinews-cards-wrapper grid-x grid-margin-x small-up-2 medium-up-3 large-up-4">
+
+                  <% if(moment().utc().isBefore("2022-07-07T00:00:00Z")) { %>
+                  <a class="cell small-12 medium-3 wpi-news-item grid-x" href="https://wpi.zoom.us/j/98346879790" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">6</span>
+                        <span class="bigDate-mon">July</span>
+                      </div>
+                      <h3 class="wpi-news-item-title">Living in a Caring Community</h3>
+                      <p class="wpi-news-item-date">Jul 6, 2022 3:00 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-07-12T00:00:00Z")) { %>
+                  <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/94974689849" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">11</span>
+                        <span class="bigDate-mon">July</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> Great Problems Seminar <br><span>Tackling Global and Grand Challenges in the First Year</span></h3>
+                      <p class="wpi-news-item-date">Jul 11, 2022 3:30 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-07-26T00:00:00Z")) { %>
+                  <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/96288959215" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">25</span>
+                        <span class="bigDate-mon">July</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> Involvement at WPI</h3>
+                      <p class="wpi-news-item-date">Jul 25, 2022 3:00 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-07-30T00:00:00Z")) { %>
+                  <a class="cell wpi-news-item grid-x" href=" https://wpi.zoom.us/j/95022310426" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">29</span>
+                        <span class="bigDate-mon">July</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> How to Support Your Student's Transition to College <br><span>(Parents)</span></h3>
+                      <p class="wpi-news-item-date">Jul 29, 2022 2:30 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-08-04T00:00:00Z")) { %>
+                  <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/94738723020" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">3</span>
+                        <span class="bigDate-mon">August</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> Career Development for First Year Students</h3>
+                      <p class="wpi-news-item-date">Aug 3, 2022 3:00 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-08-06T00:00:00Z")) { %>
+                  <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/92361029814" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">5</span>
+                        <span class="bigDate-mon">August</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> What to Expect at New Student Orientation</h3>
+                      <p class="wpi-news-item-date">Aug 5, 2022 3:00 PM</p>
+                    </div>
+                    <%}%>
+                  <% if(moment().utc().isBefore("2022-08-12T00:00:00Z")) { %>
+                    <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/94458040687" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">11</span>
+                        <span class="bigDate-mon">August</span>
+                      </div>
+                      <h3 class="wpi-news-item-title"> A Road to Success: An Alumni Panel</h3>
+                      <p class="wpi-news-item-date">Aug 11, 2022 3:00 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                  <% if(moment().utc().isBefore("2022-08-15T00:00:00Z")) { %>
+                    <a class="cell wpi-news-item grid-x" href="https://wpi.zoom.us/j/94894354788" target="_blank" rel="noopener">
+                    <div class="cell small-12 wpi-news-item-content">
+                      <div class="bigDate">
+                        <span class="bigDate-num">14</span>
+                        <span class="bigDate-mon">August</span>
+                      </div>
+                      <h3 class="wpi-news-item-title">WPI Music Information Session</h3>
+                      <p class="wpi-news-item-date">Aug 14, 2022 7:00 PM</p>
+                    </div>
+                  </a>
+                  <%}%>
+                </div>
+              </div>
+
+              <div class="grid-container me-section" style="padding:0">
+                <h2 class="section-header">Session Recordings</h2>
+                <div class="wpinews-cards-wrapper grid-x grid-margin-x small-up-2 medium-up-3 large-up-4">
+                  <a href="https://youtu.be/DutYGGCJqvM" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/cdc.jpg" title="Link to Career Development Center Session Video">
+                    <h3>Career Development Center</h3>
+                    <p>42:22</p>
+                  </a>
+                  <a href="https://youtu.be/-pPRYbhntaI" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/dining1.jpg" title="Link to Dining Services Session 1 Video">
+                    <h3>Dining Services 1</h3>
+                    <p>1:21</p>
+                  </a>
+                  <a href="https://youtu.be/uUYTKs9ec08" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/dining2.jpg" title="Link to Dining Services Session 2 Video">
+                    <h3>Dining Services 2</h3>
+                    <p>0:58</p>
+                  </a>
+                  <a href="https://youtu.be/YALOAaRLlb4" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/dining3.jpg" title="Link to Dining Services Session 3 Video">
+                    <h3>Dining Services 3</h3>
+                    <p>0:41</p>
+                  </a>
+                  <a href="https://youtu.be/B-UoRlBzPcc" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/globalprojects.jpg" title="Link to Global Project Based Learning Session Video">
+                    <h3>Global Projects</h3>
+                    <p>58:24</p>
+                  </a>
+                  <a href="https://youtu.be/IDlRZ5ugcZk" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/involvement.jpg" title="Link to Involvement at WPI Session Video">
+                    <h3>Involvement at WPI</h3>
+                    <p>54:13</p>
+                  </a>
+                  <a href="https://youtu.be/D1iUe3EMu24" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/parents.jpg" title="Link to Supporting Your Student's transition session video">
+                    <h3>Supporting Your Student's Transition to College</h3>
+                    <p>58:13</p>
+                  </a>
+                  <a href="https://youtu.be/yoHCcUU5PN8" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/community.jpg" title="Link to Living and Caring Community Video">
+                    <h3>Living in a Caring Community</h3>
+                    <p>53:15</p>
+                  </a>
+                  <a href="https://youtu.be/uiOqH2GAs6Y" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/alumni.jpg" title="Link to Road to Success An Alumni Panel">
+                    <h3>Road to Success An Alumni Panel</h3>
+                    <p>59:34</p>
+                  </a>
+                  <a href="https://youtu.be/Wwejz4av4ZQ" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/whattoexpect.jpg" title="Link to What to Expect at NSO Panel">
+                    <h3>What to Expect at NSO</h3>
+                    <p>1:02:19</p>
+                  </a>
+                  <a href="https://youtu.be/ozwMLv438cY" target="_blank" class="cell videoembed">
+                    <img src="/img/content/thumbnails/course_registration.jpg" title="Course Registration">
+                    <h3>Course Registration</h3>
+                    <p>1:00:08</p>
+                  </a>
+                  
+                </div>
+              </div>
+              <%if(isLoggedIn){%>
+                <%if(inclusiveCourses){%>
+
+              <div class="grid-container me-section" style="padding:0">
+                  <h2 class="section-header">My Required Trainings</h2>
+                    <div class="grid-x grid-margin-x">
+                      <h3 class="cell small-12 section-header">Get Inclusive <span>(complete by August 20)</span></h3>
+                      <%if(inclusiveCourses && inclusiveCourses.results && inclusiveCourses.results[0] && inclusiveCourses.results[0].courses){%>
+                        <% const userCourses = inclusiveCourses.results[0].courses%>
+
+                        <%for(userCourse of userCourses){%>
+                          <% const courseStatus = {};
+                            if(userCourse.status == 'not_started'){
+                              courseStatus.icon = 'fa-bell-exclamation';
+                              courseStatus.label = 'Not Started';
+                              courseStatus.color = 'var(--color-bright-1)';
+                            }else if(userCourse.status == 'in_progress'){
+                              courseStatus.icon = 'fa-hourglass-half';
+                              courseStatus.label = 'In Progress';
+                              courseStatus.color = 'var(--color-bright-3)';
+                            }else if(userCourse.status == 'completed'){
+                              courseStatus.icon = 'fa-check-circle';
+                              courseStatus.label = 'Completed';
+                              courseStatus.color = 'var(--color-bright-2)';
+                            }else{
+                              courseStatus.icon = 'fa-question-circle';
+                              courseStatus.label = 'Unknown';
+                              courseStatus.color = 'var(--color-bright-5)';
+                            }
+                          %>
+                          <a class="cell small-12 medium-6 me-link-item" href="<%=userCourse.auth_link%>">
+                            <div class="grid-x">
+
+                              <div class="cell small-10 me-link-item-text">
+                                <h3><%=userCourse.title%></h3>
+                                <div>Get Inclusive</div>
+
+                                <div class="success progress">
+                                  <div class="progress-meter" style="width: <%=userCourse.completion_percent%>%"></div>
+                                </div>
+                              </div>
+
+                              <div class="cell small-2 me-link-item-status">
+                                <i class="fal <%=courseStatus.icon%>" style="color:<%=courseStatus.color%>"></i>
+                                <div style="line-height: 1;"><%=courseStatus.label%></div>
+                              </div>
+                            </div>
+                          </a>
+                        <%}%>
+
+                      <%}else{%>
+                        <p>You do not have any assigned Get Inclusive courses right now. If you think you should <a href="mailto:" target="_blank">please let us know</a>!</p>
+                      <%}%>
+                      <h3 class="cell small-12 section-header">Kognito <span>(complete by August 20)</span></h3>
+                      <a class="cell small-12 medium-6 me-link-item" href="http://wpi.kognito.com/" target="_blank">
+                            <div class="grid-x">
+
+                              <div class="cell small-10 me-link-item-text">
+                                <h3>Mental Health</h3>
+                                <div>Kognito</div>
+
+                              </div>
+                            </div>
+                          </a>
+                    </div>
+                </div>
+                <%}else{%>
+
+                <%}%>
+              <%}%>
+          </div>
+
+        </div>
+      </div>
+      <div class="grid-container me-section">
+        <div class="grid-x grid-margin-x">
+          <div class="cell small-12 medium-8 large-7 paper">
+              <div class="article-body">
+                  <div id="articleMain">
+                    
+                    <section>
+                      <h2>What to Expect During NSO</h2>
+                      <p>New Student Orientation will provide the opportunity for incoming students to connect with their peers, faculty, and staff to learn about campus life, our campus community, and assist in supporting students feel more confident as they prepare to engage in research and our project-based curriculum. For the four day program, students will meet in their Insight teams, discuss how to incorporate balance and wellness in their life to be successful, engage in different networking opportunities and workshops during the day. The program will also offer a variety of social programs to allow students to connect and gather in the evening.</p>
+
+                      <h2>Goals of the Program</h2>
+                      <p>New Student Orientation is focused on assisting incoming students make connections with their peers, become more comfortable in their new environment, and feel more confident in knowing about resources and opportunities to assist in their transition to WPI and college life.</p>
+                    </section>
+                    
+                  </div>
+                
+                
+                
+              </div>
+            </div>
+            <div class="cell small-12 medium-4 large-5" style="margin-top: 2em;">
+
+                <div class="grid-container me-section" style="padding:0">
+                    <h2 class="section-header">Timeline and Important Information</h2>
+                    <a href="/img/docs/New Student Orientation 2022 8-19.pdf">View Full NSO Schedule (<i class="fad fa-file-pdf"></i> PDF)</a>
+                    <div class="news-sub">
+                                   
+                    <div class="news-sub-item">
+                      <div class="news-sub-item-icon" style="background: hsl(239, 91%, 77%);">
+                          <i class="far fa-fw fa-people-carry"></i>
+                      </div>
+                      <div class="news-sub-item-event" style="background:hsl(239, 91%, 95%);">
+                          <p class="wpi-news-item-date">Aug 20, 2022</p>
+                          <h3 class="news-sub-title">New Student Move In (time to be assigned)</h3>
+                      </div>
+                    </div>
+
+                    <div class="news-sub-item">
+                      <div class="news-sub-item-icon" style="background: hsl(239, 91%, 77%);">
+                          <i class="far fa-fw fa-piggy-bank"></i>
+                      </div>
+                      <div class="news-sub-item-event" style="background:hsl(239, 91%, 95%);">
+                          <p class="wpi-news-item-date">Aug 20, 2022 11:00am - 3:00pm</p>
+                          <h3 class="news-sub-title">Banking and Resource Fair</h3>
+                      </div>
+                    </div>
+
+                    <div class="news-sub-item">
+                      <div class="news-sub-item-icon" style="background: hsl(239, 91%, 77%);">
+                          <i class="far fa-fw fa-ice-cream"></i>
+                      </div>
+                      <div class="news-sub-item-event" style="background:hsl(239, 91%, 95%);">
+                          <p class="wpi-news-item-date">Aug 20, 2022 3:00pm - 4:30pm</p>
+                          <h3 class="news-sub-title">Ice Cream Social</h3>
+                      </div>
+                    </div>
+
+                    <div class="news-sub-item">
+                      <div class="news-sub-item-icon" style="background: hsl(239, 91%, 77%);">
+                          <i class="far fa-fw fa-house-leave"></i>
+                      </div>
+                      <div class="news-sub-item-event" style="background:hsl(239, 91%, 95%);">
+                          <p class="wpi-news-item-date">Aug 20, 2022 5:00pm</p>
+                          <h3 class="news-sub-title">Parent and Family Farewells</h3>
+                      </div>
+                    </div>
+                                    
+                </div>
+              </div>
+
+                
+
+            </div>
+        </div>
+      </div>
+
+    <%// Show Error.
+    }else{
+    %>
+    <div class="grid-container">
+      <div class="me-box group">
+          
+      </div>
+    </div>
+  <%}%>
+<%// Show Error.
+}else{
+%>
+  <div class="grid-container">
+    <div class="me-box group">
+        
+    </div>
+  </div>
+<%}%>
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

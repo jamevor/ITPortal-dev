@@ -1,0 +1,1 @@
+"use strict";$(document).ready(function(){window.softwareTable=$("#softwareTable").DataTable({lengthChange:!1,pageLength:10,info:!0,searching:!0,language:{search:"<span class='sr-only'>Search</span>_INPUT_",searchPlaceholder:"Search"},columnDefs:[{targets:"table-hidden",visible:!1,searchable:!0}]})});

@@ -1,0 +1,83 @@
+<%  const currentTerm = "202201";
+    const currentPTerm = "A";
+    const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment(new Date(intent.fields.find(f => f.name === 'Deadline')['value'])))
+    // const validDate = moment().isBetween(moment(new Date(intent.fields.find(f => f.name === 'ActiveDate')['value'])),moment('2020-12-13 09:00:00-05:00'))
+    const queryTerm = intent.fields.find(f => f.name === 'Term')['value'];
+    const queryPTerm = intent.fields.find(f => f.name === 'PTerm')['value'];
+    const status = intent.fields.find(f => f.name === 'Status')['value'];
+    const WPIColCode = intent.fields.find(f => f.name === 'WPIColCode')['value'];
+    const chosenDate = moment(new Date(intent.fields.find(f => f.name === 'OnboardingTest1')['value'])).format("D");
+    const hideDates = intent.fields.find(f => f.name === 'IsOnlineStudent')['value'] == "True" ? `style="display:none"` : ''
+    function generateDays(array,chosenDate){
+      let outputDates = '';
+      array.sort()
+      let dateHourMap ={
+        "14":"8am-4pm",
+        "17":"10am-2pm",
+        "18":"8am-4pm",
+        "19":"8am-4pm",
+        "24":"10am-2pm",
+      }
+      for(date of array){
+        let isChecked = (date == chosenDate) ? "checked" : "";
+        outputDates += `<div class="cell small-12 medium-auto">
+          <input type="radio" id="date-${date}" name="date" value="'2021-10-${date}'"${isChecked}>
+          <label for="date-${date}">October ${date} ${dateHourMap[date]}</label>
+        </div>`
+      }
+      return outputDates
+    }
+%>
+<div class="grid-container fluid">
+    <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+      <div class='cell small-12 medium-12 large-12'>
+        <h1>B-Term / Fall 2021 Onboarding</h1>
+        <p style="font-weight:600"><%- locals.userAttributes.givenname%>, please use this form to tell us if / when you plan to come to campus.</p>
+        <div class="help-form" id="IntentBlock">
+            <fieldset>
+              <legend>Plan to return?</legend>
+              <h3 style="margin-bottom:0;">For B-Term 2021 or the remainder of the Fall term do you plan to come to campus, for any reason?</h3>
+              <div class='grid-x grid-margin-x impact-boxes'>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="comeToCampus-yes" name="comeToCampus" value="Yes">
+                  <label for="comeToCampus-yes"><i class='fas fa-check-circle'></i> Yes, I plan to come to campus</label>
+                </div>
+                <div class="cell small-12 medium-auto">
+                  <input type="radio" id="comeToCampus-no" name="comeToCampus" value="No">
+                  <label for="comeToCampus-no"><i class='fas fa-times-circle'></i> No, I will remain remote</label>
+                </div>
+              </div>
+              <div id="yesComeToCampusBlock" style="display: none;">
+                <p>You will be expected to take your first on-boarding test and remain in the testing protocol in order to retain your ability to come to campus for Fall 2021. Please select and schedule an onboarding test, and <a target="_blank" rel="noopener noreferrer" href="https://wpi.medicatconnect.com/" target="_blank">upload your COVID vaccine information here</a>.</p>
+              </div>
+            </fieldset>
+          <fieldset id="onboardblock">
+            <legend>Onboarding Date Selection</legend>
+            <h3 style="margin-bottom:0;">Which of the following dates and times will you return to campus?</h3>
+                <div class='grid-x grid-margin-x impact-boxes'>
+                  <%- generateDays([14,17,18,19,24],chosenDate)%>
+                </div>
+          </fieldset>
+
+          <div class="note note-info" style="background: hsl(206, 92%, 95%);position:relative;display:none;" data-closable>
+            <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="note-title">
+              <i class="fad fa-calendar-check color-bright-1"></i> Schedule Your Onboarding Tests
+            </div>
+            <div class="note-message"> 
+              <p>Don't forget to schedule your onboarding tests for your chosen date above</p>
+              <a class="cell small-12 medium-12 large-3" target="_blank" rel="noopener noreferrer" href="https://app.acuityscheduling.com/schedule.php?owner=20814532&firstName=<%- locals.userAttributes.givenname%>&lastName=<%- locals.userAttributes.surname%>&email=<%- locals.userAttributes.emailaddress%>&phone=<%-intent.fields.find(f => f.name === 'Phone')['value']%>" target="_blank" class="acuity-embed-button">Schedule Your Tests</a>
+
+            </div>
+          </div>
+          <p id="error1" class="error-text"></p>
+          <p id="error2" class="error-text"></p>
+          <button id="button-submit-help-form" class="button-submit">Submit Response</button>
+          <p style="font-size: 0.75rem;margin-top: 2em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

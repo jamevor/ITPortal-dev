@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type='text/javascript' src='/js/pages/DTFilterState.js'></script>
+  <script type="text/javascript">
+    window.entityTable_defaultSortOrder = "<%= locals.sortOrder || 'asc' %>";
+  </script>
+  <script defer type="text/javascript" src="/js/console/entity-table.js"></script>
+  <style>
+    table.dataTable tbody a.disabled {
+      cursor: not-allowed;
+      color: var(--color-pop-h);
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<input type="hidden" id="entity-type" value="<%= locals.type %>">
+<input type="hidden" id="entity-type-plural" value="<%= locals.typePlural %>">
+<input type="hidden" id="data-source-endpoint" value="/api/v1/entity-table/<%= locals.type %>/data/get/all">
+<input type="hidden" id="canCopy" value="<%- locals.canCopy %>">
+<% if (locals.canCopy) { %>
+  <input type="hidden" id="copy-endpoint" value="/api/v1/<%= locals.type %>/copy/one">
+  <input type="hidden" id="copy-method" value="POST">
+<% } %>
+
+<div id="filters-wrapper" class="cell medium-12 box card console-section" style="display:none;">
+
+  <h2><i class="far fa-filter"></i>Filters</h2>
+  <div class="console-section-content">
+    <div class="grid-x grid-margin-x section-filters"><%# section filters append here %></div>
+  </div>
+</div>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-file-alt"></i><%= locals.typePlural %></h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class='filter-find' type="text" placeholder="Find<%= locals.avsan %> <%= locals.type %>...">
+    </div>
+    <div class="cell medium-6">
+      <% if (canCreate) { %>
+        <a class="console-add" href="/console/<%= locals.type %>/new"><i class="far fa-plus-circle"></i> New <%= locals.type %></a>
+      <% } %>
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <table id='entity-table' class="table" style="width:100%!important;">
+      <thead class="show-for-sr">
+        <tr>
+          <th data-name='id'>ID</th>
+          <th data-name="phase">Phase</th>
+          <th>Title</th>
+          <th data-name="canView"></th>
+          <th data-name="canEdit"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+
+<%
+
+const toasts = [
+  {
+    id: 'toast-copy-wait',
+    type: 'info',
+    title: 'Copying',
+    message: locals.type.charAt(0).toUpperCase() + locals.type.substring(1).toLowerCase() + ' is being copied.',
+    show: false
+  },
+  {
+    id: 'toast-copy-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to copy your ' + locals.type,
+    show: false
+  }
+];
+
+%>
+
+<%- include('../partials/components/toaster.ejs', {toasts}) %>
+
+
+</html>

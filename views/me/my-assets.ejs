@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/moment.ejs'); %>
+  <script async type="text/javascript" src="/js/components/AssetCard.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/my-apps.css"> <%# this is needed for the "you dont have assets" stuff" %>
+  <script defer type="text/javascript" src="/js/me/my-assets.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+<div class="grid-x grid-margin-x">
+
+  <div class="cell medium-12">
+    <div class="profile-section-boxless">
+      <h2 style="margin-bottom: 1em;">My Assets</h2>
+      <div class="grid-x grid-margin-x" id="my-assets">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your ticket has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your ticket',
+    show: false
+  }
+];
+%>
+<%- include('../partials/components/toaster.ejs', { toasts }); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

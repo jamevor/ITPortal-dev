@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/instantsearch.ejs'); %>
+  <style>
+    .error-block {
+      min-height: 70vh;
+      overflow: visible;
+    }
+
+    .error-block h1 {
+      font-weight: 800;
+      font-size: 6em;
+      margin-top: 30vh;
+      color: var(--color-chrome);
+    }
+
+    .error-block h2 {
+      font-size: 3em;
+      color: var(--color-chrome);
+    }
+
+    .error-block p {
+      font-size: 2em;
+      color: var(--color-chrome);
+    }
+
+    body {
+      background: var(--color-pop);
+    }
+
+    .layered {
+      z-index: 99;
+    }
+
+    .circle-ripple {
+      background-color: rgba(255, 255, 255, .5);
+      width: 5em;
+      height: 5em;
+      border-radius: 50%;
+      animation: ripple 20s ease infinite;
+      position: relative;
+      left: 2em;
+      top: 50vh;
+      z-index: -2;
+      display: flex;
+      align-items: center;
+    }
+
+    .circle-ripple img {
+      animation-duration: 5s;
+      flex: 1;
+    }
+
+    @keyframes ripple {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1), 0 0 0 25vw rgba(255, 255, 255, 0.1), 0 0 0 50vw rgba(255, 255, 255, 0.1), 0 0 0 75vw rgba(255, 255, 255, 0.1);
+      }
+      100% {
+        box-shadow: 0 0 0 25em rgba(255, 255, 255, 0.1), 0 0 0 50vw rgba(255, 255, 255, 0.1), 0 0 0 75vw rgba(255, 255, 255, 0.1), 0 0 0 100vw rgba(255, 255, 255, 0);
+      }
+    }
+
+    @media screen and (max-width: 39.9375em) {
+      .error-block h1 {
+        font-size: 4em;
+        margin-top: 10vh;
+      }
+      .error-block p {
+        font-size: 1.5em;
+        color: var(--color-chrome);
+      }
+    }
+
+    .helpful-box{
+    background: var(--color-body);
+    padding:1em;
+    border-radius:3px;
+    box-shadow:var(--shadow-double-y)
+    }
+    .helpful-box .splainer{
+        font-size:1em;
+        color:var(--color-body-text);
+        font-weight:600;
+        line-height:1.2;
+        margin:.5em;
+    }
+    .helpful-box blockquote {
+        display: block;
+        border-width: 2px 0;
+        border-style: solid;
+        border-color: var(--color-lane);
+        padding: 1.5em 3em 0.5em;
+        margin: 1.5em .5em .5em .5em;
+        position: relative;
+
+    }
+    .helpful-box blockquote p{
+        color:var(--color-body-text);
+        font-family: 'Merriweather', Serif;
+        color: var(--color-body-subtitle);
+        line-height: 1.5;
+        letter-spacing: -0.014em;
+        font-size: 1.25em;
+        margin-bottom: 0!important;
+    }
+    .helpful-box blockquote:before {
+        content: '\201C';
+        position: absolute;
+        top: -.15em;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--color-body);
+        width: 3rem;
+        height: 3rem;
+        font: 6em/1.08em 'PT Sans', sans-serif;
+        color: var(--color-pop);
+        text-align: center;
+    }
+    .helpful-box blockquote:after {
+        content: "\2013 \2003" attr(cite);
+        display: block;
+        text-align: right;
+        font-size: 0.875em;
+        color: var(--color-pop);
+    }
+    .continue-searching{
+        background-color: var(--color-pop);
+        color: var(--color-chrome);
+        opacity: var(--opacity-img);
+        transition: all .5s ease;
+        border-radius:3px;
+        padding: .5em 1em;
+        font-size: 1.25em;
+        text-transform: capitalize;
+        font-weight: 600;
+        margin:1em auto .5em auto;
+        display: block;
+        width: fit-content;
+    }
+    .search .box.card{
+        margin-bottom:.5em;
+    }
+    .continue-searching:hover{
+        background-color: var(--color-pop-h);
+        color: var(--color-chrome);
+    }
+    .search-terms{
+        text-align:center;
+        margin:.5em 1em;
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+  <div class='circle-ripple'><img class="fa-spin hide-for-sr" src="/img/ico-intro.svg" alt=""></div>
+
+  <div class="grid-container fluid swim-lane error-block">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+
+        <div class="cell small-12 medium-12 large-12">
+          <h1>Error: IDP</h1>
+          <h2>Issue with IDP Request</h2>
+          <p>The service you are attempting to use requires attributes not provided by WPI. <br>Please contact <a href="mailto:its@wpi.edu" target="_blank">ITS@wpi.edu</a> with the details of this request.</p>
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>
+

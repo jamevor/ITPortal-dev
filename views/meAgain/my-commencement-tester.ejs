@@ -1,0 +1,62 @@
+<!-- <!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <script type="text/javascript" src="https://s3.us-east-2.amazonaws.com/nc-widget-v3/bundle.js?v011"></script>
+</head>
+<body>
+      <button type="button" data-toggle="nc-widget"
+      data-attributes-email-value="<%=commencementOut[0].Email%>"
+      data-attributes-email-presentation="required">
+        Open Widget
+      </button>
+      <script>
+        ncE(function() {
+        ncE.configure(function(config) {
+          config.eventCode = "278F15";
+          config.accessToken = "7wUSFczJEV28zHZdBapY";
+          config.brandColor = "#c1272d";
+          config.dictionary = {
+            modal_header: "WPI's 2022 Commencement",
+            submit_button_text: "Submit Changes"
+          };
+        });
+      });  
+      </script>
+
+  </body>
+</html> -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+</head>
+<body>
+  <script type="text/javascript" src="https://s3.us-east-2.amazonaws.com/nc-widget-v3/bundle.js?v011"></script>
+
+
+<button type="button"
+  data-toggle="nc-widget"
+  data-attributes-email-value="<%=commencementOut[0].Email%>"
+  >
+  Launch Widget
+</button>
+
+<script>
+
+ncE(function() {
+  ncE.configure(function(config) {
+    config.eventCode = "278F15";
+    config.accessToken = "7wUSFczJEV28zHZdBapY";
+    config.brandColor = "#c1272d";
+    config.dictionary = {
+      modal_header: "WPI's 2022 Commencement",
+      submit_button_text: "Submit Changes"
+    };
+  });
+});
+
+</script>
+
+</body>
+
+</html>

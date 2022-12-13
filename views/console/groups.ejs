@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script defer type="text/javascript" src="/js/console/groups.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+<div class="cell medium-12 box card console-section">
+  <h2><i class="far fa-users"></i> Groups</h2>
+  <div class="grid-x grid-margin-x console-section-actions">
+    <div class="cell medium-6">
+      <input class="filter-find" type="text" placeholder="Find a group...">
+    </div>
+    <div class="cell medium-6">
+      <a class="console-add" href="/console/group/new"><i class="far fa-plus-circle"></i> New Group</a>
+    </div>
+  </div>
+
+
+  <div class="console-section-content">
+
+    <table class='table' id='groups-table'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Group</th>
+          <th>Members</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const group of locals.groups) { %>
+          <tr>
+            <td><%= group.id %></td>
+            <td><%- group.title %></td>
+            <td><%= group.users.length %></td>
+            <td class="action-links">
+              <a href="/console/group/edit/<%= group.id %>"><i class="far fa-fw fa-edit"></i> </a>
+            </td>
+          </tr>
+        <% } %>
+
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

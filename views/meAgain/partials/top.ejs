@@ -1,0 +1,58 @@
+<%
+  const userFullname = locals.userAttributes && userAttributes.givenname && userAttributes.surname ? `${userAttributes.givenname} ${userAttributes.surname}` : '';
+  const userTitle = locals.userAttributes && userAttributes["user.jobtitle"] ? userAttributes["user.jobtitle"] : '';
+  const userID = locals.userAttributes && userAttributes["user.employeeid"] ? userAttributes["user.employeeid"] : '';
+%>
+
+<div id="mePage">
+    <div id="meHeader" class="grid-container fluid">
+        <div id="meHeaderInterior" class="grid-container">
+          <div id="meHeaderInteriorRow" class="grid-x">
+            <div id="meHeaderProfile" class="cell small-12 medium-12 large-4 grid-x">
+              <div id="meHeaderProfileAvatar" class="cell small-12 large-4">
+                <div class="profileAvatar"></div>
+              </div>
+              <div id="meHeaderProfileText" class="cell small-12 large-auto">
+                <p class=profileName><%=userFullname%></p>
+                <p class=profileTitle><%=userTitle%></p>
+                <p class=profileID><%=userID%></p>
+              </div>
+            </div>
+            <% //toooltip preference
+            var disableTooltip = ""
+            var showLabels = ""
+
+            if(locals.user.userPreference.meLabels == true || locals.user.userPreference.meLabels == 'true'){
+              disableTooltip = `data-disable-hover="true"`
+              showLabels = `show-labels`
+            }
+            %>
+            <div id="meHeaderNav" class="cell small-12 medium-12 large-8 <%=showLabels%>">
+
+              <div class="grid-x grid-margin-x small-up-5 large-up-10">
+                <a <%=disableTooltip%> href="/Me/My-Dashboard" class="cell icon-item <%= locals.meTabs.myDashboard %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Dashboard" data-title="Dashboard"><i class="fal fa-tachometer"></i><span>Dashboard</span></a>
+                <a <%=disableTooltip%> href="/Me/My-Techflex" class="cell icon-item <%= locals.meTabs.myTechFlex %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="My TechFlex" data-title="TechFlex"><i class="fa-fw custom-icon"><%- include('../../partials/components/tech-flex-svg.ejs'); %></i><span>My TechFlex</span></a>
+                <% if (false) { %>
+                  <a <%=disableTooltip%> href="/Me/My-Commencement" class="cell icon-item <%= locals.meTabs.myCommencement %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="My Commencement" data-title="Commencement"><i class="fal fa-graduation-cap"></i><span>My Commencement</span></a>
+                <%}%>
+                <% if (true) { %>
+                  <a <%=disableTooltip%> href="/Me/My-NSO" class="cell icon-item <%= locals.meTabs.myNSO %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="My NSO" data-title="NSO"><i class="fal fa-grin-beam"></i><span>My NSO</span></a>
+                <%}%>
+                <a <%=disableTooltip%> href="/Me/My-Tickets" class="cell icon-item <%= locals.meTabs.myTickets %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Tickets" data-title="Tickets"><i class="fal fa-ticket"></i><span>Tickets</span></a>
+                <a <%=disableTooltip%> href="/Me/My-Approvals" class="cell icon-item <%= locals.meTabs.myApprovals %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Approvals" data-title="Approvals"><i class="fal fa-check-circle"></i><span>Approvals</span></a>
+                <a <%=disableTooltip%> href="/Me/My-Assets" class="cell icon-item <%= locals.meTabs.myAssets %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Assets" data-title="Assets"><i class="fal fa-laptop"></i><span>Assets</span></a>
+                <% if (locals.user.userOauths.some(o => o.type === 'canvas' && !o.isBroken)) { %>
+                <a <%=disableTooltip%> href="/Me/My-Canvas" class="cell icon-item <%= locals.meTabs.myCanvas %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Courses" data-title="Courses"><i class="fal fa-chalkboard-teacher"></i><span>Courses</span></a>
+                <%}%>
+                
+                <a <%=disableTooltip%> href="/Me/My-Apps" class="cell icon-item <%= locals.meTabs.myApps %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Apps" data-title="Apps"><i class="fal fa-icons"></i><span>Apps</span></a>
+                <!-- <a <%=disableTooltip%> href="/Me/History" class="cell icon-item <%= locals.meTabs.history %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="History" data-title="History"><i class="fal fa-history"></i><span>History</span></a> -->
+                <a <%=disableTooltip%> href="/Me/Widgets" class="cell icon-item <%= locals.meTabs.widgets %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Widgets" data-title="Widgets"><i class="fal fa-puzzle-piece"></i><span>Widgets</span></a>
+                <a <%=disableTooltip%> href="/Me/Settings" class="cell icon-item <%= locals.meTabs.settings %>" data-tooltip data-position="bottom" data-alignment="center" data-hover-delay="600" data-show-on="medium" data-fade-in-duration="500" title="Settings" data-title="Settings"><i class="fal fa-cog"></i><span>Settings</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div id="meContent">
+

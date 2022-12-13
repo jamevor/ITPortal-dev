@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <script defer src="/js/me/settings.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+<div class="grid-x grid-margin-x">
+
+  <div class="cell medium-12 box card profile-section">
+    <h2><i class="far fa-palette"></i> Customization</h2>
+    <div class="profile-section-content">
+      <h3>Theme</h3>
+
+      <div class="profile-option grid-x grid-margin-x">
+
+        <label for="theme_night" class="light cell small-6 medium-auto">
+          <input type="radio" value="light" id="theme_night" name="theme"<%= locals.preferences.themePreference === 'light' ? 'checked' : '' %>>
+          <span>Light</span>
+        </label>
+        <label for="theme_dark" class="dark cell small-6 medium-auto">
+          <input type="radio" value="night" id="theme_dark" name="theme"<%= locals.preferences.themePreference === 'night' ? 'checked' : '' %>>
+          <span>Dark</span>
+        </label>
+        <label for="theme_contrast" class="contrast cell small-6 medium-auto">
+          <input type="radio" value="highContrast" id="theme_contrast" name="theme"<%= locals.preferences.themePreference === 'highContrast' ? 'checked' : '' %>>
+          <span>High Contrast</span>
+        </label>
+        <label for="theme_wpiTheme" class="wpiTheme cell small-6 medium-auto">
+          <input type="radio" value="wpiTheme" id="theme_wpiTheme" name="theme"<%= locals.preferences.themePreference === 'wpiTheme' ? 'checked' : '' %>>
+          <span>WPI Theme</span>
+        </label>
+        <label for="theme_shrek" class="shrek cell small-6 medium-auto">
+          <input type="radio" value="shrek" id="theme_shrek" name="theme"<%= locals.preferences.themePreference === 'shrek' ? 'checked' : '' %>>
+          <span>Get Shrekt!</span>
+        </label>
+        <label for="theme_holiday" class="holiday cell small-6 medium-auto">
+          <input type="radio" value="holiday" id="theme_holiday" name="theme"<%= locals.preferences.themePreference === 'holiday' ? 'checked' : '' %>>
+          <span><i class="fas fa-ghost"></i></span>
+        </label>
+        <label for="theme_pride" class="pride cell small-6 medium-auto">
+          <input type="radio" value="pride" id="theme_pride" name="theme"<%= locals.preferences.themePreference === 'pride' ? 'checked' : '' %>>
+          <span>Pride</span>
+        </label>
+      </div>
+
+      <%
+
+      const cuteHues = [1, 18, 80, 192, 269, 319];
+
+      %>
+
+      <h3>Color</h3>
+
+      <div class="profile-option profile-option-color grid-x grid-margin-x">
+        <label for="color-default" class="cell small-12 medium-auto">
+          <input type="radio" value="default" id="color-default" name="user-color"<%= locals.user.userPreference.hue === null ? 'checked' : '' %>>
+          <span style="background:hsla(<%= locals.user.hue %>, 100%, 40%, 1);"><span class="show-for-sr">User Color</span></span>
+        </label>
+        <% for (const hue of cuteHues) { %>
+          <label for="color-<%= hue %>" class="cell small-4 medium-auto">
+            <input type="radio" value="<%= hue %>" id="color-<%= hue %>" name="user-color"<%= locals.user.userPreference.hue === hue ? 'checked' : '' %>>
+            <span style="background:hsla(<%= hue %>, 100%, 40%, 1);"><span class="show-for-sr"><%= hue %></span></span>
+          </label>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+
+  <ul class="cell medium-12 box card profile-section accordion" data-accordion="" data-allow-all-closed="true">
+    <li class="accordion-item" data-accordion-item>
+      <a href="#" class="accordion-title"><h2><i class="far fa-flask"></i> Experimental Features</h2></a>
+      <div class="accordion-content" data-tab-content>
+        <div class="profile-section-content">
+          <div class="note note-warning" style="background: <%= ColorConverter(`#ff921f`, 'hex').toHSL().set('l', 95).toCSS() %>;">
+            <div class="note-title"><i class="fad fa-exclamation-triangle color-bright-3"></i> Heads up!</div>
+            <div class="note-message">We're still testing these features out, but we're so excited about them we thought we'd give you the chance to try them out with us!</div>
+          </div>
+          <h3>Just For Fun</h3>
+          <div class="profile-option">
+            <label for="text_normal">
+              <input type="radio" value="normal" id="text_normal" name="textDisplay"<%= locals.preferences.textDisplay === 'normal' ? 'checked' : '' %>>
+              <span>Normal</span>
+            </label>
+            <label for="text_sarcasm">
+              <input type="radio" value="sarcasm" id="text_sarcasm" name="textDisplay"<%= locals.preferences.textDisplay === 'sarcasm' ? 'checked' : '' %>>
+              <span>Sarcasm</span>
+            </label>
+          </div>
+          <% if (locals.snowEnabled || locals.preferences.seasonalTheme === 'winter') { %>
+            <h3>Seasonal Skin</h3>
+            <div class="profile-option">
+              <label for="seasonalTheme_normal">
+                <input type="radio" value="normal" id="seasonalTheme_normal" name="seasonalTheme"<%= locals.preferences.seasonalTheme === 'normal' ? 'checked' : '' %>>
+                <span>Normal</span>
+              </label>
+              <label for="seasonalTheme_winterWonderland">
+                <input type="radio" value="winter" id="seasonalTheme_winterWonderland" name="seasonalTheme"<%= locals.preferences.seasonalTheme === 'winter' ? 'checked' : '' %>>
+                <span>Spring Wonderland</span>
+              </label>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

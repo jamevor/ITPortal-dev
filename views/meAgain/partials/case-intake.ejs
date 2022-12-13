@@ -1,0 +1,357 @@
+<% const hideCase=cases !=null ? 'display:none' : '' ; const showCase=cases !=null ? '' : 'display:none' ; %>
+  <div class="grid-container me-section" style="padding:0;">
+    <div id="flickityWrapper" style='opacity:0;transition:opacity .25s ease;<%=hideCase%>'>
+
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-shield-virus"></i> COVID-19 Positive Case Form</h2>
+          <div class="profile-section-content">
+            <p>Thank you for taking the time to accurately fill out this form. Following its submission,
+              an email will be sent to you with specific isolation instructions, links to resources
+              and contact information. At the end of your isolation period, please complete the isolation clearance
+              section of this form. </p>
+            <p>Please do not hesitate to email the public health team @ <u>publichealth@wpi.edu</u> with any questions
+              or concerns. ​</p>
+            <p><b>Please provide your phone number</b></p>
+
+            <label for="p-number"><input style="width:350px" id="p-number" name="p-number" type="tel" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12"></label>
+
+            <% const lastScan=(currentIntent.LastScanDateTime !="" && currentIntent.LastScanDateTime
+              !="1/1/1900 12:00 AM" && currentIntent.LastScanDateTime !=null) ? currentIntent.LastScanDateTime : "" ;
+              const lastScanMoment=moment(new Date(lastScan)).utc().utcOffset(-5); const
+              daysFromLastScan=moment().diff(lastScanMoment, 'days' ); if(daysFromLastScan <=6 ){%>
+              <div id="test-block" style="display:none">
+                <hr>
+                <div class="profile-option">
+                  <label for="test-type-onPCR">
+                    <input type="radio" value="On-Campus - PCR" id="test-type-onPCR" name="test-type" checked>
+                    <span>On-Campus - PCR</span>
+                  </label>
+                </div>
+                <div class="grid-x grid-margin-x">
+                  <input type="date" id="test-type-date" name="test-type-date"
+                    value="<%=lastScanMoment.format('YYYY-MM-DD');%>">
+                </div>
+              </div>
+              <%}else{%>
+                <div id="test-block">
+                  <hr>
+
+                </div>
+                <%}%>
+
+                  %>
+
+          </div>
+        </div>
+      </div>
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-info-circle"></i> Testing and Isolation </h2>
+          <div class="profile-section-content">
+            <p>What date did you test positive for Covid-19?​</p>
+            <div class="grid-x grid-margin-x">
+              <input type="date" class="small-12 medium-4 large-2" required pattern="\d{4}-\d{2}-\d{2}"
+                id="test-type-date" name="test-type-date" style="line-height: 1;margin-left: 1em;"
+                max="<%=moment.utc().utcOffset(-5).format('YYYY-MM-DD')%>" min="2021-12-15">
+            </div>
+            <p>Based on this date, the earliest you could leave isolation is on: <b><span id="isolation-end"></span></b>
+            </p>
+            <p>More information on isolation requirements and best practices will be found in the follow-up email.
+            <p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-notes-medical"> </i> Isolation Plan</h2>
+          <div class="profile-section-content">
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <p>There are 3 options for isolation:​ </p>
+                <div class="iso-options">
+                  <ul>
+                    <li>Your permanent residence if you can get there safely​</li>
+                    <li>Off-campus (apartment or Greek house) </li>
+                    <li>On-campus residence hall </li>
+                  </ul>
+                </div>
+                <hr>
+
+                <p><b>Where do you plan to isolate?</b></p>
+
+                <div class="case-checkbox">
+                  <ul>
+
+                    <label for="isoLocation-home"><input id="isoLocation-home" name="isoLocation"
+                        type="radio" value="Family/friend home" onclick="enableDisableNext(this); hideGreekHouses()">Family/friend home</input></label>
+
+                    <label for="isoLocation-offCampusHome"><input id="isoLocation-offCampusHome"
+                        name="isoLocation" value="Off campus apartment" type="radio" onclick="enableDisableNext(this); hideGreekHouses()">Off campus apartment​ </input></label>
+
+                    <label for="isoLocation-residenceHall"><input id="isoLocation-residenceHall"
+                        name="isoLocation" value="Residence hall" type="radio" onclick="enableDisableNext(this); hideGreekHouses()">Residence hall</input></label>
+
+                    <label for="isoLocation"><input id="isoLocation-greekHome" name="isoLocation"
+                        type="radio" value="Greek house" onclick="showGreekHouses();">Greek house</input></label>
+
+
+                <div id="showGreekHomes" style="display:none;">
+                    <select name="isoLocation-dropdown" id="isoLocation-greekHome-options"
+                        onchange="enableDisableNext(this)">
+                      <option value="none" selected="selected">Select a greek house</option>
+                      <option value="greekHouse-alphaChiRho">Alpha Chi Rho</option>
+                      <option value="greekHouse-alphaGammaDelta">Alpha Gamma Delta</option>
+                      <option value="greekHouse-alphaPhi">Alpha Phi</option>
+                      <option value="greekHouse-alphaXiDelta">Alpha Xi Delta</option>
+                      <option value="greekHouse-betaThetaPi">Beta Theta Pi</option>
+                      <option value="greekHouse-chiOmega">Chi Omega</option>
+                      <option value="greekHouse-lambdaChiAlpha">Lambda Chi Alpha</option>
+                      <option value="greekHouse-phiGammaDelta">Phi Gamma Delta</option>
+                      <option value="greekHouse-phiSigmaSigma">Phi Sigma Sigma</option>
+                      <option value="greekHouse-phiSigmaKappa">Phi Sigma Kappa</option>
+                      <option value="greekHouse-phiKappaTheta">Phi Kappa Theta</option>
+                      <option value="greekHouse-sigmaAlphaEpsilon">Sigma Alpha Epsilon</option>
+                      <option value="greekHouse-sigmaPhiEpsilon">Sigma Phi Epsilon</option>
+                      <option value="greekHouse-sigmaPi">Sigma Pi</option>
+                      <option value="greekHouse-tauKappaEpsilon">Tau Kappa Epsilon</option>
+                      <option value="greekHouse-thetaChi">Theta Chi</option>
+                      <option value="greekHouse-thetaNuXi">Theta Nu Xi</option>
+                      <option value="greekHouse-zetaPhiBeta">Zeta Phi Beta</option>
+                    </select>
+                    </div>
+                  </ul>
+                </div>
+
+                <div class="cell small-12 medium-6">
+                  <p>If you have a particular concern about isolating in any of these sites, please contact the public
+                    health team to discuss alternative options. Contact information is available in the follow-up email.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-notes-medical"></i> Severe COVID-19 Symptoms</h2>
+          <div class="profile-section-content">
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <p>Please seek emergency medical attention if you are experiencing any of the symptoms listed below:</p>
+
+                <div class="case-checkbox">
+                  <ul>
+                    <li>Shortness of breath or trouble breathing </li>
+                    <li>Persistent pain or pressure in the chest </li>
+                    <li>Feeling confused </li>
+                    <li>Inability to wake or stay awake </li>
+                    <li>Pale, gray, or blue-colored skin, lips, or nail beds, depending on skin tone </li>
+                  </ul>
+                  <p>*This list is not all possible symptoms. Please call your medical provider for any other symptoms
+                    that are severe or concerning you.</p>
+                </div>
+              </div>
+              <div class="cell small-12 medium-6">
+                <div class="info-snippet-grid" id='ebox'>
+                  <p>Please seek immediate medical attention by calling campus police (508-831-5555) or 911 or go to a
+                    <a href="#" data-open="emergencyCenters">Worcester Emergency Department</a> if you develop any
+                    severe symptoms.
+                  </p>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-file-medical-alt"></i>Potential Higher Risk Health Conditions</h2>
+          <div class="profile-section-content">
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <p><strong>If you have any of these health conditions or have concerns about your health, call Student
+                    Health Services at 508-831-5520 or your primary care provider to discuss how you should monitor
+                    your health and if you are eligible to receive COVID-19 treatments.</strong></p>
+                <div class="case-highRiskCondtions">
+                  <ul>
+                    <li>Cancer</li>
+                    <li>Chronic kidney disease </li>
+                    <li>Chronic lung disease </li>
+                    <li>Chronic liver disease </li>
+                    <li>Cystic fibrosis </li>
+                    <li>Dementia or other neurological conditions</li>
+                    <li>Diabetes type 1 or 2 </li>
+                    <li>Disabilities</li>
+                    <li>Heart conditions </li>
+                    <li>HIV</li>
+                    <li>Immunocompromised condition or weakened immune system </li>
+                    <li>Mental health conditions </li>
+                    <li>Obesity or overweight </li>
+                    <li>Physical inactivity </li>
+                    <li>Pregnant</li>
+                    <li>Sickle cell disease or thalassemia </li>
+                    <li>Smoking (current or former) </li>
+                    <li>Solid organ or blood stem cell transplant </li>
+                    <li>Stroke or cerebrovascular disease </li>
+                    <li>Substance use disorders </li>
+                    <li>Tuberculosis</li>
+                  </ul>
+
+                </div>
+                <%# <p><strong>Does your direct roommate (someone you share a bedroom with) have any of the health
+                    conditions listed above?</strong></p> %>
+
+              </div>
+              <div class="cell small-12 medium-6" style="display:flex;">
+                <div class="info-snippet-grid" id="mhconcern" style="display: none;align-self: center;">
+                  <p>For Mental Health Resources please check out the WPI Be Well Together Page <a
+                      href="https://www.wpi.edu/student-experience/resources/be-well-together" target="_blank">Resource
+                      Page</a></p>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+          <h2> <i class="far fa-signature"></i> Acknowledgement</h2>
+          <div class="profile-section-content">
+            <p>I acknowledge and agree that I have tested positive for COVID-19 and will notify my close contacts. I
+              will comply with WPI’s isolation protocols, as may be modified by WPI from time to time. The information
+              I have provided on this form is true and correct to the best of my knowledge.</p>
+
+
+          <div class="case-checkbox">
+            <label for="acknowledgement"><input id="acknowledgement" name="acknowledgement" type="checkbox">I
+                Acknowledge and Agree</input></label>
+          </div>
+           
+          <h2><i class="far fa-shield-virus"></i>Thank You</h2>
+
+            <p>An email will be sent to you with specific isolation instructions, links to resources and contact
+                  information.  Once you are eligible to clear isolation, you will be notified to complete the isolation
+                  clearance section of this form.</p>
+            <p>Please do not hesitate to email the public health team at publichealth@wpi.edu with any questions or concerns. ​ </p>
+
+            <div class="case-checkbox">
+              <label for="call-me"><input id="call-me" name="call-me" type="checkbox">I would like a member of the
+                public health team to contact me during normal business hours, Mon - Fri 9am - 5 pm.</input></label>
+            </div>
+
+            <p>We are here to help.</p>
+
+            
+            <div class="case-checkbox">
+              <button id="button-submit-case" class="button-submit disabled">Submit Case</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="slideControls" style="display: none;">
+      <button id="back" style="display: none;">Back</button>
+      <button id="next" >Continue</button>
+    </div>
+
+    <div class="grid-x grid-margin-x" id="afterCare" style="<%=showCase%>">
+      <div class="cell medium-12 box card profile-section">
+
+        <h2> <i class="far fa-check-circle"></i> Form Submitted</h2>
+
+        <%if(cases !=null){%>
+          <% clearTime=(cases.IsolationClosureEligible !="" && cases.IsolationClosureEligible !="1/1/1900 12:00 AM" &&
+            cases.IsolationClosureEligible !=null) ? cases.IsolationClosureEligible : "" ; clearTimeMoment=moment(new
+            Date(clearTime)).utc().utcOffset(-5); todayAfterClear=moment().isAfter(clearTimeMoment.startOf('day'));
+            clearReady=todayAfterClear; %>
+
+            <i class="fad fa-info-circle fa-4x text-center" style="color:var(--color-bright-5)"></i><br>
+            <p class="text-center">Case form was successfully submitted on <%=cases.CreatedDateTime%>
+            </p>
+            <%if(clearReady){%>
+              <p class="text-center">You are eligible for clearance processing</p>
+              <%}else{%>
+                <p class="text-center">You are eligible for clearance on <%=clearTimeMoment.format('LL')%>
+                </p>
+                <%}%>
+                  <%}else{%>
+                    <i class="fad fa-check-circle fa-4x text-center" style="color:var(--color-bright-2)"></i><br>
+                    <p class="text-center">Case form has successfully submitted</p>
+                    <%}%>
+                      <h2> <i class="far fa-info-circle"></i> Isolation Clearing</h2>
+                      <div class="profile-section-content">
+                        <p>To clear isolation you must complete a clearance form on day 6 or later following your
+                          positive test date which outlines the need to be fever free with your symptoms improving as
+                          well as an optional negative antigen test.</p>
+                        <p>For additional COVID-19 related Resources you might need please visit <a
+                            href="https://www.wpi.edu/we-are-wpi/frequently-asked-questions" target="_blank">the
+                            COVID-19 FAQ page</a>.</p>
+                      </div>
+      </div>
+    </div>
+
+    <div class="cell medium-12 grid-container me-section" style="padding:0;margin-bottom: 1em;">
+      <!-- <h2 class="section-header"><i class="fad fa-info-circle"></i> Important</h2> -->
+      <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-2">
+        <div class="cell info-snippet">
+          <h3><i class="fad fa-user-md"></i> Non-Emergency Medical Help</h3>
+          <p>WPI Health Services is open Monday-Friday between 8 am-5 pm for students with medical questions or
+            concerns. Please call (508) 831-5520 to make an appointment or speak with a triage nurse or email
+            healthcenter@wpi.edu.</p>
+          <p>For after-hours <strong>telehealth</strong> medical care, during the evenings and weekends please call
+            our after-hours physician line at UMass Hahnemann Family Health Center of Worcester at 508-334-8830,
+            identify yourself as a WPI student and follow the prompts to leave a message. The doctor on call will
+            return your call as soon as possible.</p>
+          <p>If you would like to be seen for an <strong>in-person</strong> appointment after hours or on weekends
+            there are several urgent care options in the Worcester area including ReadyMed Plus Urgent Care, Carewell
+            Urgent Care and the CVS Minute Clinic.</p>
+        </div>
+        <div class="cell info-snippet">
+          <div class="cell info-snippet">
+            <h3><i class="fad fa-hospital"></i> Emergency Medical Help</h3>
+            <p>Please seek immediate medical attention by calling campus police (508-831-5555) or 911 or go to a <a
+                href="#" data-open="emergencyCenters">Worcester Emergency Department</a> if you develop any severe
+              symptoms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="reveal" id="emergencyCenters" data-reveal>
+      <p>Following is a list of our local emergency department locations</p>
+
+      <h3>UMass Memorial Emergency Room</h3>
+      <p><strong>Emergency Department on the Memorial Campus</strong><br>
+        119 Belmont Street<br>
+        508-334-6481 </p>
+
+      <p><strong>The Duddie Massad Emergency and Trauma Center on the University Campus</strong><br>
+        55 Lake Avenue North<br>
+        508-421-1750 </p>
+
+      <h3>Saint Vincent Hospital </h3>
+      <p><strong>Emergency Room</strong><br>
+        123 Summer St<br>
+        (508) 363-5000 </p>
+
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/console.css">
+  <script type='text/javascript' src='/js/console/request-logs.js' defer></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+  
+  <div class="cell medium-12 box card console-section" style="overflow:auto;">
+    <h2><i class="far fa-file-alt"></i>Request Logs</h2>
+    <div class="grid-x grid-margin-x console-section-actions">
+      <div class="cell medium-6">
+        <input class='filter-find' type="text" placeholder="Filter logs...">
+      </div>
+    </div>
+
+
+    <div class="console-section-content">
+
+      <table id='request-logs-table' class="table">
+        <thead>
+          <tr>
+            <th>timestamp</th>
+            <th>method</th>
+            <th>endpoint</th>
+            <th>responseMS</th>
+            <th>responseCode</th>
+            <th>responseBytes</th>
+            <th>responseType</th>
+            <th>referrer</th>
+            <th>userAgent</th>
+            <th>browser name</th>
+            <th>browser version</th>
+            <th>remoteIP</th>
+            <th>protocol</th>
+            <th>isFresh</th>
+            <th>isXHR</th>
+            <th>app instance</th>
+            <th>app version</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+<%- include('./layout/bottom.ejs') %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

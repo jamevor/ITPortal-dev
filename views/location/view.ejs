@@ -1,0 +1,745 @@
+<%- include('../partials/api/editorjsToHTML.ejs'); %>
+
+<%
+const endpoint = locals.location ? '/api/v1/location/update/one/' + location.id : '/api/v1/location/create/one';
+const method = locals.location ? 'PUT' : 'POST';
+
+let contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <script type='text/javascript' src='/js/pages/location/view.js' defer></script>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <%- include('../partials/editorjs.ejs'); %>
+    <script type="text/javascript">
+      window.editorjs_initialize_data = {};
+      <% if (locals.location && location.roomNotes && location.roomNotes.length) { %>
+        window.editorjs_initialize_data.roomNotes = <%- location.roomNotes %>;
+      <% } else { %>
+        window.editorjs_initialize_data.roomNotes = {};
+      <% } %>
+    </script>
+    <script type='text/javascript' src='/js/console/EntityGroupsUtility.js' defer></script>
+    <script type='text/javascript' src='/js/console/location/edit.js' defer></script>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <% if (locals.edit) { %>
+    <% if (locals.location) { %>
+      <input type='hidden' id='location-id' name='locationID' value='<%= location.id %>'>
+    <% } %>
+    <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+    <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+  <% } %>
+
+  
+
+  <% if (locals.location && location.image || locals.edit) { %>
+    <div class="grid-container fluid section-img" style="background-image:url('<%= locals.location && location.image ? location.image.src : "" %>');">
+      <% if (locals.edit) { %>
+        <div class="grid-container">
+          <div class="grid-y grid-margin-y">
+            <div class="cell small-12">
+              <input id="file" type="file" accept="image/*" hidden>
+              <input id="img-changed" value="false" hidden>
+              <input id="img-removed" value="false" hidden>
+              <label for="file">
+                <div class="edit-img-button"><i class="far fa-image"></i> Change Image</div>
+              </label>
+            </div>
+            <div class="cell small-12">
+              <button id="button-remove-image" class="edit-img-button"<%- locals.location && location.image ? '' : " style='display: none;'" %>><i class="far fa-minus-circle"></i> Remove Image</button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+
+  <div class="grid-container fluid swim-lane article" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+
+      <nav aria-label="You are here:" role="navigation">
+        <ul class="breadcrumbs">
+          <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+          <li><a href="/Locations">Locations</a></li>
+          <li><a href="<%= locals.location && location.building ? '/building/' + location.building.id : '#' %>"><%= locals.location && location.building ? location.building.title : '' %></a></li>
+          <li>
+            <a href='#'>
+              <span class="show-for-sr">Current: </span> <%= locals.location ? location.title : '' %>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+
+
+      <div class="grid-x grid-margin-x align-justify">
+        <div class="cell small-12 medium-8 large-7 two-col-content">
+
+          <div class="cell small-9 medium-10 large-11">
+            <h1 id="article-title" class="article-heading" <%= contentEditable %> <%- locals.edit ? 'placeholder="Room"' : '' %>><%= locals.location ? location.title : '' %></h1>
+            <% if (locals.edit || (locals.location && location.descriptionShort)) { %>
+              <p id="article-summary" class="article-summary" <%= contentEditable %> <%- locals.edit ? 'placeholder="Short Description"' : '' %>><%- locals.location && location.descriptionShort ? location.descriptionShort : '' %></p>
+            <% } %>
+          </div>
+
+
+          <div class="article-body location-body">
+            <h2>Room Notes</h2>
+            <% if (locals.edit) { %>
+              <div id="roomNotes"></div>
+            <% } else { %>
+              <%- editorjsToHTML(location.roomNotes); %>
+            <% } %>
+
+
+
+
+            <% if (locals.location && (location.hasPrinter || location.hasColorPrinter || location.hasPharos || location.hasProjection || location.hasDualProjection || location.hasDocCamera || location.hasLectureCap || location.hasVoiceAmp || location.hasWirelessVoiceAmp || location.hasPOD || location.hasDisplay || location.hasHostPC || locals.hasWacomTouchscreen || locals.hasHDMILaptopCable || locals.hasUSBCLaptopCable || locals.hasBlurayPlayer || locals.hasZoomCapable) || locals.edit) { %>
+              <h3>In this Location</h3>
+              <% if (!locals.edit) { %>
+                <div class="boolean-attributes grid-x grid-margin-x small-up-1 medium-up-2 large-up-2">
+                  <%- location.hasPrinter ? '<div class="cell"><i class="far fa-print"></i> <span>Printer</span></div>' : '' %>
+                  <%- location.hasColorPrinter ? '<div class="cell"><i class="far fa-print"></i> <span>Color Printer</span></div>' : '' %>
+                  <%- location.hasPharos ? '<div class="cell"><i class="far fa-dollar-sign"></i> <span>Pay For Print</span></div>' : '' %>
+                  <%- location.hasProjection ? '<div class="cell"><i class="far fa-projector"></i> <span>Projection</span></div>' : '' %>
+                  <%- location.hasDualProjection ? '<div class="cell"><i class="far fa-images"></i> <span>Dual Projection</span></div>' : '' %>
+                  <%- location.hasDocCamera ? '<div class="cell"><i class="far fa-video"></i> <span>Document Camera</span></div>' : '' %>
+                  <%- location.hasLectureCap ? '<div class="cell"><i class="far fa-photo-video"></i> <span>Lecture Capture</span></div>' : '' %>
+                  <%- location.hasVoiceAmp ? '<div class="cell"><i class="far fa-microphone"></i> <span>Voice Amp</span></div>' : '' %>
+                  <%- location.hasWirelessVoiceAmp ? '<div class="cell"><i class="far fa-headset"></i> <span>Wireless Voice Amp</span></div>' : '' %>
+                  <%- location.hasPOD ? '<div class="cell"><i class="far fa-image"></i> <span>Wireless Projection (POD)</span></div>' : '' %>
+                  <%- location.hasDisplay ? '<div class="cell"><i class="far fa-tv-retro"></i> <span>LED Display</span></div>' : '' %>
+                  <%- location.hasHostPC ? '<div class="cell"><i class="far fa-desktop"></i> <span>Host PC</span></div>' : '' %>
+                  <%- location.hasWacomTouchscreen ? '<div class="cell"><i class="far fa-tv-alt"></i> <span>Wacom Touchscreen</span></div>' : '' %>
+                  <%- location.hasHDMILaptopCable ? '<div class="cell"><i class="far fa-user-chart"></i> <span>HDMI Laptop Cable</span></div>' : '' %>
+                  <%- location.hasUSBCLaptopCable ? '<div class="cell"><i class="far fa-user-chart"></i> <span>USB-C Laptop Cable</span></div>' : '' %>
+                  <%- location.hasBlurayPlayer ? '<div class="cell"><i class="far fa-compact-disc"></i> <span>Bluray Player</span></div>' : '' %>
+                  <%- location.hasZoomCapable ? '<div class="cell"><i class="far fa-fa-video"></i> <span>Zoom Capable</span></div>' : '' %>
+                </div>
+              <% } else { %>
+                <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-2 config-lane">
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Printer</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasPrinter" type="checkbox" name="hasPrinter" <%- locals.location && location.hasPrinter ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasPrinter">
+                        <span class='show-for-sr'>Printer</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Color Printer</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasColorPrinter" type="checkbox" name="hasColorPrinter" <%- locals.location && location.hasColorPrinter ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasColorPrinter">
+                        <span class='show-for-sr'>Color Printer</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Pay For Print</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasPharos" type="checkbox" name="hasPharos" <%- locals.location && location.hasPharos ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasPharos">
+                        <span class='show-for-sr'>Pay For Print</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Projection</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasProjection" type="checkbox" name="hasProjection" <%- locals.location && location.hasProjection ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasProjection">
+                        <span class='show-for-sr'>Projection</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Dual Projection</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasDualProjection" type="checkbox" name="hasDualProjection" <%- locals.location && location.hasDualProjection ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasDualProjection">
+                        <span class='show-for-sr'>Dual Projection</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Document Camera</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasDocCamera" type="checkbox" name="hasDocCamera" <%- locals.location && location.hasDocCamera ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasDocCamera">
+                        <span class='show-for-sr'>Document Camera</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Lecture Capture</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasLectureCap" type="checkbox" name="hasLectureCap" <%- locals.location && location.hasLectureCap ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasLectureCap">
+                        <span class='show-for-sr'>Lecture Capture</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Voice Amp</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasVoiceAmp" type="checkbox" name="hasVoiceAmp" <%- locals.location && location.hasVoiceAmp ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasVoiceAmp">
+                        <span class='show-for-sr'>Voice Amp</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Wireless Voice Amp</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasWirelessVoiceAmp" type="checkbox" name="hasWirelessVoiceAmp" <%- locals.location && location.hasWirelessVoiceAmp ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasWirelessVoiceAmp">
+                        <span class='show-for-sr'>Wireless Voice Amp</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Wireless Projection (POD)</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasPOD" type="checkbox" name="hasPOD" <%- locals.location && location.hasPOD ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasPOD">
+                        <span class='show-for-sr'>Wireless Projection (POD)</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>LED Display</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasDisplay" type="checkbox" name="hasDisplay" <%- locals.location && location.hasDisplay ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasDisplay">
+                        <span class='show-for-sr'>LED Display</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Host PC</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasHostPC" type="checkbox" name="hasHostPC" <%- locals.location && location.hasHostPC ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasHostPC">
+                        <span class='show-for-sr'>Host PC</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Wacom Touchscreen</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasWacomTouchscreen" type="checkbox" name="hasWacomTouchscreen" <%- locals.location && location.hasWacomTouchscreen ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasWacomTouchscreen">
+                        <span class='show-for-sr'>Wacom Touchscreen</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>HDMI Laptop Cable</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasHDMILaptopCable" type="checkbox" name="hasHDMILaptopCable" <%- locals.location && location.hasHDMILaptopCable ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasHDMILaptopCable">
+                        <span class='show-for-sr'>HDMI Laptop Cable</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>USB-C Laptop Cable</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasUSBCLaptopCable" type="checkbox" name="hasUSBCLaptopCable" <%- locals.location && location.hasUSBCLaptopCable ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasUSBCLaptopCable">
+                        <span class='show-for-sr'>USB-C Laptop Cable</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Bluray Player</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasBlurayPlayer" type="checkbox" name="hasBlurayPlayer" <%- locals.location && location.hasBlurayPlayer ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasBlurayPlayer">
+                        <span class='show-for-sr'>Bluray Player</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class='cell'>
+                    <p style='margin-bottom:0'>Zoom Capable</p>
+                    <div class="switch">
+                      <input class="switch-input" id="hasZoomCapable" type="checkbox" name="hasZoomCapable" <%- locals.location && location.hasZoomCapable ? 'checked' : '' %>>
+                      <label class="switch-paddle" for="hasZoomCapable">
+                        <span class='show-for-sr'>Zoom Capable</span>
+                        <span class='switch-active'>Yes</span>
+                        <span class='switch-inactive'>No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+              <% } %>
+            <% } %>
+          </div>
+
+          <% if (locals.location && location.articles && location.articles.length || locals.edit) { %>
+            <div class="swim-lane">
+              <h2>Related Articles</h2>
+              <div class="grid-container full">
+              <% if (locals.edit) { %>
+                <input id='article' type='hidden' name='article'>
+                <div class="input-group">
+                  <input class='ez-input input-group-field' type='text' id='add-article-input'>
+                  <div class="input-group-button">
+                    <button id="add-article-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                  </div>
+                </div>
+              <% } %>
+                <ul class="card-list no-indent grid-x grid-margin-x small-up-1 medium-up-2 large-up-2 article-cards-wrapper">
+                <% if (locals.location && location.articles && location.articles.length) { %>
+                  <% for (const article of location.articles) { %>
+                    <%- include('../partials/components/article-card.ejs', {
+                      article,
+                      edit: locals.edit
+                    }); %>
+                  <% } %>
+                <% } %>
+                </ul>
+
+              </div>
+            </div>
+          <% } %>
+
+          <%
+
+            const allSoftwares = [];
+
+            if (locals.location && !locals.edit) {
+              if (location.software && location.software.length) {
+                allSoftwares.push(...location.software);
+              }
+              if (location.packages && location.packages.length) {
+                for (let package of location.packages) {
+                  if (package.software && package.software.length) {
+                    allSoftwares.push(...package.software);
+                  }
+                }
+              }
+            }
+
+            const allSoftwaresFiltered = allSoftwares.filter((element, index, array) => {
+              return array.findIndex(element_ => element_.id === element.id) === index;
+            });
+
+
+          
+          %>
+
+          <% if (locals.location && allSoftwaresFiltered.length || locals.edit) { %>
+            <div class="swim-lane">
+              <h2>Software In This Location</h2>
+              <% if (locals.edit) { %>
+                  <input type="hidden" id="software" name="software">
+                  <label for="add-software-input">Software Title</label>
+                  <div class="input-group">
+                    <input type="text" id="add-software-input" name="add-software-input" class="input-group-field ez-input">
+                    <div class="input-group-button">
+                      <button id="add-software-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+              <% } %>
+              <table id='softwareTable' class='table'>
+                <thead>
+                  <tr>
+                    <th class='table-hidden'>ID</th>
+                    <th>Title</th>
+                    <th>Version</th>
+                    <th>Publisher</th>
+                    <% if (locals.edit) { %>
+                      <th>Remove</th>
+                    <% } %>
+                  </tr>
+                </thead>
+                <tbody>
+                <% if (locals.edit && locals.location && location.software && location.software.length) { %>
+                  <% for (const software_ of location.software) { %>
+                    <tr>
+                      <td><%= software_.id %></td>
+                      <td><a href="#"><%= software_.title %></a></td>
+                      <td><%= software_.version %></td>
+                      <td><%= software_.publisher %></td>
+                      <% if (locals.edit) { %>
+                        <td><button class='button-remove-software'><i class='fas fa-unlink'></i> Remove</button></td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } else if (locals.location && !locals.edit) { %>
+                  <% for (const software_ of allSoftwaresFiltered) { %>
+                    <tr>
+                      <td><%= software_.id %></td>
+                      <td><a href="/software/<%= software_.id %>"><%= software_.title %></a></td>
+                      <td><%= software_.version %></td>
+                      <td><%= software_.publisher %></td>
+                      <% if (locals.edit) { %>
+                        <td><button class='button-remove-software'><i class='fas fa-unlink'></i> Remove</button></td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+
+
+
+
+
+
+        </div>
+
+
+
+        <div class="cell small-12 medium-4 two-col-sidebar">
+
+          <% if (locals.edit) { %>
+            <input type="hidden" id='is-access-restricted' value="<%- locals.location && location.accessRestricted ? 'true' : 'false' %>">
+            <input type="hidden" id='can-remove-groups' value="<%- locals.canRemoveGroups %>">
+            <div class="box card" id="egu"></div>
+          <% } %>  
+
+
+          <% if (locals.location && ((location.building && (location.building.address || location.building.common)) || location.locationType || location.room || location.seats || location.computers) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+
+              <% if (locals.edit) { %>
+                <div class='relationship-box' style='margin-bottom: 1em;'>
+                  <h3>Building</h3>
+                  <input id='building' type='hidden' name='building'>
+                  <div id="relate-building-input-group" class="input-group" <%= locals.location && location.building ? "style='display:none" : '' %>>
+                    <input class='ez-input input-group-field' type='text' id='relate-building-input'>
+                    <div class="input-group-button">
+                      <button id="relate-building-button" class='button-link-item'><i class="fas fa-link"></i> Relate</button>
+                    </div>
+                  </div>
+                  <ul class="card-list no-indent grid-x grid-margin-x small-up-2 medium-up-2 large-up-3 building-cards-wrapper">
+                    <% if (locals.location && location.building) { %>
+                      <%- include('../partials/components/service-card.ejs', {
+                        title: location.building.title,
+                        compact: true,
+                        link: '#',
+                        icon: 'fa-building',
+                        type: 'building',
+                        id: location.building.id
+                      }); %>
+                    <% } %>
+                  </ul>
+                </div>
+              <% } %>
+
+              <% if (locals.location && location.building && location.building.common || locals.edit) { %>
+                <h3><i class="far fa-fw fa-building"></i> Building</h3>
+                <p id='building-common'><a href="<%= !locals.edit && locals.location && location.building && location.building.common ? '/building/' + location.building.id : '#' %>"><%= locals.location && location.building && location.building.common ? location.building.common : '' %></a></p>
+              <% } %>
+              
+              <% if (locals.location && location.building && location.building.address || locals.edit) { %>
+                <h3><i class="far fa-fw fa-location-arrow"></i> Address</h3>
+                <p id='building-address'><%= locals.location && location.building && location.building.address ? location.building.address : '' %></p>
+              <% } %>
+
+              <% if (locals.location && location.locationType || locals.edit) { %>
+                <h3><i class="far fa-fw fa-layer-group"></i> Room Type</h3>
+                <% if (locals.edit) { %>
+                  <label for="locationType" class="sr-only">Room Type</label>
+                  <select name="locationType" id="locationType" class='title-case'>
+                  <% for (const locationType of locationTypes) { %>
+                    <option class='title-case' value="<%= locationType.id %>" <%= locals.location && location.idLocationType == locationType.id ? 'selected' : '' %>><%= locationType.title %></option>
+                  <% } %>
+                  </select>
+                <% } else { %>
+                  <p><%= locals.location && location.locationType ? location.locationType.title : '' %></p>
+                <% } %>
+              <% } %>
+
+              <% if (locals.location && location.room || locals.edit) { %>
+                <h3><i class="far fa-fw fa-map-marker"></i> Room</h3>
+                <p id='room' <%= contentEditable %> <%- locals.edit ? 'style="min-height:4em;" placeholder="Room"' : '' %>><%= locals.location && location.room ? location.room : '' %></p>
+              <% } %>
+
+              <% if (locals.location && location.seats || locals.edit) { %>
+                <h3><i class="far fa-fw fa-users"></i> Seats</h3>
+                <% if (locals.edit) { %>
+                  <input type='number' id='seats' name='seats' value="<%= locals.location && location.seats ? location.seats : '' %>">
+                <% } else { %>
+                  <p><%= location.seats %></p>
+                <% } %>
+              <% } %>
+
+              <% if (locals.location && location.computers || locals.edit) { %>
+                <h3><i class="far fa-fw fa-desktop"></i> Computers</h3>
+                <% if (locals.edit) { %>
+                  <input type='number' id='computers' name='computers' value="<%= locals.location && location.computers ? location.computers : '' %>">
+                <% } else { %>
+                  <p><%= location.computers %></p>
+                <% } %>
+              <% } %>
+
+              
+            </div>
+          <% } %>
+
+          <% if(locals.location && (location.createdAt || location.updatedAt) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+              <p><strong>Created:</strong> <%= locals.location && location.createdAt ? moment(location.createdAt).format('ll') : '' %></p>
+              <p><strong>Modified:</strong> <%= locals.location && location.updatedAt ? moment(location.updatedAt).format('ll') : '' %></p>
+            </div>
+          <% } %>
+
+          <% if (locals.location && (location.tags.length || location.audiences.length || location.aliases.length) || locals.edit) { %>
+            <div class="box card">
+              <h2>Metadata</h2>
+              <% if(locals.location && location.tags.length || locals.edit) { %>
+                <h3>Tags</h3>
+                <ul class="tags">
+                  <% if (locals.location && location.tags.length) { %>
+                    <% for (const tag of location.tags) { %>
+                      <li data-tagid="<%= tag.id %>" class='tag'><a href="<%= locals.edit ? '#' : '/tag/' + tag.id %>"><%- tag.title %><% if (locals.edit) { %> <button class='remove-tag-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% } %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                      <li data-tagid=""><input type='text' id='add-tag-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="tag" name="tag">
+                <% } %>
+              <% } %>
+              <% if (locals.location && location.audiences.length || locals.edit) { %>
+                <h3>Audience</h3>
+                <ul class="audience">
+                  <% if (locals.location && location.audiences.length) { %>
+                    <% for (const audience of location.audiences) { %>
+                      <li data-audienceid="<%= audience.id %>" class="audience-item"><a href="<%= locals.edit ? '#' : '/audience/' + audience.id %>"><%- audience.title %><% if (locals.edit) { %> <button class='remove-audience-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% } %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-audienceid=""><input type='text' id='add-audience-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="audience" name="audience">
+                <% } %>
+              <% } %>
+              <% if (locals.location && location.aliases.length || locals.edit) { %>
+                <h3>Alias</h3>
+                <ul class="alias">
+                  <% if (locals.location && location.aliases.length) { %>
+                    <% for (const alias of location.aliases) { %>
+                      <li data-aliasid="<%= alias.id %>" class="alias-item"><a href="<%= locals.edit ? '#' : '/alias/' + alias.id %>"><%- alias.title %><% if (locals.edit) { %> <button class='remove-alias-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% } %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-aliasid=""><input type='text' id='add-alias-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="alias" name="alias">
+                <% } %>
+              <% } %>
+            </div>
+          <% } %>
+
+          <% if (locals.canEdit) { %>
+            <div class="box card">
+              <h2>Admin</h2>
+              <ul class="link-cards no-icon">
+                <% if (!locals.edit && locals.location && location.spacePhase) { %>
+                  <li><span class='text'>Current Phase: <%= location.spacePhase.title %></span></li>
+                <% } %>
+                <% if (!locals.edit) { %>
+                  <li><a href="/console/location/edit/<%= location.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+                <% } %>
+                <% if (locals.location && locals.edit) { %>
+                  <li><a href="/location/<%= location.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Location</a></li>
+                  <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+                <% } %>
+                <% if (locals.edit) { %>
+                  <li><a data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+                <% } %>
+                <% if (locals.edit && locals.location && location.spacePhase && !locals.canPublish) { %>
+                  <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+                  <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+                    <h2>Are you sure?</h2>
+                    <p>You will not be able to edit this location while it is being reviewed.</p>
+                    <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+                    <a href="#" class="button-confirm bright-4" data-close>No</a>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                      <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+                    </button>
+                  </div>
+                <% } %>
+                <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+              </ul>
+            </div>
+          <% } %>
+
+
+          
+          <%- include('../partials/components/request-help.ejs'); %>
+
+          <%- include('../partials/components/print-share.ejs'); %>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+<% if (locals.edit) { %>
+  <%- include('../partials/components/edit.ejs', {
+    entityTitle: 'Location',
+    entityID: locals.location && location.id ? location.id : 'New'
+  }); %>
+  <%
+
+  const toasts = [
+    {
+      id: 'toast-save-success',
+      type: 'success',
+      title: 'Success',
+      message: 'Location has been saved',
+      show: false
+    },
+    {
+      id: 'toast-save-error',
+      type: 'error',
+      title: 'Whoops',
+      message: 'Something went wrong trying to save your location',
+      show: false
+    }
+  ];
+  %>
+  <%- include('../partials/components/toaster.ejs', { toasts }); %>
+<% } %>
+
+<% if (locals.edit && locals.location) { %>
+  <%- include('../partials/components/preview-modal.ejs'); %>
+<% } %>
+
+
+<% if (locals.edit) { %>
+<div class="reveal console-modal" id="advanced-settings-modal" data-reveal data-options="closeOnClick:false;" data-simplebar>
+  <ul class="tabs" data-tabs id="advancedSettingsTabs">
+    <li class="tabs-title is-active"><a href="#phaseTab" aria-selected="true"><i class='far fa-satellite-dish'></i> State</a></li>
+    <li class="tabs-title"><a href="#relationshipsTab"><i class='fas fa-database'></i> Relationships</a></li>
+    <li class="tabs-title"><a href="#auditTab"><i class='far fa-history'></i> Audit</a></li>
+  </ul>
+  <div data-tabs-content="advancedSettingsTabs">
+    <div id="phaseTab" class="tabs-panel is-active">
+      <% if (locals.canPublish) { %>
+        <label for="phase">Phase</label>
+        <select name="phase" id="phase" class='title-case'>
+        <% for (let phase of phases) { %>
+          <option class='title-case' value="<%= phase.id %>" <%= locals.location && location.idSpacePhase == phase.id ? 'selected' : '' %>><%= phase.title %></option>
+        <% } %>
+        </select>
+      <% } else { %>
+        <input type="hidden" id="phase" value="1">
+      <% } %>
+    </div>
+    <div id="relationshipsTab" class="tabs-panel">
+      <div class='relationship-box'>
+        <h2>Packages</h2>
+        <input id='package' type='hidden' name='package'>
+        <div class="input-group">
+          <input class='ez-input input-group-field' type='text' id='add-package-input'>
+          <div class="input-group-button">
+            <button id="add-package-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+          </div>
+        </div>
+        <ul class="card-list no-indent grid-x grid-margin-x small-up-2 medium-up-2 large-up-3 packages-wrapper">
+          <% if (locals.location && location.packages && location.packages.length) { %>
+            <% for (const package of location.packages) { %>
+              <li data-packageid="<%= package.id %>" class="package-item related-item"><%= package.title %><button class='remove-related-item-button'><i class='fas fa-times'></i> Remove</button></li>
+            <% } %>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    <div id="auditTab" class="tabs-panel">
+      <h2>Details</h2>
+      <p><strong>Date Review By: </strong><%= locals.location && location.dateReviewBy ? moment(location.dateReviewBy).format('ll') : '' %></p>
+      <p><strong>Created On: </strong><%= locals.location && location.createdAt ? moment(location.createdAt).format('ll') : '' %></p>
+      <p><strong>Created By: </strong><%= locals.location && location.userCreatedBy && location.userCreatedBy.username ? location.userCreatedBy.username : '' %></p>
+      <p><strong>Modified On: </strong><%= locals.location && location.updatedAt ? moment(location.updatedAt).format('ll') : '' %></p>
+      <p><strong>Last Modified By: </strong><%= locals.location && location.userModifiedBy && location.userModifiedBy.username ? location.userModifiedBy.username : '' %></p>
+    </div>
+  </div>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true"><i class='far fa-times'></i></span>
+  </button>
+</div>
+<% } %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

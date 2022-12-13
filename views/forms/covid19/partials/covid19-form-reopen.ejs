@@ -1,0 +1,816 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .carousel { height: calc(100% - 8em);}
+
+  .carousel-cell {
+    height: 100%;
+    width:100%;
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:2em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x" style="margin:auto;">
+    <div class='cell  show-for-small-only'>
+      <div style="font-size:8em;text-align:center;margin:.25em">
+        <span class="fa-stack">
+          <i class="fas fa-mobile-alt fa-stack-1x"></i>
+          <i style="color:var(--color-pop)" class="fas fa-ban fa-stack-2x"></i>
+        </span>
+      </div>
+      <p>Because this form requires extensive writing and text entry, for ease of use and best results, we recommend accessing the form from a computer.</p>
+    </div>
+    <div class='cell hide-for-small-only medium-4 large-3'>
+      <% if (locals.user && user.id && locals.userAttributes) { %>
+        <div class="user-info">
+          <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+          <p id="verified"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+          <p id="full-name"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+          <p id="wpi-department"><%= userAttributes['user.department'] %></p>
+          <p id="wpi-id"><%= userAttributes['user.employeeid'] %></p>
+          <p id="wpi-email"><i class="fas fa-envelope-square"></i> <%= userAttributes.emailaddress %></p>
+          <p id="wpi-phone"><i class="fas fa-phone-square"></i> <%= userAttributes['user.telephonenumber'] %></p>
+        </div>
+      <% } %>
+      <div>
+        <h2>Contents</h2>
+        <ul class="toc no-bullet">
+          <li><a class="toc-item active" data-controls="0" href="#">Before You begin</a></li>
+          <li><a class="toc-item" data-controls="1" href="#">Research Lab Reopening </a></li>
+          <li><a class="toc-item sub" data-controls="2" href="#">Personnel Justification</a></li>
+          <li><a class="toc-item sub last" data-controls="3" href="#">Grant Support</a></li>
+          <li><a class="toc-item sub last" data-controls="4" href="#">Space and Equipment</a></li>
+          <li><a class="toc-item sub last" data-controls="5" href="#">Animal Research</a></li>
+          <li><a class="toc-item" data-controls="6" href="#">Laboratory Reopening and Social Distancing Plan</a></li>
+          <li><a class="toc-item" data-controls="7" href="#">Research Personnel List</a></li>
+          <li><a class="toc-item" data-controls="8" href="#">Certifications & Submit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class='cell  hide-for-small-only medium-8 large-9'>
+      <h1>Research Lab Reopening Webform</h1>
+      <div class="carousel help-form">
+        <!-- Before You begin -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <div style="font-size:8em;text-align:center;margin:.25em">
+            <span class="fa-stack">
+              <i style="color:var(--color-pop)" class="fas fa-octagon fa-stack-2x"></i>
+              <i class="fas fa-hand-paper fa-stack-1x fa-inverse"></i>
+            </span>
+          </div>
+          <h2>Before You Begin</h2>
+          <p style="font-weight:600">This form is intended to be used By Research PIs to submit answers only after you have compiled them using their respective worksheets. Please take time to fully review the guidance and associated documents before continuing</p>
+          <ul>
+            <li>“Read and Review the <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance">Return to Campus Guidance</a> and the <a href="https://www.wpi.edu/news/coronavirus/guidance-research/research-lab-reopening-guidance">Research Lab Reopening Guidance</a>.</li>
+            <li>Prior to filling out this form, download, review, and create your <a href="https://hub.wpi.edu/article/600/laboratory-reopening-and-social-distancing-plan">Laboratory Reopening and Social Distancing Plan</a> including your Social Distancing Plans and Personnel List.</li>
+            <li>Prior to completing the Research Lab Reopening Webform, review your Plan with your research team to ensure measures are achievable and, if necessary, review with your Department Head.</li>
+            <li>Review the <a href="https://hub.wpi.edu/article/610/scheduling-subteams-for-research-reopening">Scheduling Sub-Teams for Research Reopening</a> guidance.</li>
+            <li>If you are looking to add additional personnel to an existing <em>approved</em> plan please <a href="/io/Lab-Reopening-Addition">use this form</a></li>
+          </ul>
+        </div>
+        <!-- Reopening Form -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <p style="font-weight:600">Please fill out this form in its entirety.</p>
+
+          <fieldset id="detail-questions">
+            <legend>Center Information</legend>
+
+            <label class="form-label"  for="RLR-1-center">Center</label>
+            <p class="form-label-help">Based on physical location, is your lab within a Research Center?</p>
+            <select id="RLR-1-center" name="RLR-1-center">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label"  for="RLR-2-center-directorName">Center Director's Name</label>
+            <input type="text" id="RLR-2-center-directorName" name="RLR-2-center-directorName">
+
+            <label class="form-label"  for="RLR-3-center-directorEmail">Center Director's Email</label>
+            <input type="text" id="RLR-3-center-directorEmail" name="RLR-3-center-directorEmail">
+
+            <label class="form-label"  for="RLR-4-head">Department Head</label>
+            <p class="form-label-help">Choose Department Head, Center Director, or other supervisor overseeing this lab for compliance</p>
+            <select id="RLR-4-head" name="RLR-4-head">
+              <option value="">--</option>
+              <option value="Billiar, Kristen">Billiar, Kristen</option>
+              <option value="Brown, Donald R">Brown, Donald R</option>
+              <option value="Capogna, Luca">Capogna, Luca</option>
+              <option value="deWinter, Jennifer">deWinter, Jennifer</option>
+              <option value="Douglas, Emily M">Douglas, Emily M</option>
+              <option value="Duffy, Joseph B">Duffy, Joseph B</option>
+              <option value="Eggleston, Carrick M">Eggleston, Carrick M</option>
+              <option value="Gatsonis, Nikolaos A">Gatsonis, Nikolaos A</option>
+              <option value="Fischer, Gregory S">Fischer, Gregory S</option>
+              <option value="Gericke, Arne">Gericke, Arne</option>
+              <option value="Korkin, Dmitry">Korkin, Dmitry</option>
+              <option value="Krueger, Robert">Krueger, Robert</option>
+              <option value="Mathisen, Paul P">Mathisen, Paul P</option>
+              <option value="Mishra, Brajendra">Mishra, Brajendra</option>
+              <option value="Moncrief, Kathryn">Moncrief, Kathryn</option>
+              <option value="Petkie, Douglas T">Petkie, Douglas T</option>
+              <option value="Roberts, Susan C.">Roberts, Susan C.</option>
+              <option value="Rundensteiner, Elke A">Rundensteiner, Elke A</option>
+              <option value="Simeoni, Albert">Simeoni, Albert</option>
+              <option value="Strong, Diane M">Strong, Diane M</option>
+              <option value="Wills, Craig E">Wills, Craig E</option>
+              <option value="Xiao, Jing">Xiao, Jing</option>
+              <option value="Yagoobi, Jamal">Yagoobi, Jamal</option>
+            </select>
+          </fieldset>
+
+        </div>
+        <!-- Reopening Form - Personnel -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Reopening Form - Personnel Justification</legend>
+            <p style="font-weight:600">You will be asked to add all required personnel later in the Research Personnel List section of this form</p>
+
+            <label class="form-label" for="RLR-5-personnelJustification">Personnel Justification</label>
+            <p class="form-label-help">For any personnel who are ready to return to on-campus work, please explain why their in-person presence is considered a priority.</p>
+            <textarea id="RLR-5-personnelJustification" name="RLR-5-personnelJustification" rows="6"></textarea>
+
+            <label class="form-label"  for="RLR-6-personnelTravel">Personnel Travel</label>
+            <p class="form-label-help">Do you have lab members who have recently traveled to other states or outside the U.S. during the past 4 weeks?</p>
+            
+            <select id="RLR-6-personnelTravel" name="RLR-6-personnelTravel">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label"  for="RLR-7-personnelSafety">Lab Safety Training</label>
+            <p class="form-label-help">Are you and all members of your laboratory up to date on laboratory safety training?</p>
+            <select id="RLR-7-personnelSafety" name="RLR-7-personnelSafety">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <p>Note, you and all lab members are also required to complete the separate COVID-19 training with EHS prior to returning to campus.</p>
+
+            <label class="form-label"  for="RLR-8-personnelCards">WPI ID Cards</label>
+            <p class="form-label-help">WPI ID Cards: Do you and all members of your laboratory have their WPI ID Cards?</p>
+            <select id="RLR-8-personnelCards" name="RLR-8-personnelCards">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <div id="RLR-9-toggle" style=display:none;>
+              <label class="form-label" for="RLR-9-personnelCardsWho">Card Printing</label>
+              <p class="form-label-help">If “No,” please write the name of any lab members who will need a WPI ID Card reprinted prior to returning to campus.</p>
+              <textarea id="RLR-9-personnelCardsWho" name="RLR-9-personnelCardsWho" rows="6"></textarea>
+            </div>
+
+          </fieldset>
+        </div>
+        <!-- Reopening Form - Grant Support -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Reopening Form - Grant Support</legend>
+            <label class="form-label" for="RLR-10-grants">Grants (if applicable)</label>
+            <p class="form-label-help">If the research is grant funded what are the timelines associated with each grant?</p>
+            <textarea id="RLR-10-grants" name="RLR-10-grants" rows="6" placeholder="Example: NIH Award R01xxxxx; project period through mm/dd/yy: Brief notes on grant status if applicable"></textarea>
+
+          </fieldset>
+        </div>
+        <!-- Reopening Form - space and equipment -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Reopening Form - Space and Equipment</legend>
+
+            <label class="form-label" for="RLR-11-building">Building in which the lab is located. </label>
+            <input type="text" id="RLR-11-building" name="RLR-11-building">
+
+            <label class="form-label" for="RLR-12-rooms">Floor(s) & Room(s)</label>
+            <p class="form-label-help">Please provide the floor/s and list all room numbers for the lab.</p>
+            <textarea id="RLR-12-rooms" name="RLR-12-rooms" rows="4"></textarea>
+            
+            <label class="form-label" for="RLR-13-shared">Shared Space</label>
+            <p class="form-label-help">Do you use any shared spaces with other labs?</p>
+            <select id="RLR-13-shared" name="RLR-13-shared">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <div id="RLR-14-toggle" style=display:none;>
+              <label class="form-label" for="RLR-14-sharedFunction">Shared Space Function</label>
+              <p class="form-label-help">What shared space(s) do you use? How often and for what purpose(s)?</p>
+              <textarea id="RLR-14-sharedFunction" name="RLR-14-sharedFunction" rows="6"></textarea>
+            </div>
+
+            <label class="form-label" for="RLR-15-equipmentChecks">Equipment Checks</label>
+            <p class="form-label-help">Have you or emergency responder staff been able to check on the status of lab equipment (i.e., freezers, refrigerators, incubators, centrifuge, fume hoods, biological safety cabinets, and autoclaves) since you ramped down your on-campus lab in March?</p>
+            <select id="RLR-15-equipmentChecks" name="RLR-15-equipmentChecks">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label" for="RLR-16-equipmentStatus">Equipment Status</label>
+            <p class="form-label-help">Is all lab equipment in working order?</p>
+            <select id="RLR-16-equipmentStatus" name="RLR-16-equipmentStatus">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label class="form-label" for="RLR-17-equipmentSupply">Supply Level</label>
+            <p class="form-label-help">Do you have sufficient Laboratory Supplies/Reagents?</p>
+            <select id="RLR-17-equipmentSupply" name="RLR-17-equipmentSupply">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label" for="RLR-18-equipmentResupply">Supply Resupply</label>
+            <p class="form-label-help">When will laboratory supplies and reagents need to be replenished? Give time frame relative to the date of completion of this form.</p>
+            <select id="RLR-18-equipmentResupply" name="RLR-18-equipmentResupply">
+              <option value="">-</option>
+              <option value="immediately">immediately</option>
+              <option value="1 to 2 weeks">1 to 2 weeks</option>
+              <option value="3 to 4 weeks">3 to 4 weeks</option>
+              <option value="5 to 8 weeks">5 to 8 weeks</option>
+              <option value="More than 8 Weeks">More than 8 weeks</option>
+              <option value="no ressuply needed">No Resupply Needed</option>
+            </select>
+
+            <label class="form-label" for="RLR-19-ppeSupply">PPE Level</label>
+            <p class="form-label-help">Do you have sufficient PPE?</p>
+            <select id="RLR-19-ppeSupply" name="RLR-19-ppeSupply">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label" for="RLR-20-ppeResupply">PPE Resupply</label>
+            <p class="form-label-help">When will PPE need to be replenished? Give time frame relative to the date of completion of this form</p>
+            <select id="RLR-20-ppeResupply" name="RLR-20-ppeResupply">
+              <option value="">-</option>
+              <option value="immediately">immediately</option>
+              <option value="1 to 2 weeks">1 to 2 weeks</option>
+              <option value="3 to 4 weeks">3 to 4 weeks</option>
+              <option value="5 to 8 weeks">5 to 8 weeks</option>
+              <option value="More than 8 Weeks">More than 8 weeks</option>
+            </select>
+
+            <label class="form-label" for="RLR-21-cleaningSupply">Cleaning Supply Level</label>
+            <p class="form-label-help">Do you have sufficient cleaning and disinfecting supplies?</p>
+            <select id="RLR-21-cleaningSupply" name="RLR-21-cleaningSupply">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label" for="RLR-22-cleaningResupply">Cleaning Supply Resupply</label>
+            <p class="form-label-help">When will cleaning and disinfecting supplies need to be replenished? Give time frame relative to the date of completion of this form.</p>
+            <select id="RLR-22-cleaningResupply" name="RLR-22-cleaningResupply">
+              <option value="">-</option>
+              <option value="immediately">immediately</option>
+              <option value="1 to 2 weeks">1 to 2 weeks</option>
+              <option value="3 to 4 weeks">3 to 4 weeks</option>
+              <option value="5 to 8 weeks">5 to 8 weeks</option>
+              <option value="More than 8 Weeks">More than 8 weeks</option>
+            </select>
+
+            <label class="form-label" for="RLR-23-core">Core Facilities Use</label>
+            <p class="form-label-help">Will you need access to core facilities to resume research?</p>
+            <select id="RLR-23-core" name="RLR-23-core">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+             
+            <div id="RLR-24-toggle" style=display:none;>
+              <label class="form-label" for="RLR-24-coreUse">Core Facilities</label>
+              <p class="form-label-help">Which core facilities do you need access to? Do you require assistance to operate the instruments?</p>
+              <textarea id="RLR-24-coreUse" name="RLR-24-coreUse" rows="6"></textarea>
+            </div>
+
+          </fieldset>
+        </div>
+        <!-- Reopening Form - Animal Research-->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Reopening Form - Animal Research</legend>
+
+            <label class="form-label" for="RLR-25-animalUse">Animal Use</label>
+            <p class="form-label-help">Do you use animals in your work?</p>
+            <select id="RLR-25-animalUse" name="RLR-25-animalUse">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+             
+            <div id="RLR-26-toggle" style=display:none;>
+              <label class="form-label" for="RLR-26-animalTimeline">Animal Timeline</label>
+              <p class="form-label-help">Please describe the timeline for animal colony regeneration and what needs you will have for services from the vivarium staff, including routine and specialty services.</p>
+              <textarea id="RLR-26-animalTimeline" name="RLR-26-animalTimeline" rows="6"></textarea>
+
+              <label class="form-label" for="RLR-27-animalOrder">Animal Order</label>
+              <p class="form-label-help">When will you need to order animals again? Give time frame relative to the date of completion of this form.</p>
+              <select id="RLR-27-animalOrder" name="RLR-27-animalOrder">
+                <option value="">-</option>
+                <option value="immediately">immediately</option>
+                <option value="1 to 2 weeks">1 to 2 weeks</option>
+                <option value="3 to 4 weeks">3 to 4 weeks</option>
+                <option value="5 to 8 weeks">5 to 8 weeks</option>
+                <option value="More than 8 Weeks">More than 8 weeks</option>
+              </select>
+
+              <label class="form-label" for="RLR-28-animalHousing">Animal Housing Access</label>
+              <p class="form-label-help">When do you anticipate entering the vivarium? Give an estimated time frame based on the date of resumption of research activity.</p>
+              <select id="RLR-28-animalHousing" name="RLR-28-animalHousing">
+                <option value="">-</option>
+                <option value="As Soon As Possible">As Soon As Possible</option>
+                <option value="1 to 2 weeks">1 to 2 weeks</option>
+                <option value="3 to 4 weeks">3 to 4 weeks</option>
+                <option value="5 to 8 weeks">5 to 8 weeks</option>
+                <option value="More than 8 Weeks">More than 8 weeks</option>
+              </select>
+            </div>
+            
+
+
+          </fieldset>
+        </div>
+        <!-- Laboratory Reopening Plan -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <fieldset id="detail-questions">
+            <legend>Laboratory Reopening and Social Distancing Plan</legend>
+            <p>PIs and center directors are required to develop a Laboratory Reopening and Social Distancing Plan that complies with the <a href="https://www.mass.gov/doc/laboratories-checklist/download">Massachusetts Laboratories Checklist</a> issued by Massachusetts, WPI’s Research Lab Reopening Plan Guidance, and WPI’s Return to Campus Guidance. </p>
+            <p>Please use the template below to lay out your plans to manage lab operations while considering the social distancing, hygiene, staffing and operations, and cleaning and disinfecting practices required by Massachusetts and WPI. </p>
+            <p>Plans must be submitted to the Office of the Vice Provost for Research via the Research Lab Reopening Webform and will be reviewed on a rolling basis.  Once approved, plans must be reviewed with all researchers in a lab prior to resuming on-campus research in that lab.</p>
+            <p>After reviewing the FAQs on the Guidance for Research website, submit any remaining questions to <a href="mailto:vpr@wpi.edu">vpr@wpi.edu</a>.</p>
+            <p><strong>Please respond to all the questions in this form.</strong></p>
+
+            <label class="form-label" for="LRSD-1-projects">Research Project(s)</label>
+            <p class="form-label-help">Describe the research project(s) that you propose to restart at this time.</p>
+            <textarea id="LRSD-1-projects" name="LRSD-1-projects" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-2-rationale">Rationale for Return to On-Campus Research</label>
+            <p class="form-label-help">Considering WPI’s Research Lab Reopening Guidance and access priorities, explain why your lab’s on-campus research project(s) should be prioritized.</p>
+            <textarea id="LRSD-2-rationale" name="LRSD-2-rationale" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-3-distancing">Social Distancing</label>
+            <p class="form-label-help">Describe how your lab will ensure social distancing (> 6 feet between individuals).</p>
+
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-people-arrows color-bright-1"></i> Consider and describe how your lab will:
+              </div>
+              <div class="note-message">  
+                <ul>
+                  <li>Ensure separation of 6 feet or more between researchers at fixed working positions unless this distance is unsafe due to the particular nature of the work or the configuration of the workspace.</li>
+                  <li>Improve ventilation for enclosed spaces where possible (e.g., by using mechanical ventilation and hoods in labs)</li>
+                  <li>Designate assigned working areas (e.g., floor, building, zone) to researchers where possible to limit movement throughout the facility and limit contact between researchers and other people on WPI’s campus.</li>
+                  <li>Stagger work schedules, lunch and break times, regulating max number of people in one place</li>
+                  <li>Require use of face coverings for all researchers, except where doing so may introduce a safety hazard to workers or where an individual is unable to wear a face covering due to a medical condition or disability.</li>
+                  <li>Minimize the use of confined spaces (e.g., elevators, control rooms, vehicles) by more than one individual at a time; all researchers in such space at the same time are required to wear face coverings.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="form-label-help">Please note whether any physical modifications to the lab/bench spaces are necessary (floor markers, plexiglass shields, etc.)</p>
+            <textarea id="LRSD-3-distancing" name="LRSD-3-distancing" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-4-hygiene">Hygiene Protocols</label>
+            <p class="form-label-help">Describe how your lab will apply robust hygiene protocols..</p>
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-hands-wash color-bright-1"></i> Consider and describe how your lab will:
+              </div>
+              <div class="note-message">  
+                <ul>
+                  <li>Ensure access to handwashing facilities on site, including soap and running water, and allow sufficient break time for workers to wash hands frequently; alcohol-based hand sanitizers with at least 60% alcohol may be used as an alternative.</li>
+                  <li>Supply researchers in the lab with adequate cleaning products (e.g., sanitizer, disinfecting wipes).  Please contact EHS if you need assistance in procuring such supplies.</li>
+                  <li>Require frequent cleaning and sanitation of all high-touch areas such as desks, door handles, and restrooms in the lab.</li>
+                  <li>Avoid sharing use of laboratory materials / equipment (e.g., goggles) or disinfect equipment between use.</li>
+                  <li>Post visible signage throughout the site to remind researchers of the hygiene and safety protocols.  Please contact EHS or Marketing & Communications for updated posters.</li>
+                </ul>
+              </div>
+            </div>
+            <textarea id="LRSD-4-hygiene" name="LRSD-4-hygiene" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-5-staffing">Staffing and Operations</label>
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-user-friends color-bright-1"></i> Consider and describe how your lab will:
+              </div>
+              <div class="note-message">  
+                <ul>
+                  <li>Ensure that all researchers have completed EHS training on up-to-date safety information and precautions including hygiene and other safety measures.</li>
+                  <li>Ensure researchers continue to telework if feasible; meetings should be remote to reduce density in the laboratory.</li>
+                  <li>Limit service providers on site; shipping and deliveries completed in designated areas, outside the facility if possible.</li>
+                  <li>Restrict access of office workers to lab or production facilities; segment office / support personnel to specific areas of the facility.</li>
+                  <li>Adjust workplace hours and shifts (if working in-person, leverage working teams with different schedules or staggered arrival /departure) to minimize contact across researchers and reduce congestion at entry points.</li>
+                  <li>Researchers must stay home if feeling ill. Encourage researchers who are particularly vulnerable to COVID-19 according to the Centers for Disease Control (e.g., due to age or underlying conditions) to stay home.</li>
+                  <li>Encourage researchers to self-identify symptoms or any close contact to a known or suspected COVID-19 case to WPI.</li>
+                  <li>Encourage researchers who test positive for COVID-19 to disclose to WPI on <a href="https://wpi.qualtrics.com/jfe/form/SV_dhF4H8uRISSCmUd">this form</a> for purposes of cleaning / disinfecting and contact tracing.</li>
+                  <li>Post notice to researchers of important health information and relevant safety measures as outlined in government guidelines. Please contact EHS or Marketing & Communications for updated posters.</li>
+                </ul>
+              </div>
+            </div>
+            <textarea id="LRSD-5-staffing" name="LRSD-5-staffing" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-6-cleaning">Cleaning and Disinfecting</label>
+            <p class="form-label-help">Describe how your lab will incorporate robust cleaning and disinfecting protocols in the labs and shared spaces and equipment.</p>
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-shield-virus color-bright-1"></i> Consider and describe how your lab will:
+              </div>
+              <div class="note-message">  
+                <ul>
+                  <li>Conduct daily cleaning and disinfection of the lab (at least daily, and more frequently if feasible).</li>
+                  <li>Keep cleaning logs that include date, time and scope of cleaning.</li>
+                  <li>Conduct frequent disinfecting of heavy transit areas and high-touch surfaces in the lab (e.g., doorknobs, handrails).</li>
+                  <li>In event of a positive case, notify researchers that WPI has shut down the site for a deep cleaning and disinfecting by the EHS HAZMAT team.</li>
+                  <li>Clean shared spaces (e.g., conference rooms, shared equipment) between use and supply cleaning products (e.g., sanitizer, disinfecting wipes).  Please contact EHS if you need assistance in procuring such supplies.</li>
+
+                </ul>
+              </div>
+            </div>
+            <textarea id="LRSD-6-cleaning" name="LRSD-6-cleaning" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-7-other">Other</label>
+            <p class="form-label-help">What other plans have you put in place to reduce chance of COVID-19 transmission?  How will you supervise and enforce your plans? </p>
+            <textarea id="LRSD-7-other" name="LRSD-7-other" rows="6"></textarea>
+
+            <label class="form-label" for="LRSD-8-rampdown">Ramp-down Plan</label>
+            <p class="form-label-help">If required to ramp down or shut down your on-campus research activities, what steps will you take to restrict research activities as soon as possible?</p>
+            <textarea id="LRSD-8-rampdown" name="LRSD-8-rampdown" rows="6"></textarea>
+          </fieldset>
+        </div>
+
+        <!-- Personnel -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <h3 style="margin-bottom:0; font-size:1.25em;">Who are you requesting access for?</h3>
+          <p style="font-size:.875rem; margin-bottom:0;"><em>In Addition to yourself, fill out full details for all people required to complete research on-campus</em></p>
+
+          <fieldset id="student-fieldset-0">
+            <legend style="display: none;">Person 1</legend>
+
+            <button class="close-button" aria-label="Close Fieldset" type="button" data-close-target="student-fieldset-0"> <span aria-hidden="true">&times;</span> </button>
+
+            <label class="form-label"  for="student-name-0">Person's Full Name</label>
+            <input type="text" id="student-name-0" name="student-name-0" class='student-name-field'>
+
+            <label class="form-label"  for="student-id-0">Person's WPI ID #</label>
+            <input type="number" id="student-id-0" name="student-id-0">
+
+            <label class="form-label"  for="student-email-0">Person's WPI Email</label>
+            <input type="email" id="student-email-0" name="student-email-0">
+
+            <label class="form-label"  for="student-type-0">Type</label>
+            <p class="form-label-help">Faculty, Academic Researcher, Staff, Postdoc, Doctoral Student, etc.</p>
+            <input type="text" id="student-type-0" name="student-type-0">
+
+            <label class="form-label"  for="student-phase-0">During which <a href="https://www.wpi.edu/news/coronavirus/guidance-research/research-lab-reopening-guidance" target="_blank">Reopening Phase</a> will they need to return to campus?</label>
+            <select id="student-phase-0" name="student-phase-0">
+              <option value="">-</option>
+              <option value="Phase 1">Phase 1 - Critical Research</option>
+              <option value="Phase 2">Phase 2 - Time Sensitive Existing Research</option>
+              <option value="Phase 3">Phase 3 - Critical New Research</option>
+              <option value="Phase 4">Phase 4 - Expansion of On-Campus Research</option>
+            </select>
+            
+            <label class="form-label"  for="student-funding-0">Funding Support</label>
+            <p class="form-label-help">If sponsored specify grant or contract</p>
+            <input type="text" id="student-funding-0" name="student-funding-0">
+
+            <label class="form-label"  for="student-remote-0">Are they able to perform research Remotely?</label>
+            <select id="student-remote-0" name="student-remote-0">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label"  for="student-safety-0">Are they able to safely return to the Lab?</label>
+            <select id="student-safety-0" name="student-safety-0">
+              <option value="">-</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+
+            <label class="form-label"  for="student-reside-0">Do they Reside On-Campus or Off-Campus?</label>
+            <select id="student-reside-0" name="student-reside-0">
+              <option value="">-</option>
+              <option value="on-campus">On-Campus</option>
+              <option value="off-campus">Off-Campus</option>
+            </select>
+
+            <label class="form-label"  for="student-appointment-0">Appointment Year</label>
+            <p class="form-label-help">Postdocs only</p>
+            <input  type="number" min="1990" max="2099" step="1" placeholder="2020" id="student-appointment-0" name="student-appointment-0">
+
+            <label class="form-label"  for="student-gradyear-0">Anticipated Graduation Year and Year of Study </label>
+            <p class="form-label-help">Doctoral Students Only</p>
+            <input  type="text" id="student-gradyear-0" name="student-gradyear-0" placeholder="eg. 2022 / Year 3">
+            
+          </fieldset>
+          <button id="button-add-student" class="button-submit"><i class="fad fa-user-plus"></i> Add Another Person to This Request</button>
+        </div>
+
+        <!-- Certifications & Submit -->
+        <div class="form-page carousel-cell" data-simplebar>
+          <h2>Certifications & Submit</h2>
+          <p>The Office of the Vice Provost for Research will inform PIs and center directors in writing once their plans have been approved.</p>
+          <p>By submitting this form, you acknowledge that you have fully read the <a href="https://www.wpi.edu/news/coronavirus/return-campus-guidance">Return to Campus Guidance</a> and the <a href="https://www.wpi.edu/news/coronavirus/guidance-research/research-lab-reopening-guidance">Research Lab Reopening Guidance</a>.</p>
+          <button id="button-submit-help-form" class="button-submit">Submit Access Request</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+          
+        </div>
+        
+      </div>
+      <div class="form-nav">
+        <button id="nav-back" class="form-nav-button back disabled">Back</button>
+        <button id="nav-next" class="form-nav-button next">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

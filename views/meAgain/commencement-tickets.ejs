@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <%- include('../partials/datatables.ejs'); %>
+  <script type="text/javascript" src="/qrcode/qrcode.js" defer></script>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/commencement.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/commencement-ticket.js"></script>
+<style>
+
+ .me-box-items .box-item{
+  background: var(--color-body);
+    padding: 1em;
+    border-radius: 3px;
+    color: var(--color-body-text);
+    box-shadow: var(--shadow-standard-y);
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    flex-direction: column;
+    justify-content: center;
+ }
+ .me-box-items .box-item:hover,.me-box-items .box-item:focus,.me-box-items .box-item:active{
+    box-shadow:var(--shadow-standard-y-h)
+ }
+ .box-item-title{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+ }
+ .box-item-date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+ }
+ .me-box.group.commencement-highlight{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url('/img/content/commencementBanner.jpg');
+    background-size: cover;
+    background-position: center;
+ }
+ .commencement-highlight h1{
+    color: var(--color-light);
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 11px rgb(0 0 0 / 40%);
+ }
+ .commencementItem {
+  display: flex;
+  height: 250px;
+  margin-bottom: 1em;
+  background-color: var(--color-chrome);
+  border-radius: 3px;
+  box-shadow: var(--shadow-standard-y);
+}
+ .commenceImage{
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100px;
+  box-shadow: inset -11px 0px 11px 17px var(--shadow-color);
+  clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 50%, 0% 0%);
+ }
+
+ .commenceImage.gr{
+  background-image: url(/img/content/commenceGR.jpg);
+ }
+ .commenceImage.ug{
+  background-image: url(/img/content/commenceUG.jpg);
+
+ }
+ .commenceDetails{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   margin-left: 1em;
+   margin-top: 1em;
+   margin-bottom: 1em;
+ }
+ .commenceDetails h2{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ .commenceDetails .date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+ }
+ .commenceDetails-line table *{
+   background: none;
+   border:none;
+   color:var(--color-body-text)
+ }
+ .commenceDetails-line table th{
+    color: var(--color-body-subtitle);
+    font-size: .6875em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 0;
+    padding: 0 1em;
+ }
+ .commenceActions{
+    display: flex;
+    flex-direction: column;
+    margin: auto 1em auto auto;
+  width: 20%;
+ }
+ .commenceActions a{
+  text-align: left;
+  font-weight: 600;
+ }
+ .me-quicklink.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-quicklink.disabled:hover,.me-quicklink.disabled:focus,.me-quicklink.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-link-item.disabled:hover{
+  cursor:not-allowed;
+  box-shadow: var(--shadow-standard-y)
+ }
+
+  @media screen and (max-width: 39.9375em) {
+    .commenceImage{
+      display: none;
+    }
+    .commencementItem {
+      flex-direction: column;
+      height:auto
+    }
+    .commenceActions {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto .5em auto;
+      width: 90%;
+      justify-content: center;
+    }
+  }
+  #meHeader{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url(/img/content/commencementBanner.jpg);
+    background-size: cover;
+    background-position: center;
+
+  }
+  .me-box.group.commencement-highlight {
+    background:#c41230
+  }
+#meHeaderProfileAvatar .profileAvatar {
+    height: 125px;
+    width: 125px;
+    border-radius: unset;
+    background-color: transparent;
+}
+#meHeaderProfileAvatar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#meHeaderProfileText{
+  font-family: Merriweather,Serif;
+    color: var(--color-chrome);
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+}
+.commencemenu a.box-item{
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-pop-h);
+  transition: all .5s ease;
+}
+.commencemenu a.box-item.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .commencemenu a.box-item.disabled:hover,.commencemenu a.box-item.disabled:focus,.commencemenu a.box-item.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+.commencemenu a.box-item:hover,.commencemenu a.box-item:active,.commencemenu a.box-item:focus{
+  color: var(--color-pop);
+  background-color: var(--color-lane);
+}
+.commencemenu a.box-item i{
+  font-size: 3em;
+}
+.commencemenu a.box-item p{
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--color-body-subtitle);
+  text-align: center;
+  margin: 0;
+  }
+
+  .ticket {
+	margin: 1em auto;
+	display: flex;
+	background: white;
+	box-shadow: rgba(0, 0, 0, 0.) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  color: inherit;
+  transition: all .5s ease;
+}
+.ticket:hover,.ticket:active,.ticket:focus {
+  color: inherit;
+  margin-top:.75em;
+  margin-bottom:1.25em;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 22px 40px, rgba(0, 0, 0, 0.32) 0px 17px 15px;
+}
+.ticket p{
+  margin:0;
+}
+
+.left {
+	display: flex;
+}
+
+.image {
+	height: 250px;
+	width: 250px;
+  background-image: url(/img/content/commenceUG.jpg);
+	background-size: cover;
+	opacity: 0.85;
+}
+
+.admit-one {
+	position: absolute;
+	color: var(--color-lane-subtler);
+	height: 250px;
+	padding: 0 10px;
+	letter-spacing: 0.15em;
+	display: flex;
+	text-align: center;
+	justify-content: space-around;
+	writing-mode: vertical-rl;
+	transform: rotate(-180deg);
+  font-size: .7em;
+}
+
+.admit-one span:nth-child(2) {
+	color: var(--color-chrome);
+	font-weight: 700;
+}
+
+.left .ticket-number {
+	height: 250px;
+	width: 250px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	padding: 5px;
+  color: var(--color-body);
+}
+
+.ticket-info {
+	padding: 10px 30px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.date {
+	border-top: 1px solid var(--color-lane-subtler);
+	border-bottom: 1px solid var(--color-lane-subtler);
+	padding: 5px 0;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+  font-size: .8em;
+}
+
+.date span {
+	width: 100px;
+}
+
+.date span:first-child {
+	text-align: left;
+}
+
+.date span:last-child {
+	text-align: right;
+}
+
+.date .focus {
+	font-size: 1.25em;
+  color:#c41230;
+}
+
+.cer-name {
+	font-size: 1em;
+}
+
+.cer-name h1 {
+	font-size: 1em;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+  font-family: Merriweather,Serif;
+}
+.cer-name h2 {
+  font-size: 1em;
+}
+.cer-name h2 span{
+  font-size: .8em;
+  color:var(--color-body-subtitle)
+}
+
+.time {
+	padding: 10px 0;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	font-weight: 700;
+}
+.time p{
+  margin-bottom: none;
+}
+.time span {
+	font-weight: 400;
+	color: var(--color-lane-subtler)
+}
+
+.left .time {
+	font-size: 16px;
+}
+
+
+.location {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	padding-top: 8px;
+	border-top: 1px solid var(--color-lane-subtler);
+  font-size: .8em;
+}
+
+.location .separator {
+	font-size: 20px;
+}
+
+.right {
+	width: 180px;
+	border-left: 1px dashed var(--color-body-subtitle);
+}
+
+.right .admit-one {
+	color: var(--color-lane-subtler);
+}
+
+.right .admit-one span:nth-child(2) {
+	color: var(--color-lane);
+}
+
+.right .right-info-container {
+	height: 250px;
+	padding: 10px 10px 10px 35px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.right .cer-name h1 {
+	font-size: .8em;
+  text-align: center;
+}
+
+
+.right .ticket-number {
+	color: var(--color-lane-subtler);
+}
+.right .ticketStatus{
+  text-align: center;
+}
+.barcode {
+    text-align: center;
+    color: #c41230;
+}
+.barcode p{
+  font-weight: 700;
+  font-size: 16px;
+}
+@media screen and (max-width: 39.9375em) {
+  .left {
+    flex-direction: column;
+  }
+  .left .image{
+    width: 100%;
+  }
+  .ticket{
+    flex-direction: column;
+  }
+  .right {
+    width: 100%;
+    border-left: none;
+    border-top: 1px dashed var(--color-body-subtitle);
+  }
+  .right .admit-one{
+    display: none;
+  }
+  .right .right-info-container {
+    height: auto;
+    padding: 10px 10px 10px 10px;
+}
+  }
+</style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%
+  const ticket = ticketOut[0]
+  const relatedTickets = relatedTicketOut
+%>
+<div id="mePage">
+    <div id="meHeader" class="grid-container fluid">
+        <div id="meHeaderInterior" class="grid-container">
+          <div id="meHeaderInteriorRow" class="grid-x">
+            <div id="meHeaderProfile" class="cell small-12 medium-12 large-12 grid-x">
+              <div id="meHeaderProfileAvatar" class="cell small-12 large-12">
+                <div class="profileAvatar">
+                  <%- include('../partials/layout/wpi-seal.ejs'); %>
+                </div>
+              </div>
+              <div id="meHeaderProfileText" class="cell small-12 large-12">
+                <%=ticket.CeremonyTitle %> 2022
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div id="meContent">
+            <!--Top Bar-->
+            <div class="grid-container me-section">
+
+              <div class="me-box group grid-x grid-padding-x commencement-highlight">
+                <div class="grid-container me-box-items grid-x grid-margin-x commencemenu">
+
+                    <a class="box-item cell small-4 medium-4 large-2" href="https://www.wpi.edu/sites/default/files/2022/05/12/WPI_Commencement_2022_Program.pdf" target="_blank">
+                      <i class="fas fa-book-open"></i>
+                      <p>Program</p>
+                    </a>
+                    <a class="box-item cell small-4 medium-4 large-2" href="https://www.wpi.edu/sites/default/files/2022/04/06/CommencementQuadMap-Guests.pdf" target="_blank">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <p>Map</p>
+                    </a>
+                    
+                    <a class="box-item cell small-4 medium-4 large-2"  href="https://www.wpi.edu/news/annual-events/commencement/family-friends/diningoptions" target="_blank">
+                      <i class="fas fa-utensils"></i>
+                      <p>Dining</p>
+                    </a>
+                    <a class="box-item cell small-4 medium-4 large-2" href="https://www.wpi.edu/news/annual-events/commencement/family-friends/parking" target="_blank">
+                      <i class="fas fa-car"></i>
+                      <p>Parking</p>
+                    </a>
+                    <a class="box-item cell small-4 medium-4 large-2" href="https://maps.wpi.edu/?id=609&_ga=2.222985560.2117856063.1650372718-512967501.1650372718#!ct/10360" target="_blank">
+                      <i class="fas fa-restroom"></i>
+                      <p>Restrooms</p>
+                    </a>
+                    <a class="box-item cell small-4 medium-4 large-2" href="https://www.youtube.com/embed/c12T-kBZS2g?mute=1&autoplay=1&controls=0&rel=0&cc_load_policy=1&cc_lang_pref=en&playsinline=1&o=U&noapp=1&app=desktop" target="_blank">
+                      <i class="fas fa-video"></i>
+                      <p>Livestream</p>
+                    </a>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-container me-section">
+              <h2 class="section-header">My Ticket</h2>
+              <div class="grid-x grid-margin-x">
+                <% const ticketDate = moment(new Date(ticket.CeremonyDateTime))%>
+                <% if(ticket.TicketStatus != "Void"){%>
+                <a class="ticket" data-open="<%=ticket.RecID%>" data-animation-in="fade">
+                  <div class="left">
+                    <div class="image">
+                      <p class="admit-one">
+                        <span>ADMIT ONE</span>
+                        <span>ADMIT ONE</span>
+                        <span>ADMIT ONE</span>
+                      </p>
+                      <div class="ticket-number">
+                        <p>
+                          #<%=ticket.StudentWPIID%>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="ticket-info">
+                      <p class="date">
+                        <span><%=ticketDate.format('dddd')%></span>
+                        <span class="focus"><%=ticketDate.format('MMMM Do')%></span>
+                        <span><%=ticketDate.format('YYYY')%></span>
+                      </p>
+                      <div class="cer-name">
+                        <h1><%=ticket.CeremonyTitle %></h1>
+                        <h2><span>FOR:</span> <%= ticket.StudentName %></h2>
+                      </div>
+                      <div class="time">
+                        <p><%=ticketDate.format('h:mm a')%></p>
+                      </div>
+                      <p class="location"><span>WPI Quadrangle</span>
+                        <span class="separator"><i class="far fa-smile"></i></span><span>Worcester, Massachusetts</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="right">
+                    <p class="admit-one">
+                      <span>ADMIT ONE</span>
+                      <span>ADMIT ONE</span>
+                      <span>ADMIT ONE</span>
+                    </p>
+                    <div class="right-info-container">
+                      <div class="cer-name">
+                        <h1><%= ticket.AttendeeFirstName%> <%= ticket.AttendeeLastName %></h1>
+                      </div>
+                      
+                      <div class="barcode">
+                        <i class="fas fa-qrcode fa-2x"></i>
+                        <p>View Barcode</p>
+                      </div>
+                      <p class="ticket-number">
+                        #<%=ticket.StudentWPIID%>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <style>
+                  .qr-modal{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  .qr-attendee{
+                    font-size: 1em;
+                    font-weight: 700;
+                    letter-spacing: 0.1em;
+                    font-family: Merriweather,Serif;
+                  }
+                  .qr-student span{
+                    font-size: .8em;
+                    color: var(--color-body-subtitle);
+                  }
+                  .qr-student{
+                    font-size: 1em;
+                  }
+                  .qr-ceremony{
+                    font-size: .8em;
+                    text-align: center;
+                    font-weight: 600;
+                  }
+                  .qr-ceremonyDate{
+                    font-size: .8em;
+                    text-align: center;
+                    font-weight: 600;
+                  }
+                  .qr-wrapper{
+                    width:100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  .qr-status{
+                    font-size: 1em;
+                    font-weight: 700;
+                    letter-spacing: 0.1em;
+                    font-family: Merriweather,Serif;
+                  }
+                  .qr-checkInTime{
+
+                  }
+                  .qr-audit{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  }
+                  .qr-cer{
+                    font-size: 1em;
+                  }
+                  .qr-curtime{
+                    font-size: 1.25em;
+                      color: #c41230;
+                  }
+                  .qr-cer{
+                    color: #c41230;
+                    opacity: .5;
+                    font-size: 3em;
+                    font-weight: 600;
+                  }
+                  .qr-modal.checked{
+                    background: rgb(185 233 185);
+                  }
+
+                  .qr-modal.void{
+                    background: rgb(241, 146, 134);
+                  }
+                  
+                </style>
+                <%var qrcolor = '';
+                if(ticket.TicketStatus == "Checked-In"){
+                  qrcolor = 'checked'
+                }
+                if(ticket.TicketStatus == "Void"){
+                  qrcolor = 'void'
+                }%>
+                <div class="reveal qr-modal <%=qrcolor%>" data-reveal id="<%=ticket.RecID%>">
+
+                  <div class="qr-attendee"><%= ticket.AttendeeFirstName%> <%= ticket.AttendeeLastName %></div>
+                  <div class="qr-student"><span>FOR:</span> <%= ticket.StudentName %> (<%=ticket.StudentWPIID%>)</div>
+                  <div class="qr-ceremony"><%=ticket.CeremonyTitle %></div>
+                  <div class="qr-ceremonyDate"><%=ticketDate.format('LLLL')%></div>
+                  <div class="qr-wrapper">
+                    <canvas class="qr-qr" data-qrid="<%=ticket.RecID%>"></canvas>
+                  </div>
+                  <div class="qr-status"><%=ticket.TicketStatus%></div>
+                  <%if(ticket.TicketStatus == "Checked-In"){%>
+                    <div class="qr-checkInTime">at: <%=ticket.CheckInDateTIme%></div>
+                  <%}%>
+                  <div class="qr-audit">
+                    <div class="qr-cer">UG</div>
+                    <div class="qr-curtime"><%=moment().format('L LT')%></div>
+                    <div class="qr-cer">UG</div>
+                  </div>
+                  
+
+                  <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <%}else{%>
+                  <div class="ticket" style="    padding: 2em;
+                  text-align: center;">
+                    <div class="cer-name">
+                      <h1><%= ticket.AttendeeFirstName%> <%= ticket.AttendeeLastName %></h1>
+                      
+                      <h1>This ticket was <strong style="color:#c41230"> Voided</strong></h1>
+                      <h2><span>Reason:</span> <%= ticket.VoidReason %></h2>
+                      <p class="ticket-number">
+                        #<%=ticket.StudentWPIID%>
+                      </p>
+                    </div>
+                  </div>
+                <%}%>
+
+              </div>
+            </div>
+
+            <%if(relatedTickets.length && ticket.TicketStatus != "Void"){%>
+              <div class="grid-container me-section" style="margin-bottom:2em">
+                <h2 class="section-header">Related Tickets</h2>
+                <div class="grid-x grid-margin-x">
+                  <%for(relatedTicket of relatedTickets){%>
+                    <% var relatedTicketDate = moment(new Date(relatedTicket.CeremonyDateTime))%>
+                <a class="ticket cell small-12 medium-3" data-open="<%=relatedTicket.RecID%>">
+                  <div class="right">
+                    <p class="admit-one">
+                      <span>ADMIT ONE</span>
+                      <span>ADMIT ONE</span>
+                      <span>ADMIT ONE</span>
+                    </p>
+                    <div class="right-info-container">
+                      <div class="cer-name">
+                        <h1><%= relatedTicket.AttendeeFirstName%> <%= relatedTicket.AttendeeLastName %></h1>
+                      </div>
+                      
+                      <div class="barcode">
+                        <i class="fas fa-qrcode fa-2x"></i>
+                        <p>View Barcode</p>
+                      </div>
+                      <p class="ticket-number">
+                        #<%=relatedTicket.StudentWPIID%>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <%var qrcolor = '';
+                if(relatedTicket.TicketStatus == "Checked-In"){
+                  qrcolor = 'checked'
+                }
+                if(relatedTicket.TicketStatus == "Void"){
+                  qrcolor = 'void'
+                }%>
+                <div class="reveal qr-modal <%=qrcolor%>" data-reveal id="<%=relatedTicket.RecID%>">
+                  <div class="qr-attendee"><%= relatedTicket.AttendeeFirstName%> <%= relatedTicket.AttendeeLastName %></div>
+                  <div class="qr-student"><span>FOR:</span> <%= relatedTicket.StudentName %> (<%=relatedTicket.StudentWPIID%>)</div>
+                  <div class="qr-ceremony"><%=relatedTicket.CeremonyTitle %></div>
+                  <div class="qr-ceremonyDate"><%=relatedTicketDate.format('LLLL')%></div>
+                  <div class="qr-wrapper">
+                    <canvas class="qr-qr" data-qrid="<%=relatedTicket.RecID%>"></canvas>
+                  </div>
+                  <div class="qr-status"><%=relatedTicket.TicketStatus%></div>
+                  <%if(relatedTicket.TicketStatus == "Checked-In"){%>
+                    <div class="qr-checkInTime"><%=relatedTicket.CheckInDateTime%></div>
+                  <%}%>
+                  <div class="qr-audit">
+                    <div class="qr-cer">UG</div>
+                    <div class="qr-curtime"><%=moment().format('L LT')%></div>
+                    <div class="qr-cer">UG</div>
+                  </div>
+                  
+
+                  <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                  <%}%>
+  
+                </div>
+              </div>
+
+              <%}%>
+            
+<%if(false){%>
+  <div class="grid-container me-section" style="padding:0">
+  <h2 class="section-header">Raw Data</h2>
+    <!--Raw Data-->
+    <h2>Ticket</h2>
+    <pre><%= JSON.stringify(ticketOut,null,2)%></pre>
+    <h2>Related</h2>
+    <pre><%= JSON.stringify(relatedTicketOut,null,2)%></pre>
+  </div>
+
+<%}%>
+</div>
+</div>
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,58 @@
+
+<%
+
+  const userFullname = locals.userAttributes && userAttributes.givenname && userAttributes.surname ? `${userAttributes.givenname} ${userAttributes.surname}` : '';
+  const userTitle = locals.userAttributes && userAttributes["user.jobtitle"] ? userAttributes["user.jobtitle"] : '';
+  const userID = locals.userAttributes && userAttributes["user.employeeid"] ? userAttributes["user.employeeid"] : '';
+%>
+
+
+<div class="profile">
+  <div class="grid-container fluid swim-lane">
+
+    <div class="grid-container">
+      <div class="cell medium-12">
+        <h1>My Dashboard</h1>
+      </div>
+      <div class="grid-x grid-margin-x">
+        <div class="profile-nav cell small-12 medium-4 large-3">
+
+          <div class="profile-box">
+            <div class="user-avatar" style="background-image:url('/img/ico-intro.svg')"></div>
+            <div class="user-name"><%= userFullname %></div>
+            <div class="user-title"><%= userTitle %></div>
+            <div class="user-id"><%= userID %></div>
+          </div>
+
+          <div class="profile-menu">
+            <ul class="no-bullet">
+              <li><a class="<%= locals.meTabs.myDashboard %>" href="/Me/My-Dashboard"><i class="far fa-fw fa-tachometer"></i> <span>My Dashboard</span></a></li>
+              <% const editors = ["791405460","687703172","724895903","843453664","343832473","700406148","240980608","412663119","197168882","853204211","770717098","894748957","392439620","872164925","501559463","349768965"];
+              if(editors.includes(userID)){%>
+                <li><a class="<%= locals.meTabs.myAccount %>" href="/Me/REU"><i class="far fa-fw fa-microscope"></i> <span>My REU</span></a></li>
+              
+              <%}%>
+              
+              <li><a class="<%= locals.meTabs.myTechFlex %>" href="/Me/My-Techflex"><i class="fa-fw custom-icon"><%- include('../../partials/components/tech-flex-svg.ejs'); %></i> <span>My TechFlex</span></a></li>
+              <li><a class="<%= locals.meTabs.myAccount %>" href="/Me/My-Account"><i class="far fa-fw fa-user-shield"></i> <span>My Account</span></a></li>
+              <li><a class="<%= locals.meTabs.myTickets %>" href="/Me/My-Tickets"><i class="far fa-fw fa-ticket"></i> <span>My Tickets</span><span class="badge" id="userOpenTicketCount"><%- locals.userOpenTicketCount %></span></a></li>
+              <li><a class="<%= locals.meTabs.myApprovals %>" href="/Me/My-Approvals"><i class="far fa-fw fa-ballot-check"></i> <span>My Approvals</span><span class="badge" id="userOpenApprovalCount"></span></a></li>
+              <li><a class="<%= locals.meTabs.myAssets %>" href="/Me/My-Assets"><i class="far fa-fw fa-laptop"></i> <span>My Assets</span><span class="badge" id="userAssetCount"><%- locals.userAssetCount %></span></a></li>
+              <% if (locals.user.userOauths.some(o => o.type === 'canvas' && !o.isBroken)) { %>
+                <li><a class="<%= locals.meTabs.myCanvas %>" href="/Me/My-Canvas"><i class="far fa-fw fa-chalkboard-teacher"></i> <span>My Canvas</span></a></li>
+              <% } %>
+              <li><a class="<%= locals.meTabs.myApps %>" href="/Me/My-Apps"><i class="far fa-fw fa-icons"></i> <span>My Apps</span></a></li>
+              <%#
+              <li><a href="/Me/Achievements"><i class="far fa-fw fa-trophy"></i> <span>Achievements</span></a></li>
+              %>
+              <li><a class="<%= locals.meTabs.history %>" href="/Me/History"><i class="far fa-fw fa-history"></i> <span>History</span></a></li>
+              <%#
+              <li><a href="/Me/Profile"><i class="far fa-fw fa-user"></i> <span>Profile</span></a></li>
+              %>
+              <li><a class="<%= locals.meTabs.widgets %>" href="/Me/Widgets"><i class="far fa-fw fa-puzzle-piece"></i> <span>Widgets</span></a></li>
+              <li><a class="<%= locals.meTabs.settings %>" href="/Me/Settings"><i class="far fa-fw fa-cog"></i> <span>Settings</span></a></li>
+            </ul></span>
+          </div>
+        </div>
+
+        <div class="profile-content cell small-12 medium-8 large-9">

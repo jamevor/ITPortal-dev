@@ -1,0 +1,35 @@
+
+<div class="cell small-12 medium-12 large-12 lead-text">
+    <h2>DEI Strategic Framework Goals</h2>
+    <p class="focus-p">The <strong>Inclusive Excellence Division/School Actions</strong> are organized around four goals that underpin our overarching DEI efforts to create a culture in which all members of the WPI community feel an authentic sense of inclusion and belonging. </p>
+</div>
+<% 
+    const goalCounts = {};
+    goalCounts.goal1 = {};
+    goalCounts.goal2 = {};
+    goalCounts.goal3 = {};
+    goalCounts.goal4 = {};
+    for(goal of goals){
+        if(goal.Goal1 == "True"){
+            goalCounts.goal1.total = (goalCounts.goal1.total+1) || 1;
+            goalCounts.goal1[goal.status] = (goalCounts.goal1[goal.status]+1) || 1;
+        }
+        if(goal.Goal2 == "True"){
+            goalCounts.goal2.total = (goalCounts.goal2.total+1) || 1;
+            goalCounts.goal2[goal.status] = (goalCounts.goal2[goal.status]+1) || 1;
+        }
+        if(goal.Goal3 == "True"){
+            goalCounts.goal3.total = (goalCounts.goal3.total+1) || 1;
+            goalCounts.goal3[goal.status] = (goalCounts.goal3[goal.status]+1) || 1;
+        }
+        if(goal.Goal4 == "True"){
+            goalCounts.goal4.total = (goalCounts.goal4.total+1) || 1;
+            goalCounts.goal4[goal.status] = (goalCounts.goal4[goal.status]+1) || 1;
+        }
+        goalCounts.out ="done";
+    }
+%>
+<%- include('partials/SIE-goal-1.ejs',{"button":true,"featured":true, goalCounts,goals}) %>
+<%- include('partials/SIE-goal-2.ejs',{"button":true,"featured":true, goalCounts,goals}) %>
+<%- include('partials/SIE-goal-3.ejs',{"button":true,"featured":true, goalCounts,goals}) %>
+<%- include('partials/SIE-goal-4.ejs',{"button":true,"featured":true, goalCounts,goals}) %>

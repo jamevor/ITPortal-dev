@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" href="/css/laptop-rec.css">
+  <script defer type='text/javascript' src='/js/pages/laptop-rec/jsonloader.js'></script>
+  <script defer type='text/javascript' src='/js/pages/laptop-rec/laptop-rec.js'></script>
+  <style>
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<!-- Owen's Stuff goes in here -->
+  <div class="laptoptool" role="main">
+    <div class="grid-container">
+      <ol class="progress-indicator" id="laptoptool-progress-indicator" role="navigation" style="display: none; margin-top: 10px; margin-bottom: 30px">
+          <!-- For now, onclick has been turned off. -->
+          <!-- onclick is stepChange(currentstep, <stepnumber>) -->
+          <!-- Will work on a fix to see if doing keyboard arrow keys can work this instead. -->
+          <li class="progress-indicator-step" data-step="1" id="laptoptool-progress-indicator-1"><span class="progress-span">Major/Hobbies</span></li>
+          <li class="progress-indicator-step" data-step="2" id="laptoptool-progress-indicator-2"><span class="progress-span">Usage</span></li>
+          <li class="progress-indicator-step" data-step="3" id="laptoptool-progress-indicator-3"><span class="progress-span">Storage</span></li>
+          <li class="progress-indicator-step" data-step="4" id="laptoptool-progress-indicator-4"><span class="progress-span">Questions</span></li>
+      </ol>
+      <div id="laptoptool-step0" role="application">
+          <h1 style="margin-top: 10px">Student Laptop Recommendation Tool</h1>
+          Welcome to WPI's Student Laptop Recommendation Tool. <br><br>
+          You'll answer questions about your major, what you want to do, and how you use your laptop. Once you're done, you'll get recommended laptop specs to begin your laptop search!<br><br>
+          This will take about 5-10 minutes, and your answers aren't recorded.
+          <hr>
+          <div class="grid-x grid-margin-x" role="navigation">
+              <hr>
+              <div class="cell small-12" style="margin-top: 30px">
+                  <button class="button float-right" onclick="stepChange(0, 1)">Begin</button>
+              </div>
+          </div>
+      </div>
+      <div id="laptoptool-step1" style="display: none" role="application">
+          <h2 style="margin-top: 10px">Step 1 - Major & Hobbies</h2>
+          Get started by selecting your major, and what you plan to do with your laptop.
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <h3>What are you majoring/minoring in? <span class="specialized">*</span></h3>
+                  What you're studying helps determine the type of laptop you should get.
+                  <div id="laptoptool-validation-major" style="display: none">
+                      <small class="validation-small">Please pick at least one major.</small>
+                  </div>
+                  <!-- At this point, iconography isn't loading (Need font awesome pro)-->
+                  <!-- This should all be far, but for now, fa.-->
+                  <div class="grid-container" style="margin-top: 10px">
+                      <fieldset>
+                          <!-- h3 already tells you what this form is about. The legend is hidden. -->
+                          <legend style="display: none">What are you majoring/minoring in?</legend>
+                          <div class="grid-x grid-margin-x help-form impact-boxes">
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="cs" id="laptoptool-major-cs">
+                                  <label for="laptoptool-major-cs">
+                                      <i class="fa fa-laptop-code"></i>
+                                      &nbsp;Computer Science
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                <input type="checkbox" name="major" value="electrical" id="laptoptool-major-electrical">
+                                <label for="laptoptool-major-electrical">
+                                    <i class="fa fa-bolt"></i>
+                                    &nbsp;Electrical/Computer Engineering
+                                </label>
+                            </div>
+                            <div class="cell small-12 medium-6 large-3">
+                                <input type="checkbox" name="major" value="rbe" id="laptoptool-major-rbe">
+                                <label for="laptoptool-major-rbe">
+                                    <i class="fa fa-robot"></i>
+                                    &nbsp;Robotics Engineering
+                                </label>
+                            </div>
+                            <div class="cell small-12 medium-6 large-3">
+                                <input type="checkbox" name="major" value="industrial" id="laptoptool-major-industrial">
+                                <label for="laptoptool-major-industrial">
+                                    <i class="fa fa-wrench"></i>
+                                    &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Aerospace, Architectural, Industrial, Mechanical, and Civil Engineering">Engineering</span>
+                                </label>
+                            </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="physics" id="laptoptool-major-physics">
+                                  <label for="laptoptool-major-physics">
+                                      <i class="fa fa-atom"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Applied Physics and Physics majors.">Physics</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="biology" id="laptoptool-major-biology">
+                                  <label for="laptoptool-major-biology">
+                                      <i class="fa fa-vial"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Biochemistry, Bioinformatics, Biology, and Biomechanical Engineering.">Biology</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="business" id="laptoptool-major-business">
+                                  <label for="laptoptool-major-business">
+                                      <i class="fa fa-chart-line"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Business, Management Engineering and Management Information Systems.">Business</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="chemistry" id="laptoptool-major-chemistry">
+                                  <label for="laptoptool-major-chemistry">
+                                      <i class="fa fa-flask"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Chemical Engineering and Chemistry.">Chemistry</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="environmental" id="laptoptool-major-environmental">
+                                  <label for="laptoptool-major-environmental">
+                                      <i class="fa fa-tree"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Environmental & Sustainability Studies and Environmental Engineering.">Environmental</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="imgd" id="laptoptool-major-imgd">
+                                  <label for="laptoptool-major-imgd">
+                                      <i class="fa fa-gamepad"></i>
+                                      &nbsp;IMGD
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="math" id="laptoptool-major-math">
+                                  <label for="laptoptool-major-math">
+                                      <i class="fa fa-calculator"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="This includes Actuarial Mathematics and Mathematical Sciences.">Math</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="major" value="other" id="laptoptool-major-other">
+                                  <label for="laptoptool-major-other">
+                                      <i class="fa fa-ellipsis-h"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="If you can't find your major here, select this.">Other</span>
+                                  </label>
+                              </div>
+                          </div>
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <h3>What do you want to do on your laptop?</h3>
+                  Select the things you'll do on your laptop to improve your recommendation.
+                  <div class="grid-container" style="margin-top: 10px">
+                      <fieldset>
+                          <legend style="display: none">What do you want to do on your laptop?</legend>
+                          <div class="grid-x grid-margin-x help-form impact-boxes">
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="drawing" id="laptoptool-hobbies-drawing">
+                                  <label for="laptoptool-hobbies-drawing">
+                                      <i class="fa fa-palette"></i>
+                                      &nbsp;Art/Design/Drawing
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="gaming" id="laptoptool-hobbies-gaming" onclick="showGamingSlider()">
+                                  <label for="laptoptool-hobbies-gaming">
+                                      <!-- <i class="fa fa-alien-monster"></i> -->
+                                      <i class="fa fa-gamepad"></i>
+                                      &nbsp;Gaming
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="video_edit" id="laptoptool-hobbies-video_edit">
+                                  <label for="laptoptool-hobbies-video_edit">
+                                      <i class="fa fa-photo-video"></i>
+                                      &nbsp;Video editing/encoding
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="2d_animate" id="laptoptool-hobbies-2d_animate">
+                                  <label for="laptoptool-hobbies-2d_animate">
+                                      <i class="fa fa-sticky-note"></i>
+                                      &nbsp;2D Animation
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="3d_animate" id="laptoptool-hobbies-3d_animate">
+                                  <label for="laptoptool-hobbies-3d_animate">
+                                      <i class="fa fa-cubes"></i>
+                                      &nbsp;3D Animation
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="coding" id="laptoptool-hobbies-coding">
+                                  <label for="laptoptool-hobbies-coding">
+                                      <i class="fa fa-code"></i>
+                                      &nbsp;Coding
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="cad" id="laptoptool-hobbies-cad">
+                                  <label for="laptoptool-hobbies-cad">
+                                      <i class="fa fa-drafting-compass"></i>
+                                      &nbsp;CAD
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="photography" id="laptoptool-hobbies-photography">
+                                  <label for="laptoptool-hobbies-photography">
+                                      <i class="fa fa-camera"></i>
+                                      &nbsp;Photography/Photo Editing
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="music" id="laptoptool-hobbies-music">
+                                  <label for="laptoptool-hobbies-music">
+                                      <i class="fa fa-music"></i>
+                                      &nbsp;Music (producing/creating)
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="hobbies" value="game_stream" id="laptoptool-hobbies-game_stream">
+                                  <label for="laptoptool-hobbies-game_stream">
+                                      <!-- <i class="fa fa-signal-stream"></i> -->
+                                      <i class="fa fa-broadcast-tower"></i>
+                                      &nbsp;Game Streaming
+                                  </label>
+                              </div>
+                          </div>
+                      </fieldset>
+                  </div>
+              </div>
+              <div class="cell small-12" style="margin-top: 30px" role="navigation">
+                  <hr>
+                  <div id="laptoptool-validation-s1-small" style="display: none; margin-bottom: 10px">
+                      <small class="validation-small">You missed a few steps that are required. You'll need to complete those steps before moving forward.</small>
+                  </div>
+                  <button class="button float-right" onclick="validates1()">Next</button>
+              </div>
+          </div>
+          </div>
+          <div id="laptoptool-step2" style="display: none" role="application">
+              <h2 style="margin-top: 10px">Step 2 - Your usage</h2>
+              Use these sliders to tell us how you use your laptop.
+              <hr>
+              <div class="grid-x grid-margin-x" style="margin-top: 20px; display: none" id="laptoptool-gameslider-div" role="form">
+                  <div class="cell small-12">
+                      <h3>What types of games do you play? <span class="specialized">*</span></h3>
+                      Select which type of games you play. This will improve the accuracy of your laptop recommendation.
+                      <div id="laptoptool-validation-games" style="display: none">
+                          <small class="validation-small">Please select the type of games you play.</small>
+                      </div>
+                      <div class="grid-container" style="margin-top: 10px">
+                          <fieldset>
+                              <legend style="display: none">What type of games do you play?</legend>
+                              <div class="grid-x grid-margin-x help-form impact-boxes">
+                                  <div class="cell small-12 medium-6 large-3">
+                                      <input type="radio" name="gameslider" value="0" id="laptoptool-gameslider-0">
+                                      <label for="laptoptool-gameslider-0">
+                                          <b>2D & Light 3D</b> (e.g. Celeste, Terraria, Hollow Knight, Minecraft)
+                                      </label>
+                                  </div>
+                                  <div class="cell small-12 medium-6 large-3">
+                                      <input type="radio" name="gameslider" value="1" id="laptoptool-gameslider-1">
+                                      <label for="laptoptool-gameslider-1">
+                                          <b>Casual 3D</b> (e.g. Portal 2, Rocket League, GTA 5, CS:GO)
+                                      </label>
+                                  </div>
+                                  <div class="cell small-12 medium-6 large-3">
+                                      <input type="radio" name="gameslider" value="2" id="laptoptool-gameslider-2">
+                                      <label for="laptoptool-gameslider-2">
+                                          <b>Moderate 3D</b> (e.g. Red Dead 2, Witcher 3, Doom 2016, F1)
+                                      </label>
+                                  </div>
+                                  <div class="cell small-12 medium-6 large-3">
+                                      <input type="radio" name="gameslider" value="3" id="laptoptool-gameslider-3">
+                                      <label for="laptoptool-gameslider-3">
+                                          <b>Intense 3D</b> (e.g. Cyperpunk, MSFS, Halo Infinite)
+                                      </label>
+                                  </div>
+                              </div>
+                          </fieldset>
+                      </div>
+                      <hr>
+                  </div>
+          </div>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <label for="laptoptool-programslider"><h3>How many programs do you keep open? <span class="specialized">*</span></h3></label>
+                  A program is any app that you have open (e.g. Teams, Discord, Outlook, etc) - <b>except for web browsers.</b>
+                  <div id="laptoptool-validation-programs" style="display: none">
+                      <small class="validation-small">Please input a value of more than 0 programs.</small>
+                  </div>
+                  <!-- One step = 1 GB of RAM-->
+                  <div class="grid-container" style="margin-top: 10px">
+                      <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="20" data-step="1">
+                          <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-programslider"></span>
+                          <span class="slider-fill" data-slider-fill></span>
+                      </div>
+                      <div class="grid-x grid-margin-x">
+                          <div class="cell small-4 large-5">
+                              0 programs
+                          </div>
+                          <div class="cell small-4 large-2 inputwrap programsinput" style="text-align: center">
+                              <input type="number" id="laptoptool-programslider">
+                          </div>
+                          <div class="cell small-4 large-5">
+                              <span class="float-right">20+ programs</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <label for="laptoptool-tabsslider"><h3>How many browser tabs do you keep open? <span class="specialized">*</span></h3></label>
+                  Approximate how many browser tabs you have open at once.
+                  <div id="laptoptool-validation-tabs" style="display: none">
+                      <small class="validation-small">Please input a value of more than 0 tabs.</small>
+                  </div>
+                  <!-- One step = 1 GB of RAM-->
+                  <div class="grid-container" style="margin-top: 10px">
+                      <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="50" data-step="1">
+                          <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-tabsslider"></span>
+                          <span class="slider-fill" data-slider-fill></span>
+                      </div>
+                      <div class="grid-x grid-margin-x">
+                          <div class="cell small-4 large-5">
+                              0 tabs
+                          </div>
+                          <div class="cell small-4 large-2 inputwrap tabsinput" style="text-align: center">
+                              <input type="number" id="laptoptool-tabsslider">
+                          </div>
+                          <div class="cell small-4 large-5">
+                              <span class="float-right">50+ tabs</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="grid-x grid-margin-x" role="navigation">
+              <div class="cell small-12" style="margin-top: 30px">
+                  <hr>
+                  <div id="laptoptool-validation-s2-small" style="display: none; margin-bottom: 10px">
+                      <small class="validation-small">You missed a few steps that are required. You'll need to complete those steps before moving forward.</small>
+                  </div>
+                  <button class="button float-left" onclick="stepChange(2, 1)">Back</button>
+                  <button class="button float-right" onclick="validates2()">Next</button>
+              </div>
+          </div>
+      </div>
+      <div id="laptoptool-step3" style="display: none" role="application">
+          <h2 style="margin-top: 10px">Step 3 - Storage</h2>
+          Use the sliders below to tell us how much you store on your laptop.
+          <hr>
+          <div role="form">
+              <label for="laptoptool-photo-slider" style="margin-top: 30px"><h3>How many photos do you store on your laptop?</h3></label>
+              These are photos downloaded to your laptop - <b>don't count photos stored in the cloud.</b><br>
+              <!-- 7/16 - Everything here was sliced down by one half (data-end and data-step). Gaming, small files, and large files didn't get sliced down. -->
+              <small>For this approximation, a photo is 5 MB.</small>
+              <!-- 1,000 photos = 5 GB (5 MB/photo) -->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="10000" data-step="100">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-photo-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 photos
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap photosinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-photo-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">10,000+ photos</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-video-slider" style="margin-top: 30px"><h3>How many videos do you store on your laptop?</h3></label>
+              These are videos downloaded to your laptop - <b>don't count videos stored in the cloud.</b><br>
+              <small>For this approximation, a video is 200 MB.</small>
+              <!-- (500 MB/video) -->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="5000" data-step="50">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-video-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 photos
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap videosinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-video-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">5,000+ videos</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-music-slider" style="margin-top: 30px"><h3>How many songs do you store on your laptop?</h3></label>
+              These are songs downloaded to your laptop - <b>don't count songs that you stream.</b><br>
+              <small>For this approximation, a song is 5 MB.</small>
+              <!-- 1,000 songs = 5 GB (5 MB/song) -->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="10000" data-step="100">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-music-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 songs
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap songsinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-music-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">10,000+ songs</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-movie-slider" style="margin-top: 30px"><h3>How many movies do you store on your laptop?</h3></label>
+              These are movies downloaded to your laptop - <b>don't count movies that you stream.</b><br>
+              <small>For this approximation, a movie is 5 GB.</small>
+              <!-- 10 movies = 50 GB (5 GB/movie) -->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="100" data-step="1">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-movie-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 movies
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap moviesinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-movie-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">100+ movies</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-programs-slider" style="margin-top: 30px"><h3>How many programs do you store on your laptop?</h3></label>
+              Each step represents 2 programs. <br>
+              <small>For this approximation, a program is 1 GB.</small>
+              <!-- 10 programs = 10 GB (1 GB/program)-->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="100" data-step="1">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-programs-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 programs
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap programsinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-programs-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">100+ programs</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-games-slider" style="margin-top: 30px"><h3>How many games do you store on your laptop?</h3></label>
+              These are games downloaded to your laptop - <b>don't count games streamed over the internet.</b><br>
+              <small>Depending on what types of games you play, a game is 5, 10, 50, or 100 GB.</small>
+              <!-- This varies on the type of games selected. 
+                  2D, 5 games = 25 GB (5 GB/game) 
+                  Casual 3D, 5 games = 50 GB (10 GB/game) 
+                  Moderate 3D, 5 games = 250 GB (50 GB/game) 
+                  Intense 3D, 5 games = 500 GB (100 GB/game)-->
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="200" data-step="2">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-games-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 games
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap gamesinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-games-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">200+ games</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <h3 style="margin-top: 30px">Additional storage sliders</h3>
+          <b>Your storage approximation should be pretty accurate as it stands.</b> However, If you'd like to refine the accuracy of your laptop recommendation, use the sliders below to approximate how many small/large files you store on your laptop.
+          <div role="form">
+              <label for="laptoptool-small-file-slider" style="margin-top: 30px"><h3>How many small files do you store?</h3></label>
+              <!-- Step here is 10 GB/step -->
+              <small>For this approximation, a small file is 50 MB. Documents shouldn't be counted.</small>
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="2000" data-step="20">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-small-file-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 small files
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap smallfileinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-small-file-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">2,000+ small files</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div role="form">
+              <label for="laptoptool-large-file-slider" style="margin-top: 30px"><h3>How many large files do you store?</h3></label>
+              <small>For this approximation, a large file is 1 GB.</small>
+              <div class="grid-container" style="margin-top: 10px">
+                  <div class="slider" data-slider data-initial-start="0" data-start="0" data-end="500" data-step="5">
+                      <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="laptoptool-large-file-slider"></span>
+                      <span class="slider-fill" data-slider-fill></span>
+                  </div>
+                  <div class="grid-x grid-margin-x">
+                      <div class="cell small-4 large-5">
+                          0 large files
+                      </div>
+                      <div class="cell small-4 large-2 inputwrap largefileinput" style="text-align: center;">
+                          <input type="number" id="laptoptool-large-file-slider">
+                      </div>
+                      <div class="cell small-4 large-5">
+                          <span class="float-right">500+ large files</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="grid-x grid-margin-x" role="navigation">
+              <div class="cell small-12" style="margin-top: 30px">
+                  <hr>
+                  <button class="button float-left" onclick="stepChange(3, 2)">Back</button>
+                  <button class="button float-right" onclick="stepChange(3, 4)">Next</button>
+              </div>
+          </div>
+      </div>
+      <div id="laptoptool-step4" style="display: none" role="application">
+          <h2 style="margin-top: 10px">Step 4 - Additional Questions</h2>
+          A few additional questions to improve your laptop recommendation.
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <h3>Do you need extra power in certain parts of your laptop?</h3>
+                  <b>Most people won't need extra power in their laptop.</b> If you're confident you need some extra power in a certain category, select them below.
+                  <div class="grid-container" style="margin-top: 10px">
+                      <fieldset>
+                          <legend style="display: none">Do you need extra power in certain parts of your laptop?</legend>
+                          <div class="grid-x grid-margin-x help-form impact-boxes">
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="extrapower" value="cpu" id="laptoptool-extrapower-cpu">
+                                  <label for="laptoptool-extrapower-cpu">
+                                      <i class="fas fa-microchip"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="A processor (CPU) is the brains of a laptop. A more powerful processor means tasks complete faster.">Processor</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="extrapower" value="ram" id="laptoptool-extrapower-ram">
+                                  <label for="laptoptool-extrapower-ram">
+                                      <i class="fas fa-memory"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="Think of memory (RAM) as how much your computer can have open at once. If you always have lots of stuff open, you might want more memory.">Memory</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="extrapower" value="gpu" id="laptoptool-extrapower-gpu">
+                                  <label for="laptoptool-extrapower-gpu">
+                                      <i class="fas fa-tv"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="Extra power in graphics (GPU) will allow your laptop to run faster in 3D-intense applications, such as animation, game creation, and gaming.">Graphics</span>
+                                  </label>
+                              </div>
+                              <div class="cell small-12 medium-6 large-3">
+                                  <input type="checkbox" name="extrapower" value="storage" id="laptoptool-extrapower-storage">
+                                  <label for="laptoptool-extrapower-storage">
+                                      <i class="fas fa-hdd"></i>
+                                      &nbsp;<span data-tooltip class="top" tabindex="2" title="If you constantly find yourself running out of space on your laptop, you might want to consider more storage.">Storage</span>
+                                  </label>
+                              </div>
+                          </div>
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <h3>Would you want a secondary drive for backups/storage? <span class="specialized">*</span></h3>
+                  For peace of mind, we strongly recommend having a backup drive. Depending on how much space you need, they range from $60 to $180.
+                  <div id="laptoptool-validation-secondary" style="display: none">
+                    <small class="validation-small">Please input a value.</small>
+                  </div>
+                  <div class="grid-container" style="margin-top: 10px">
+                      <div class="grid-x grid-margin-x help-form impact-boxes">
+                          <div class="cell small-12 medium-6 large-3">
+                              <input type="radio" name="secondary" value="1" id="laptoptool-secondary-1">
+                              <label for="laptoptool-secondary-1">
+                                  Yes
+                              </label>
+                          </div>
+                          <div class="cell small-12 medium-6 large-3">
+                            <input type="radio" name="secondary" value="0" id="laptoptool-secondary-0">
+                            <label for="laptoptool-secondary-0">
+                                No
+                            </label>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="form">
+              <div class="cell small-12">
+                  <h3>Use the bare minimum laptop recommendations? <span class="specialized">*</span></h3>
+                  If you are looking to save on your laptop (at the expense of your laptop potentially needing upgrades sooner), you can opt to choose the bare minimum recommendation.
+                  <div id="laptoptool-validation-bareminimum" style="display: none">
+                    <small class="validation-small">Please input a value.</small>
+                  </div>
+                  <div class="grid-container" style="margin-top: 10px">
+                      <div class="grid-x grid-margin-x help-form impact-boxes">
+                          <div class="cell small-12 medium-6 large-3">
+                              <input type="radio" name="bare-minimum" value="1" id="laptoptool-bare-minimum-1">
+                              <label for="laptoptool-bare-minimum-1">
+                                  Yes
+                              </label>
+                          </div>
+                          <div class="cell small-12 medium-6 large-3">
+                            <input type="radio" name="bare-minimum" value="0" id="laptoptool-bare-minimum-0">
+                            <label for="laptoptool-bare-minimum-0">
+                                No
+                            </label>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px" role="navigation">
+              <div class="cell small-12">
+                  <h3>Ready to view your answers?</h3>
+                  Click the view results button below. You can also go back to other steps to refine your choices.
+                  <div id="laptoptool-validation-s4-small" style="display: none; margin-bottom: 10px">
+                    <small class="validation-small">You missed a few steps that are required. You'll need to complete those steps before moving forward.</small>
+                  </div>
+                  <div class="grid-x grid-margin-x" style="margin-top: 30px">
+                      <div class="cell small-12">
+                          <a class="button float-left" onclick="stepChange(4, 3)">Back</a>
+                          <a class="button float-right" onclick="calculateScores(); stepChange(4, 5)">View results</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+      <div id="laptoptool-step5" style="display: none" role="application">
+          <div class="grid-container">
+          <h2 style="margin-top: 30px">Based on your answers, we recommend these specifications for your laptop.</h2>
+          <hr>
+          <span id="laptoptool-bare_minimum_0_score" style="display: none"></span>
+          <span id="laptoptool-bare_minimum_below_wpi" style="display: none"></span>
+          <div class="grid-x grid-margin-x" style="margin-top: 20px">
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-microchip header-icon"></i>
+                          <h3 style="display: inline"><span data-tooltip class="top" tabindex="2" title="A processor (also known as CPU) is the brains of your laptop. More advanced procesors complete tasks quicker.">Processor</span></h3>
+                      </div>
+                      <div class="card-section">
+                          <h4 style="text-align: center" id="laptoptool-cpu-header">N/A</h4>
+                          Your next laptop should use a <span id="laptoptool-cpu-product">N/A</span>. Here's why.
+                          <ul id="laptoptool-cpu-reasons" class="laptoptool-results-ul">
+                          </ul>
+                          <small class="specialized" id="laptoptool-cpu-specialized" style="display: none">Note: This is a specialized component. It'll be harder to find it in off-the-shelf laptops.</small>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-memory header-icon"></i>
+                          <h3 style="display: inline"><span data-tooltip class="top" tabindex="2" title="Memory (also known as RAM) determines how many things your laptop can keep open. More memory means more things can be open.">Memory</span></h3>
+                      </div>
+                      <div class="card-section">
+                          <h4 style="text-align: center" id="laptoptool-ram-header">N/A</h4>
+                          Your next laptop should use <span id="laptoptool-ram-product">N/A</span> of RAM. Here's why.
+                          <ul id="laptoptool-ram-reasons" class="laptoptool-results-ul">
+                          </ul>
+                          <small class="specialized" id="laptoptool-ram-specialized" style="display: none">Note: This is a specialized component. It'll be harder to find it in off-the-shelf laptops.</small>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-tv header-icon"></i>
+                          <h3 style="display: inline"><span data-tooltip class="top" tabindex="2" title="A graphics card (also known as GPU) determines how quickly your laptop can generate 3D graphics. More graphics power means better experiences in 3D-intense apps (gaming, animation, etc).">Graphics</span></h3>
+                      </div>
+                      <div class="card-section">
+                          <h4 style="text-align: center" id="laptoptool-gpu-header">N/A</h4>
+                          Your next laptop should use <span id="laptoptool-gpu-product">N/A</span>. Here's why.
+                          <ul id="laptoptool-gpu-reasons" class="laptoptool-results-ul">
+                          </ul>
+                          <small class="specialized" id="laptoptool-gpu-specialized" style="display: none">Note: This is a generic selection - many NVIDIA cards have Max-Q, Max-P, and Ti variants, along with different wattages. These all offer different levels of graphical power. Make sure the exact graphics card you pick can meet your needs.</small>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-hdd header-icon"></i>
+                          <h3 style="display: inline"><span data-tooltip class="top" tabindex="2" title="Storage comes in two varieties - Solid State (SSD) and Hard Drive (HDD). Solid State is much faster than Hard Drives, but is more expensive.">Storage</span></h3>
+                      </div>
+                      <div class="card-section">
+                          <h4 style="text-align: center" id="laptoptool-storage-header">N/A</h4>
+                          Your next laptop should use <span id="laptoptool-storage-product">N/A</span> storage. Here's why.
+                          <ul id="laptoptool-storage-reasons" class="laptoptool-results-ul">
+                          </ul>
+                          <small>Your primary storage should be a <b>SSD (Solid State Drive)</b>. SSDs are much faster than <b>HDDs (Hard Drives)</b>. Secondary storage can be either one depending on your needs and budget.</small>
+                          <small class="specialized" id="laptoptool-storage-specialized" style="display: none"><br><br>Note: This is a specialized component. It'll be harder to find it in off-the-shelf laptops.</small>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center;">
+                          <i class="fas fa-laptop header-icon"></i>
+                          <h3 style="display: inline">Form Factor</h3>
+                      </div>
+                      <div class="card-section">
+                          <h4 style="text-align: center" id="laptoptool-form-header">N/A</h4>
+                          Your should consider a <span id="laptoptool-form-product">N/A</span> form factor. Here's why.
+                          <ul id="laptoptool-form-reasons" class="laptoptool-results-ul">
+                          </ul>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-wifi header-icon"></i>
+                          <h3 style="display: inline">Networking</h3>
+                      </div>
+                      <div class="card-section">
+                          Your next laptop should have Wi-Fi 5 (802.11ac) or better, which is standard in most laptops. WiFi is available across campus. <br><br>
+                          You may equip your laptop with a Gigabit Ethernet port (or buy an adapter) if you'd rather be wired into WPI's network.
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-cogs header-icon"></i>
+                          <h3 style="display: inline">Operating System</h3>
+                      </div>
+                      <div class="card-section">
+                          <span id="laptoptool-os-text"></span><br><br>
+                          <a href="https://hub.wpi.edu/Locations-and-Servers" target="_blank">Computer labs</a> and <a href="https://hub.wpi.edu/component/77/terminal-services" target="_blank">remote access terminal servers</a> are provided so you can access academic software that may not run on your laptop.
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-briefcase header-icon"></i>
+                          <h3 style="display: inline">Office bundles</h3>
+                      </div>
+                      <div class="card-section">
+                          An Office 365 subscription is provided during your time at WPI, so you don't need to bundle Microsoft Office. <br><br>
+                          <a href="https://hub.wpi.edu/spread/43/getting-started-with-office-365" target="_blank">More information about Office 365 at WPI</a>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-print header-icon"></i>
+                          <h3 style="display: inline">Printer bundles</h3>
+                      </div>
+                      <div class="card-section">
+                          Public printers are available to use across campus, so you don't necessarily have to bring your own printer. <br><br>
+                          Some students appreciate the convenience of personal printers, especially if you're living off-campus, or plan to live off-campus later in your time at WPI. <br><br>
+                          If you do bring your own printer, bring the printer cable to connect to your laptop! Printers aren't allowed on the WPI Wi-Fi.
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-tools header-icon"></i>
+                          <h3 style="display: inline">Warranty</h3>
+                      </div>
+                      <div class="card-section">
+                          We recommend getting an extended warranty for your laptop, if money allows. This will add extra peace of mind if your laptop breaks, especially if you intend to keep it for a long time.
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-question-circle header-icon"></i>
+                          <h3 style="display: inline">Questions?</h3>
+                      </div>
+                      <div class="card-section">
+                          If you have any questions, or need additional help finding a laptop, reach out to the IT service desk. Include the diagnostic details below.<br><br>
+                          <a onclick='$("#laptoptool-diagnostic-textarea").select(); document.execCommand("copy")'>Copy diagnostic details to clipboard</a> 
+                          <label for="laptoptool-diagnostic-textarea"><a onclick='$("#laptoptool-diagnostic-textdiv").toggle()'>Show diagnostic details</a></label>
+                          <div id="laptoptool-diagnostic-textdiv" style="display: none; margin-top: 15px">
+                              <textarea id="laptoptool-diagnostic-textarea" rows="8" cols="40" readonly></textarea>
+                          </div>
+                      </div>
+              </div>
+              <div class="cell medium-4 small-12 card">
+                      <div class="card-divider" style="text-align: center">
+                          <i class="fas fa-exclamation-triangle header-icon"></i>
+                          <h3 style="display: inline">Disclaimer</h3>
+                      </div>
+                      <div class="card-section">
+                          This laptop recommendation should be treated as a starting point for your laptop search, and what specs you should be filtering by. We can't recommend exact laptop models.
+                      </div>
+              </div>
+          </div>
+          <hr>
+          <a class="button" onclick="redoAnswers()" style="margin-top: 10px; margin-bottom: 30px" role="navigation">Edit recommendation</a>
+          <a class="button" onclick="window.location.reload()" style="margin-left: 10px; margin-top: 10px; margin-bottom: 30px" role="navigation">Start a new recommendation</a>
+          </div>
+      </div>
+  </div>
+
+<!-- Owen's Stuff ends here -->
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

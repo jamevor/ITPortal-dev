@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://hub.wpi.edu/sitemap

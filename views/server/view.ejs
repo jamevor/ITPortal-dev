@@ -1,0 +1,360 @@
+<%
+const endpoint = locals.server ? '/api/v1/server/update/one/' + server.id : '/api/v1/server/create/one';
+const method = locals.server ? 'PUT' : 'POST';
+
+let contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <script type='text/javascript' src='/js/pages/server/view.js' defer></script>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <script type='text/javascript' src='/js/console/EntityGroupsUtility.js' defer></script>
+    <script type='text/javascript' src='/js/console/server/edit.js' defer></script>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<% if (locals.edit) { %>
+  <% if (locals.server) { %>
+    <input type='hidden' id='server-id' name='serverID' value='<%= server.id %>'>
+  <% } %>
+  <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+  <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+<% } %>
+
+
+  <div class="grid-container fluid swim-lane article" data-size-control='{"display": true, "thiccener":true, "thiccener-item":"grid-container"}'>
+    <div class="grid-container">
+
+
+      <nav aria-label="You are here:" role="navigation">
+        <ul class="breadcrumbs">
+          <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+          <li><a href="#">Servers</a></li>
+          <li>
+            <a href='#'>
+              <span class="show-for-sr">Current: </span> <%= locals.server ? server.title : '' %>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+
+
+      <div class="grid-x grid-margin-x align-justify">
+        <div class="cell small-12 medium-8 large-7 two-col-content">
+        <div class="cell small-9 medium-10 large-11">
+          <h1 id="article-title" class="article-heading" <%= contentEditable %> <%- locals.edit ? 'placeholder="Server Title"' : '' %>><%= locals.server ? server.title : '' %></h1>
+          <% if (locals.edit || (locals.server && server.descriptionShort)) { %>
+            <p id="article-summary" class="article-summary" <%= contentEditable %> <%- locals.edit ? 'placeholder="Short Description"' : '' %>><%- locals.server ? server.descriptionShort : '' %></p>
+          <% } %>
+        </div>
+            
+            <div class="article-body software-body">
+              <h2>About</h2>
+              <% if (locals.server && server.requirements || locals.edit) { %>
+                <h3>Requirements</h3>
+                <p id='requirements' <%= contentEditable %> <%- locals.edit ? 'placeholder="Requirements"' : '' %>><%= locals.server &&  server.requirements ? server.requirements : '' %></p>
+              <% } %>
+
+                <% if (locals.server && server.host || locals.edit) { %>
+                  <h3>Hostname</h3>
+                  <div class='input-group'>
+                    <input type='text' id="host" value="<%= locals.server && server.host ? server.host : '' %>" class='input-group-field copy-text' <%- locals.edit ? '' : 'readonly' %>>
+                    <button class='input-group-button copy-button'><i class='far fa-copy'></i></button>
+                  </div>
+                <% } %>
+
+            </div>
+
+
+            <%
+
+            const allSoftwares = [];
+
+            if (locals.server && !locals.edit) {
+              if (server.software && server.software.length) {
+                allSoftwares.push(...server.software);
+              }
+              if (server.packages && server.packages.length) {
+                for (let package of server.packages) {
+                  if (package.software && package.software.length) {
+                    allSoftwares.push(...package.software);
+                  }
+                }
+              }
+            }
+
+            const allSoftwaresFiltered = allSoftwares.filter((element, index, array) => {
+              return array.findIndex(element_ => element_.id === element.id) === index;
+            });
+
+
+          
+          %>
+            
+          <% if (locals.server && ((server.software && server.software.length) || (server.packages && server.packages.length)) || locals.edit) { %>
+            <div class="swim-lane">
+              <h2>Software On This Server</h2>
+              <% if (locals.edit) { %>
+                  <input type="hidden" id="software" name="software">
+                  <label for="add-software-input">Software Title</label>
+                  <div class="input-group">
+                    <input type="text" id="add-software-input" name="add-software-input" class="input-group-field ez-input">
+                    <div class="input-group-button">
+                      <button id="add-software-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                    </div>
+                  </div>
+              <% } %>
+              <table id='softwareTable' class='table'>
+                <thead>
+                  <tr>
+                    <th class='table-hidden'>ID</th>
+                    <th>Title</th>
+                    <th>Version</th>
+                    <th>Publisher</th>
+                    <% if (locals.edit) { %>
+                      <th>Remove</th>
+                    <% } %>
+                  </tr>
+                </thead>
+                <tbody>
+                <% if (locals.edit && locals.server && server.software && server.software.length) { %>
+                  <% for (const software_ of server.software) { %>
+                    <tr>
+                      <td><%= software_.id %></td>
+                      <td><a href="#"><%= software_.title %></a></td>
+                      <td><%= software_.version %></td>
+                      <td><%= software_.publisher %></td>
+                      <% if (locals.edit) { %>
+                        <td><button class='button-remove-software'><i class='fas fa-unlink'></i> Remove</button></td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } else if (locals.server && !locals.edit) { %>
+                  <% for (const software_ of allSoftwaresFiltered) { %>
+                    <tr>
+                      <td><%= software_.id %></td>
+                      <td><a href="/software/<%= software_.id %>"><%= software_.title %></a></td>
+                      <td><%= software_.version %></td>
+                      <td><%= software_.publisher %></td>
+                      <% if (locals.edit) { %>
+                        <td><button class='button-remove-software'><i class='fas fa-unlink'></i> Remove</button></td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="cell small-12 medium-4 two-col-sidebar">
+
+          <% if (locals.edit) { %>
+            <input type="hidden" id='is-access-restricted' value="<%- locals.server && server.accessRestricted ? 'true' : 'false' %>">
+            <input type="hidden" id='can-remove-groups' value="<%- locals.canRemoveGroups %>">
+            <div class="box card" id="egu"></div>
+          <% } %> 
+
+          <% if(locals.server && (server.createdAt || server.updatedAt) || locals.edit) { %>
+            <div class="box card">
+              <h2>Details</h2>
+              <p><strong>Created:</strong> <%= locals.server && server.createdAt ? moment(server.createdAt).format('ll') : '' %></p>
+              <p><strong>Modified:</strong> <%= locals.server && server.updatedAt ? moment(server.updatedAt).format('ll') : '' %></p>
+            </div>
+          <% } %>
+
+          <% if (locals.server && (server.tags.length || server.aliases.length || server.audiences.length) || locals.edit) { %>
+            <div class="box card">
+              <h2>Metadata</h2>
+              <% if (locals.server && server.tags.length || locals.edit) { %>
+                <h3>Tags</h3>
+                <ul class="tags">
+                  <% if (locals.server && server.tags.length) { %>
+                    <% server.tags.forEach(function(tag){ %>
+                      <li data-tagid="<%= tag.id %>" class='tag'><a href="<%= locals.edit ? '#' : '/tag/' + tag.id %>"><%- tag.title %><% if (locals.edit) { %> <button class='remove-tag-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-tagid=""><input type='text' id='add-tag-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="tag" name="tag">
+                <% } %>
+              <% } %>
+              <% if (locals.server && server.audiences.length || locals.edit) { %>
+                <h3>Audience</h3>
+                <ul class="audience">
+                  <% if (locals.server && server.audiences.length) { %>
+                    <% server.audiences.forEach(function(audience){ %>
+                      <li data-audienceid="<%= audience.id %>" class="audience-item"><a href="<%= locals.edit ? '#' : '/audience/' + audience.id %>"><%- audience.title %><% if (locals.edit) { %> <button class='remove-audience-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-audienceid=""><input type='text' id='add-audience-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="audience" name="audience">
+                <% } %>
+              <% } %>
+              <% if (locals.server && server.aliases.length || locals.edit) { %>
+                <h3>Alias</h3>
+                <ul class="alias">
+                  <% if (locals.server && server.aliases.length) { %>
+                    <% server.aliases.forEach(function(alias){ %>
+                      <li data-aliasid="<%= alias.id %>" class="alias-item"><a href="<%= locals.edit ? '#' : '/alias/' + alias.id %>"><%- alias.title %><% if (locals.edit) { %> <button class='remove-alias-button'><i class='fas fa-times-circle'></i></button> <% } %></a></li>
+                    <% }); %>
+                  <% } %>
+                  <% if (locals.edit) { %>
+                    <li data-aliasid=""><input type='text' id='add-alias-input'></li>
+                  <% } %>
+                </ul>
+                <% if (locals.edit) { %>
+                  <input type="hidden" id="alias" name="alias">
+                <% } %>
+              <% } %>
+            </div>
+          <% } %>
+
+          <% if (locals.canEdit) { %>
+            <div class="box card">
+              <h2>Admin</h2>
+              <ul class="link-cards no-icon">
+                <% if (!locals.edit && locals.server && server.serverPhase) { %>
+                  <li><span class='text'>Current Phase: <%= server.serverPhase.title %></span></li>
+                <% } %>
+                <% if (!locals.edit) { %>
+                  <li><a href="/console/server/edit/<%= server.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+                <% } %>
+                <% if (locals.server && locals.edit) { %>
+                  <li><a href="/server/<%= server.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Server</a></li>
+                  <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+                <% } %>
+                <% if (locals.edit) { %>
+                  <li><a data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+                <% } %>
+                <% if (locals.edit && locals.server && server.serverPhase && !locals.canPublish) { %>
+                  <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+                  <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+                    <h2>Are you sure?</h2>
+                    <p>You will not be able to edit this server while it is being reviewed.</p>
+                    <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+                    <a href="#" class="button-confirm bright-4" data-close>No</a>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                      <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+                    </button>
+                  </div>
+                <% } %>
+                <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+              </ul>
+            </div>
+          <% } %>
+
+          
+
+          <%- include('../partials/components/request-help.ejs'); %>
+
+          <%- include('../partials/components/print-share.ejs'); %>
+
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if (locals.edit) { %>
+    <%- include('../partials/components/edit.ejs', {
+      entityTitle: 'Server',
+      entityID: locals.server && server.id ? server.id : 'New'
+    }); %>
+    <%
+
+    const toasts = [
+      {
+        id: 'toast-save-success',
+        type: 'success',
+        title: 'Success',
+        message: 'Server has been saved',
+        show: false
+      },
+      {
+        id: 'toast-save-error',
+        type: 'error',
+        title: 'Whoops',
+        message: 'Something went wrong trying to save your server',
+        show: false
+      }
+    ];
+    %>
+    <%- include('../partials/components/toaster.ejs', { toasts }); %>
+  <% } %>
+
+  <% if (locals.edit && locals.server) { %>
+    <%- include('../partials/components/preview-modal.ejs'); %>
+  <% } %>
+
+
+  <% if (locals.edit) { %>
+  <div class="reveal console-modal" id="advanced-settings-modal" data-reveal data-options="closeOnClick:false;" data-simplebar>
+    <ul class="tabs" data-tabs id="advancedSettingsTabs">
+      <li class="tabs-title is-active"><a href="#phaseTab" aria-selected="true"><i class='far fa-satellite-dish'></i> State</a></li>
+      <li class="tabs-title"><a href="#relationshipsTab"><i class='fas fa-database'></i> Relationships</a></li>
+      <li class="tabs-title"><a href="#auditTab"><i class='far fa-history'></i> Audit</a></li>
+    </ul>
+    <div data-tabs-content="advancedSettingsTabs">
+      <div id="phaseTab" class="tabs-panel is-active">
+        <% if (locals.canPublish) { %>
+          <label for="phase">Phase</label>
+          <select name="phase" id="phase" class='title-case'>
+          <% for (let phase of phases) { %>
+            <option class='title-case' value="<%= phase.id %>" <%= locals.server && server.idServerPhase == phase.id ? 'selected' : '' %>><%= phase.title %></option>
+          <% } %>
+          </select>
+        <% } else { %>
+          <input type="hidden" id="phase" value="1">
+        <% } %>
+      </div>
+      <div id="relationshipsTab" class="tabs-panel">
+        <div class='relationship-box'>
+          <h2>Packages</h2>
+          <input id='package' type='hidden' name='package'>
+          <div class="input-group">
+            <input class='ez-input input-group-field' type='text' id='add-package-input'>
+            <div class="input-group-button">
+              <button id="add-package-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+            </div>
+          </div>
+          <ul class="card-list no-indent grid-x grid-margin-x small-up-2 medium-up-2 large-up-3 packages-wrapper">
+            <% if (locals.server && server.packages && server.packages.length) { %>
+              <% for (const package of server.packages) { %>
+                <li data-packageid="<%= package.id %>" class="package-item related-item"><%= package.title %><button class='remove-related-item-button'><i class='fas fa-times'></i> Remove</button></li>
+              <% } %>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+      <div id="auditTab" class="tabs-panel">
+        <h2>Details</h2>
+        <p><strong>Date Review By: </strong><%= locals.server && server.dateReviewBy ? moment(server.dateReviewBy).format('ll') : '' %></p>
+        <p><strong>Created On: </strong><%= locals.server && server.createdAt ? moment(server.createdAt).format('ll') : '' %></p>
+        <p><strong>Created By: </strong><%= locals.server && server.userCreatedBy && server.userCreatedBy.username ? server.userCreatedBy.username : '' %></p>
+        <p><strong>Modified On: </strong><%= locals.server && server.updatedAt ? moment(server.updatedAt).format('ll') : '' %></p>
+        <p><strong>Last Modified By: </strong><%= locals.server && server.userModifiedBy && server.userModifiedBy.username ? server.userModifiedBy.username : '' %></p>
+      </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true"><i class='far fa-times'></i></span>
+    </button>
+  </div>
+<% } %>
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

@@ -1,0 +1,61 @@
+variables:
+    GIT_CLEAN_FLAGS: none
+    
+image: node:latest
+stages:
+    - deploy
+
+cache:
+    paths:
+        - node_modules/
+
+deploy_development:
+    stage: deploy
+    script:
+        - npm install
+        - npx sequelize-cli db:migrate
+        - pm2 reload ecosystem.config.js --env development
+        - pm2 save
+    only:
+        - dev
+    tags:
+        - development
+    environment:
+        name: development
+        url: https://sirloin.wpi.edu/
+
+deploy_staging:
+    stage: deploy
+    script:
+        - npm install
+        - npm run build
+        - npm run minify-js
+        - npm run minify-css
+        - npx sequelize-cli db:migrate --env staging
+        - pm2 reload ecosystem.config.js --env staging
+        - pm2 save
+    only:
+        - staging
+    tags:
+        - staging
+    environment:
+        name: staging
+        url: https://itsdev.wpi.edu/
+
+deploy_production:
+    stage: deploy
+    script:
+        - npm install
+        - npm run build
+        - npm run minify-js
+        - npm run minify-css
+        - npx sequelize-cli db:migrate --env production
+        - pm2 reload ecosystem.config.js --env production
+        - pm2 save
+    only:
+        - master
+    tags:
+        - production
+    environment:
+        name: production
+        url: https://hub.wpi.edu/

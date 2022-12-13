@@ -1,0 +1,125 @@
+{
+    "drawing": {
+        "prefix": "You do drawing.",
+        "cpu": "If you work with large drawings, you'll benefit from more processing power.",
+        "form": "You might like having a 2-in-1 so you can draw on the go.",
+        "cpu_bare": "If you work with smaller-scale drawings, this CPU will work well.",
+        "form_bare": "A standard laptop form factor can work - although you'll likely need an external drawing tablet."
+    },
+    "gaming_0": {
+        "prefix": "You do 2D & Light 3D gaming.",
+        "cpu": "This amount of processing power will run these games smoothly.",
+        "gpu": "Integrated graphics will be able to run these games smoothly.",
+        "ram": "You'll have no troubles running these games with this amount of memory.",
+        "cpu_bare": "This amount of processing power will run these games smoothly.",
+        "gpu_bare": "Integrated graphics will be able to run these games smoothly.",
+        "ram_bare": "You'll have no troubles running these games with this amount of memory."
+    },
+    "gaming_1": {
+        "prefix": "You do casual 3D gaming.",
+        "cpu": "This amount of processing power will run casual 3D games smoothly.",
+        "gpu": "You'll benefit from having a discrete GPU to run casual 3D games.",
+        "ram": "You'll have no troubles running 3D games with this amount of memory.",
+        "cpu_bare": "This amount of processing power will run casual 3D games smoothly.",
+        "gpu_bare": "Integrated graphics can run casual 3D games - albeit at a lower quality.",
+        "ram_bare": "You'll have no troubles running 3D games with this amount of memory." 
+    },
+    "gaming_2": {
+        "prefix": "You do moderate 3D gaming.",
+        "cpu": "You'll benefit from more processing power to run these games smoothly.",
+        "gpu": "You'll benefit from a discrete GPU with additional power to meet the increased demands of the games you play.",
+        "ram": "Having extra memory will be beneficial for a smoother gaming experience.",
+        "cpu_bare": "This amount of processing power will be enough to run these games - although you may need to turn down quality settings for smooth gameplay.",
+        "gpu_bare": "A low-end discrete GPU will be able to run moderate 3D games at lower settings and framerates.",
+        "ram_bare": "Having less memory may cause some memory-heavy games to run less smoothly on your laptop."
+    },
+    "gaming_3_legacy": {
+        "prefix": "You do competitive 3D gaming.",
+        "cpu": "Having lots of processing power will allow you to get as many FPS as possible.",
+        "gpu": "More graphics power will allow you to get more FPS.",
+        "ram": "Extra memory will allow for smooth gaming, with extra headroom for game streaming if you do that.",
+        "storage": "Having extra storage will allow you to store lots of games."
+    },
+    "gaming_3": {
+        "prefix": "You do intense 3D gaming.",
+        "cpu": "Having lots of processor power will allow you to run the latest AAA games smoothly.",
+        "gpu": "Having a top-tier discrete GPU will allow games like Cyberpunk and MSFS to run great.",
+        "ram": "Having extra memory will allow for games to run super smoothly.",
+        "cpu_bare": "This processor can run intense 3D games, although you'll likely need to turn down quality settings. Consider a CPU upgrade to not bottleneck your GPU.",
+        "gpu_bare": "A lower-tier discrete GPU should be able to run intense 3D games, with a decrease in quality settings.",
+        "ram_bare": "Having less memory will still allow for intense 3D games to run. You may experience lag with graphically-heavy scenes in games."
+    },
+    "video_edit": {
+        "prefix": "You do video editing.",
+        "cpu": "More processing power will let you export projects faster, and work with higher quality video files.",
+        "gpu": "Having a discrete GPU will improve the performance of your video editor.",
+        "ram": "Having more RAM will allow you to edit complex projects with ease.",
+        "storage": "Having lots of storage will allow you to store big video files.",
+        "cpu_bare": "This processor should have enough power for editing, with slightly slower export times.",
+        "gpu_bare": "You should be able to run lighter video editing programs on an integrated GPU - but more advanced programs may not run or work as well.",
+        "ram_bare": "This amount of RAM should be able to run lighter video editing programs, but may struggle with larger ones.",
+        "storage_bare": "This amount of storage will work well for casual video editing."
+    },
+    "2d_animate": {
+        "prefix": "You do 2D animation.",
+        "cpu": "If you're running complex 2D animation, you might benefit from more processing power.",
+        "gpu": "Having a discrete GPU will allow you to do more complex 2D animation.",
+        "form": "You might find having a 2-in-1 beneficial so you can draw on your laptop's screen on the go.",
+        "cpu_bare": "This amount of processor power will be good for 2D animation.",
+        "gpu_bare": "You should be able to do 2D animation on integrated graphics - although it might be slower with large projects.",
+        "form_bare": "A standard laptop form will work well for your needs, but you may want to buy an external drawing tablet."
+    },
+    "3d_animate": {
+        "prefix": "You do 3D animation.",
+        "cpu": "You'll likely benefit from more processor power to run complex 3D Animations.",
+        "gpu": "A mid-range GPU will allow you to do relatively complex 3D animation.",
+        "ram": "Having more memory may enhance your 3D animation experience.",
+        "storage": "Lots of storage may be beneficial, as 3D animation projects tend to be large.",
+        "cpu_bare": "This amount of processor power will be enough for moderately complex 3D Animations.",
+        "gpu_bare": "A dedicated GPU is essential for 3D animation - this one should be able to work well with moderately complex 3D animations.",
+        "ram_bare": "This amount of memory should work well for your needs."
+    },
+    "coding": {
+        "prefix": "You do coding.",
+        "cpu": "This amount of processing power will work well for coding.",
+        "ram": "You may benefit from some extra memory to run memory-intensive coding tools.",
+        "cpu_bare": "This processor will work well for coding.",
+        "ram_bare": "This amount of memory will work well for coding."
+    },
+    "photography": {
+        "prefix": "You do photography.",
+        "cpu": "Having more processing power will allow programs like Photoshop to run faster.",
+        "ram": "If you work with large photos, you'll benefit from more memory.",
+        "gpu": "Having a discrete GPU will enhance your experience with programs like Photoshop.",
+        "storage": "If you take a lot of photos, you may find it beneficial to have more storage.",
+        "cpu_bare": "This amount of processing power should be enough for programs like Photoshop - although it may lag on bigger files.",
+        "ram_bare": "You'll be able to handle most photos with this amount of memory.",
+        "gpu_bare": "You should be able to run programs like Photoshop on an integrated GPU - although you may run into lag.",
+        "storage_bare": "If you don't take many photos, this amount of storage should work well."
+    },
+    "music": {
+        "prefix": "You do music production.",
+        "cpu": "Having more processor power will allow you to work with complex projects.",
+        "ram": "You'll benefit from more memory to work with complex projects.",
+        "storage": "If you have a lot of projects, you may want to have more storage.",
+        "cpu_bare": "You'll be able to work on most projects with this amount of processor power.",
+        "ram_bare": "You'll be able to work on most projects with this amount of memory.",
+        "storage_bare": "If you don't have a lot of projects, "
+    },
+    "game_stream": {
+        "prefix": "You do game streaming.",
+        "cpu": "Having a good amount of processing power will allow you to play your game and stream it at the same time.",
+        "gpu": "A discrete GPU with additional power will allow you to play the latest games, with additional headroom for encoding.",
+        "ram": "More memory will allow you to have your game, streaming tool, and stream chat open all at once.",
+        "cpu_bare": "You'll be able to do some basic game streaming with this CPU power - although you may need to stream at a lower resolution & FPS.",
+        "gpu_bare": "Using dedicated graphics will let you play your game, but you may need to switch to software encoding for maximum game performance.",
+        "ram_bare": "This amount of memory should allow for game streaming with most games. Games that use a lot of RAM may be harder to stream."
+    },
+    "cad": {
+        "prefix": "You do CAD.",
+        "cpu": "Having more processing power may be beneficial to running CAD programs more smoothly.",
+        "gpu": "Having a discrete GPU will let you run CAD programs more smoothly.",
+        "cpu_bare": "This amount of processing power will fit your needs - although it may lag on big projects.",
+        "gpu_bare": "The latest integrated graphics will allow you to run CAD - although it may lag on big projects."
+    }
+}

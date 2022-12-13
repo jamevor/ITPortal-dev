@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <script defer type='text/javascript' src='/js/pages/hub-birthday.js'></script>
+  <style>
+    .sky{
+      background: linear-gradient(to bottom, #7f7fd5, #86a8e7, #91eae4);
+      height:500px;
+      border-bottom:4em solid var(--color-bright-2)
+    }
+    .cake svg {
+        display: block;
+        margin-bottom: -1em;
+    }
+    .cake::before {
+      content: '\f6df';
+      font-family: "Font Awesome 5 Pro";
+      width: 1em;
+      font-weight: 900;
+      height: 1em;
+      line-height: 1;
+      font-size: 2em;
+      color: orange;
+      display: block;
+      text-align: center;
+      margin: 0 auto -.3em auto;
+      animation: shake 10s;
+      animation-iteration-count: infinite;
+      transition: all .5s ease;
+      opacity:1;
+      z-index: 1;
+    }
+    .confettiWrapper{
+      position: relative;
+    }
+    [class|="confetti"] {
+      position: absolute;
+      z-index: 0;
+    }
+
+    .red {
+      background-color: var(--color-bright-4);
+    }
+
+    .yellow {
+      background-color:  var(--color-bright-3);
+    }
+
+    .blue {
+      background-color:  var(--color-bright-5);
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg);opacity:1; }
+      10% { transform: translate(-1px, -2px) rotate(-1deg);opacity:.8; }
+      20% { transform: translate(-1px, 0px) rotate(1deg);opacity:.7; }
+      30% { transform: translate(1px, 1px) rotate(0deg);opacity:.5; }
+      40% { transform: translate(1px, -1px) rotate(1deg);opacity:.8; }
+      50% { transform: translate(-1px, 1px) rotate(-1deg);opacity:1; }
+      60% { transform: translate(-1px, 1px) rotate(0deg);opacity:.9; }
+      70% { transform: translate(1px, 1px) rotate(-1deg);opacity:.8; }
+      80% { transform: translate(-1px, -1px) rotate(1deg);opacity:.7; }
+      90% { transform: translate(1px, 1px) rotate(0deg);opacity:.9; }
+      100% { transform: translate(1px, -1px) rotate(-1deg);opacity:1; }
+    }
+    .hub-greeting{
+      text-align: center;
+      padding: 1em;
+      color: var(--color-pop);
+    }
+    .fact-card{
+      background: var(--color-lane);
+      color: var(--colo-body-text);
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: 3px;
+      padding: 1em;
+      margin: 1em;
+      text-align: center;
+    }
+    .fact-card-icon{
+      font-size:3em;
+      color:var(--color-pop);
+    }
+    .fact-card-stat{
+      font-size:2em;
+      color:var(--color-body-text);
+    }
+    .fact-card-label{
+      font-size:1em;
+      color:var(--color-body-subtitle);
+    }
+    .feedback{
+      background: var(--color-pop);
+      color: var(--color-light);
+      box-shadow: var(--shadow-standard-y);
+      border-radius: 3px;
+      padding: 1em;
+      transition: all .5s ease;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      margin: 1em 10%;
+    }
+    .feedback:hover,.feedback:active,.feedback:focus{
+      background:var(--color-pop-h);
+      color:var(--color-lane);
+      box-shadow: var(--shadow-standard-y-h);
+    }
+    .feedbox{
+      background: var(--color-chrome);
+      padding: 1em;
+      box-shadow: var(--shadow-standard-y);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <div id=hub-birthday>
+    <div class="grid-container fluid sky confettiWrapper">
+      <div class="grid-container" style="height:100%">
+        <div class="grid-x grid-margin-x align-center align-bottom" style="height:100%">
+          <div class="cell small-12 medium-4 cake">
+            <%- include('../partials/components/cake-svg.ejs'); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-container fluid">
+      <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+          <div class="cell small-12 hub-greeting">
+            <h2 style="font-weight: 800;">Happy Hubaversary! 🎉</h2>
+            <p style="font-weight: 600;">As of October 15, the WPI Hub is officially 1 year old</p>
+          </div>
+          <div class="cell small-12 medium-6">
+            <h3 style="font-weight: 600;">Thank You!</h3>
+            <p>The Hub was launched on October 15, 2019 as an update to the ITS website, with a goal of providing a better experience for WPI users, by giving them easier access to more, higher-quality, information.</p>
+            <p>Within the past year we have been able to launch many new features, onboard new teams from across WPI, and hopefully provide you a great experience along the way.</p>
+          </div>
+          <div class="cell small-12 medium-6 feedbox">
+            <h3 style="font-weight: 600;">Feedback</h3>
+            <p style="font-weight:600">Help us make next year even better!</p>
+            <p>From it's inception the Hub has been about you (so much so that we underlined the 'u' in our logo). With that in mind we are always open to your feedback, ideas and suggestions. If you notice an app you use is missing from the marketplace, have an idea for a new feature, a suggestion on how the Hub can be better, general praise or concerns, or any other thoughts, please feel free to submit feedback!</p>
+            <a class="feedback" href="/feedback" target="_blank">Provide Feedback</a>
+          </div>
+          <div class="grid-x grid-margin-x cell small-12">
+            <div class="cell small-12">
+              <h3 style="font-weight: 600;">Year In Numbers</h3>
+            </div>
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"style="color:var(--color-bright-1)"><i class="fas fa-book"></i></div>
+              <div class="fact-card-stat">699</div>
+              <div class="fact-card-label">Knowledge Articles Created</div>
+            </div>
+
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-newspaper"></i></div>
+              <div class="fact-card-stat">541</div>
+              <div class="fact-card-label">News Posts Published</div>
+            </div>
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"style="color:var(--color-bright-3)"><i class="fas fa-arrow-alt-to-bottom"></i></div>
+              <div class="fact-card-stat">581</div>
+              <div class="fact-card-label">Software Titles Cataloged</div>
+            </div>
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"style="color:var(--color-bright-4)"><i class="fas fa-building"></i></div>
+              <div class="fact-card-stat">131+</div>
+              <div class="fact-card-label">Technology Enhanced Spaces Tracked</div>
+            </div>
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"style="color:var(--color-bright-4)"><i class="fas fa-server"></i></div>
+              <div class="fact-card-stat">22</div>
+              <div class="fact-card-label">Virtual Locations(Servers) Itemized</div>
+            </div>
+            <div class="cell small-6 medium-2 fact-card">
+              <div class="fact-card-icon"style="color:var(--color-bright-5)"><i class="fas fa-icons"></i></div>
+              <div class="fact-card-stat">51</div>
+              <div class="fact-card-label">Apps in the Marketplace</div>
+            </div>
+
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-users"></i></div>
+              <div class="fact-card-stat">10698</div>
+              <div class="fact-card-label">User Accounts Onboarded</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-eye"></i></div>
+              <div class="fact-card-stat">1,265,887</div>
+              <div class="fact-card-label">Pageviews</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-globe-americas"></i></div>
+              <div class="fact-card-stat">160</div>
+              <div class="fact-card-label">Countries Browsed From</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-map-signs"></i></div>
+              <div class="fact-card-stat">5413</div>
+              <div class="fact-card-label">Cities Visited From</div>
+            </div>
+
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-ticket"></i></div>
+              <div class="fact-card-stat">13619</div>
+              <div class="fact-card-label">Tickets Browsed / Updated Online</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-file-alt"></i></div>
+              <div class="fact-card-stat">30,000</div>
+              <div class="fact-card-label">Forms Submitted / Updated</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-history"></i></div>
+              <div class="fact-card-stat">99.99997%</div>
+              <div class="fact-card-label">Uptime & Availability</div>
+            </div>
+            <div class="cell small-6 medium-3 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-stopwatch"></i></div>
+              <div class="fact-card-stat">.30s</div>
+              <div class="fact-card-label">Average Page Load Time</div>
+            </div>
+
+            <div class="cell small-6 medium-4 fact-card">
+              <div class="fact-card-icon" style="color:#282c34"><i class="fas fa-circle"></i></div>
+              <div class="fact-card-stat">Dark Mode</div>
+              <div class="fact-card-label">Most Popular Theme</div>
+            </div>
+            <div class="cell small-6 medium-4 fact-card">
+              <div class="fact-card-icon"><div class="img" style="width: 1.5em;height: 1.5em;background-size: contain;background-image:url('//hub.wpi.edu/file-upload/d079013d-a7e2-438b-83ed-722a53940276/canvas')"></div></div>
+              <div class="fact-card-stat">Canvas</div>
+              <div class="fact-card-label">Most Installed App</div>
+            </div>
+            <div class="cell small-6 medium-4 fact-card">
+              <div class="fact-card-icon"><i class="fas fa-search"></i></div>
+              <div class="fact-card-stat">"VPN"</div>
+              <div class="fact-card-label">Most Searched Phrase</div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+<%- include('../partials/flickity.ejs'); %>
+<script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+<script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+<script defer type="text/javascript" src="/js/meAgain/my-case.js"></script>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+
+<%
+const currentIntent = intentOut.find(o => o.TermName === 'A-Term 2021');
+var cases = null;
+var clearTime = null;
+var clearTimeMoment = null;
+var todayAfterClear = null;
+var clearReady = null;
+%>
+<%if(caseOut[0] != null){
+  cases = caseOut[0];
+  clearTime = (cases.IsolationClosureEligible != "" && cases.IsolationClosureEligible != "1/1/1900 12:00 AM" && cases.IsolationClosureEligible != null) ? cases.IsolationClosureEligible : "";
+  clearTimeMoment = moment(new Date(clearTime)).utc().utcOffset(-5);
+  todayAfterClear = moment().isAfter(clearTimeMoment.startOf('day'));
+  clearReady = todayAfterClear;
+%>
+  <%if(clearReady || (cases && cases.status && cases.status == "Ready for Closure")){%>
+    <%- include('./partials/case-clear.ejs',{currentIntent,cases}); %>
+  <%}else{%>
+    <div class="grid-container me-section" style="padding:0;">
+    <div class="grid-x grid-margin-x" id="afterCare">
+      <div class="cell medium-12 box card profile-section">
+
+        <h2> <i class="far fa-pause-circle"></i> You are not yet eligible to clear isolation. Your Isolation Clearance Process is available on <%-clearTimeMoment.format('LL')%></h2>
+
+      </div>
+    </div>
+    </div>
+  <%}%>
+
+<%}else{%>
+  <%- include('./partials/case-intake.ejs',{currentIntent,cases}); %>
+<%}%>
+%>
+
+
+
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

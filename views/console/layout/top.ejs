@@ -1,0 +1,204 @@
+<%- include('../../partials/api/permissions-checker.ejs'); %>
+
+<div class="console">
+  <div class="grid-container fluid swim-lane">
+
+    <div class="grid-container">
+      <div class="cell medium-12">
+        <h1>Console</h1>
+      </div>
+      <div class="grid-x grid-margin-x">
+        <div class="console-nav cell small-12 medium-4 large-3">
+          <div class="console-menu">
+
+            <ul class="no-bullet">
+              <li>
+                <h2>Me</h2>
+              </li>
+              <li><a class="<%= locals.consoleTabs.myGroups %>" href="/console/my-groups"><i class="far fa-fw fa-users"></i> <span>My Groups</span></a></li>
+              <li><a class="<%= locals.consoleTabs.history %>" href="/console/history"><i class="far fa-fw fa-history"></i> <span>My Recents</span></a></li>
+            </ul>
+
+            <ul class="no-bullet">
+              <li>
+                <h2>Site Administration</h2>
+              </li>
+              <li><a class="<%= locals.consoleTabs.dashboard %>" href="/console"><i class="far fa-fw fa-tachometer"></i> <span>Dashboard</span></a></li>
+              <% if (checkPermissions('featuredcontent', 'read')) { %>
+                <li><a class="<%= locals.consoleTabs.site %>" href="/console/site"><i class="far fa-fw fa-robot"></i> <span>Site</span></a></li>
+              <% } %>
+              <% if (checkPermissions('subsite', 'read')) { %>
+                <li><a class="<%= locals.consoleTabs.subsite %>" href="/console/subsite"><i class="far fa-fw fa-sitemap"></i> <span>Sub Sites</span></a></li>
+              <% } %>
+              <% if (checkPermissions('fileupload', 'read') && false) { %>
+                <li><a class="<%= locals.consoleTabs.documentsAndImages %>" href="/console/documents-and-images"><i class="far fa-fw fa-image"></i> <span>Documents & Images</span></a></li>
+              <% } %>
+            </ul>
+          
+            <% if (checkPermissions('user', 'read') || checkPermissions('group', 'read') || checkPermissions('permission', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Users & Groups</h2>
+                </li>
+                <% if (checkPermissions('user', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.users %>" href="/console/users"><i class="far fa-fw fa-user"></i> <span>Users</span></a></li>
+                <% } %>
+                <% if (checkPermissions('group', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.groups %>" href="/console/groups"><i class="far fa-fw fa-users"></i> <span>Groups</span></a></li>
+                <% } %>
+                <% if (checkPermissions('permission', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.permissions %>" href="/console/permissions"><i class="far fa-fw fa-user-lock"></i> <span>Permissions</span></a></li>
+                <% } %>
+              </ul>
+            <% } %>
+
+            <% if (checkPermissions('article', 'read') || checkPermissions('glossary', 'read') || checkPermissions('spread', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Knowledge Base</h2>
+                </li>
+                <% if (checkPermissions('article', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.article %>" href="/console/article"><i class="far fa-fw fa-file-alt"></i> <span>Article</span></a></li>
+                <% } %>
+                <% if (checkPermissions('spread', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.spread %>" href="/console/spread"><i class="far fa-fw fa-columns"></i> <span>Spread</span></a></li>
+                <% } %>
+                <% if (checkPermissions('glossary', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.glossary %>" href="/console/glossary"><i class="far fa-fw fa-bookmark"></i> <span>Glossary</span></a></li>
+                <% } %>
+              </ul>
+            <% } %>
+          
+            <% if (checkPermissions('news', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>News & Events</h2>
+                </li>
+                <li><a class="<%= locals.consoleTabs.news %>" href="/console/news"><i class="far fa-fw fa-newspaper"></i> <span>News</span></a></li>
+              </ul>
+            <% } %>
+          
+            <% if (checkPermissions('portfolio', 'read') || checkPermissions('service', 'read') || checkPermissions('component', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Service Catalog</h2>
+                </li>
+                <% if (checkPermissions('portfolio', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.portfolio %>" href="/console/portfolio"><i class="far fa-fw fa-books"></i> <span>Portfolio</span></a></li>
+                <% } %>
+                <% if (checkPermissions('service', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.service %>" href="/console/service"><i class="far fa-fw fa-book"></i> <span>Service</span></a></li>
+                <% } %>
+                <% if (checkPermissions('component', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.component %>" href="/console/component"><i class="far fa-fw fa-copy"></i> <span>Component</span></a></li>
+                <% } %>
+              </ul>
+            <% } %>
+          
+            <% if (checkPermissions('building', 'read') || checkPermissions('location', 'read') || checkPermissions('hours', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Spaces</h2>
+                </li>
+                <% if (checkPermissions('building', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.building %>" href="/console/building"><i class="far fa-fw fa-building"></i> <span>Building</span></a></li>
+                <% } %>
+                <% if (checkPermissions('location', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.location %>" href="/console/location"><i class="far fa-fw fa-map-marker-alt"></i> <span>Location</span></a></li>
+                <% } %>
+                <% if (checkPermissions('hours', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.hours %>" href="/console/hours"><i class="far fa-fw fa-clock"></i> <span>Hours</span></a></li>
+                <% } %>
+              </ul>
+            <% } %>
+          
+            <% if (checkPermissions('software', 'read') || checkPermissions('package', 'read') || checkPermissions('server', 'read') || checkPermissions('license', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Software Library</h2>
+                </li>
+                <% if (checkPermissions('software', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.software %>" href="/console/software"><i class="far fa-fw fa-arrow-alt-to-bottom"></i> <span>Software</span></a></li>
+                <% } %>
+                <% if (checkPermissions('package', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.package %>" href="/console/package"><i class="far fa-fw fa-hand-holding-box"></i> <span>Package</span></a></li>
+                <% } %>
+                <% if (checkPermissions('server', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.server %>" href="/console/server"><i class="far fa-fw fa-server"></i> <span>Server</span></a></li>
+                <% } %>
+                <% if (checkPermissions('license', 'read')) { %>
+                  <!-- <li><a class="<%= locals.consoleTabs.license %>" href="/console/license"><i class="far fa-fw fa-key"></i> <span>License</span></a></li> -->
+                <% } %>
+              </ul>
+            <% } %>
+
+            <% if (checkPermissions('myapp', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>App Marketplace</h2>
+                </li>
+                <% if (checkPermissions('myapp', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.app %>" href="/console/app"><i class="far fa-fw fa-icons"></i> <span>Apps</span></a></li>
+                <% } %>
+                <% if (checkPermissions('appgroup', 'read')) { %>
+                  <!-- <li><a class="<%= locals.consoleTabs.appGroup %>" href="/console/app-group"><i class="far fa-fw fa-layer-group"></i> <span>App Groups</span></a></li> -->
+                <% } %>
+              </ul>
+            <% } %>
+          
+            <% if (checkPermissions('io', 'read') || checkPermissions('conversation', 'read') || checkPermissions('userform', 'read')) { %>
+              <!-- <ul class="no-bullet">
+                <li>
+                  <h2>Forms</h2>
+                </li>
+                <% if (checkPermissions('io', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.io %>" href="/console/io"><i class="far fa-fw fa-arrow-alt-to-bottom"></i> <span>IO</span></a></li>
+                <% } %>
+                <% if (checkPermissions('conversation', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.conversation %>" href="/console/conversation"><i class="far fa-fw fa-hand-holding-box"></i> <span>Conversation</span></a></li>
+                <% } %>
+                <% if (checkPermissions('userform', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.userForms %>" href="/console/user-forms"><i class="far fa-fw fa-server"></i> <span>UserForms</span></a></li>
+                <% } %>
+              </ul> -->
+            <% } %>
+          
+            <% if (checkPermissions('audience', 'read') || checkPermissions('tag', 'read') || checkPermissions('action', 'read') || checkPermissions('alias', 'read')) { %>
+              <ul class="no-bullet">
+                <li>
+                  <h2>Metadata</h2>
+                </li>
+                <% if (checkPermissions('audience', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.audience %>" href="/console/audience"><i class="far fa-fw fa-users-class"></i> <span>Audience</span></a></li>
+                <% } %>
+                <% if (checkPermissions('tag', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.tag %>" href="/console/tag"><i class="far fa-fw fa-tag"></i> <span>Tag</span></a></li>
+                <% } %>
+                <% if (checkPermissions('action', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.action %>" href="/console/action"><i class="far fa-fw fa-external-link"></i> <span>Action</span></a></li>
+                <% } %>
+                <% if (checkPermissions('alias', 'read')) { %>
+                  <li><a class="<%= locals.consoleTabs.alias %>" href="/console/alias"><i class="far fa-fw fa-user-secret"></i> <span>Alias</span></a></li>
+                <% } %>
+                <% if (locals.user && user.isAdmin || user.isSuperUser) { %>
+                  <!-- <li><a class="<%= locals.consoleTabs.previewLinks %>" href="/console/preview-links"><i class="far fa-fw fa-eye"></i> <span>Preview Links</span></a></li> -->
+                <% } %>
+              </ul>
+            <% } %>
+
+            <% if (checkPermissions('requestlog', 'read')) { %>
+              <!-- <ul class="no-bullet">
+                <li>
+                  <h2>Logging</h2>
+                </li>
+                <li><a class="<%= locals.consoleTabs.requestLogs %>" href="/console/request-logs"><i class="far fa-fw fa-stream"></i> <span>Request Logs</span></a></li>
+              </ul> -->
+            <% } %>
+            
+            <p style="font-size:0.8em;margin:-0.5em 0 0 0;">Version: <%- locals.version %></p>
+
+          </div>
+        </div>
+
+        <div class="console-content cell small-12 medium-8 large-9">
+          <div class="grid-x grid-margin-x">

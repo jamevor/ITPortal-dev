@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/dragula.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <script defer src="/js/me/widgets.js"></script>
+  <style>
+    .widgey-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .widgey-wrapper .widgey-container {
+      flex: 1 0 auto;
+      margin: 0 1em;
+      width: 40%;
+    }
+    .widgey-wrapper .widgey-container .widgey-box {
+      background: var(--color-body);
+      margin-bottom: 1em;
+      padding-bottom: 1em;
+      border-radius:3px;
+      box-shadow: var(--shadow-standard-xi);
+    }
+    .widgey-wrapper .widgey-container .widgey-box h3 {
+      margin: 0;
+      padding: .5em 1em;
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--color-light);
+      border-bottom: 1px solid var(--color-pop-h);
+      background: var(--color-pop);
+      box-shadow: var(--shadow-standard-y-h);
+    }
+    .widgey-wrapper .widgey-container.widgey-draggable .widgey-box h3 {
+      color: var(--color-body-headers);
+      border-bottom: 1px solid var(--color-lane-subtle);
+      background: var(--color-lane);
+    }
+    .widgey-wrapper .widgey-container .widgey-box h3:first-of-type{
+      border-radius:3px;
+    }
+    .widgey-wrapper .widgey-container .widgey-box .widgey {
+      background: var(--color-chrome);
+      border-radius: 6px;
+      margin: 0.5em;
+      padding: 1em;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-standard-y);
+    }
+    .widgey-wrapper .widgey-container .widgey-box .widgey.disabled {
+      cursor: not-allowed;
+      background: var(--color-lane-subtler);
+      color:var(--color-lane);
+    }
+    .widgey-wrapper .widgey-container .widgey-box .widgey.disabled i:before{
+      content:"\f127"
+    }
+    .widgey-wrapper .widgey-container .widgey-box .widgey.disabled .widgey-buttons{
+      display:none;
+    }
+    .widgey-wrapper .widgey-container.widgey-draggable  .widgey-box .widgey:hover {
+      cursor: grab;
+    }
+    .widgey i{
+      margin:0 .25em;
+    }
+
+    .widgey-draggable .widgey:before{
+      content:"\f7a5";
+      width:1em;
+      transition: all .5s ease;
+      color:var(--color-lane);
+      font-family: "Font Awesome 5 Pro";
+    }
+    .widgey-draggable .widgey:hover:before{
+      color:var(--color-lane-subtle);
+    }
+    
+    .widgey-buttons{
+      margin: -1em;
+      align-self: stretch;
+      display: flex;
+      align-content: center;
+    }
+    .widgey-buttons a{
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      color:var(--color-body-text);
+      transition:all .5s ease;
+      border-radius: 3px;
+      border: 1px solid var(--color-lane);
+      margin: .5em;
+      cursor: pointer;
+    }
+    .widgey-buttons a:hover{
+      background-color: var(--color-lane);
+    }
+    .widgey-buttons a.active{
+      background:var(--color-bright-2);
+      color:var(--color-light);
+      cursor:default;
+    }
+    .widgey-target{
+      min-height: 2em;
+      border: 1px dashed var(--color-lane);
+      margin: .5em;
+      transition:all .5s ease;
+    }
+    .widgey-target:hover{
+      background-color:var(--color-lane);
+      border: 1px dashed var(--color-lane-subtle);
+    }
+
+    .save-status{
+      text-align: right;
+      margin-right: 1.5em;
+      margin-bottom:.5em;
+      font-size: .8em;
+      color:var(--color-lane-sublte);
+    }
+    .save-status .dot1,
+    .save-status .dot2,
+    .save-status .dot3 {
+      opacity: 0;
+    }
+    .saving .dot1 {
+    animation: visibility 3s linear infinite;
+    }
+
+
+    @keyframes visibility {
+    0% {
+    opacity: 1;
+    }
+    65% {
+    opacity: 1;
+    }
+    66% {
+    opacity: 0;
+    }
+    100% {
+    opacity: 0;
+    }
+    }
+
+    .saving .dot2 {
+ animation: visibility2 3s linear infinite;
+}
+
+@keyframes visibility2 {
+ 0% {
+  opacity: 0;
+ }
+ 21% {
+  opacity: 0;
+ }
+ 22% {
+  opacity: 1;
+ }
+ 65% {
+  opacity: 1;
+ }
+ 66% {
+  opacity: 0;
+ }
+ 100% {
+  opacity: 0;
+ }
+}
+
+.saving .dot3 {
+ animation: visibility3 3s linear infinite;
+}
+
+@keyframes visibility3 {
+ 0% {
+  opacity: 0;
+ }
+ 43% {
+  opacity: 0;
+ }
+ 44% {
+  opacity: 1;
+ }
+ 65% {
+  opacity: 1;
+ }
+ 66% {
+  opacity: 0;
+ }
+ 100% {
+  opacity: 0;
+ }
+}
+    @media screen and (max-width: 39.9375em) {
+      .widgey-wrapper .widgey-container {
+          width:100%;
+          margin:0;
+      }
+      .widgey-wrapper{
+        display:block;
+      }
+    }
+    
+
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./layout/top.ejs'); %>
+
+
+
+
+
+<div class="grid-x grid-margin-x">
+
+  <ul class="cell medium-12 box card profile-section accordion" data-accordion="" data-allow-all-closed="true">
+    <li class='accordion-item <%= (locals.userOauths && userOauths.some(a => a.type === "canvas" && !a.isBroken) && userOauths.some(a => a.type === "azure" && !a.isBroken)) ? "" : "is-active" %>' data-accordion-item>
+      <a href="#" class="accordion-title"><h2><i class="far fa-plug"></i> Integrations & Authorizations</h2></a>
+      <div class="accordion-content" data-tab-content>
+        <div class="profile-section-content">
+          <% if (locals.userOauths && userOauths.some(a => a.type === 'canvas' && !a.isBroken)) { %>
+            <a class="auth-button active" href="#">
+              <div class="auth-button-state"></div>
+              <div class="auth-label">
+                <div class="auth-button-logo" style="background-image:url('https://hub.wpi.edu/file-upload/d079013d-a7e2-438b-83ed-722a53940276/canvas')"></div>
+                <div class="auth-button-title">Canvas Account Connected</div>
+              </div>
+            </a>
+          <% } else { %>
+            <a class="auth-button" href="/api/v1/canvas/oauth2/v2.0/authorize">
+              <div class="auth-button-state"></div>
+              <div class="auth-label">
+                <div class="auth-button-logo" style="background-image:url('https://hub.wpi.edu/file-upload/d079013d-a7e2-438b-83ed-722a53940276/canvas')"></div>
+                <div class="auth-button-title">Connect Canvas Account</div>
+              </div>
+            </a>
+          <% } %>
+    
+          <% if (locals.userOauths && userOauths.some(a => a.type === 'azure' && !a.isBroken)) { %>
+            <a class="auth-button active" href="#">
+              <div class="auth-button-state"></div>
+              <div class="auth-label">
+                <div class="auth-button-logo" style="display:flex;">
+                  <i class="fab fa-lg fa-microsoft" style="font-weight:400;align-self:center;justify-self:center;"></i>
+                </div>
+                <div class="auth-button-title">Microsoft Account Connected</div>
+              </div>
+            </a>
+          <% } else { %>
+            <a class="auth-button" href="/api/v1/azure/oauth2/v2.0/authorize">
+              <div class="auth-button-state"></div>
+              <div class="auth-label">
+                <div class="auth-button-logo" style="display:flex;">
+                  <i class="fab fa-lg fa-microsoft" style="font-weight:400;align-self:center;justify-self:center;"></i>
+                </div>
+                <div class="auth-button-title">Connect Microsoft Account</div>
+              </div>
+            </a>
+          <% } %>
+    
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="cell medium-12 box card profile-section">
+    <h2><i class="far fa-puzzle-piece"></i> Widgets</h2>
+    <div class="profile-section-content">
+      <div class="note note-warning" style="background: <%= ColorConverter(`#28b1d5`, 'hex').toHSL().set('l', 95).toCSS() %>;">
+        <div class="note-title"><i class="fad fa-info-circle color-bright-5"></i> Adding and Removing Widgets</div>
+        <div class="note-message">You can customize your widgets on your <strong>Dashboard</strong> and your <strong>Sidebar</strong>. Click the icon buttons below to get started</div>
+      </div>
+      <div class="save-status">
+        <span>Saved</span>
+        <span class="dot1">.</span>
+        <span class="dot2">.</span>
+        <span class="dot3">.</span>
+      </div>
+      <div class="widgey-wrapper">
+        <div class="widgey-container">
+          
+          <div class="widgey-box" id="widgey-source">
+            <h3>The WPI Hub</h3>
+            <% for (const widget of widgets.filter(w => w.oauthType === 'hub')) { %>
+              <div class="widgey" data-widgetid="<%= widget.id %>">
+                <div class="widgey-label"><i class="fas fa-fw <%= widget.icon %>"></i> <%- widget.title %></div>
+                <div class="widgey-buttons">
+                  <a class="widgey-add-dashboard<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isDashboard === true ? ' active' : '' %>" href="#" data-tooltip title="Add to My Dashboard"><i class="far fa-fw fa-tachometer"></i></a>
+                  <a class="widgey-add-sidebar<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isSidebar === true ? ' active' : '' %>" href="#" data-tooltip title="Add to Sidebar"><i class="fad fa-fw fa-swap-opacity fa-line-columns"></i></a>
+                </div>
+              </div>
+            <% } %>
+            <h3>Canvas</h3>
+            <% for (const widget of widgets.filter(w => w.oauthType === 'canvas')) { %>
+              <div class="widgey<%= locals.userOauths && userOauths.some(a => a.type === 'canvas' && !a.isBroken) ? '' : ' disabled' %>" data-widgetid="<%= widget.id %>">
+                <div class="widgey-label"><i class="fas fa-fw <%= widget.icon %>"></i> <%- widget.title %></div>
+                <div class="widgey-buttons">
+                  <a class="widgey-add-dashboard<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isDashboard === true ? ' active' : '' %>" href="#" data-tooltip title="Add to My Dashboard"><i class="far fa-fw fa-tachometer"></i></a>
+                  <a class="widgey-add-sidebar<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isSidebar === true ? ' active' : '' %>" href="#" data-tooltip title="Add to Sidebar"><i class="fad fa-fw fa-swap-opacity fa-line-columns"></i></a>
+                </div>
+              </div>
+            <% } %>
+            <h3>Microsoft</h3>
+            <% for (const widget of widgets.filter(w => w.oauthType === 'azure')) { %>
+              <div class="widgey<%= locals.userOauths && userOauths.some(a => a.type === 'azure' && !a.isBroken) ? '' : ' disabled' %>" data-widgetid="<%= widget.id %>">
+                <div class="widgey-label"><i class="fas fa-fw <%= widget.icon %>"></i> <%- widget.title %></div>
+                <div class="widgey-buttons">
+                  <a class="widgey-add-dashboard<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isDashboard === true ? ' active' : '' %>" href="#" data-tooltip title="Add to My Dashboard"><i class="far fa-fw fa-tachometer"></i></a>
+                  <a class="widgey-add-sidebar<%= 'users' in widget && widget.users.length && widget.users[0].userHasWidget.isSidebar === true ? ' active' : '' %>" href="#" data-tooltip title="Add to Sidebar"><i class="fad fa-fw fa-swap-opacity fa-line-columns"></i></a>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+        <div class="widgey-container widgey-draggable">
+          <div class="widgey-box">
+            <h3><i class="fas fa-fw fa-tachometer"></i> My Dashboard</h3>
+            <div class="widgey-target" id="widgey-target-dashboard">
+              <% for (const widget of widgets.filter(w => 'users' in w && w.users.length && w.users[0].userHasWidget.isDashboard === true).sort((a, b) => a.users[0].userHasWidget.orderDashboard < b.users[0].userHasWidget.orderDashboard ? -1 : 1)) { %>
+                <div class="widgey" data-widgetid="<%= widget.id %>"><div class="widgey-label"><i class="fas fa-fw <%= widget.icon %>"></i> <%- widget.title %></div><div class="widgey-buttons"><a class="widgey-remove" href="#"><i class="far fa-fw fa-times"></i></a></div></div>
+              <% } %>
+            </div>
+          </div>
+          <div class="widgey-box">
+            <h3><i class="fad fa-fw fa-swap-opacity fa-line-columns"></i> Sidebar</h3>
+            <div class="widgey-target" id="widgey-target-sidebar">
+              <% for (const widget of widgets.filter(w => 'users' in w && w.users.length && w.users[0].userHasWidget.isSidebar === true).sort((a, b) => a.users[0].userHasWidget.orderSidebar < b.users[0].userHasWidget.orderSidebar ? -1 : 1)) { %>
+                <div class="widgey" data-widgetid="<%= widget.id %>"><div class="widgey-label"><i class="fas fa-fw <%= widget.icon %>"></i> <%- widget.title %></div><div class="widgey-buttons"><a class="widgey-remove" href="#"><i class="far fa-fw fa-times"></i></a></div></div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%- include('./layout/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

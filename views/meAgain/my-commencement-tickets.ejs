@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+  <%- include('../partials/datatables.ejs'); %>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+  <script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/commencement.js"></script>
+<style>
+
+ .me-box-items .box-item{
+  background: var(--color-body);
+    padding: 1em;
+    border-radius: 3px;
+    color: var(--color-body-text);
+    box-shadow: var(--shadow-standard-y);
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    flex-direction: column;
+    justify-content: center;
+ }
+ .me-box-items .box-item:hover,.me-box-items .box-item:focus,.me-box-items .box-item:active{
+    box-shadow:var(--shadow-standard-y-h)
+ }
+ .box-item-title{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+ }
+ .box-item-date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+ }
+ .me-box.group.commencement-highlight{
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.12), rgb(0, 0, 0, 0.43)), url('/img/content/commencementBanner.jpg');
+    background-size: cover;
+    background-position: center;
+ }
+ .commencement-highlight h1{
+    color: var(--color-light);
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 11px rgb(0 0 0 / 40%);
+ }
+ .commencementItem {
+  display: flex;
+  height: 250px;
+  margin-bottom: 1em;
+  background-color: var(--color-chrome);
+  border-radius: 3px;
+  box-shadow: var(--shadow-standard-y);
+}
+ .commenceImage{
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100px;
+  box-shadow: inset -11px 0px 11px 17px var(--shadow-color);
+  clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 50%, 0% 0%);
+ }
+
+ .commenceImage.gr{
+  background-image: url(/img/content/commenceGR.jpg);
+ }
+ .commenceImage.ug{
+  background-image: url(/img/content/commenceUG.jpg);
+
+ }
+ .commenceDetails{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   margin-left: 1em;
+   margin-top: 1em;
+   margin-bottom: 1em;
+ }
+ .commenceDetails h2{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ .commenceDetails .date{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+ }
+ .commenceDetails-line table *{
+   background: none;
+   border:none;
+   color:var(--color-body-text)
+ }
+ .commenceDetails-line table th{
+    color: var(--color-body-subtitle);
+    font-size: .6875em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 0;
+    padding: 0 1em;
+ }
+ .commenceActions{
+    display: flex;
+    flex-direction: column;
+    margin: auto 1em auto auto;
+  width: 20%;
+ }
+ .commenceActions a{
+  text-align: left;
+  font-weight: 600;
+ }
+ .me-quicklink.disabled{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-quicklink.disabled:hover,.me-quicklink.disabled:focus,.me-quicklink.disabled:active{
+   background-color: var(--color-lane);
+   color:var(--color-body-subtitle);
+   cursor:not-allowed;
+ }
+ .me-link-item.disabled:hover{
+  cursor:not-allowed;
+  box-shadow: var(--shadow-standard-y)
+ }
+ #RSVPModal{
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+ }
+ #RSVPModal h1{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+ }
+ #RSVPModal #RSVPChoices button{
+   background: var(--color-lane);
+   color:var(--color-body-text);
+   padding:1em;
+   border-radius: 3px;
+   margin-top: 0.5em;
+   transition:all .5s ease;
+ }
+ #RSVPModal #RSVPChoices button:hover{
+  cursor: pointer;
+}
+ #RSVPModal #RSVPChoices{
+   display: flex;
+   flex-direction: column;
+ }
+ #RSVPModal #RSVPChoices button.chosen.yes{
+   background: var(--color-bright-2);
+ }
+ #RSVPModal #RSVPChoices button.chosen.no{
+  background: var(--color-bright-4);
+ }
+
+ #RSVPModal #RSVPChoices button.yes:hover,#RSVPModal #RSVPChoices button.yes:active,#RSVPModal #RSVPChoices button.yes:focus{
+   background: var(--color-bright-2);
+ }
+ #RSVPModal #RSVPChoices button.no:hover,#RSVPModal #RSVPChoices button.no:active,#RSVPModal #RSVPChoices button.no:focus{
+  background: var(--color-bright-4);
+ }
+ #RSVPLoader{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 3em;
+    font-size: 2em;
+  }
+  @media screen and (max-width: 39.9375em) {
+    .commenceImage{
+      display: none;
+    }
+    .commencementItem {
+      flex-direction: column;
+      height:auto
+    }
+    .commenceActions {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto .5em auto;
+      width: 90%;
+      justify-content: center;
+    }
+  }
+  #ticketZone{
+    border: 1px dashed var(--color-lane);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em;
+  }
+  #ticketZone .emptyTix{
+    text-align: center;
+    color: var(--color-body-subtitle);
+
+  }
+  #ticketZone #addGuest{
+    padding: 1em;
+    background: var(--color-body-subtitle);
+    color: var(--color-chrome);
+    box-shadow: var(--shadow-standard-y);
+    transition: all .5s ease;
+    border-radius: 3px;
+    text-align: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  #ticketZone #addGuest:hover,#ticketZone #addGuest:active,#ticketZone #addGuest:focus{
+    background: var(--color-lane-subtler);
+    color: var(--color-chrome);
+    box-shadow: var(--shadow-standard-y-h);
+  }
+  #ticketModalAdd{
+    border: none;
+    border-radius: 1em;
+    padding:2em;
+    background: var(--color-chrome);
+  }
+  #ticketModalAdd h1{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    margin: 0;
+  }
+  #ticketModalAdd input{
+    border-radius: 3px;
+  }
+  #ticketModalAdd label{
+    font-weight: 600;
+  }
+  #ticketModalAdd p.help{
+    font-size: .7em;
+    margin-top: -1em;
+  }
+  #ticketModalAdd p#required{
+    font-size: .7em;
+    margin-top: -.5em;
+    text-align: center;
+    color:var(--color-bright-4);
+    display: none;
+  }
+  #LoaderText{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-bright-4);
+    margin: 0;
+    text-align: center;
+    display: none;
+  }
+  .ticketGuest{
+    background:var(--color-chrome);
+    /* box-shadow: var(--shadow-standard-y); */
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    padding: 2em;
+    background: radial-gradient(circle at 0 0, transparent 15%, var(--color-chrome) calc(15%)) top left, radial-gradient(circle at 100% 0, transparent 15%, var(--color-chrome) calc(15%)) top right, radial-gradient(circle at 0 100%, transparent 15%, var(--color-chrome) calc(15%)) bottom left, radial-gradient(circle at 100% 100%, transparent 15%, var(--color-chrome) calc(15%)) bottom right;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0px 1px 1px var(--shadow-color));
+    position: relative;
+  }
+  .ticketGuestInner{
+        border: 1px dashed var(--color-lane);
+    margin: 1em;
+    border-radius: 1em;
+    padding: 0.5em;
+  }
+  .ticketGuest h2{
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--color-body-text);
+    text-align: center;
+    line-height: 1.1;
+  }
+  .ticketGuest p{
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--color-body-subtitle);
+    text-align: center;
+  }
+  .lastGuest{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed var(--color-lane);
+    border-radius: 1em;
+    margin: 1em;
+    min-height:230px;
+  }
+  .lastGuest #addGuest{
+    background:var(--color-pop);
+    font-size:2em;
+    color:var(--color-chrome);
+    line-height:1;
+    border-radius: 4em;
+    padding: .15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .lastGuest #addGuest:hover{
+    box-shadow: var(--shadow-standard-y-h);
+    background:var(--color-pop-h);
+  }
+  .ticketGuestAction{
+    display: flex;
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    width: calc(100% - 8em);
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    left: 4em;
+    right: 4em;
+    border-radius: 1em;
+    transition: all .5s ease;
+  }
+  .ticketGuest:hover .ticketGuestAction{
+    background: var(--color-body);
+  }
+  .ticketGuestAction a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5em 1em;
+    padding: 0.5em 1em;
+    color: var(--color-body-subtitle);
+    border-radius: 3px;
+    transition: all .5s ease;
+  }
+  .ticketGuestAction a:hover,.ticketGuestAction a:active,.ticketGuestAction a:focus{
+    color:var(--color-body-text);
+    background: var(--color-lane);
+  }
+</style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+
+<%if(false){ %>
+  <div class="grid-container">
+    <div class="me-box group">
+        The deadline to alter tickets and guests has passed for the 2022 Commencement.
+    </div>
+  </div>
+<%}else{%>
+<% //Check if they have an active record
+if(commencementOut && commencementOut != null){ %>
+  <%if(commencementRSVPOut && commencementRSVPOut != null){ %>
+
+    <% const Commencement = commencementOut[0];
+       const CommencementRSVP = commencementRSVPOut[0];
+       const CommencementTickets = commencementTicketsOut;
+       const cerLabel = CommencementRSVP.length > 1 ? "Ceremonies" : "Ceremony";
+       const ticketAllocation = CommencementRSVP.TicketAllocation;
+       const ticketCurrent = CommencementTickets != null ? CommencementTickets.length : 0;
+    %>
+    <%if(CommencementRSVP && CommencementRSVP.Status != "Not Attending"){ %>
+    <!--Top Bar-->
+      <div class="grid-container me-section">
+        <div class="me-box group grid-x grid-padding-x commencement-highlight">
+         <h1>My Commencement Tickets</h1>
+          <div class="grid-container me-box-items grid-x grid-margin-x">
+
+              <a class="box-item cell small-12 medium-6 large-auto">
+                <div class="box-item-title"><%=CommencementRSVP.CeremonyTitle%></div>
+                <div class="box-item-date"><%=moment(new Date(CommencementRSVP.CeremonyDate)).format('MMMM Do YYYY, h:mm a')%></div>
+                <div class="box-item-date"><%=ticketCurrent%><%ticketAllocation%> tickets</div>
+              </a>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <%if(ticketCurrent == 0){%>
+        <div id="ticketZone" class="grid-container me-section">
+          <p class="emptyTix"><i class="fad fa-info-circle"></i> You Have No Active Tickets</p>
+         <%if(false){%> <button id="addGuest" data-open="ticketModalAdd">Add Guest </button><%}%>
+        </div>
+      <%}else{%>
+        <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+          <%let currentTicket = 1;
+          for(CommencementTicket of CommencementTickets){%>
+            <div class="ticketGuest cell small-12 medium-6 large-6" data-ticketID="<%=CommencementTicket.RecID%>" >
+              <div class="ticketGuestInner">
+                <p>Ticket #<%=currentTicket%></p>
+                <h2><%=CommencementTicket.AttendeeFirstName%> <%=CommencementTicket.AttendeeLastName%></h2>
+                <p><i class="fas fa-envelope"></i> <%=CommencementTicket.AttendeeEmail%></p>
+              </div>
+              <div class="ticketGuestAction">
+                <%if(false){%> <a href="#" data-open="ticketModalVoid" title="Void Ticket" class="voidGuestSubmit" data-ticketid="<%=CommencementTicket.RecID%>" data-guestname="<%=CommencementTicket.AttendeeFirstName%> <%=CommencementTicket.AttendeeLastName%>"><i class="fas fa-user-times"></i></a><%}%>
+                <a href="#" data-open="ticketModalLink"  title="Share link" class="ticketLink" data-ticketid="<%=CommencementTicket.RecID%>"><i class="fas fa-share-square"></i></a>
+              </div>
+            </div>
+          <%currentTicket++}%>
+          <%if(false && ticketCurrent < ticketAllocation){%>
+            <div class="lastGuest cell small-12 medium-6 large-6">
+              <button id="addGuest" data-open="ticketModalAdd" title="Add Guest"><i class="fad fa-plus-circle"></i><span class="show-for-sr">Add Guest</span></button>
+            </div>
+          <%}%>
+        </div>
+      </div>
+      <%}%>
+
+
+
+    <%if(false){%>
+      <div class="grid-container me-section" style="padding:0">
+      <h2 class="section-header">Raw Data</h2>
+        <!--Raw Data-->
+        <h2>Commencement</h2>
+        <pre><%= JSON.stringify(commencementOut,null,2)%></pre>
+        <h2>Commencement RSVPs</h2>
+        <pre><%= JSON.stringify(commencementRSVPOut,null,2)%></pre>
+        <h2>Commencement Tickets</h2>
+        <pre><%= JSON.stringify(commencementTicketsOut,null,2)%></pre>
+      </div>
+    <%}%>
+    <%if(false){%> 
+      <div class="reveal" id="ticketModalAdd" data-reveal>
+        <h1><i class="fad fa-user-plus"></i> Invite Guest</h1>
+
+        <input type="hidden"id="rsvpID" value="<%=CommencementRSVP.RecID%>">
+        <div id="guestChoices">
+          <p>Provide the details of the guest you would like to invite. Guests will recieve an email with information about their ticket.</p>
+          <div class="note note-info" style="background: hsl(239, 91%, 95%);">
+            <div class="note-message">The Invitation email will use <strong><%=Commencement.FirstName%> <%=Commencement.LastName%></strong>. If for some reason you would not like this name used for invitations please email <a href="mailto:commencement@wpi.edu">commencement@wpi.edu</a></div>
+          </div>
+          <label>Guest's First Name
+            <input type="text" name="guestFirst" id="guestFirst">
+          </label>
+          <label>Guest's Last Name
+            <input type="text" name="guestLast" id="guestLast">
+          </label>
+          <label>Guest's Email
+            <input type="text" name="guestEmail" id="guestEmail">
+          </label>
+          <p class="help">If you would like to group tickets together, you can provide the same email address for multiple tickets</p>
+          <button type="button" class="cell me-quicklink " id="addGuestSubmit"><i class="fas fa-plus-circle"></i> Add Guest</button>
+          <p class="help" id="required">All Fields are Required</p>
+
+          </div>
+
+        <div id="RSVPLoader" style="display: none;">
+          <i id="spinner" class="fas fa-spinner fa-spin"></i>
+          <i id="success" class="fas fa-check-circle" style="display: none;;color:var(--color-bright-2)"></i>
+          <i id="error" class="fas fa-times-circle" style="display: none;color:var(--color-bright-4)"></i>
+          <p id="LoaderText"></p>
+        </div>
+        
+      </div>
+    <%}%>
+    <div class="reveal" id="ticketModalVoid" data-reveal>
+      <h1><i class="fad fa-user-times"></i> Remove Guest</h1>
+      <p>Do you want to remove <span id="voidGuestName" style="font-weight: 600;"></span> as a guest?</p>
+      <p>Use this button to remove an already invited guest</p>
+      <p>Please note that once you click to confirm below the guest's ticket will be voided and will no longer work for admission to the event.</p>
+      <p>It is your responsibility to notify and communicate with guests that you may be removing to let them know of this change.</p>
+      <input type="hidden"id="voidID" value="">
+      
+      <button type="button" class="cell me-quicklink " id="voidGuestSubmit"><i class="fas fa-times-circle"></i> Confirm Guest Removal</button>
+
+      
+    </div>
+
+    <div class="reveal" id="ticketModalLink" data-reveal>
+      <h1><i class="fad fa-share-square"></i> Share Ticket Link</h1>
+      <p>Did your Guest lose their email? Looking to share their ticket link with them again?</p>
+      <p>This link is a direct link to their ticket. Be careful sharing it out as all tickets are single use. This it should only be given to the intended recipient.</p>
+      <input type="text"id="ticketLinkID" value="">
+    </div>
+    <%// Show Error.
+    }else{
+        %>
+        <div class="grid-container">
+          <div class="me-box group">
+              You are currently RSVPed as "Not Attending" for this ceremony. You must be attending a ceremony in order to hold tickets for it.
+          </div>
+        </div>
+      <%}%>
+    <%// Show Error.
+    }else{
+    %>
+    <div class="grid-container">
+      <div class="me-box group">
+          You do not appear to have any active Ceremonies for this year.
+      </div>
+    </div>
+  <%}%>
+<%// Show Error.
+}else{
+%>
+  <div class="grid-container">
+    <div class="me-box group">
+        You do not appear to have a current Commencement Record for this year.
+    </div>
+  </div>
+<%}%>
+<%}%>
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

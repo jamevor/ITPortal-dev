@@ -1,0 +1,153 @@
+<%
+  buildList = function(items, listTag) {
+    let result = `<${listTag} class="article-list">`;
+    if (items instanceof Array) {
+      for (let item of items) {
+        result += `<li>${item.text}`;
+        if (item.children.items && item.children.items.length) {
+          result += buildList(item.children.items, item.children.style === 'unordered' ? 'ul' : 'ol');
+        }
+        result += `</li>`;
+      }
+    }
+    result += `</${listTag}>`;
+    return result;
+  }
+  
+  buildImage = function(data) {
+    let result = ``;
+    let figureClassList = ``;
+    if (data.withBorder === 'true' || data.withBorder === true) {
+      figureClassList += ' border';
+    }
+    if (data.stretched === 'true' || data.stretched === true) {
+      figureClassList += ' wide';
+    }
+    if (data.withBackground === 'true' || data.withBackground === true) {
+      figureClassList += ' bg';
+    }
+    result += `<figure class="${figureClassList}">`;
+    result += `<img src=${data.file.url}></img>`;
+    result += `<figcaption>${data.caption}</figcaption>`;
+    result += `</figure>`;
+    return result;
+  }
+
+  buildTable = function(items) {
+    if (Array.isArray(items) && items.length > 0) {
+      let result = `<table class="scroll">`;
+      if (items instanceof Array) {
+        result += `<thead><tr>`;
+        for (let itemData of items[0]) {
+          result += `<th>${itemData}</th>`;
+        }
+        result += `</tr></thead><tbody>`;
+        for (let i = 1; i < items.length; i++) {
+          result += `<tr>`;
+          for (let itemData of items[i]) {
+            result += `<td>${itemData}</td>`;
+          }
+          result += `</tr>`;
+        }
+      }
+      result += `</tbody></table>`;
+      return result;
+    } else {
+      return '';
+    }
+  }
+
+  let checkListIDCounter = 0;
+
+  buildChecklist = function(items) {
+    let result = `<ul class="todo-list">`;
+    for (let item of items) {
+      let checked = item.checked === 'true' || item.checked === true ? ' checked' : '';
+      result += `<li>`;
+      result += `<input type="checkbox" id="listItem${checkListIDCounter}"${checked}>`;
+      result += `<label class="toggle" for="listItem${checkListIDCounter}"><span class="sr-only">${item.text}</span></label>`;
+      result += `<span>${item.text}</span>`;
+      result += `</li>`;
+      ++checkListIDCounter;
+    }
+    result += `</ul>`;
+    return result;
+  }
+
+  buildNote = function(data) {
+    const cc = ColorConverter(`#${data.color}`, 'hex');
+    let result = `<div class="note note-${data.type}" style="background: ${cc.toHSL().set('l', 95).toCSS()};">`;
+    result += `<div class="note-title"><i class="fad fa-info-circle color-bright-1"></i> ${data.title}</div>`;
+    result += `<div class="note-message">${data.message}</div>`;
+    result += `</div>`;
+    return result;
+  }
+
+  buildEmbed = function(data) {
+    return `<iframe class="embed-youtube" width="420" height="315" allowfullscreen frameborder="0" aria-description="${data.caption}" src="${data.embed}"></iframe>`;
+  }
+
+  buildQuote = function(data) {
+    let result = `<blockquote cite="${data.caption}">`;
+    result += `<p style="text-align:${data.alignment};">${data.text}</p>`;
+    result += `</blockquote>`;
+    return result;
+  }
+
+  buildInlineActionLink = function(data) {
+    return `<a class="button" href="${data.link}" target="_blank">${data.title}</a>`;
+  }
+
+/**
+ * @param {string} data the editorjs JSON data as a string
+ *
+ */
+  editorjsToHTML = function(data) {
+    let result = ``;
+    let data_;
+    try {
+      data = JSON.parse(data);
+      data_ = data.blocks ? data.blocks : [];
+    } catch (error) {
+      return data;
+    }
+    for (let datum of data_) {
+      switch (datum.type) {
+        case 'paragraph':
+          result += `<p>${datum.data.text}</p>`;
+          break;
+        case 'header':
+          result += `<h${datum.data.level}>${datum.data.text}</h${datum.data.level}>`;
+          break;
+        case 'list':
+          result += buildList(datum.data.items, datum.data.style === 'unordered' ? 'ul' : 'ol');
+          break;
+        case 'image':
+          result += buildImage(datum.data);
+          break;
+        case 'table':
+          result += buildTable(datum.data.content);
+          break;
+        case 'code':
+          result += `<pre><code class="block-code">${datum.data.code.replace(/[\u00A0-\u9999<>\&]/gim, i => '&#'+i.charCodeAt(0)+';')}</code></pre>`;
+          break;
+        case 'checklist':
+          result += buildChecklist(datum.data.items);
+          break;
+        case 'note':
+          result += buildNote(datum.data);
+          break;
+        case 'embed':
+          result += buildEmbed(datum.data);
+          break;
+        case 'quote':
+          result += buildQuote(datum.data);
+          break;
+        case 'actionLink':
+          result += buildInlineActionLink(datum.data);
+          break;
+      }
+    }
+    return result;
+  }
+%>

@@ -1,0 +1,772 @@
+<style>
+  .help-form label {
+    font-weight: 400;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled, .help-form .button-submit.disabled:hover{
+    cursor: not-allowed;
+    background: var(--color-lane);
+    color: var(--color-lane-subtler);
+  }
+
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    line-height: 1.1;
+
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+    margin-bottom:.5em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: hsl(132, 66%, 95%);
+    color: var(--color-body-text);
+    border-color: var(--color-bright-2);;
+  }
+
+  .help-form .impact-boxes .cell input:checked + label:before {
+    content: '\f058';
+    font-family: 'Font Awesome 5 Pro';
+    color: var(--color-bright-2);
+    margin: 0 .5em;
+}
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+    transition: all .5s ease;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+  fieldset:hover{
+    background: var(--color-chrome);
+  }
+  #button-add-student{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-bright-2);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  #button-add-student:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background:var(--color-pop);
+    transition: all .5s ease;
+    margin-bottom:1em;
+  }
+  .pasteExcel:hover{
+    background:var(--color-lane-subtler);
+  }
+  .pasteExcel:focus,
+  .pasteExcel:active{
+    background:var(--color-pop-h);
+  }
+  textarea{
+    resize: vertical;
+  }
+  .user-info{
+    background: var(--color-lane);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+  }
+  .user-info #full-name{
+    font-weight:600;
+    font-size:1.25em;
+  }
+  .user-info p{
+    margin-bottom:.25em;
+  }
+  .user-info #verified{
+    margin-bottom:.5em;
+  }
+  .toc a {
+    padding: 1em;
+    display: flex;
+    margin: .5em 0;
+    text-align: center;
+    color: var(--color-body-text);
+    align-items: center;
+    transition:all .5s ease;
+    background: transparent;
+    border:1px dashed var(--color-lane);
+  }
+  .toc a:hover {
+    background:var(--color-lane-subtle)
+  }
+  .toc a.active{
+      background: var(--color-chrome);
+      color: var(--color-body-pop);
+      font-weight: 600;
+      border:1px solid var(--color-chrome);
+      box-shadow:var(--shadow-standard-y);
+      border-left: 4px solid var(--color-pop);
+      padding-left:1.25em;
+  }
+  .toc a.done{
+      background: var(--color-lane);
+      color: var(--color-body-text);
+      font-weight: 600;
+      border:1px solid var(--color-lane);
+  }
+  .toc-item.sub{
+    margin-left:2em;
+    position:relative;
+  }
+  .toc-item.sub:before{
+    content: '';
+    border-left: 1px dashed var(--color-lane);
+    border-bottom: 1px dashed var(--color-lane);
+    position: absolute;
+    left: -1em;
+    top: -.5em;
+    width: 1em;
+    height: calc(50% + .5em);
+    transition:all .5s ease;
+  }
+  .toc-item.sub:hover:before{
+    border-color:var(--color-lane-subtle)
+  }
+  .toc-item.sub.last:before{
+    content: '';
+    top: calc(-50% - .5em);
+    height: calc(100% + .5em);
+  }
+  .help-form {
+    background:var(--color-chrome);
+    color:var(--color-body-text);
+    padding:1em 2em;
+    margin-bottom:1em;
+    border-radius:3px;
+    box-shadow: var(--shadow-standard-y);
+  }
+
+  .form-nav{
+    display:flex;
+    justify-content: space-between;
+  }
+  .form-nav-button{
+    background: var(--color-pop);
+    color: var(--color-light);
+    padding: .5em 1em;
+    margin-top: .9em;
+    transition:all .5s ease;
+  }
+  .form-nav-button:hover{
+    background:var(--color-pop-h)
+  }
+  .form-nav-button.disabled{
+    visibility: hidden;
+    user-select: none;
+
+  }
+  .carousel-cell a{
+    color:var(--color-pop);
+    text-decoration:underline;
+  }
+  .carousel-cell a:hover{
+    color:var(--color-pop-h)
+  }
+  .form-label{
+    font-weight:600;
+  }
+  .form-label-help{
+    font-size:.875rem;
+    margin-bottom:0;
+    font-style: italic;
+  }
+  .box-links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin:1em 0;
+  }
+  .box-links a{
+    padding: 1em;
+    text-decoration: none;
+    transition: all .5s ease;
+    margin: 1em;
+    text-align: center;
+    border: 2px solid var(--color-pop);
+    background: var(--color-light);
+    color: var(--color-pop);
+    border-radius: 3px;
+  }
+  .box-links a:hover{
+    background-color: var(--color-pop);
+    color:var(--color-light);
+  }
+  .tos-content h1 {
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 800;
+      font-Size: 2.5em;
+      text-transform: capitalize;
+      line-height: 1.2;
+      padding-bottom: .25em;
+      color:var(--color-pop);
+    }
+    .tos-head{
+      background-color: var(--color-pop);
+      height:300px;
+    }
+    .tos-content{
+      background: var(--color-body);
+      margin-top: -250px;
+      padding: 2em;
+      box-shadow: 0px 0px 15px rgba(0,0,0,.1);
+    }
+    .tos-section p{
+      background: var(--color-chrome);
+      padding: 2em;
+      margin: 1em 0;
+      box-shadow: 0px 0px 0px rgba(0,0,0,.1);
+      border-radius:3px;
+      transition:all 1s ease;
+    }
+    .tos-section p:hover,.tos-section p:focus{
+      box-shadow: 0px 0px 8px rgba(0,0,0,.1);
+    }
+    .tos-section{
+      margin-bottom: 1em;
+    }
+    .site-wrapper{
+      background:var(--color-lane)
+    }
+    .tos-section h2{
+      font-family: 'Roboto', Sans-Serif;
+    font-weight: 600;
+    font-Size: 1.5em;
+    text-transform: capitalize;
+    line-height: 1;
+    color: var(--color-body-text);
+    }
+    .tos-lead{
+      font-weight: 600;
+      position: relative;
+      padding: 2em 0;
+    }
+    .tos-lead:before{
+      height: 2px;
+      content: '';
+      background: var(--color-pop);
+      position: absolute;
+      width: 10%;
+      top:0;
+    }
+    .signed{
+      font-family: 'Homemade Apple', cursive;
+      font-size: 1.8em;
+      text-decoration: underline;
+      text-align: center;
+      margin: 0;
+    }
+    .dated{
+      text-align: center;
+      font-weight: 600;
+      font-size: .875em;
+    }
+    .name-drop{
+      color:var(--color-pop);
+      transition: all .5s ease;
+    }
+    .name-drop:hover{
+      color:var(--color-pop-h)
+    }
+
+    #nameSetter:focus{
+      outline:none;
+    }
+    #button-submit:disabled{
+      background-color:var(--color-lane);
+      cursor:not-allowed;
+      box-shadow:none;
+      color:var(--color-body-subtitle);
+      outline:none;
+    }
+    #nameSetter #setName, #button-submit{
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    #nameSetter #setName:hover{
+      background: var(--color-pop-h);
+    }
+    #nameSetter input{
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    #nameSetter label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    #nameSetter p{
+      font-weight: 600;
+      position: relative;
+      padding: .5em 0;
+    }
+    #nameSetter h2{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: 1.5em;
+      text-transform: capitalize;
+      line-height: 1;
+      color: var(--color-body-text);
+    }
+    #readySign{
+        background: var(--color-chrome);
+        padding: 1em;
+        border-radius: 3px;
+        border: 1px dashed var(--color-pop);
+      }
+    .recaptcha{
+      font-size: 0.75rem;
+      margin-top: 1em;
+      color: var(--color-body-subtitle);
+      text-align: right;
+    }
+    .agreer{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1em 0 .875em 0;
+    }
+    .agreer label{
+      font-weight: 800;
+    }
+    #agree,#GuardianAgree,#employeeAccess{
+      width:2em;
+      height:2em;
+      margin:0;
+    }
+    #agree:disabled + label{
+      color: var(--color-body-subtitle);
+    }
+    #sigBlock{
+        display:none;
+    }
+    #sigBlock label{
+      font-family: 'Roboto', Sans-Serif;
+      font-weight: 600;
+      font-Size: .875em;
+    }
+    .name-error{
+      color:var(--color-bright-4);
+      text-align: center;
+      display:none;
+    }
+    .error-text{
+      color:var(--color-bright-4);
+      text-align: center;
+      display:none;
+    }
+    .reveal{
+      border: none;
+      border-radius: 3px;
+    }
+    .sublabel{
+      font-size: .875em;
+      font-style: italic;
+      color: var(--color-body-subtitle);
+    }
+
+    fieldset{
+      border-top: 1px solid var(--color-lane);
+      margin: 1em 0;
+    }
+    legend{
+      font-size: 1.25em;
+      font-weight: 600;
+      text-align: center;
+      color: var(--color-pop);
+    }
+    .impact-boxes{
+      margin-bottom:1em;
+    }
+    @media print, screen and (min-width: 64em){
+      .tos-terms-column{
+        max-height: 65vh;
+        overflow: auto;
+        margin-top: -15em;
+        position: relative;
+      }
+      .tos-terms-column::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        height: 20px;
+        transition: all .5s ease;
+        animation: shadow 3s ease-in-out infinite;
+      }
+      .tos-terms-column.scrolled::after {
+        animation:none;
+        box-shadow: inset 0 0 0 0 rgba(0,0,0,.3);
+      }
+
+
+    }
+    @keyframes shadow {
+    0%   { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+    50%  { box-shadow: inset 0 -8px 10px -8px rgba(0,0,0,.3);}
+    100% { box-shadow: inset 0 -8px 15px -8px rgba(0,0,0,.2);}
+  }
+    @keyframes barwait {
+      0%   {opacity:.1;transform:translateY(0)}
+      50%  {opacity:.3;transform:translateY(20px)}
+      100% {opacity:.1;transform:translateY(0)}
+    }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'This REU Form has been updated.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to update this REU Form',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container fluid">
+  <div class="grid-container grid-x grid-margin-x align-center" style="margin:auto;">
+
+    <div class='cell small-12 medium-10 large-9'>
+      <h1>Research Experiences for Undergraduates</h1>
+      
+      <div class="help-form" id="reu">
+        <fieldset>
+          <legend>Administrative</legend>
+          <input id="busObRecId" type="hidden" style="display:none" value="<%-reuForm.busObRecId%>">
+          <input id="busObPublicId" type="hidden" style="display:none" value="<%-reuForm.busObPublicId%>">
+          <label for="wpiID">Student's WPI ID (once created)</label>
+          <input id="wpiID" name="wpiID" type="text" placeholder="Student WPI ID Number" value="<%= reuForm.fields.find(f => f.name === 'WPIID')['value']%>">
+
+          <h3 style="margin-bottom:0;font-size: .875rem;">Paperwork</span></h3>
+          <p>Check off the following items to indicate you have recieved appropriate paperwork within these categories.</p>
+          <div class='grid-x grid-margin-x impact-boxes'>
+
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="formsI9" name="formsI9" <%= reuForm.fields.find(f => f.name === 'FormsI9')['value'] == "True" ? "checked" : "" %>>
+              <label for="formsI9">I9 Forms</label>
+            </div>
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="formsID" name="formsID" <%= reuForm.fields.find(f => f.name === 'FormsIdentityVerification')['value'] == "True" ? "checked" : "" %>>
+              <label for="formsID">Identity Verification Forms</label>
+            </div>
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="formsInternational" name="formsInternational" <%= reuForm.fields.find(f => f.name === 'FormsInternationalStudent')['value'] == "True" ? "checked" : "" %>>
+              <label for="formsInternational">International Student Forms</label>
+            </div>
+          </div>
+
+          <!-- <h3 style="margin-bottom:0;font-size: .875rem;">Clearance</span></h3>
+          <div class='grid-x grid-margin-x impact-boxes'>
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="clearedPreArrival" name="clearedPreArrival" <%= reuForm.fields.find(f => f.name === 'PreArrivalTestCleared')['value'] == "True" ? "checked" : "" %>>
+              <label for="clearedPreArrival">Pre-Arrival Test Cleared</label>
+            </div>
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="clearedWaiver" name="clearedWaiver" <%= reuForm.fields.find(f => f.name === 'WaiversTrainingCleared')['value'] == "True" ? "checked" : "" %>>
+              <label for="clearedWaiver">Waivers / Training Cleared</label>
+            </div>
+            <div class="cell small-12 medium-12">
+              <input type="checkbox" id="clearedAlden" name="clearedAlden" <%= reuForm.fields.find(f => f.name === 'AldenTestCleared')['value'] == "True" ? "checked" : "" %>>
+              <label for="clearedAlden">Alden Test Cleared</label>
+            </div>
+           
+          </div> -->
+
+          <button id="button-submit-help-form" class="button-submit">Update REU Form</button>
+        </fieldset>
+      </div>
+      <div class="help-form" id="reu">
+        <fieldset>
+          <legend>Department</legend>
+
+          <% 
+            const dept = reuForm.fields.find(f => f.name === 'Department')['value'];
+          %>
+
+          <label class="form-label"  for="department">Which Research Experience will you be working on?</label>
+            <select id="department" name="department">
+            <option <%= dept == "" ? "selected" : "" %>value="">-</option>
+            <option <%= dept == "Chemistry & Biochemistry" ? "selected" : "" %> value="Chemistry & Biochemistry">Chemistry & Biochemistry</option>
+            <option <%= dept == "Developing a Clean Energy Future" ? "selected" : "" %> value="Developing a Clean Energy Future">Developing a Clean Energy Future</option>
+            <option <%= dept == "Industrial Math & Stats" ? "selected" : "" %> value="Industrial Math & Stats">Industrial Math & Stats</option>
+            <option <%= dept == "Data Science REU Site" ? "selected" : "" %> value="Data Science REU Site">Data Science REU Site</option>
+            <option <%= dept == "MassDigi" ? "selected" : "" %> value="MassDigi">MassDigi</option>
+            <option <%= dept == "Sister2Sister" ? "selected" : "" %> value="Sister2Sister">Sister2Sister</option>
+            <option <%= dept == "Robotics Research Experience & Mentoring (REM)" ? "selected" : "" %> value="Robotics Research Experience & Mentoring (REM)">Robotics Research Experience & Mentoring (REM)</option>
+            <option <%= dept == "Robotics REU" ? "selected" : "" %> value="Robotics REU">Robotics REU</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Student Information</legend>
+          <label for="nameFirst">First Name</label>
+          <input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" value="<%= reuForm.fields.find(f => f.name === 'FirstName')['value']%>">
+
+          <label for="nameLast">Last Name</label>
+          <input id="nameLast" name="nameLast" type="text" placeholder="Last Name" value="<%= reuForm.fields.find(f => f.name === 'LastName')['value']%>">
+
+          <label for="homeUniversity">Home University</label>
+          <input id="homeUniversity" name="homeUniversity" type="text" placeholder="Home University" value="<%= reuForm.fields.find(f => f.name === 'HomeUniversity')['value']%>">
+
+          <label for="personalCell">Cell Phone</label>
+          <input id="personalCell" name="personalCell" type="tel" placeholder="(555) 555-5555" value="<%= reuForm.fields.find(f => f.name === 'CellPhone')['value']%>">
+
+          <label for="personalEmail">Personal Email</label>
+          <input id="personalEmail" name="personalEmail" type="text" placeholder="username@domain.com" value="<%= reuForm.fields.find(f => f.name === 'PersonalEmail')['value']%>">
+
+          <label for="dateOfBirth">Date of Birth</label>
+          <input id="dateOfBirth" name="dateOfBirth" type="date" value="<%= moment(reuForm.fields.find(f => f.name === 'DateOfBirth')['value']).format('YYYY-MM-DD')%>">
+
+          <div id="homeaddrBlock">
+            <h3 style="margin-bottom:0;font-weight: 600;font-size: .875rem;">What is your home (permanent) address?</span></h3>
+            <label for="homeaddr1">Address Line 1</label>
+            <input id="homeaddr1" name="homeaddr1" type="text" value="<%= reuForm.fields.find(f => f.name === 'HomeAddress1')['value']%>">
+
+            <label for="homeaddr2">Address Line 2</label>
+            <input id="homeaddr2" name="homeaddr2" type="text" value="<%= reuForm.fields.find(f => f.name === 'HomeAddress2')['value']%>">
+
+            <label for="homecity">City</label>
+            <input id="homecity" name="homecity" type="text" value="<%= reuForm.fields.find(f => f.name === 'HomeCity')['value']%>">
+
+            <label for="homestate">State</label>
+            <input id="homestate" name="homestate" type="text" value="<%= reuForm.fields.find(f => f.name === 'HomeState')['value']%>">
+
+            <label for="homezip">Zipcode</label>
+            <input id="homezip" name="homezip" type="text" value="<%= reuForm.fields.find(f => f.name === 'HomeZip')['value']%>">
+          </div>
+
+          <label class="form-label"  for="gender">What gender do you most closely identiy with?</label>
+            <select id="gender" name="gender">
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "" ? "selected" : "" %> value="">-</option>
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "Male" ? "selected" : "" %> value="Male">Male</option>
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "Female" ? "selected" : "" %> value="Female">Female</option>
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "Non-binary/non-conforming" ? "selected" : "" %> value="Non-binary/non-conforming">Non-binary/non-conforming</option>
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "Prefer not to respond" ? "selected" : "" %> value="Prefer not to respond">Prefer not to respond</option>
+              <option <%= reuForm.fields.find(f => f.name === 'Gender')['value'] == "Other" ? "selected" : "" %> value="Other">Other</option>
+            </select>
+
+          <div id="genderBlock">
+            <label for="genderOther">Gender (other)</label>
+            <input id="genderOther" name="genderOther" type="text" value="<%= reuForm.fields.find(f => f.name === 'GenderOther')['value']%>">
+          </div>
+
+          <label class="form-label"  for="race">What race do you most closely identiy with?</label>
+            <select id="race" name="race">
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "" ? "selected" : "" %> value="">-</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "Hispanic or Latino or Spanish Origin of any race" ? "selected" : "" %> value="Hispanic or Latino or Spanish Origin of any race">Hispanic or Latino or Spanish Origin of any race</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "American Indian or Alaskan Native" ? "selected" : "" %> value="American Indian or Alaskan Native">American Indian or Alaskan Native</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "Asian" ? "selected" : "" %> value="Asian">Asian</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "Native Hawaiian or Other Pacific Islander" ? "selected" : "" %> value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "Black or African American" ? "selected" : "" %> value="Black or African American">Black or African American</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "White" ? "selected" : "" %> value="White">White</option>
+            <option <%= reuForm.fields.find(f => f.name === 'Race')['value'] == "Other" ? "selected" : "" %> value="Other">Other</option>
+          </select>
+
+          <div id="raceBlock">
+            <label for="raceOther">Race (other)</label>
+            <input id="raceOther" name="raceOther" type="text" value="<%= reuForm.fields.find(f => f.name === 'RaceOther')['value']%>">
+          </div>
+
+          <h3 style="margin-bottom:0;font-size: .875rem;">Where do You plan to live during your REU program?</span></h3>
+          <div class='grid-x grid-margin-x impact-boxes'>
+
+            <div class="cell small-12 medium-12">
+              <input type="radio" id="planToLiveOnCampus" name="planToLive" value="True" <%= reuForm.fields.find(f => f.name === 'OnCampusResident')['value'] == "True" ? "checked" : "" %>>
+              <label for="planToLiveOnCampus">On Campus in a WPI Residence Hall</label>
+            </div>
+            <div class="cell small-12 medium-12">
+              <input type="radio" id="planToLiveOffCampus" name="planToLive" value="False" <%= reuForm.fields.find(f => f.name === 'OnCampusResident')['value'] == "False" ? "checked" : "" %>>
+              <label for="planToLiveOffCampus">Off Campus</label>
+            </div>
+          </div>
+
+          <div id="addrBlock">
+            <label for="offCampusDate">When do you plan to arrive to your Off-Campus Housing?</label>
+            <input id="offCampusDate" name="offCampusDate" type="date" value="<%= moment(reuForm.fields.find(f => f.name === 'OffCampusArrivalDate')['value']).format('YYYY-MM-DD')%>">
+            
+            <label for="addr1">Address Line 1</label>
+            <input id="addr1" name="addr1" type="text" value="<%= reuForm.fields.find(f => f.name === 'Address1')['value']%>">
+
+            <label for="addr2">Address Line 2</label>
+            <input id="addr2" name="addr2" type="text" value="<%= reuForm.fields.find(f => f.name === 'Address2')['value']%>">
+
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" value="<%= reuForm.fields.find(f => f.name === 'City')['value']%>">
+
+            <label for="state">State</label>
+            <input id="state" name="state" type="text" value="<%= reuForm.fields.find(f => f.name === 'State')['value']%>">
+
+            <label for="zip">Zipcode</label>
+            <input id="zip" name="zip" type="text" value="<%= reuForm.fields.find(f => f.name === 'Zip')['value']%>">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Other Information</legend>
+          <label for="travelFrom">For the start of this program, from where will you be traveling to WPI from?</label>
+          <input id="travelFrom" name="travelFrom" type="text" value="<%= reuForm.fields.find(f => f.name === 'TravelingFrom')['value']%>">
+
+          <label for="vaccineStatus">Have you been vaccinated and boosted for COVID-19?</label>
+          <select id="vaccineStatus" name="vaccineStatus">
+            <option <%= reuForm.fields.find(f => f.name === 'VaccineStatus')['value'] == "" ? "selected" : "" %> value="">-</option>
+            <option <%= reuForm.fields.find(f => f.name === 'VaccineStatus')['value'] == "Yes" ? "selected" : "" %> value="Yes">Yes</option>
+            <option <%= reuForm.fields.find(f => f.name === 'VaccineStatus')['value'] == "No" ? "selected" : "" %> value="No">No</option>
+            <option <%= reuForm.fields.find(f => f.name === 'VaccineStatus')['value'] == "Partially" ? "selected" : "" %> value="Partially">Partially</option>
+          </select>
+
+          <label for="vaccineDate">If Yes, what was the date of your most recent Covid-19 vaccine?</label>
+          <input id="vaccineDate" name="vaccineDate" type="date" value="<%= moment(reuForm.fields.find(f => f.name === 'DateOfVaccine')['value']).format('YYYY-MM-DD')%>">
+
+          <label for="emergencyName">Emergency contact name</label>
+          <input id="emergencyName" name="emergencyName" type="text" value="<%= reuForm.fields.find(f => f.name === 'EmergencyContactName')['value']%>">
+
+          <label for="emergencyPhone">Emergency contact phone number</label>
+          <input id="emergencyPhone" name="emergencyPhone" type="tel" value="<%= reuForm.fields.find(f => f.name === 'EmergencyContactPhone')['value']%>">
+
+          <label for="emergencyRelationship">What is your emergency contact's relationship to you?</label>
+          <input id="emergencyRelationship" name="emergencyRelationship" type="text" value="<%= reuForm.fields.find(f => f.name === 'EmergencyContactRelationship')['value']%>">
+
+          <label for="dietaryNeeds">Do you have any special dietary needs, restrictions, or concerns?</label>
+          <textarea rows="4" id="dietaryNeeds" name="dietaryNeeds"><%= reuForm.fields.find(f => f.name === 'DietaryNeeds')['value']%></textarea>
+
+          <label for="accomodations">Do you have any disability-related housing or work accomodations or needs?</label>
+          <textarea rows="4" id="accomodations" name="accomodations"><%= reuForm.fields.find(f => f.name === 'Accommodations')['value']%></textarea>
+
+          <button id="button-submit-help-form" class="button-submit">Update REU Form</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+        
+
+        </fieldset>
+      </div>
+
+    </div>
+  </div>
+</div>

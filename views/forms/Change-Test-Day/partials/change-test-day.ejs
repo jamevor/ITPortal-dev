@@ -1,0 +1,329 @@
+<style>
+    .help-form label {
+      /* font-weight: 600; */
+    }
+    .help-form .box {
+      background: var(--color-lane);
+      padding: 0.5em 1em;
+    }
+    .help-form textarea {
+      min-width:100%;
+    }
+    .help-form input, .help-form textarea {
+      background: var(--color-body);
+      color: var(--color-body-text);
+    }
+    .night .help-form input:focus, .night .help-form textarea:focus {
+      background: var(--color-lane-subtler);
+    }
+    .help-form .button-submit {
+      width: 100%;
+      text-align: center;
+      background: var(--color-pop);
+      height: 3em;
+      color: var(--color-light);
+      cursor: pointer;
+      outline: none;
+      box-shadow: var(--shadow-standard-y);
+      transition: background .5s ease;
+    }
+    .help-form .button-submit:hover {
+      background: var(--color-pop-h);
+    }
+    .help-form .button-submit.disabled {
+      cursor: not-allowed;
+      background: var(--color-lane);
+      color: var(--color-lane-subtler)
+    }
+    .help-form .impact-boxes .cell input {
+      display: none;
+    }
+    .help-form .impact-boxes .cell label {
+      border: 1px solid var(--color-lane);
+      padding: .5em;
+      text-align: center;
+      margin: 0;
+      width: 100%;
+      transition: all .5s ease;
+    }
+    .help-form .impact-boxes .cell input:checked + label {
+      background-color: var(--color-pop);
+      color: var(--color-light);
+      border-color: var(--color-pop-h);
+    }
+    .help-form .impact-boxes .cell label:hover {
+      background: var(--color-lane);
+    }
+    .input-box .content-label{
+      font-size: 1rem;
+      margin: 0;
+      line-height:1;
+    }
+    .input-box .content{
+      font-weight: 800;
+      margin: 0;
+      margin-bottom: 0.5em;
+    }
+    .box-verified-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-img-square {
+      background: var(--color-user);
+      width: 2em;
+      height: 2em;
+      font-size: 3em;
+    }
+    .box.card h3{
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .note{
+    position:relative;
+  }
+  .testDays{
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .testDay{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      background: var(--color-lane-subtler);
+      color: var(--color-body-subtitle);
+      flex-grow: 1;
+      padding:.5em;
+      flex-basis: 0;
+      flex-shrink: 1;
+      margin: 1em 1em 2.5em 1em;
+      position: relative;
+      border-radius: 3px;
+    }
+    .testDay.active{
+      background: var(--color-pop);
+      color:var(--color-light)
+    }
+    .testDay.active:after{
+      content: "\f058 ";
+      margin-right: .25em;
+      font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
+      color: var(--color-bright-2);
+      position: absolute;
+      top: 100%;
+      font-size: 1.5em;
+      font-weight: 600;
+      }
+    .testDay span:first-of-type{
+      font-size: 2em;
+      font-weight: 800;
+    }
+    .testDay span:nth-of-type(2){
+      font-size: .75em;
+      font-weight: 400;
+    }
+    .chooseDay{
+      display: none;
+    }
+    .chooseDay.active{
+      display: block;
+    }
+    #chooseDay.single{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 1px;
+      text-overflow: '';
+    }
+    #switchDay,#chooseDay.multiple{
+      height: fit-content;
+      height:14em;
+      padding: .5em 0 1.5em;
+      overflow: hidden;
+    }
+    #switchDay option,#chooseDay.multiple option{
+      text-align: center;
+      padding: .5em;
+    }
+    .agreer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em 0 .875em 0;
+}
+#agree{
+    width: 2em;
+    height: 2em;
+    margin: 0;
+}
+  </style>
+  <%
+  const toasts = [
+    {
+      id: 'toast-save-success',
+      type: 'success',
+      title: 'Success',
+      message: 'Your Answer has been submitted. Look to your email for a ticket confirmation!',
+      show: false
+    },
+    {
+      id: 'toast-save-error',
+      type: 'error',
+      title: 'Whoops',
+      message: 'Something went wrong trying to submit, try again!',
+      show: false
+    }
+  ];
+  %>
+  <%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+  <div class="grid-container help-form">
+    <div class="grid-x grid-margin-x align-center">
+      <div class='cell small-12 medium-12 large-8'>
+        <div class='grid-x grid-margin-x'>
+  
+          <div class='cell box'>
+            <% if (locals.user && user.id && locals.userAttributes) { %>
+              <div class='grid-x grid-margin-x input-box'>
+                <div class='cell small-6 box-verified-profile'>
+                  <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                  <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+                </div>
+                <div class='cell small-6 box-verified-info'>
+                  <h3 class="content-label">Full Name</h3>
+                  <p id="full-name" class="content"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                  <h3 class="content-label">WPI email</h3>
+                  <p id="wpi-email" class="content"><%= userAttributes.emailaddress %></p>
+                  <h3 class="content-label">WPI ID #</h3>
+                  <p id="wpi-id" class="content"><%= userAttributes['user.employeeid'] %></p>
+                </div>
+              </div>
+            <% }%>
+          </div>
+      
+          <div class='cell' style="margin-top:1em;">
+            <div class="note note-info" style="background: hsl(239, 91%, 95%);" data-closable>
+              <button class="close-button" aria-label="Close Informational Box" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="note-title">
+                <i class="fad fa-exclamation-triangle color-bright-1"></i> About Changing Test Days
+              </div>
+              <div class="note-message">  
+                <p>Testing days are assigned in order to maximize their effectiveness across the campus population. With that in mind we ask that a request for change of testing day be considered a serious request, where you absolutely are unable to make your current assigned days work.</p>
+                <p>This request form should be used for long-term changes only, not one-off scheduling conflicts.</p>
+              </div>
+            </div>
+            <p></p>
+
+            <% if (intent && intent.length){
+            const currentTerm = "202103";
+            const currentPTerm = "E";
+              for (let intentItem of intent){ 
+                var CurrentIntent ="";
+                
+                if(intentItem.fields.find(f => f.name === 'Term')['value'] == currentTerm && intentItem.fields.find(f => f.name === 'PTerm')['value'] == currentPTerm){
+                  CurrentIntent = intentItem;
+                }else{
+                  CurrentIntent = false;
+                }
+
+              }
+              const isSunday = CurrentIntent.fields.find(f => f.name === 'TestSunday')['value'] == "True" ? "active" : "";
+              const isMonday = CurrentIntent.fields.find(f => f.name === 'TestMonday')['value'] == "True" ? "active" : "";
+              const isTuesday = CurrentIntent.fields.find(f => f.name === 'TestTuesday')['value'] == "True" ? "active" : "";
+              const isWednesday = CurrentIntent.fields.find(f => f.name === 'TestWednesday')['value'] == "True" ? "active" : "";
+              const isThursday = CurrentIntent.fields.find(f => f.name === 'TestThursday')['value'] == "True" ? "active" : "";
+              const isFriday = CurrentIntent.fields.find(f => f.name === 'TestFriday')['value'] == "True" ? "active" : "";
+              const isSaturday = CurrentIntent.fields.find(f => f.name === 'TestSaturday')['value'] == "True" ? "active" : "";
+              const plural = CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value'] > 1 ? "s" : "";
+              const frequency = CurrentIntent.fields.find(f => f.name === 'TestingFrequency')['value']
+            %>
+            <div class="box card">
+              
+              <input id="frequency" name="frequency" type="hidden" value="<%-frequency%>">
+              <h3>Current Assigned Testing Day<%-plural%></h3>
+              <p>The following are your currently assigned testing day<%-plural%> for <%-currentPTerm%> Term. You are assigned to <%-frequency%> test<%-plural%> per week.</p>
+              <div class="cell small-12 testDays">
+                <div class="testDay <%-isSunday%>"><span>S</span><span class="show-for-sr">Sunday</span></div>
+                <div class="testDay <%-isMonday%>"><span>M</span><span class="show-for-sr">Monday</span></div>
+                <div class="testDay <%-isTuesday%>"><span>T</span><span class="show-for-sr">Tuesday</span></div>
+                <div class="testDay <%-isWednesday%>"><span>W</span><span class="show-for-sr">Wednesday</span></div>
+                <div class="testDay <%-isThursday%>"><span>R</span><span class="show-for-sr">Thursday</span></div>
+                <div class="testDay <%-isFriday%>"><span>F</span><span class="show-for-sr">Friday</span></div>
+              </div>
+            </div>
+            <fieldset>
+              <legend>Request Change of Test Day</legend>
+
+              <% if(frequency > 1){%>
+              <label>Which day(s) would you like to change from? (multiple select allowed)
+                <select class="multiple"  id="chooseDay" name="chooseDay" multiple>
+                  <option class="chooseDay <%-isSunday%>" value="Sunday">Sunday</option>
+                  <option class="chooseDay <%-isMonday%>" value="Monday">Monday</option>
+                  <option class="chooseDay <%-isTuesday%>" value="Tuesday">Tuesday</option>
+                  <option class="chooseDay <%-isWednesday%>" value="Wednesday">Wednesday</option>
+                  <option class="chooseDay <%-isThursday%>" value="Thursday">Thursday</option>
+                  <option class="chooseDay <%-isFriday%>" value="Friday">Friday</option>
+                </select>
+              </label>
+              <%}else if(frequency == 1){
+                const sSunday = CurrentIntent.fields.find(f => f.name === 'TestSunday')['value'] == "True" ? "selected" : "";
+                const sMonday = CurrentIntent.fields.find(f => f.name === 'TestMonday')['value'] == "True" ? "selected" : "";
+                const sTuesday = CurrentIntent.fields.find(f => f.name === 'TestTuesday')['value'] == "True" ? "selected" : "";
+                const sWednesday = CurrentIntent.fields.find(f => f.name === 'TestWednesday')['value'] == "True" ? "selected" : "";
+                const sThursday = CurrentIntent.fields.find(f => f.name === 'TestThursday')['value'] == "True" ? "selected" : "";
+                const sFriday = CurrentIntent.fields.find(f => f.name === 'TestFriday')['value'] == "True" ? "selected" : "";
+
+                
+                %>
+                <label>Requested Day to Change
+                <select class="single" id="chooseDay" name="chooseDay" disabled>
+                  <option class="chooseDay <%-isSunday%>" value="Sunday" <%-sSunday%>>Sunday</option>
+                  <option class="chooseDay <%-isMonday%>" value="Monday" <%-sMonday%>>Monday</option>
+                  <option class="chooseDay <%-isTuesday%>" value="Tuesday" <%-sTuesday%>>Tuesday</option>
+                  <option class="chooseDay <%-isWednesday%>" value="Wednesday" <%-sWednesday%>>Wednesday</option>
+                  <option class="chooseDay <%-isThursday%>" value="Thursday" <%-sThursday%>>Thursday</option>
+                  <option class="chooseDay <%-isFriday%>" value="Friday" <%-sFriday%>>Friday</option>
+                </select>
+              </label>
+              <%}else{%>
+                <p>You do not currently have any Assigned test Days</p>
+              <%}%>
+              <label>Which Day(s) would you be okay switching to? (multiple select allowed)
+                <select id="switchDay" name="switchDay" multiple>
+                  <option value="Sunday">Sunday</option>
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Thursday">Friday</option>
+                </select>
+              </label>
+
+              <label>Why do you need this change?
+                <select id="reason" name="reason">
+                  <option></option>
+                  <option>I’m a commuter and not on campus that day</option>
+                  <option>Doesn’t align with my schedule for courses or work</option>
+                  <option>Doesn’t align my schedule for athletics or other activities</option>
+                </select>
+              </label>
+
+              <p style="font-weight: 800;" id="consent-text">I understand that a request of a change of testing day<%-plural%> is not to be done liberally, and is a serious request based upon an absolute need, or inability to make my current day<%-plural%> work.</p>
+              <div class="agreer">
+                <input id="agree" name="agree" type="checkbox">
+                <label for="agree">I Agree</label>
+              </div>
+            </fieldset>
+            <% } %>
+            <button id="button-submit-feedback-form" class="button-submit disabled">Submit Request for Change</button>
+  
+            <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+            
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>

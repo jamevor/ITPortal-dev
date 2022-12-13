@@ -1,0 +1,277 @@
+<%- include('../partials/api/editorjsToHTML.ejs'); %>
+
+<%
+const endpoint = locals.building ? '/api/v1/building/update/one/' + building.id : '/api/v1/building/create/one';
+const method = locals.building ? 'PUT' : 'POST';
+
+let contentEditable = locals.edit ? "contenteditable=true" : "";
+%>
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/leaflet.ejs'); %>
+  <script type="text/javascript">
+    window.buildingGeoData = "<%= locals.building ? building.geo : '' %>";
+    window.buildingTitle = "<%= locals.building ? building.title : '' %>";
+  </script>
+  <script type='text/javascript' src='/js/pages/building/view.js' defer></script>
+  <% if (locals.edit) { %>
+    <%- include('../partials/easy-autocomplete.ejs'); %>
+    <script type='text/javascript' src='/js/console/EntityGroupsUtility.js' defer></script>
+    <script type='text/javascript' src='/js/console/building/edit.js' defer></script>
+  <% } %>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+  <% if (locals.edit) { %>
+    <% if (locals.building) { %>
+      <input type='hidden' id='building-id' name='buildingID' value='<%= building.id %>'>
+    <% } %>
+    <input type='hidden' id='update-endpoint' name='updateEndpoint' value='<%= endpoint %>'>
+    <input type='hidden' id='update-method' name='updateMethod' value='<%= method %>'>
+  <% } %>
+
+<div class="grid-container fluid swim-lane article">
+
+  <div class="grid-container">
+    <nav aria-label="You are here:" role="navigation">
+      <ul class="breadcrumbs">
+        <li><a href="/"><span class="show-for-sr">Home </span><i class="fa-fw fas fa-home"></i></a></li>
+        <li><a href="/Locations">Locations</a></li>
+        <li>
+          <a href='#'>
+            <span class="show-for-sr">Current: </span> <%= locals.building ? building.title : '' %>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
+
+  <div id="buildingMap" class="grid-container fluid building-map" style="height:400px; z-index: 98">
+  </div>
+
+
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x align-justify">
+      <div class="cell small-12 medium-8 large-7 two-col-content">
+
+        <div class="grid-x grid-margin-x align-justify">
+          <div class="cell small-12 medium-4 large-4" style="display: flex;align-items: center;">
+            <div id="abbr" class="building-abbr" <%= contentEditable %> <%- locals.edit ? 'placeholder="ABBR"' : '' %>><%= locals.building ? building.abbr : '' %></div>
+          </div>
+          <div class="cell small-12 medium-8 large-8 small-text-center">
+            <h1 id="article-title" class="article-heading" <%= contentEditable %> <%- locals.edit ? 'placeholder="Building Name"' : '' %>><%= locals.building ? building.title : '' %></h1>
+            <p id="building-common" class="building-common" <%= contentEditable %> <%- locals.edit ? 'placeholder="Common Name (AKA)"' : '' %>><%- !locals.edit ? '<span class="label">AKA</span>' : '' %><%= locals.building ? building.common : '' %></p>
+            <p id="building-address" class="building-address" <%= contentEditable %> <%- locals.edit ? 'placeholder="Address"' : '' %>><%= locals.building ? building.address : '' %></p>
+          </div>
+          <div class="cell small-12">
+            <% if (locals.edit || (locals.building && building.descriptionShort)) { %>
+              <p id="article-summary" class="article-summary" <%= contentEditable %> <%- locals.edit ? 'placeholder="Short Description"' : '' %>><%- locals.building && building.descriptionShort ? building.descriptionShort : '' %></p>
+            <% } %>
+          </div>
+        </div>
+
+        <% if (locals.building && building.locations && building.locations.length || locals.edit) { %>
+          <div class="swim-lane">
+            <h2>Locations</h2>
+            <div class="grid-container full">
+              <% if (locals.edit) { %>
+                <input id='location' type='hidden' name='location'>
+                <div class="input-group">
+                  <input class='ez-input input-group-field' type='text' id='add-location-input'>
+                  <div class="input-group-button">
+                    <button id="add-location-button" class='button-link-item'><i class="fas fa-link"></i> Link</button>
+                  </div>
+                </div>
+              <% } %>
+              <ul class="card-list no-indent grid-x grid-margin-x small-up-2 medium-up-2 large-up-3 locations-wrapper">
+                <% if (locals.building && building.locations && building.locations.length) { %>
+                  <% for (let location of building.locations) { %>
+                    <%- include('../partials/components/location-card.ejs', {
+                      location
+                    }); %>
+                  <% } %>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        <% } %>
+
+      </div>
+
+
+      <div class="cell small-12 medium-4 two-col-sidebar">
+
+        <% if (locals.edit) { %>
+          <input type="hidden" id='is-access-restricted' value="<%- locals.building && building.accessRestricted ? 'true' : 'false' %>">
+          <input type="hidden" id='can-remove-groups' value="<%- locals.canRemoveGroups %>">
+          <div class="box card" id="egu"></div>
+        <% } %>
+
+        <% if (locals.edit) { %>
+          <h2>Geo</h2>
+          <input type="text" name="geo" id="geo" value="<%- locals.building && building.geo ? building.geo : '' %>">
+        <% } %>
+
+        <% if(locals.building && (building.createdAt || building.updatedAt) || locals.edit) { %>
+          <div class="box card">
+            <h2>Details</h2>
+            <p><strong>Created:</strong> <%= locals.building && building.createdAt ? moment(building.createdAt).format('ll') : '' %></p>
+            <p><strong>Modified:</strong> <%= locals.building && building.updatedAt ? moment(building.updatedAt).format('ll') : '' %></p>
+          </div>
+        <% } %>
+
+<%# TODO one of these days we should add these relationships. That day is not today.
+        <div class="box card">
+          <h2>Metadata</h2>
+          <h3>Tags</h3>
+          <ul class="tags">
+            <li><a href="#">tag</a></li>
+            <li><a href="#">tagger</a></li>
+            <li><a href="#">taggiest</a></li>
+            <li><a href="#">tag</a></li>
+            <li><a href="#">tagger</a></li>
+            <li><a href="#">taggiest</a></li>
+          </ul>
+          <h3>Audience</h3>
+          <ul class="audience">
+            <li><a href="#">people</a></li>
+            <li><a href="#">humans</a></li>
+            <li><a href="#">robots</a></li>
+          </ul>
+          <h3>Alias</h3>
+          <ul class="alias">
+            <li><a href="#">people</a></li>
+            <li><a href="#">humans</a></li>
+            <li><a href="#">robots</a></li>
+          </ul>
+        </div>
+%>
+
+
+
+      <% if (locals.canEdit) { %>
+        <div class="box card">
+          <h2>Admin</h2>
+          <ul class="link-cards no-icon">
+            <% if (!locals.edit && locals.building && building.spacePhase) { %>
+              <li><span class='text'>Current Phase: <%= building.spacePhase.title %></span></li>
+            <% } %>
+            <% if (!locals.edit) { %>
+              <li><a href="/console/building/edit/<%= building.id %>"><i class='fal fa-fw fa-edit'></i> Edit</a></li>
+            <% } %>
+            <% if (locals.building && locals.edit) { %>
+              <li><a href="/building/<%= building.id %>"><i class='fal fa-fw fa-rocket'></i> Go to Building</a></li>
+              <li><a href="#" id='button-generate-preview'><i class='fal fa-fw fa-mask'></i> Generate Preview</a></li>
+            <% } %>
+            <% if (locals.edit) { %>
+              <li><a data-open="advanced-settings-modal" id="button-advanced-settings"><i class='fal fa-fw fa-cog'></i> Advanced Settings</a></li>
+            <% } %>
+            <% if (locals.edit && locals.building && building.spacePhase && !locals.canPublish) { %>
+              <li><a href="#" data-open="modal-submit-for-review"><i class='fal fa-fw fa-glasses'></i> Submit for Review</a></li>
+              <div class="reveal tiny" id="modal-submit-for-review" data-reveal>
+                <h2>Are you sure?</h2>
+                <p>You will not be able to edit this building while it is being reviewed.</p>
+                <a href="#" class="button-confirm bright-2" id="button-submit-for-review">Yes</a>
+                <a href="#" class="button-confirm bright-4" data-close>No</a>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                  <span aria-hidden="true"><i class='fas fa-fw fa-times'></i></span>
+                </button>
+              </div>
+            <% } %>
+            <li><a href="/console"><i class='fal fa-fw fa-terminal'></i> Control Panel</a></li>
+          </ul>
+        </div>
+      <% } %>
+
+
+                  
+
+      <%- include('../partials/components/request-help.ejs'); %>
+
+      <%- include('../partials/components/print-share.ejs'); %>
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+  <% if (locals.edit) { %>
+    <%- include('../partials/components/edit.ejs', {
+      entityTitle: 'Building',
+      entityID: locals.building && building.id ? building.id : 'New'
+    }); %>
+        <%
+
+        const toasts = [
+          {
+            id: 'toast-save-success',
+            type: 'success',
+            title: 'Success',
+            message: 'Building has been saved',
+            show: false
+          },
+          {
+            id: 'toast-save-error',
+            type: 'error',
+            title: 'Whoops',
+            message: 'Something went wrong trying to save your building',
+            show: false
+          }
+        ];
+        %>
+        <%- include('../partials/components/toaster.ejs', { toasts }); %>
+  <% } %>
+
+  <% if (locals.edit && locals.building) { %>
+    <%- include('../partials/components/preview-modal.ejs'); %>
+  <% } %>
+
+
+  <% if (locals.edit) { %>
+  <div class="reveal console-modal" id="advanced-settings-modal" data-reveal data-options="closeOnClick:false;" data-simplebar>
+    <ul class="tabs" data-tabs id="advancedSettingsTabs">
+      <li class="tabs-title is-active"><a href="#phaseTab" aria-selected="true"><i class='far fa-satellite-dish'></i> State</a></li>
+      <li class="tabs-title"><a href="#auditTab"><i class='far fa-history'></i> Audit</a></li>
+    </ul>
+    <div data-tabs-content="advancedSettingsTabs">
+      <div id="phaseTab" class="tabs-panel is-active">
+        <% if (locals.canPublish) { %>
+          <label for="phase">Phase</label>
+          <select name="phase" id="phase" class='title-case'>
+          <% for (let phase of phases) { %>
+            <option class='title-case' value="<%= phase.id %>" <%= locals.building && building.idSpacePhase == phase.id ? 'selected' : '' %>><%= phase.title %></option>
+          <% } %>
+          </select>
+        <% } else { %>
+          <input type="hidden" id="phase" value="1">
+        <% } %>
+      </div>
+      <div id="auditTab" class="tabs-panel">
+        <h2>Details</h2>
+        <p><strong>Date Review By: </strong><%= locals.building && building.dateReviewBy ? moment(building.dateReviewBy).format('ll') : '' %></p>
+        <p><strong>Created On: </strong><%= locals.building && building.createdAt ? moment(building.createdAt).format('ll') : '' %></p>
+        <p><strong>Created By: </strong><%= locals.building && building.userCreatedBy && building.userCreatedBy.username ? building.userCreatedBy.username : '' %></p>
+        <p><strong>Modified On: </strong><%= locals.building && building.updatedAt ? moment(building.updatedAt).format('ll') : '' %></p>
+        <p><strong>Last Modified By: </strong><%= locals.building && building.userModifiedBy && building.userModifiedBy.username ? building.userModifiedBy.username : '' %></p>
+      </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true"><i class='far fa-times'></i></span>
+    </button>
+  </div>
+<% } %>
+
+
+
+
+<%- include('../partials/layout/bottom.ejs') %>
+</html>

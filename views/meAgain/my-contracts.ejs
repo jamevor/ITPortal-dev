@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <%- include('../partials/datatables.ejs'); %>
+  <script async type="text/javascript" src="/js/components/TicketCard.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/search.css">
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/my-apps.css"> <%# this is needed for the "you dont have tickets" stuff" %>
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+  <script defer type="text/javascript" src="/js/meAgain/my-contracts.js"></script>
+  <script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+<div class="grid-container me-section" style="padding:0">
+  <div class="grid-x grid-margin-x">
+
+    <div class="cell medium-12 box card profile-section">
+      <h2> <i class="far fa-sync"></i> Contract Delegations</h2>
+      <div class="profile-section-content" id="tickets-open">
+        <h3>Active Contract Delegations</h3>
+        
+          <table id="contractTable">
+            <thead>
+              <tr>
+                <th>Delgator</th>
+                <th>Delegatee</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+
+        
+      </div>
+
+    </div>
+    <div class="cell medium-12 grid-container me-section" style="padding:0;margin-bottom: 1em;">
+      <h2 class="section-header">Quick Links</h2>
+      <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-2">
+        <a href="/io/contractdelegate" target="_blank" class="cell me-quicklink">Initiate a new Delegation</a>
+      </div>
+    </div>
+  
+  </div>
+  
+</div>
+
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

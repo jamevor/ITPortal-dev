@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/help.css">
+  <script defer type='text/javascript' src='/js/pages/help.js'></script>
+  <style>
+    @media screen and (max-width: 39.9375em){
+      .help-page .help-card {
+          min-height: auto;
+          margin-bottom: 0.5em;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+
+<div class="help-page">
+  <div class="grid-container fluid swim-lane">
+    <div class="grid-container">
+      <h1>Get Connected</h1>
+      <p>The WPI Community extends beyond the campus in these virtual spaces. While none of these are officially sponsored or endorsed by WPI, these generally student-led places can be a great resource for meeting new people and connecting with them.</p>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane dark">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+        <div class="cell small-12">
+          <h2>Discord</h2>
+          <p>Discord is an online voice, video, and text chat app that allows students to connect virtually.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="grid-container fluid swim-lane" style="margin-top:-4em;">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+
+        <div class="cell small-12 medium-4 box card help-card">
+          <span class="help-card-icon fab fa-discord fa-swap-opacity" style="background:var(--color-bright-1)"></span>
+          <h2 class="help-card-heading">WPI Community Discord</h2>
+          <p>This community, created and run by students, features over 2600 members chatting about everything including sports, food, plants, classes, living on-campus, clubs, and more.</p>
+          <a class="help-card-cta" href="https://discord.gg/MkSYm5f52v" target="_blank">Join</a>
+        </div>
+
+        <div class="cell small-12 medium-4 box card help-card">
+          <span class="help-card-icon fad fa-graduation-cap fa-swap-opacity" style="background:var(--color-pop)"></span>
+          <h2 class="help-card-heading">Discord Hub</h2>
+          <p>A huge community not your speed? The Discord Hub for WPI features many other student-led servers, curated to all kinds of specific topics. Feel free to explore, and find which ones interest you.</p>
+          <a class="help-card-cta" href="https://discord.gg/fXzDSfxn9a" target="_blank">Check it Out</a>
+        </div>
+        <div class="cell small-12 medium-4 box card help-card">
+          <span class="help-card-icon fad fa-plus-circle fa-swap-opacity"></span>
+          <h2 class="help-card-heading">Start Your Own</h2>
+          <p>Marching to the beat of your own drum? You can start your own server, whether it be for a friend group, class, IQP/MQP team, club, athletics team, or any other reason you see fit.</p>
+          <a class="help-card-cta" href="https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-" target="_blank">Learn How</a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container fluid swim-lane dark">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+        <div class="cell small-12">
+          <h2>Other Communities</h2>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="grid-container fluid swim-lane" style="margin-top:-4em;">
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x">
+
+        <div class="cell small-12 medium-4 box card help-card">
+          <span class="help-card-icon fab fa-reddit-alien fa-swap-opacity" style="background:var(--color-bright-3)"></span>
+          <h2 class="help-card-heading">WPI Subreddit</h2>
+          <p>Reddit, the frontpage of the internet, has a subreddit where people from WPI can start discussions, share memes, and ask questions.</p>
+          <a class="help-card-cta" href="https://www.reddit.com/r/wpi" target="_blank">Check Out The Subreddit</a>
+        </div>
+
+        <div class="cell small-12 medium-4 box card help-card">
+          <span class="help-card-icon fad fa-comments-alt fa-swap-opacity"></span>
+          <h2 class="help-card-heading">Share With Us</h2>
+          <p>Do you know a cool community that you would like to feature here? Let us know by filling out the Hub Feedback Form.</p>
+          <a class="help-card-cta" href="https://hub.wpi.edu/Feedback" target="_blank">Tell us About it</a>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<%- include('../partials/layout/bottom.ejs', {
+    includeGetSupport: false
+  }); %>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <%- include('../partials/header.ejs'); %>
+  <link rel="stylesheet" type="text/css" href="/css/me.css">
+  <link rel="stylesheet" type="text/css" href="/css/meAgain.css">
+
+<script src="https://embed.acuityscheduling.com/embed/bar/20814532.js" async></script>
+<%- include('../partials/datatables.ejs'); %>
+<script defer type="text/javascript" src="/js/meAgain/profile.js"></script>
+<script defer type="text/javascript" src="/js/me/my-techflex.js"></script>
+<style>
+  /* .me-chunk svg * { 
+  transform-box: fill-box;
+  } */
+  #turkeyHead{transform-origin: bottom center;transform-box: fill-box;}
+  #gobbler{transform-origin: top center;}
+  #turkeyHead.meter1 {animation: turkspeed1 2s 1 both; animation-delay: 1s; display:block;}
+  #turkeyHead.meter2 {animation: turkspeed2 2s 1 both; animation-delay: 1s; display:block;}
+  #turkeyHead.meter3 {animation: turkspeed3 2s 1 both; animation-delay: 1s; display:block;}
+  #turkeyHead.meter4 {animation: turkspeed4 2s 1 both; animation-delay: 1s; display:block;}
+
+
+  #gobbler{transform-origin: top center;transform-box: fill-box;}
+  .meter1 #gobbler {animation: gobbler1 2s 1 both; animation-delay: 1s; display:block;animation-timing-function: cubic-bezier(0.91,-0.01, 0.63, 1.18)}
+  .meter2 #gobbler {animation: gobbler2 2s 1 both; animation-delay: 1s; display:block;animation-timing-function: cubic-bezier(0.91,-0.01, 0.63, 1.18)}
+  .meter3 #gobbler {animation: gobbler3 2s 1 both; animation-delay: 1s; display:block;animation-timing-function: cubic-bezier(0.91,-0.01, 0.63, 1.18)}
+  .meter4 #gobbler {animation: gobbler4 2s 1 both; animation-delay: 1s; display:block;animation-timing-function: cubic-bezier(0.91,-0.01, 0.63, 1.18)}
+  
+  @supports (-moz-appearance:meterbar) and (background-blend-mode:difference,normal) {
+    #gobbler{transform-origin: unset;transform-box:inherit}
+    .meter1 #gobbler {animation: none; animation-delay: unset; display:inherit;animation-timing-function: unset}
+    .meter2 #gobbler {animation: none; animation-delay: unset; display:inherit;animation-timing-function: unset}
+    .meter3 #gobbler {animation: none; animation-delay: unset; display:inherit;animation-timing-function: unset}
+    .meter4 #gobbler {animation: none; animation-delay: unset; display:inherit;animation-timing-function: unset}
+  }
+
+
+  @keyframes turkspeed1 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(-80deg);}
+  }
+  
+  @keyframes turkspeed2 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(-33deg);}
+  }
+  
+  @keyframes turkspeed3 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(5deg);}
+  }
+  
+  @keyframes turkspeed4 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(33deg);}
+  }
+
+  @keyframes gobbler1 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(70deg);}
+  }
+  
+  @keyframes gobbler2 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(23deg);}
+  }
+  
+  @keyframes gobbler3 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(-5deg);}
+  }
+  
+  @keyframes gobbler4 {
+      0% {transform: rotate(0);}
+    100% {transform: rotate(-23deg);}
+  }
+</style>
+</head>
+<%- include('../partials/layout/top.ejs'); %>
+
+<%- include('./partials/top.ejs')%>
+
+<%
+const currentIntent = intentOut.find(o => o.TermName === 'A-Term 2021');
+const lastScan = (currentIntent.LastScanDateTime != "" && currentIntent.LastScanDateTime != "1/1/1900 12:00 AM" && currentIntent.LastScanDateTime != null) ? currentIntent.LastScanDateTime : "";
+const lastScanMoment = moment(new Date(lastScan)).utc().utcOffset(-5);
+const daysFromLastScan = moment().diff(lastScanMoment, 'days');
+
+const exemptEnd = (currentIntent.ExemptEndDate != "" && currentIntent.ExemptEndDate != "1/1/1900 12:00 AM" && currentIntent.ExemptEndDate != null) ? currentIntent.ExemptEndDate : "";
+const exemptEndMoment = moment(new Date(exemptEnd)).utc().utcOffset(-5);
+const daysFromLastExempt = moment().diff(exemptEndMoment, 'days');
+
+
+var Designation = {}
+var Testing = {}
+var Compliance = {}
+
+if(currentIntent.TestInterval != 0 && lastScan != "" && currentIntent.IsExempt !== "True"){
+  if(daysFromLastScan <= currentIntent.TestIntervalMin){
+    Compliance.Level = "Compliant"
+    Compliance.Text = "You're Doing Great!"
+    Compliance.Color = "var(--color-bright-2)"
+    Compliance.gauge = "meter1"
+  }else if(daysFromLastScan > currentIntent.TestIntervalMin && daysFromLastScan <= currentIntent.TestInterval){
+    Compliance.Level = "Due"
+    Compliance.Text = "Please Test Soon."
+    Compliance.Color = "var(--color-bright-5)"
+    Compliance.gauge = "meter2"
+  }else if(daysFromLastScan > currentIntent.TestInterval && daysFromLastScan <= currentIntent.TestIntervalMax){
+    Compliance.Level = "Overdue"
+    Compliance.Text = "Test ASAP!"
+    Compliance.Color = "var(--color-bright-3)"
+    Compliance.gauge = "meter3"
+
+  }else if(daysFromLastScan > currentIntent.TestIntervalMax){
+    Compliance.Level = "Critical"
+    Compliance.Text = "You're Out of Compliance. Go Test!"
+    Compliance.Color = "var(--color-bright-4)"
+    Compliance.gauge = "meter4"
+  }
+}else if(currentIntent.IsExempt === "True"){
+  Compliance.Level = "Exempt";
+  if(exemptEnd != ""){
+    Compliance.Text = `Exempt through ${exemptEndMoment.format('MMMM DD')}`
+  }else{
+    Compliance.Text = `Currently Testing Exempt`
+  }
+  Compliance.Color = "var(--color-lane)"
+
+  // temp for thanksgiving
+  if(currentIntent.TestInterval != 0 && lastScan != ""){
+  if(daysFromLastScan <= currentIntent.TestIntervalMin){
+    Compliance.gauge = "meter1"
+  }else if(daysFromLastScan > currentIntent.TestIntervalMin && daysFromLastScan <= currentIntent.TestInterval){
+    Compliance.gauge = "meter2"
+  }else if(daysFromLastScan > currentIntent.TestInterval && daysFromLastScan <= currentIntent.TestIntervalMax){
+    Compliance.gauge = "meter3"
+  }else if(daysFromLastScan > currentIntent.TestIntervalMax){
+    Compliance.gauge = "meter4"
+  }
+  // 
+}
+
+}else{
+  Compliance.Level = "-"
+  Compliance.Text = "Not Enough Data"
+  Compliance.Color = "var(--color-lane)"
+}
+
+if(daysFromLastExempt <=3){
+  Compliance.Level = "-"
+  Compliance.Text = "Recently Exempt, Test Soon"
+  Compliance.Color = "var(--color-lane)"
+}
+
+
+if(currentIntent.IsExempt === "True"){
+    Designation.Icon ="fa-pause";
+    Designation.Title = "Exempt";
+    Designation.Line2 = `Exempt from Testing`;
+}else if(exemptEnd != "" && daysFromLastExempt <=3){
+  Designation.Icon ="fa-pause";
+    Designation.Title = "Recently Exempt";
+    Designation.Line2 = `Recently Exempt from Testing`;
+}else{
+
+  if(currentIntent.Designation === "Remote"){
+    if(currentIntent.RecordType === "Student"){
+      Designation.Icon ="fa-laptop-house";
+      Designation.Title = "Remote";
+      Designation.Line2 = "Not in Regular Testing";
+    }
+    if(currentIntent.RecordType === "Employee"){
+        Designation.Icon ="fa-laptop-house";
+        Designation.Title = currentIntent.FlexworkStatus
+        Designation.Line2 = "Not in Regular Testing";
+    }
+  }else if(currentIntent.Designation === "On-Campus"){
+    Designation.Icon ="fa-university";
+    Designation.Title = "On-Campus";
+    Designation.Line2 = "Enrolled in Regular Testing";
+  }else if(currentIntent.Designation === "Withdrawn"){
+    Designation.Icon ="fa-sign-out-alt";
+    Designation.Title = "Withdrawn";
+    Designation.Line2 = "Not in Regular Testing";
+  }else{
+    Designation.Icon ="fa-globe";
+    Designation.Title = currentIntent.Designation
+    Designation.Line2 = "";
+  }
+}
+if(lastScan != "" && lastScan != null){
+  if(currentIntent.Designation === "On-Campus"){
+    if(daysFromLastScan <= 0 ){
+      Testing.Line1 = `\<1 Day`
+    }else if ( daysFromLastScan == 1){
+      Testing.Line1 = `1 Day`
+    }else{
+      Testing.Line1 = `${daysFromLastScan} Days`
+    }
+    Testing.Line2 = `Since last swipe on ${lastScanMoment.format('MMMM DD')}`
+
+    Compliance.Line1 = `<span style="color:${Compliance.Color};">${Compliance.Level}</span>`
+    Compliance.Line2 = `${Compliance.Text}`
+    
+  }else if(currentIntent.Designation === "Remote"){
+    if(currentIntent.RecordType === "Employee"){
+        Testing.Line1 = `-`
+        Testing.Line2 = ``
+              
+        Compliance.Line1 = `-`
+        Compliance.Line2 = `Not in Regular Testing`
+    }else{
+      
+    }
+  }else{
+    Testing.Line1 = `-`
+    Testing.Line2 = `Not in Regular Testing`
+  }
+}else{
+  Testing.Line1 = `-`
+  Testing.Line2 = `No Current Test History`
+}
+%>
+
+<%
+var cases = null;
+var clearTime = null;
+var clearTimeMoment = null;
+var todayAfterClear = null;
+var clearReady = null;
+var dayOfIso = null;
+var isoTime = null;
+var isoTimeMoment = null;
+%>
+<%if(caseOut[0] != null){
+  cases = caseOut[0];
+  clearTime = (cases.IsolationClosureEligible != "" && cases.IsolationClosureEligible != "1/1/1900 12:00 AM" && cases.IsolationClosureEligible != null) ? cases.IsolationClosureEligible : "";
+  clearTimeMoment = moment(new Date(clearTime)).utc().utcOffset(-5);
+  todayAfterClear = moment().isAfter(clearTimeMoment.startOf('day'));
+  clearReady = todayAfterClear;
+  isoTime = (cases.IsolationDateStart != "" && cases.IsolationDateStart != "1/1/1900 12:00 AM" && cases.IsolationDateStart != null) ? cases.IsolationDateStart : "";
+  isoTimeMoment = moment(new Date(isoTime)).utc().utcOffset(-5);
+  // dayOfIso = moment.duration(isoTimeMoment.diff(moment().startOf('day'))).asDays();
+  dayOfIso = moment.duration(moment().startOf('day').diff(isoTimeMoment,"days",false));
+}
+%>
+
+<% //Check if they have an active record
+if(currentIntent && currentIntent != null){
+%>
+<%if(false){%>
+  <div class="grid-container me-section">
+    <div class="me-box group grid-x grid-padding-x">
+      <div class="cell small-12 medium-12 large-4 me-box-item">
+        <h2>Current Designation</h2>
+        <div class="box-value"><i class="fas <%-Designation.Icon%>"></i> <%-Designation.Title%></div>
+        <div class="box-value-sub"><%-Designation.Line2%></div>
+      </div>
+      <div class="cell small-12 medium-6 large-4 me-box-item">
+        <h2>Testing</h2>
+        <div class="box-value"><%-Testing.Line1%></div>
+        <div class="box-value-sub"><%-Testing.Line2%></div>
+      </div>
+      <div class="cell small-12 medium-6 large-4 me-box-item">
+        <h2>Compliance</h2>
+        <div class="box-value"><%-Compliance.Line1%></div>
+        <div class="box-value-sub"><%-Compliance.Line2%></div>
+      </div>
+    </div>
+  </div>
+  <%}%>
+
+  <%if(true){%>
+  <div class="grid-container me-section">
+    <div class="me-box group grid-x grid-padding-x">
+      <h2 class="section-header">Quick Links</h2>
+      <div class="cell small-12 grid-x grid-margin-x small-up-1 medium-up-2 large-up-4">
+        <a href="/me/My-Case" target="_blank" class="cell me-quicklink">Report Positive Case</a>
+        <a href="https://www.wpi.edu/we-are-wpi/frequently-asked-questions" target="_blank" class="cell me-quicklink">View FAQs</a>
+      </div>
+    </div>
+  </div>
+  <%}%>
+  
+  <% if(false == true && currentIntent.Designation === "On-Campus"){%>
+  <div class="grid-container me-section" style="padding:0">
+    <div class="grid-x grid-margin-x">
+      <div class="cell small-12 medium-12 large-12 me-box group me-box-item grid-x grid-margin-x" style="">
+        <h2><i class="fad fa-turkey" data-tooltip tabindex="1" title="If anyone asks this is tofurkey"></i> Thanksgiving Break</h2>
+        <p>This is a reminder that <strong>THIS WEEK</strong>, our testing center at Harrington Auditorium will be <strong>CLOSED</strong> Wed, Thu, Fri, Sat, and Sun, Nov 24-28th, and will reopen on Monday, Nov 29th for normal hours.</p>
+      </div>
+      </div>
+  </div>
+  <%}%>
+
+  <div class="grid-container me-section" style="padding:0">
+  <h2 class="section-header">My Tasks</h2>
+    <div class="grid-x grid-margin-x">
+
+      <% //Testing Waiver Logic 
+        var waiver = {}
+        if(currentIntent.TestingConsent2022 == 'True'){
+          let DateOut = moment(new Date(currentIntent.TestingConsentDate2022)).utc().utcOffset(-5).format("M/D/YYYY");
+          waiver.text = `Signed on ${DateOut}. Click to review signed document `;
+          waiver.status = "Complete";
+          waiver.statusColor = "var(--color-bright-2)";
+          waiver.icon = "fa-check-circle";
+        }else{
+          waiver.text = "Click to review and sign 2022-2023 consent forms";
+          waiver.status = "waiting";
+          waiver.statusColor = "var(--color-bright-3)";
+          waiver.icon = "fa-exclamation-circle";
+        }
+      %>
+      <a class="cell small-12 medium-6 large-6 me-link-item" href="/io/waiver/<%-currentIntent.RecID%>"  target="_blank">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-file-signature"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>Sign 2022-2023 Testing Waivers</h3>
+            <div><%-waiver.text%></div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal <%-waiver.icon%>" style="color:<%-waiver.statusColor%>"></i>
+            <div><%-waiver.status%></div>
+          </div>
+        </div>
+      </a>
+
+      <%if(cases && cases != null && (cases.Status == "Ready for Closure"|| clearReady) && cases.Status != "Cleared"){%>
+      <a class="cell small-12 medium-6 large-6 me-link-item" href="/Me/My-Case%>"  target="_blank">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-ballot-check"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>Complete Isolation Clearance</h3>
+            <div>Click here to start covid isolation clearance process</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal fa-exclamation-circle" style="color:var(--color-bright-3)"></i>
+            <div>Ready</div>
+          </div>
+        </div>
+      </a>
+    <%}%>
+
+      <% //BTerm Intent
+        var intentTask = {}
+        if(currentIntent.Bterm2021Complete == 'True'){
+          intentTask.status = "Complete";
+          intentTask.statusColor = "var(--color-bright-2)";
+          intentTask.icon = "fa-check-circle";
+        }else{
+          intentTask.status = "waiting";
+          intentTask.statusColor = "var(--color-bright-3)";
+          intentTask.icon = "fa-exclamation-circle";
+        }
+        const showIntentTask = ((currentIntent.RecordType == "Student" && currentIntent.Designation == "Remote") ||  currentIntent.Bterm2021Onboarder == 'True')
+      %>
+      <% if(true == false && showIntentTask == true){%>
+      <a class="cell small-12 medium-6 large-6 me-link-item" href="/io/student-intent/<%-currentIntent.RecID%>"  target="_blank">
+        <div class="grid-x">
+          <div class="cell small-2 me-link-item-icon">
+            <i class="fad fa-map-marker-question"></i>
+          </div>
+          <div class="cell small-8 me-link-item-text">
+            <h3>Let us Know your Intent for B-Term</h3>
+            <div>Tell us if you plan to come to campus for B-term 2021</div>
+          </div>
+          <div class="cell small-2 me-link-item-status">
+            <i class="fal <%-intentTask.icon%>" style="color:<%-intentTask.statusColor%>"></i>
+            <div><%-intentTask.status%></div>
+          </div>
+        </div>
+      </a>
+      <%}%>
+
+
+    </div>
+  </div>
+
+
+  <%if(false && currentIntent.Designation === "On-Campus" && currentIntent.IsExempt !== "True"){%>
+    <%
+      var testFrequency = "";
+      if(currentIntent.TestingTemplate == "Student - General" || currentIntent.TestingTemplate == "Employee - General" ){
+        testFrequency = "Once Weekly"
+      }
+      else if(currentIntent.TestingTemplate == "Student - 2x Weekly" || currentIntent.TestingTemplate == "Employee - 2x Weekly"){
+        testFrequency = "Twice Weekly"
+      }
+      else{
+        testFrequency = "-"
+      }
+    %>
+    
+    <div class="grid-container me-section" style="padding:0">
+      <h2 class="section-header">Testing &amp; Compliance</h2>
+      <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-12 large-12 me-box group me-box-item grid-x grid-margin-x">
+
+          <div class="cell small-12 medium-8"style="
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+  ">
+            <h2>Current Compliance</h2>
+            <div class="me-chunk">
+              <div class="gauge-wrapper">
+                <div class="gauge four <%-Compliance.gauge%>">
+                  <div class="slice-colors">
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                  </div>
+                  <div class="needle"></div>
+                  <div class="gauge-center">
+                    <div class="ilabel">Status</div>
+                    <div class="number"><%-Compliance.Level%></div>
+                  </div>    
+                </div>
+              </div>
+
+              
+            </div>
+
+            <div class="grid-x grid-margin-x me-fact">
+
+              <div class="cell small-12 medium-4">
+                <h2>Testing Frequency</h2>
+                <div><%-testFrequency%></div>
+              </div>
+
+              <div class="cell small-12 medium-4">
+                <h2>Last Test Swipe</h2>
+                <div><%-lastScanMoment.format('MM-DD-YYYY h:mm a')%></div>
+              </div>
+
+              <div class="cell small-12 medium-4">
+                <h2>Current Compliance Level</h2>
+                <div style="color:<%-Compliance.Color%>"><%-Compliance.Level%></div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="cell small-12 medium-4">
+            <h2>Test Center Hours</h2>
+            <table class="me-hours">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <tr>
+                  <td>Monday</td>
+                  <td>8:00 am - 12:00 pm<br>
+                    12:30 pm - 5:00 pm</td>
+                </tr>
+                <tr>
+                  <td>Tuesday</td>
+                  <td>8:00 am - 12:00 pm<br>
+                    12:30 pm - 5:00 pm</td>
+
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <td>8:00 am - 12:00 pm<br>
+                    12:30 pm - 5:00 pm</td>
+                </tr>
+                <tr>
+                  <td>Thursday </td>
+                  <td>8:00 am - 12:00 pm<br>
+                    12:30 pm - 5:00 pm</td>
+                </tr>
+                <tr>
+                  <td>Friday</td>
+                  <td>Closed</td>
+                </tr>
+                <tr>
+                  <td>Saturday</td>
+                  <td>Closed</td>
+                </tr>
+                <tr>
+                  <td>Sunday</td>
+                  <td>8:00 am - 12:00 pm<br>
+                    12:30 pm - 4:00 pm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  <%}%>
+  <%if(cases && ((cases.Status == "Cleared" && dayOfIso <= 10) || (cases.Status != "Cleared"))){%>
+    <div class="grid-container me-section" style="padding:0">
+      <h2 class="section-header">My Case</h2>
+      <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-12 large-12 me-box group me-box-item grid-x grid-margin-x">
+          <div class="cell small-12 medium-8" style="display: flex;flex-direction: column;justify-content: space-around;">
+            <h2>Isolation Tracking</h2>
+              <div id="caseTracker">
+                <div class="switch">
+                  <input class="switch-input" id="vis-table" type="checkbox" name="vis-table">
+                  <label class="switch-paddle" for="vis-table">
+                    <span class="show-for-sr">Toggle view between Visual and Table</span>
+                    <span class="switch-active" aria-hidden="true"> <i class="fas fa-table"></i></span>
+                    <span class="switch-inactive" aria-hidden="true"><i class="fas fa-chart-pie"></i></span>
+                  </label>
+                </div>
+                <div id="caseTable" style="display:none">
+                  <% 
+                    var dayState = {};
+                    var thisIso = dayOfIso+1;
+                    for (let i = 1; i <= 10; i++) {
+                        if( i < thisIso){
+                            dayState[i] = 'filled';
+                        }else if(thisIso == i){
+                            dayState[i]= 'current';
+                        }else{
+                            dayState[i]= null;
+                        }
+                        
+                    }
+                  %>
+                  <table class="me-hours">
+                    <thead>
+                      <tr>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                      <tr class="<%=dayState[1]%>">
+                        <td>0</td>
+                        <td><%=isoTimeMoment.format('L')%></td>
+                        <td>Test Date</td>
+                      </tr>
+                      <tr class="<%=dayState[2]%>">
+                        <td>1</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>In Isolation</td>
+                      </tr>
+                      <tr class="<%=dayState[2]%>">
+                        <td>2</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>In Isolation</td>
+                      </tr>
+                      <tr class="<%=dayState[3]%>">
+                        <td>3</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>In Isolation</td>
+                      </tr>
+                      <tr class="<%=dayState[4]%>">
+                        <td>4</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>In Isolation</td>
+                      </tr>
+                      <tr class="<%=dayState[5]%>">
+                        <td>5</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>In Isolation</td>
+                      </tr>
+                      <tr class="<%=dayState[6]%>">
+                        <td>6</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>Clearance Eligible</td>
+                      </tr>
+                      <tr class="<%=dayState[7]%>">
+                        <td>7</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>Clearance Eligible</td>
+                      </tr>
+                      <tr class="<%=dayState[8]%>">
+                        <td>8</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>Clearance Eligible</td>
+                      </tr>
+                      <tr class="<%=dayState[9]%>">
+                        <td>9</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>Clearance Eligible</td>
+                      </tr>
+                      <tr class="<%=dayState[10]%>">
+                        <td>10</td>
+                        <td><%=isoTimeMoment.add(1,'days').format('L')%></td>
+                        <td>Clearance Eligible</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+                <div id="caseMeter">
+  
+                  <%- include('./partials/case-meter.ejs',{cases,currentIntent,dayOfIso}); %></p>
+                </div>
+              </div>
+          </div>
+          <div class="cell small-12 medium-4" style="display: flex;flex-direction: column;">
+            <h2>Overview</h2>
+
+            <% 
+              var caseStatus = {}
+
+              if(cases.Status =="In Isolation"){
+                caseStatus.icon = "fa-calendar-week";
+                caseStatus.text = "In Isolation";
+              }
+              if(cases.Status =="Ready for Closure"){
+                caseStatus.icon = "fa-calendar-check";
+                caseStatus.text = "Ready for Clearance";
+              }
+              if(cases.Status =="Cleared"){
+                caseStatus.icon = "fa-calendar-check";
+                caseStatus.text = "Cleared";
+              }
+            %>
+              <div class="state-card">
+                <div class="state-card-icon"><i class="fad <%=caseStatus.icon%>"></i></div>
+                <div class="state-card-text">
+                  <div class="state-card-label">Status</div>
+                  <div class="state-card-subtext"><%=caseStatus.text%></div>
+                </div>
+              </div>
+              <%if(cases.Status =="In Isolation"){%>
+              <div class="state-card">
+                <div class="state-card-icon"><i class="fad fa-calendar"></i></div>
+                <div class="state-card-text">
+                  <div class="state-card-label">Isolation Clear Eligible</div>
+                  <div class="state-card-subtext">Eligble to start on <%=clearTimeMoment.format('LL')%></div>
+                </div>
+              </div>
+              <%}%>
+              <% 
+              var mealStatus = {}
+              var showMeal = false;
+              if(cases.Status != "Cleared" && cases.LocationStatus == "Residence Hall" && currentIntent.MealPlanType != null){
+                showMeal = true
+                mealStatus.label = "Daily Meal Delivery"
+                mealStatus.icon = "fa-shopping-bag"
+                mealStatus.text = "WPI Townhouses"
+              }else if(cases.Status != "Cleared" && cases.LocationStatus == "Town Houses"){
+                showMeal = true
+                mealStatus.label = "Daily Meal Delivery"
+                mealStatus.icon = "fa-shopping-bag"
+                mealStatus.text = "WPI Townhouses"
+              }else if(cases.Status =="Cleared" && currentIntent.MealPlanType != null && dayOfIso <= 10){
+                showMeal = true
+                mealStatus.label = "On-Campus Dining"
+                mealStatus.icon = "fa-utensils-alt"
+                mealStatus.text = "Grab & Go or Distanced Dining"
+              }else{
+                showMeal = false;
+                mealStatus.label = null;
+                mealStatus.icon = null;
+                mealStatus.text = null;
+              }
+            %>
+            <%if(false && showMeal){%>
+              <div class="state-card">
+                <div class="state-card-icon"><i class="fad <%=mealStatus.icon%>"></i></div>
+                <div class="state-card-text">
+                  <div class="state-card-label"><%=mealStatus.label%></div>
+                  <div class="state-card-subtext"><%= mealStatus.text%></div>
+                </div>
+              </div>
+            <%}%>
+              <div class="state-card">
+                <div class="state-card-icon"><i class="fad fa-head-side-mask"></i></div>
+                <div class="state-card-text">
+                  <div class="state-card-label">Masking</div>
+                  <div class="state-card-subtext">Wear a well-fitting surgical or KN95 mask</div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+  <%}%>
+
+<%// Show Error.
+}else{
+%>
+  <div class="grid-container">
+    <div class="me-box group">
+        You do not appear to have a current TechFlex Record for this term.
+    </div>
+  </div>
+<%}%>
+<%- include('./partials/bottom.ejs'); %>
+
+<%- include('../partials/layout/bottom.ejs'); %>
+</html>

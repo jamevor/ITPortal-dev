@@ -1,0 +1,302 @@
+<style>
+  .help-form label {
+    font-weight: 600;
+  }
+  .help-form .box {
+    background: var(--color-lane);
+    padding: 0.5em 1em;
+  }
+  .help-form textarea {
+    min-width:100%;
+  }
+  .help-form input, .help-form textarea {
+    background: var(--color-body);
+    color: var(--color-body-text);
+    margin-bottom:.75em;
+  }
+  .night .help-form input:focus, .night .help-form textarea:focus {
+    background: var(--color-lane-subtler);
+  }
+  .help-form .button-submit {
+    width: 100%;
+    text-align: center;
+    background: var(--color-pop);
+    height: 3em;
+    color: var(--color-light);
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--shadow-standard-y);
+    transition: background .5s ease;
+  }
+  .help-form .button-submit:hover {
+    background: var(--color-pop-h);
+  }
+  .help-form .button-submit.disabled {
+    cursor: not-allowed;
+    background: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input {
+    display: none;
+  }
+  .help-form .impact-boxes .cell{
+    display:flex;
+  }
+  .help-form .impact-boxes .cell label {
+    border: 1px solid var(--color-lane);
+    padding: 1em .5em;
+    text-align: center;
+    margin: .5em 0;
+    width: 100%;
+    transition: all .5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .box-verified-info{
+    overflow:hidden;
+   }
+  .help-form label i{
+    font-size:2em;
+  }
+  .help-form label .label2{
+    font-weight: 400;
+    color:var(--color-body-subtitle);
+  }
+  .help-form .impact-boxes .cell input:checked + label {
+    background-color: var(--color-pop);
+    color: var(--color-light);
+    border-color: var(--color-pop-h);
+  }
+  .help-form .impact-boxes .cell input:checked + label .label2{
+    color:var(--color-lane-subtle)
+  }
+  .help-form .impact-boxes .cell label:hover {
+    background: var(--color-lane);
+    color:var(--color-pop)
+  }
+  .input-box .content-label{
+    font-size: 1rem;
+    margin: 0;
+    line-height:1;
+  }
+  .input-box .content{
+    font-weight: 800;
+    margin: 0;
+  }
+  .input-box .content2{
+    font-size:.9em;
+    font-weight:400;
+    margin:0;
+  }
+  .box-verified-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-img-square {
+    background: var(--color-user);
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+  }
+  fieldset{
+    padding: 1em;
+    border: 1px dashed var(--color-lane);
+    margin:1em 0;
+    position: relative;
+  }
+  .add-student{
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+    margin:1em auto;
+    background:var(--color-lane);
+    border-radius: 3px;
+    box-shadow: var(--shadow-standard-y);
+    transition:all .5s ease;
+  }
+  .add-student:hover{
+    cursor:pointer;
+    box-shadow: var(--shadow-standard-y-h);
+    background: var(--color-bright-2);
+  }
+  legend {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+</style>
+<%
+const toasts = [
+  {
+    id: 'toast-save-success',
+    type: 'success',
+    title: 'Success',
+    message: 'Your request has been submitted.',
+    show: false
+  },
+  {
+    id: 'toast-save-error',
+    type: 'error',
+    title: 'Whoops',
+    message: 'Something went wrong trying to submit your request',
+    show: false
+  }
+]; 
+%>
+<%- include('../../../partials/components/toaster.ejs', { toasts }); %>
+<div class="grid-container help-form">
+  <div class="grid-x grid-margin-x align-center">
+    <div class='cell small-12 medium-8 large-6'>
+      <div class='grid-x grid-margin-x'>
+
+        <div class='cell box'>
+          <% if (locals.user && user.id && locals.userAttributes) { %>
+            <div class='grid-x grid-margin-x input-box'>
+              <div class='cell small-6 box-verified-profile'>
+                <div class="profile-img-square" style="background-image:url('/img/ico-intro.svg');"></div>
+                <p style="margin:0;"><i class="far fa-badge-check color-bright-2"></i> Verified User</p>
+              </div>
+
+              <div class='cell small-6 box-verified-info'>
+                <p id="full-name" class="content" style="margin:0;"><%= userAttributes.givenname + ' ' + userAttributes.surname %></p>
+                <p id="wpi-department" class="content2"><%= userAttributes['user.department'] %></p>
+                <p id="wpi-id" class="content2"><%= userAttributes['user.employeeid'] %></p>
+
+
+                <p id="wpi-email" class="content"><i class="fas fa-envelope-square"></i></i> <%= userAttributes.emailaddress %></p>
+
+                <p id="wpi-phone" class="content"><i class="fas fa-phone-square"></i></i> <%= userAttributes['user.telephonenumber'] %></p>
+              </div>
+              
+            </div>
+          <% } else { %>
+            <label for="full-name">What is your Full Name?</label>
+            <input type="text" id="full-name" name="full-name">
+
+            <label for="wpi-department">WPI Department</label>
+            <input type="text" id="wpi-department" name="wpi-department">
+
+            <label for="wpi-id">WPI ID #</label>
+            <input type="number" id="wpi-id" name="wpi-id">
+
+            <label for="wpi-email">WPI Email</label>
+            <input type="email" id="wpi-email" name="wpi-email">
+
+            <label for="preferred-email">At which email address should we contact you?</label>
+            <input type="email" id="preferred-email" name="preferred-email">
+
+            <label for="preferred-phone">What is your preferred contact phone number?</label>
+            <input type="tel" id="preferred-phone" name="preferred-phone">
+          <% } %>
+
+        </div>
+    
+        <div class='cell' style="margin-top:1em;">
+
+    
+          <h3 style="margin-bottom:0; font-size:1.25em;">Who are you requesting access for?</h3>
+
+          <div class='grid-x grid-margin-x impact-boxes'>
+            <div class="cell small-12 medium-6">
+              <input type="radio" id="request-who-me" name="request-who" value="myself">
+              <label for="request-who-me"><i class='fas fa-hand-point-up'></i> Me</label>
+            </div>
+            <div class="cell small-12 medium-6">
+              <input type="radio" id="request-who-other" name="request-who" value="other">
+              <label for="request-who-other"><i class='fas fa-hand-point-right'></i> Someone Else</label>
+            </div>
+          </div>
+
+          <fieldset id="student-fieldset-0" style="display: none;">
+            <%# <legend style="display: none;">Student 1</legend> %>
+            <%# <button class="close-button" aria-label="Close Fieldset" type="button" data-close-target="student-fieldset-0"> <span aria-hidden="true">&times;</span> </button> %>
+            <label for="student-name-0">User's Full Name</label>
+            <input type="text" id="student-name-0" name="student-name-0" class='student-name-field'>
+            <label for="student-department-0">User's WPI Department</label>
+            <input type="text" id="student-department-0" name="student-department-0">
+            <label for="student-id-0">User's WPI ID #</label>
+            <input type="number" id="student-id-0" name="student-id-0">
+            <label for="student-email-0">User's WPI Email</label>
+            <input type="email" id="student-email-0" name="student-email-0">
+
+            <h3 style="margin-bottom:0; font-weight:600;font-size:.875rem;">What are their affilliations for this access? <span style="font-size:.875rem; color:var(--color-body-subtitle); font-weight:400">(Choose all that apply)</span></h3>
+            <div class='grid-x grid-margin-x impact-boxes' id="impact-boxes-0">
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-teachingAssistant-0" name="student-type-teachingAssistant-0" value="Teaching Assistant - Graduate">
+                <label for="student-type-teachingAssistant-0"><i class='fas fa-user-graduate'></i><br> Teaching Assistant<br><span class="label2">(Graduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-researchAssistant-0" name="student-type-researchAssistant-0" value="Research Assistant - Graduate">
+                <label for="student-type-researchAssistant-0"><i class='fas fa-microscope'></i><br> Research Assistant<br><span class="label2">(Graduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-undergradResearcher-0" name="student-type-undergradResearcher-0" value="Researcher ">
+                <label for="student-type-undergradResearcher-0"><i class='fas fa-user-edit'></i><br> Researcher<br><span class="label2">(undergraduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-studentWorker-0" name="student-type-studentWorker-0" value="Student Worker">
+                <label for="student-type-studentWorker-0"><i class='fas fa-user'></i><br> Student Worker<br>&nbsp;</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-PLA-0" name="student-type-PLA-0" value="Peer Learning Assistant - Undergraduate">
+                <label for="student-type-PLA-0"><i class='fas fa-comment-alt-smile'></i><br> PLA<br><span class="label2">(undergraduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-ISP-0" name="student-type-ISP-0" value="ISP">
+                <label for="student-type-ISP-0"><i class='fas fa-lightbulb-on'></i><br> ISP<br>&nbsp;</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-IQP-0" name="student-type-IQP-0" value="IQP - Undergraduate">
+                <label for="student-type-IQP-0"><i class='fas fa-user-cog'></i><br> IQP<br><span class="label2">(undergraduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-MQP-0" name="student-type-MQP-0" value="MQP - Undergraduate">
+                <label for="student-type-MQP-0"><i class='fas fa-users-cog'></i><br> MQP<br><span class="label2">(undergraduate)</span></label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-Post-Doc-0" name="student-type-Post-Doc-0" value="Post Doc">
+                <label for="student-type-Post-Doc-0"><i class='fas fa-graduation-cap'></i><br> Post Doc<br>&nbsp;</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-Faculty-0" name="student-type-Faculty-0" value="Faculty">
+                <label for="student-type-Faculty-0"><i class='fas fa-chalkboard-teacher'></i><br> Faculty<br>&nbsp;</label>
+              </div>
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-Staff-0" name="student-type-Staff-0" value="Staff">
+                <label for="student-type-Staff-0"><i class='fas fa-clipboard-user'></i><br> Staff<br>&nbsp;</label>
+              </div>
+              
+              <div class="cell small-12 medium-4">
+                <input type="checkbox" id="student-type-other-0" name="student-type-other-0" value="other" data-slide-target="student-type-other-detail-wrapper-0">
+                <label for="student-type-other-0"><i class='fas fa-comment-alt-dots'></i><br> Other<br>&nbsp;</label>
+              </div>
+            </div>
+            <div class="cell small-12 medium-12" class="student-type-other-detail-wrapper" id="student-type-other-detail-wrapper-0" style="display: none;">
+              <label for="student-type-other-detail-0">Other Affiliation or Reason</label>
+              <input type="text" id="student-type-other-detail-0" name="student-type-other-detail-0">
+            </div>
+          </fieldset>
+
+          <label for="details"><strong>In detail</strong>, describe your access request.</label>
+          <p style="font-size:.875rem; margin-bottom:0;"><em>Please explain why the work needs to be done physically on campus, and what the impact will be on the student and/or our ability to deliver the curriculum if this access is not granted.</em></p>
+          <textarea id="details" name="details" rows="5"></textarea>
+
+          <label for="locations">What location(s) will work take place on Campus?.</label>
+          <p style="font-size:.875rem; margin-bottom:0;"><em>Please list the location(s), including the specific room number, where the work will be completed, and frequency and times of day when students would do the work</em></p>
+          <textarea id="locations" name="locations" rows="3"></textarea>
+
+          <label for="social-distancing">Please describe measures that will be taken to enforce social distancing in the lab space:</label>
+          <textarea id="social-distancing" name="social-distancing" rows="3"></textarea>
+          
+          <button id="button-submit-help-form" class="button-submit">Submit Access Request</button>
+          <p style="font-size: 0.75rem;margin-top: 1em;color: var(--color-body-subtitle);background: var(--color-body);">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+
+          
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</div>

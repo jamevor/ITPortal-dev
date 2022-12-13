@@ -1,0 +1,198 @@
+<%
+
+%>
+<div class="grid-container me-section" style="padding:0;">
+<%if(cases.Status !="Cleared"){%>
+  <div id="flickityWrapper2" style='opacity:0;transition:opacity .25s ease;'>
+
+    <div class="grid-x" style="width:100%">
+      <div class="cell medium-12 box card profile-section">
+        <h2> <i class="far fa-clinic-medical"></i> COVID-19 Isolation Clearance</h2>
+        <div class="profile-section-content">
+          <p>WPI is following the current CDC guidance regarding a full 5-day isolation period from the date of your positive test (the date your positive test is taken is day 0). Clearing isolation will depend on your symptom resolution as well as optionally testing negative with a rapid antigen test on day 6 or later if you choose to use one of WPI's free, self-administered rapid tests. </p>
+          <p>In general, the earliest you may be able to clear isolation is after 5 full days (clearing on day 6). For the continued safety of the community, you must  continue to wear a well-fitting surgical or KN95 mask at all times when leaving your home or interacting with others; this means no dining with others and no other mask-free activities until 10 full days have passed since the date of your positive test.</p>  
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-x" style="width:100%">
+        <div class="cell medium-12 box card profile-section">
+            <h2> <i class="far fa-ballot-check"></i>Isolation Clearance Checklist</h2>
+            <div class="profile-section-content">
+                <p>Please carefully and honestly answer the questions below so we can clear you from isolation at the appropriate time</p>
+
+                <p style="margin-bottom:.5em;margin-top:1em;"><strong>Are you asymptomatic or are your symptoms getting better? </strong></p>
+                <div class="profile-option">
+                    <div style="display: flex;align-items: center;"><i class="fad fa-2x fa-hand-holding-medical"></i></div>
+                    <label for="check-asymptomatic-yes">
+                        <input type="radio" value="true" id="check-asymptomatic-yes" name="check-asymptomatic">
+                        <span>Yes</span>
+                    </label>
+                    <label for="check-asymptomatic-no">
+                        <input type="radio" value="false" id="check-asymptomatic-no" name="check-asymptomatic">
+                        <span>No</span>
+                    </label>
+                </div>
+                <hr>
+                <p style="margin-bottom:.5em;margin-top:1em;"><strong>Have you been fever-free for 24 hours without any fever reducing medication?</strong></p>
+                <div class="profile-option">
+                    <div style="display: flex;align-items: center;"><i class="fad fa-2x fa-temperature-low"></i></div>
+                    <label for="check-feverFree-yes">
+                        <input type="radio" value="true" id="check-feverFree-yes" name="check-feverFree">
+                        <span>Yes</span>
+                    </label>
+                    <label for="check-feverFree-no">
+                        <input type="radio" value="false" id="check-feverFree-no" name="check-feverFree">
+                        <span>No</span>
+                    </label>
+                </div>
+                <hr>
+                <p style="margin-bottom:.5em;margin-top:1em;"><strong>Have you isolated for at least 5 full days (day 0 is the date you took your positive test) and today is day 6 or later?</strong></p>
+                <div class="profile-option">
+                    <div style="display: flex;align-items: center;"><i class="fad fa-2x fa-calendar-check"></i></div>
+                    <label for="check-isolation-yes">
+                        <input type="radio" value="true" id="check-isolation-yes" name="check-isolation">
+                        <span>Yes</span>
+                    </label>
+                    <label for="check-isolation-no">
+                        <input type="radio" value="false" id="check-isolation-no" name="check-isolation">
+                        <span>No</span>
+                    </label>
+                </div>
+
+                <p style="margin-top:1em;margin-bottom:0"><strong>If you have taken an optional rapid antigen test on day 6 or later, what were the results?</strong></p>
+                <p style="margin-bottom:.5em;font-style: italic;font-size: .875em;">Please only answer for your most recent rapid test</p>
+
+                <div class="profile-option">
+                    <div style="display: flex;align-items: center;"><i class="fad fa-2x fa-shield-virus"></i></div>
+                    <label for="check-test-no">
+                        <input type="radio" value="No test" id="check-test-no" name="check-test">
+                        <span>Did Not Test</span>
+                    </label>
+                    <label for="check-test-positive">
+                        <input type="radio" value="Positive" id="check-test-positive" name="check-test">
+                        <span>Positive</span>
+                    </label>
+                    <label for="check-test-negative">
+                      <input type="radio" value="Negative" id="check-test-negative" name="check-test">
+                      <span>Negative</span>
+                    </label>
+                </div>
+
+                <div class="grid-x grid-margin-x align-center" style="margin:2em;">
+                    <button id="button-submit-clear" class="cell button-submit disabled small-12 medium-10 large-8">Check Clearance Eligibility</button>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+    
+
+
+    <div class="slideControls" style="display:none;">
+      <button id="back" style="display: none;">Back</button>
+      <button id="next">Continue</button>
+    </div>
+    <% const recordType = currentIntent.RecordType
+       var clearedLanguage ='';
+       var notLanguage = '';
+
+        if(recordType == 'Student'){
+            clearedLanguage = `<p>You have met all of the requirements to clear from isolation at this time.  For the continued safety of the community, you must continue to wear a well-fitting surgical or KN95 mask at all times when leaving your home or interacting with others; this means no dining with others and no other mask-free activities until  10 full days have passed since the date of your positive test. </p>`
+            notLanguage = `<p>Thank you for completing the isolation screening form. Unfortunately, you may still be contagious at this time and therefore do not meet the criteria to clear isolation today.</p>
+            
+            <ul>
+              <li>If you continue to have a fever ( >100.4º Fahrenheit) or your other symptoms have not improved after your initial 5 days of isolation, you should wait to end your isolation until you are fever-free for 24 hours without the use of fever-reducing medication and your other symptoms have improved.</li>
+              <li>If you tested positive with a rapid antigen test on day 6 or later, please continue to isolate. Many people will test negative by day 8, but we ask that you wait at least 24 hours before taking another rapid antigen test. You may make an appointment to pick up more rapid tests at the Hackfeld rapid test site if you need them. Please continue to isolate until you either test negative with a rapid antigen test or you have completed 10 full days of isolation. You can leave isolation on day 11 with no further testing necessary if you are fever free and your symptoms have improved.</li>
+            </ul>
+            <p>If you are experiencing any concerning symptoms, please contact WPI Student Health Services at 508-831-5520.</p>
+            <p>You will need to fill out this isolation clearance form as many times as necessary until it alerts you that you have met the requirements to clear isolation.</p>`
+        if(cases.LocationStatus == "Town Houses"){
+          clearedLanguage += `<hr><p>Before leaving the WPI Townhouses, please be sure to follow these instructions in order to check out of your townhouse: </p>
+                            <ul>
+                              <li>Be sure to place all trash into the trash bags.  <strong style="text-decoration: underline;">Please place all trash in the dumpsters</strong>. </li>
+                              <li>Please place your linens (including the pillow) into the washing machine.  Do not turn the machine on. </li>
+                              <li>Please wipe down all high touch surfaces, including the counter tops, sinks, light switches and doorknobs. </li>
+                              <li>Please wash all pots, pans, and other dish items you used during your stay. </li>
+                              <li>Be sure that you clean and flush the toilet one last time. </li>
+                              <li><strong style="text-decoration: underline;">Please put the key back into the key box outside the apartment.</strong></li>
+                            </ul>
+                            <p>Once you have left the townhouse, please email the testingcoordinator@wpi.edu stating which apartment you have checked out of.</p>
+            `
+        }
+       }else if(recordType == 'Employee'){
+            clearedLanguage = `<p>You have met all of the requirements to clear from isolation at this time. You may return to in-person work but for the continued safety of the community, you must continue to wear a well-fitting surgical or KN95 mask at all times when leaving your home or interacting with others; this means no dining with others and no other mask-free activities until 10 full days have passed since the date of your positive test.  </p>`            
+            notLanguage += `<p>Thank you for completing the isolation clearance form. Unfortunately, you may still be contagious and therefore do not meet the criteria to clear isolation today.</p>
+            <ul>
+              <li>If you continue to have a fever ( >100.4º Fahrenheit) or your other symptoms have not improved after your initial 5 days of isolation, you should wait to end your isolation until you are fever-free for 24 hours without the use of fever-reducing medication and your other symptoms have improved.</li>
+              <li>If you tested positive with a rapid antigen test on day 6 or later, please continue to isolate. Many people will test negative by day 8, but we ask that you wait at least 24 hours before taking another rapid antigen test. You may make an appointment to pick up more rapid tests at the Hackfeld rapid test site if you need them. Please continue to isolate until you either test negative with a rapid antigen test or you have completed 10 full days of isolation. You can leave isolation on day 11 with no further testing necessary if you are fever free and your symptoms have improved.</li>
+            </ul>
+                  <p>If you continue to feel sick, please stay home and call your primary care provider to get medical advice. Discuss your return to work with your supervisor. Your supervisor may reach out to your division's talent partner for additional discussions if circumstances extend beyond what's typically expected </p>
+                <p>You will need to fill out this isolation clearance form as many times as necessary until it alerts you that you have met the requirements to clear isolation. </p>
+            `
+       }
+    
+    %>
+
+    <div class="grid-x grid-margin-x" id="cleared" style="display:none">
+        <div class="cell medium-12 box card profile-section">
+  
+          <h2> <i class="far fa-info-circle"></i> Isolation Cleared</h2>
+            <div class="profile-section-content">
+            <i class="fad fa-check-circle fa-4x text-center" style="color:var(--color-bright-2);display: block;"></i><br>
+            <h3 class="text-center">You have been cleared</h3>
+            <p><%-clearedLanguage%></p>
+          </div>
+        </div>
+    </div>
+
+    <div class="grid-x grid-margin-x" id="notcleared" style="display:none">
+        <div class="cell medium-12 box card profile-section">
+  
+          <h2> <i class="far fa-pause-circle"></i> Isolation Not Cleared</h2>
+            <div class="profile-section-content">
+                <i class="fad fa-pause-circle fa-4x text-center" style="color:var(--color-bright-4);display: block"></i><br>
+                <h3 class="text-center">You are <strong>NOT</strong> cleared</h3>
+                <p><%-notLanguage%></p>
+            </div>
+        </div>
+    </div>
+
+
+<%}%>
+
+<%if(cases.Status =="Cleared"){%>
+    <% 
+        IsolationDateEnd = (cases.IsolationDateEnd != "" && cases.IsolationDateEnd != "1/1/1900 12:00 AM" && cases.IsolationDateEnd != null) ? cases.IsolationDateEnd : "";
+        IsolationDateEndMoment = moment(new Date(IsolationDateEnd)).utc().utcOffset(-5).format('LL');
+    %>
+    <div class="grid-x grid-margin-x" id="afterCare">
+      <div class="cell medium-12 box card profile-section">
+
+        <h2> <i class="far fa-check-circle"></i> You have been cleared from Isolation as of <%=IsolationDateEndMoment%></h2>
+
+      </div>
+    </div>
+<%}%>
+
+    <div class="cell medium-12 grid-container me-section" style="padding:0;margin-bottom: 1em;">
+      <!-- <h2 class="section-header"><i class="fad fa-info-circle"></i> Important</h2> -->
+      <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-2">
+        <div class="cell info-snippet">
+          <h3><i class="fad fa-user-md"></i> Non-Emergency Medical Help</h3>
+          <p>WPI Health Services is open Monday-Friday between 8 am-5 pm for students with medical questions or concerns. Please call (508) 831-5520 to make an appointment or speak with a triage nurse or email healthcenter@wpi.edu.</p>  
+          <p>For after-hours <strong>telehealth</strong> medical care, during the evenings and weekends please call our after-hours physician line at UMass Hahnemann Family Health Center of Worcester at 508-334-8830, identify yourself as a WPI student and follow the prompts to leave a message. The doctor on call will return your call as soon as possible.</p>  
+          <p>If you would like to be seen for an <strong>in-person</strong> appointment after hours or on weekends there are several urgent care options in the Worcester area including ReadyMed Plus Urgent Care, Carewell Urgent Care and the CVS Minute Clinic.</p>          </div>
+        <div class="cell info-snippet">
+          <div class="cell info-snippet">
+            <h3><i class="fad fa-hospital"></i> Emergency Medical Help</h3>
+            <p>Please seek immediate medical attention by calling campus police (508-831-5555) or 911 or go to a <a href="#" data-open="emergencyCenters">Worcester Emergency Department</a> if you develop any severe symptoms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+
+  
+</div>

@@ -1,0 +1,56 @@
+<div class="reveal" id="modal-console-add" data-reveal data-options="closeOnClick:false;">
+  <input type="hidden" id="endpoint" name="endpoint" value="/api/v1/action/create/one">
+  <input type="hidden" id="method" name="method" value="POST">
+  <h4>New Action</h4>
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" placeholder="Title">
+  <label for="link">Link</label>
+  <input type="text" id="link" name="link" placeholder="https://www.example.com/">
+  <label for="descriptionShort">Short Description</label>
+  <input type="text" id="descriptionShort" name="descriptionShort" placeholder="What is this action for?">
+  <label for="idActionType">Action Type</label>
+  <select id="idActionType" name="idActionType">
+    <% for (let type of data.types) { %>
+      <option value="<%= type.id %>"><%= type.title %></option>
+    <% } %>
+  </select>
+  <label for="idMetadataPhase">Phase</label>
+  <select id="idMetadataPhase" name="idMetadataPhase">
+    <% for (let phase of data.phases) { %>
+      <option value="<%= phase.id %>"><%= phase.title %></option>
+    <% } %>
+  </select>
+  <button class="console-add console-add-save"><i class="fas fa-save"></i> Create</button>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true"><i class='fas fa-times'></i></span>
+  </button>
+</div>
+
+<div class="reveal" id="modal-console-edit" data-reveal data-options="closeOnClick:false;">
+  <input type="hidden" id="edit-endpoint" name="edit-endpoint" value="/api/v1/action/update/one">
+  <input type="hidden" id="edit-method" name="edit-method" value="PUT">
+  <h4>Edit Action</h4>
+  <input type="hidden" id="edit-id" name="edit-id">
+  <label for="edit-title">Title</label>
+  <input type="text" id="edit-title" name="edit-title" placeholder="Title">
+  <label for="edit-link">Link</label>
+  <input type="text" id="edit-link" name="edit-link" placeholder="https://www.example.com/">
+  <label for="edit-descriptionShort">Short Description</label>
+  <input type="text" id="edit-descriptionShort" name="edit-descriptionShort" placeholder="What is this action for?">
+  <label for="edit-idActionType">Action Type</label>
+  <select id="edit-idActionType" name="edit-idActionType">
+    <% for (let type of data.types) { %>
+      <option value="<%= type.id %>"><%= type.title %></option>
+    <% } %>
+  </select>
+  <label for="edit-idMetadataPhase">Phase</label>
+  <select id="edit-idMetadataPhase" name="edit-idMetadataPhase">
+    <% for (let phase of data.phases) { %>
+      <option value="<%= phase.id %>"><%= phase.title %></option>
+    <% } %>
+  </select>
+  <button class="console-add console-edit-save"><i class="fas fa-save"></i> Save</button>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true"><i class='fas fa-times'></i></span>
+  </button>
+</div>

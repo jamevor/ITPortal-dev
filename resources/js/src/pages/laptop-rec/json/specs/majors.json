@@ -1,0 +1,129 @@
+{
+    "cs": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "rbe": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 2,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "mechanical": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 2,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "aerospace": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 2,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "civil": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 2,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "electrical": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "cadgineering": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 1,
+        "storage": 1,
+        "form": 1
+    },
+    "imgd": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 1,
+        "storage": 2,
+        "form": 1,
+        "os": 1
+    },
+    "math": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 2,
+        "os": 1
+    },
+    "other": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "physics": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "industrial": {
+        "cpu": 2,
+        "gpu": 2,
+        "ram": 2,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "biology": {
+        "cpu": 1,
+        "gpu": 2,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "business": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 1
+    },
+    "chemistry": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    },
+    "environmental": {
+        "cpu": 1,
+        "gpu": 1,
+        "ram": 1,
+        "storage": 1,
+        "form": 1,
+        "os": 2
+    }
+}
