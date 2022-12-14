@@ -538,7 +538,7 @@ module.exports = app => {
 	app.get('/CovidTests/Manager', G.ensureAuthenticated, user.GetCovidTestManager);
 	app.get('/CM', function(req, res){
 		res.redirect('/Commencement/Manager');
-	});
+	}); 
 	app.get('/CTM', function(req, res){
 		res.redirect('/CovidTests/Manager');
 	});
